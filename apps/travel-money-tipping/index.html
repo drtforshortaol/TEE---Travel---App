@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Money + Tipping | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Money + Tipping</h1>
+    <p class="lead">Currency, cash/card strategy, tipping norms, and practical local money notes for Turkey, Croatia, Slovenia, Austria, and Switzerland.</p>
+  </header>
+  <main>
+    <section id="todayContextPanel" class="today-context" hidden>
+      <div>
+        <p class="context-kicker">From Daily Operations</p>
+        <h2 id="todayContextTitle">Today’s money guidance</h2>
+        <p id="todayContextText"></p>
+      </div>
+      <button id="useTodayContextBtn" type="button">Use today's destination</button>
+    </section>
+
+
+    <section class="money-mission" aria-labelledby="moneyMissionTitle">
+      <div>
+        <p class="eyebrow-dark">Money Mission Control</p>
+        <h2 id="moneyMissionTitle">Pay, tip, and carry cash without overthinking it.</h2>
+        <p>Use this app before leaving the hotel, before restaurant meals, before tours, and before border/currency changes. Keep exact booking/payment references in Private Documents.</p>
+      </div>
+      <div class="mission-grid">
+        <a href="../travel-private-documents/index.html">Private Documents</a>
+        <a href="../travel-costs/index.html">Costs</a>
+        <a href="../travel-language/index.html">Language</a>
+        <a href="../travel-daily-operations/index.html">Daily Operations</a>
+      </div>
+    </section>
+    <section id="moneyProtocols" class="money-protocols destination-section" aria-labelledby="moneyProtocolsTitle">
+      <p class="eyebrow-dark">Money + Tipping Protocols</p>
+      <h2 id="moneyProtocolsTitle">Repeatable travel rules</h2>
+      <div class="protocol-grid">
+        <article id="protocol-currency" class="protocol-card destination-section">
+          <h3>Country Currency Quick Guide</h3>
+          <ul>
+            <li><strong>Turkey:</strong> Turkish lira / TRY / ₺.</li>
+            <li><strong>Croatia, Slovenia, Austria:</strong> euro / EUR / €.</li>
+            <li><strong>Switzerland:</strong> Swiss franc / CHF.</li>
+            <li>Keep currencies separated in the wallet to avoid using the wrong cash quickly.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article id="protocol-card-cash" class="protocol-card destination-section">
+          <h3>Card vs Cash Strategy</h3>
+          <ul>
+            <li>Use credit card for hotels, larger restaurants, transportation counters, shops, and bigger purchases.</li>
+            <li>Use small cash for bathrooms, tips, small cafes, markets, taxis, kiosks, and emergency backup.</li>
+            <li>When a terminal asks, choose the local currency instead of USD conversion.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article id="protocol-atm" class="protocol-card destination-section">
+          <h3>ATM / Cash Withdrawal Notes</h3>
+          <ul>
+            <li>Prefer bank ATMs or ATMs attached to banks.</li>
+            <li>Avoid unknown standalone tourist ATMs when possible.</li>
+            <li>Decline dynamic currency conversion if offered.</li>
+            <li>Withdraw moderate amounts so you are not carrying excessive cash.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article id="protocol-coins" class="protocol-card destination-section">
+          <h3>Small Bills / Coins Reminder</h3>
+          <ul>
+            <li>Keep a small coin/bill pocket for bathrooms, cafes, luggage help, and small tips.</li>
+            <li>Before leaving each hotel, check whether you have enough small local cash for the day.</li>
+            <li>Switzerland and euro countries may require coins for some bathrooms or lockers.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article id="protocol-tipping" class="protocol-card destination-section">
+          <h3>Restaurant / Hotel / Guide Tipping</h3>
+          <ul>
+            <li>Restaurants: use the country card below for local norms; avoid automatic US-style over-tipping.</li>
+            <li>Hotels: keep small cash for housekeeping and luggage help when useful.</li>
+            <li>Guides/drivers: tip more when service is personal, long, or especially helpful.</li>
+            <li>In Austria and Switzerland, rounding up is often more natural than leaving a large table tip.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article id="protocol-daily-cash" class="protocol-card destination-section">
+          <h3>Daily Cash Carry Plan</h3>
+          <ul>
+            <li>Morning check: card, backup card, small local cash, and coins.</li>
+            <li>Move days: carry enough cash for taxis, bathrooms, luggage help, snacks, and unexpected delays.</li>
+            <li>Keep exact payment references, confirmation numbers, and sensitive account details in Private Documents.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: taxi, coffee, CHF, Croatia, balloon, ATM..." />
+      <select id="countryFilter"><option value="all">All countries</option></select>
+      <select id="currencyFilter"><option value="all">All currencies</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+    <section id="summaryMount" class="summary"></section>
+    <section class="notice"><strong>Private note:</strong> this app gives practical cash/card and tipping guidance. It does not store card numbers, bank logins, or full payment credentials.</section>
+    <section id="moneyMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

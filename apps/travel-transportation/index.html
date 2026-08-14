@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transportation | Turkey Eastern Europe Trip</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Transportation</h1>
+    <p class="sub">Flights, rail pass, trains, private transfers, driving segments, airport movements, seats, baggage, and action reminders.</p>
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search route, city, PNR, airline, train…" />
+      <select id="typeFilter"><option value="all">All transportation</option></select>
+      <select id="dateFilter"><option value="all">All dates</option></select>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="notice private">
+      <strong>Private build only.</strong> This app includes confirmation references, seat/baggage notes, and travel-day operational reminders. Recheck all tickets, gates, seat reservations, transfer pickup times, and final vouchers before departure.
+    </section>
+
+    <section class="quick-grid" id="summaryMount"></section>
+
+    <section id="movementControlMount" class="movement-control"></section>
+
+    <section class="operations-panel">
+      <h2>Pre-Departure Transportation Checklist</h2>
+      <div id="checklistMount" class="checklist"></div>
+    </section>
+
+    <section class="operations-panel compact">
+      <h2>Fast Movement Filters</h2>
+      <p>Tap a movement type to jump directly into the timeline without using the dropdown.</p>
+      <div id="quickFilterMount" class="quick-filter-row"></div>
+    </section>
+
+    <section class="section-head">
+      <h2>Transportation Protocols</h2>
+      <p>These are the repeatable rules for flights, rail, luggage, last-mile movement, and disruptions.</p>
+    </section>
+
+    <section id="protocolMount" class="protocol-grid destination-section">
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+
+    <section class="section-head">
+      <h2>Transportation Timeline</h2>
+      <p>Use this as the working movement map. It should be cross-checked against live airline, train, Rail Planner, SBB, and agency itinerary updates.</p>
+    </section>
+
+    <section id="transportMount" class="transport-list"></section>
+  </main>
+
+  <footer>
+    <p>Sources: Airport and train stuff.pdf, Trip planning.pdf, Maps.pdf, Hotel.pdf. Version 1.1 · Transportation Core Phase 1.</p>
+  </footer>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

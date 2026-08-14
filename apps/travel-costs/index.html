@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Costs | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Costs</h1>
+    <p class="lead">Capture expenses on the iPhone from a receipt photo, file, pasted note, or typed entry. Shared and Private expenses are encrypted into Secure Vault storage on this device.</p>
+  </header>
+
+  <main>
+    <section class="costs-mission">
+      <div>
+        <p class="eyebrow-dark">Mobile Expense Capture</p>
+        <h2>Record it when it happens.</h2>
+        <p>Photograph a receipt, choose an existing image/PDF, paste a note from Apple Notes, or type the expense. TEE keeps the entry in Costs while the vault protects Shared and Private records behind the scenes.</p>
+      </div>
+      <div class="mission-grid">
+        <a href="../travel-money-tipping/index.html">Money + Tipping</a>
+        <a href="../travel-private-documents/index.html">Secure Vault</a>
+        <a href="../travel-daily-operations/index.html">Daily Operations</a>
+        <a href="../travel-archive/index.html">Trip Archive</a>
+      </div>
+    </section>
+
+    <section class="capture-panel" aria-labelledby="captureTitle">
+      <div class="section-heading-row">
+        <div><p class="eyebrow-dark">Expense Intake</p><h2 id="captureTitle">+ Add Expense</h2></div>
+        <button id="toggleCaptureBtn" class="primary-btn" type="button">Open Capture</button>
+      </div>
+
+      <div id="captureBody" hidden>
+        <div class="capture-methods" role="group" aria-label="Expense capture methods">
+          <button id="cameraBtn" type="button">📷 Take Photo</button>
+          <button id="fileBtn" type="button">📎 Choose Photo / PDF</button>
+          <button id="pasteBtn" type="button">📋 Paste Note</button>
+          <button id="typeBtn" type="button">✍️ Type Expense</button>
+        </div>
+        <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden />
+        <input id="fileInput" type="file" accept="image/*,application/pdf" hidden />
+
+        <div id="sourcePreview" class="source-preview" hidden></div>
+
+        <label class="full-field">Paste or type a natural-language note
+          <textarea id="rawNote" rows="3" placeholder="Example: Dinner Zurich 10/5 - CHF 84 - paid by Couple A - shared"></textarea>
+        </label>
+        <div class="inline-actions"><button id="parseNoteBtn" type="button">Use Note to Prefill</button><button id="clearFormBtn" type="button" class="secondary-btn">Clear</button></div>
+
+        <div class="expense-grid">
+          <label>Date <input id="expenseDate" type="date" /></label>
+          <label>City / location <input id="expenseCity" type="text" placeholder="Zurich" /></label>
+          <label>Category
+            <select id="expenseCategory">
+              <option>Meals</option><option>Transportation</option><option>Lodging</option><option>Tips</option><option>Activities</option><option>Shopping</option><option>Medical</option><option>Other</option>
+            </select>
+          </label>
+          <label>Merchant / description <input id="expenseMerchant" type="text" placeholder="Restaurant, taxi, museum…" /></label>
+          <label>Amount <input id="expenseAmount" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00" /></label>
+          <label>Currency
+            <select id="expenseCurrency"><option>USD</option><option>EUR</option><option>CHF</option><option>TRY</option><option>HRK</option><option>Other</option></select>
+          </label>
+          <label>Paid by
+            <select id="expensePaidBy"><option>Couple A</option><option>Couple B</option><option>Both couples</option><option>Other</option></select>
+          </label>
+          <label>Reimbursable / split?
+            <select id="expenseSplit"><option value="no">No</option><option value="yes">Yes</option><option value="review">Review later</option></select>
+          </label>
+        </div>
+
+        <label class="full-field">Notes <textarea id="expenseNotes" rows="3" placeholder="Tip included, split 50/50, cash, reimbursement note…"></textarea></label>
+
+        <label class="test-toggle"><input id="expenseIsTest" type="checkbox" /> <span><strong>Test expense</strong> — mark trial entries so they are easy to find and delete later</span></label>
+
+        <fieldset class="access-fieldset">
+          <legend>Who can see this expense?</legend>
+          <label><input type="radio" name="expenseAccess" value="public" /> <strong>Public</strong> — no passphrase required on this device</label>
+          <label><input type="radio" name="expenseAccess" value="shared" checked /> <strong>Shared</strong> — both couples only; protected</label>
+          <label><input type="radio" name="expenseAccess" value="private" /> <strong>Private</strong> — only the couple whose passphrase is used to save it</label>
+        </fieldset>
+
+        <div id="saveAuthArea" class="auth-area"><label>Vault passphrase <input id="savePassphrase" type="password" autocomplete="current-password" placeholder="Required for Shared or Private" /></label></div>
+        <div id="editBanner" class="edit-banner" hidden><strong>Editing saved expense</strong><span id="editBannerText"></span><button id="cancelEditBtn" type="button" class="secondary-btn">Cancel Edit</button></div>
+        <div class="save-row"><button id="saveExpenseBtn" class="primary-btn" type="button">Save Expense</button><span id="saveStatus" class="status-text" role="status"></span></div>
+      </div>
+    </section>
+
+    <section class="expense-view" aria-labelledby="expensesTitle">
+      <div class="section-heading-row">
+        <div><p class="eyebrow-dark">Trip Expenses</p><h2 id="expensesTitle">Saved in TEE</h2></div>
+        <button id="unlockViewBtn" type="button">🔒 Unlock Protected Expenses</button>
+      </div>
+      <div id="viewAuth" class="view-auth" hidden>
+        <label>Couple passphrase <input id="viewPassphrase" type="password" autocomplete="current-password" /></label>
+        <button id="confirmUnlockBtn" type="button">Unlock</button>
+        <button id="lockViewBtn" type="button" class="secondary-btn">Lock</button>
+        <span id="viewStatus" class="status-text"></span>
+      </div>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Search merchant, city, note…" />
+        <select id="accessFilter"><option value="all">All visible access</option><option value="public">Public</option><option value="shared">Shared</option><option value="private">Private</option></select>
+        <select id="categoryFilter"><option value="all">All categories</option></select>
+        <select id="testFilter"><option value="all">All entries</option><option value="test">Test only</option><option value="real">Non-test only</option></select>
+      </div>
+      <div class="expense-tools"><button id="deleteVisibleTestsBtn" type="button" class="danger-btn">Delete Visible Test Expenses</button><span class="muted">Only currently visible Test entries are affected.</span></div>
+      <section id="summaryMount" class="summary"></section>
+      <div class="notice"><strong>Local-first:</strong> expenses and receipts stay on this device. They are not sent to GitHub. Public means visible without a passphrase in this TEE installation; Shared and Private are encrypted.</div>
+      <section id="expenseMount" class="cards"></section>
+    </section>
+
+
+    <section class="expense-reports" aria-labelledby="reportsTitle">
+      <div class="section-heading-row">
+        <div><p class="eyebrow-dark">End-of-Trip Retrieval</p><h2 id="reportsTitle">Expense Reports &amp; Trip Archive</h2></div>
+        <button type="button" class="secondary-btn" data-tee-help-section="expense-reports">? How to use this</button>
+      </div>
+      <p class="report-lead">Build a report from the expenses this TEE installation is currently authorized to see. Shared records can be combined after phone-to-phone exchange; Private records remain limited to the currently unlocked couple.</p>
+
+      <div class="report-controls">
+        <label>From date <input id="reportFrom" type="date" /></label>
+        <label>Through date <input id="reportTo" type="date" /></label>
+        <label>Access
+          <select id="reportAccess"><option value="all">All visible</option><option value="public">Public</option><option value="shared">Shared</option><option value="private">Private</option></select>
+        </label>
+        <label class="test-toggle report-test"><input id="reportIncludeTests" type="checkbox" /> <span>Include Test expenses</span></label>
+      </div>
+      <div class="inline-actions report-actions">
+        <button id="refreshReportBtn" type="button" class="primary-btn">Refresh Report</button>
+        <button id="exportCsvBtn" type="button">Export CSV Ledger</button>
+        <button id="printReportBtn" type="button">Print / Save PDF</button>
+        <button id="downloadReceiptReportBtn" type="button">Download Receipt Report</button>
+      </div>
+      <section id="reportSummaryMount" class="summary"></section>
+      <div id="reportBreakdownMount" class="report-breakdown"></div>
+      <div class="archive-box">
+        <h3>Encrypted Expense Archive</h3>
+        <p>Creates a protected <code>.tee49</code> archive containing the currently authorized expense records and stored receipt attachments. The archive uses the <strong>currently authorized couple's existing TEE passphrase</strong>—there is no separate archive password.</p>
+        <div class="archive-pass-grid"><label>Confirm your TEE couple passphrase <input id="archiveCouplePassphrase" type="password" autocomplete="current-password" placeholder="Same passphrase used to unlock this couple's TEE vault" /></label></div>
+        <div class="inline-actions"><button id="downloadEncryptedArchiveBtn" type="button" class="primary-btn">Download Encrypted .tee49 Archive</button><button id="saveArchiveSnapshotBtn" type="button" class="secondary-btn">Save Snapshot to Trip Archive</button></div>
+        <span id="reportStatus" class="status-text" role="status"></span>
+      </div>
+      <div class="notice"><strong>Before final export:</strong> import the latest Shared Expense package from the other phone first. To preserve each couple's Private expenses, each couple should create its own authorized archive while logged in with its own passphrase.</div>
+    </section>
+
+    <section class="expense-exchange" aria-labelledby="exchangeTitle">
+      <div class="section-heading-row">
+        <div><p class="eyebrow-dark">Shared Expense Exchange</p><h2 id="exchangeTitle">Phone-to-phone sharing</h2></div>
+        <button type="button" class="secondary-btn" data-tee-help-section="expense-exchange">? How to use this</button>
+      </div>
+      <p class="exchange-lead">Shared expenses can move between the two iPhones in an encrypted package. GitHub is used only for a small update beacon; it never receives the expense contents.</p>
+
+      <div class="exchange-grid">
+        <article class="exchange-card">
+          <h3>1. Send Shared Expenses</h3>
+          <p>Unlock protected expenses first, then export the Shared ledger. Test expenses are excluded unless you choose to include them.</p>
+          <label class="test-toggle"><input id="exchangeIncludeTests" type="checkbox" /> <span>Include Test expenses in exchange</span></label>
+          <button id="exportSharedBtn" type="button" class="primary-btn">Export Encrypted Shared Package</button>
+          <div id="exportResult" class="exchange-result" hidden>
+            <p><strong>Transfer code</strong></p>
+            <div class="transfer-code-row"><code id="transferCode"></code><button id="copyTransferCodeBtn" type="button" class="secondary-btn">Copy Code</button></div>
+            <p class="muted">Send the downloaded <strong>.tee46</strong> file directly to the other iPhone. Send the transfer code separately if possible.</p>
+            <button id="downloadBeaconBtn" type="button" class="secondary-btn">Download GitHub Update Beacon</button>
+          </div>
+          <span id="exportStatus" class="status-text" role="status"></span>
+        </article>
+
+        <article class="exchange-card">
+          <h3>2. Receive Shared Expenses</h3>
+          <p>Select the encrypted package received from the other couple, enter its transfer code, and let TEE merge the records.</p>
+          <input id="exchangeFileInput" type="file" accept=".tee46,application/json" />
+          <label>Transfer code <input id="exchangeCodeInput" type="password" autocomplete="off" placeholder="Code from sender" /></label>
+          <button id="importSharedBtn" type="button" class="primary-btn">Import & Merge Shared Expenses</button>
+          <span id="importStatus" class="status-text" role="status"></span>
+        </article>
+
+        <article class="exchange-card">
+          <h3>3. Check for an Update</h3>
+          <p>When TEE is hosted on GitHub Pages, it can read a tiny beacon file and tell you whether a newer Shared expense package is available.</p>
+          <label>Beacon URL <input id="beaconUrl" type="url" placeholder="../../shared-expense-beacon.json" /></label>
+          <div class="inline-actions"><button id="checkBeaconBtn" type="button" class="primary-btn">Check for Update</button><button id="resetBeaconBtn" type="button" class="secondary-btn">Use Default</button></div>
+          <div id="beaconStatus" class="beacon-status">No beacon checked yet.</div>
+          <p class="muted">The beacon contains only package/version metadata. The actual expense package still travels phone-to-phone.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="costsProtocols" class="costs-protocols destination-section" aria-labelledby="costsProtocolsTitle">
+      <p class="eyebrow-dark">Costs Protocols</p><h2 id="costsProtocolsTitle">Useful trip rules</h2>
+      <div class="protocol-grid">
+        <article class="protocol-card"><h3>Capture now, organize later</h3><p>Photograph or paste the expense while it is fresh. Add enough detail to recognize it later.</p></article>
+        <article class="protocol-card"><h3>Shared vs Private</h3><p>Use Shared for expenses both couples need to see. Use Private for one couple's personal spending or financial notes.</p></article>
+        <article class="protocol-card"><h3>Receipts</h3><p>TEE automatically reduces large receipt photos before storing them. PDFs must remain small enough for local browser storage.</p></article>
+        <article class="protocol-card"><h3>Test entries</h3><p>Mark trial expenses as Test. Filter them later and delete them individually or with Delete Visible Test Expenses.</p></article>
+        <article class="protocol-card"><h3>Backup</h3><p>Protected expenses become part of the encrypted vault and should be included whenever you make a current vault backup.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../config.js"></script>
+  <script src="../../encryption.js"></script>
+  <script src="../../auth.js"></script>
+  <script src="../../storage.js"></script>
+  <script src="../../vault.js"></script>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

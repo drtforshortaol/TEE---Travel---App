@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maps + Movement | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Maps + Movement</h1>
+    <p class="lead">A visual route overview for the Turkey - Eastern Europe trip: overall movement, Turkey segment, Croatia/Slovenia movement, and Central Europe/Swiss extension.</p>
+  </header>
+  <main>
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: Istanbul, Cappadocia, Zagreb, Plitvice, Rovinj, Ljubljana, Salzburg, Zermatt, Zurich..." />
+      <select id="segmentFilter"><option value="all">All segments</option></select>
+      <select id="modeFilter"><option value="all">All modes</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+
+    <section class="notice"><strong>Private note:</strong> this app is a trip-movement guide, not a live navigation map. Use official map apps, hotel addresses, tickets, and local transport apps for live routing.</section>
+
+    <section class="movement-control" aria-label="Maps and movement mission control">
+      <div class="control-head">
+        <p class="eyebrow-mini">Movement Mission Control</p>
+        <h2>Where are we, where are we going, and what is the backup plan?</h2>
+        <p>This app connects the master itinerary, transportation, hotels, and daily operations into one movement view. Use it before each transition day and whenever the group needs orientation.</p>
+      </div>
+      <div class="control-grid">
+        <article>
+          <strong>Before each move</strong>
+          <p>Confirm pickup or station timing, baggage plan, weather layer, and the next hotel arrival plan.</p>
+        </article>
+        <article>
+          <strong>At arrival</strong>
+          <p>Orient to the hotel area first, then identify food, cash/ATM, pharmacy, bathroom, and transport backup.</p>
+        </article>
+        <article>
+          <strong>If confused</strong>
+          <p>Stop, open Transportation + Private Documents, confirm the next address/reference, then use live maps for routing.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="quick-tools" aria-label="Movement fast tools">
+      <h2>Movement Fast Tools</h2>
+      <div class="quick-button-row">
+        <button type="button" data-reset-maps="true">Show all movement</button>
+        <button type="button" data-segment="Turkey">Turkey</button>
+        <button type="button" data-segment="Croatia">Croatia</button>
+        <button type="button" data-segment="Slovenia">Slovenia</button>
+        <button type="button" data-segment="Central Europe extension">Rail extension</button>
+        <button type="button" data-segment="Switzerland">Switzerland</button>
+        <button type="button" data-mode="Flight">Flights</button>
+        <button type="button" data-query="station hotel luggage">Station / hotel luggage</button>
+        <button type="button" data-query="airport train transfer">Airport / train transfer</button>
+        <button type="button" data-query="weather walking shoes layer">Weather / walking risk</button>
+      </div>
+    </section>
+
+    <section class="movement-protocols destination-section" aria-label="Maps and movement protocols">
+      <h2>Maps + Movement Protocols</h2>
+      <div class="protocol-grid">
+        <article class="protocol-card destination-section">
+          <h3>Overall Country Movement</h3>
+          <ul>
+            <li>Use the whole-trip flow first to understand the next country and base city.</li>
+            <li>Then open Master Itinerary for dates and Transportation for exact movement details.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article class="protocol-card destination-section">
+          <h3>City-to-City Movement</h3>
+          <ul>
+            <li>Confirm the departure point, arrival point, luggage handling, and next hotel check-in timing.</li>
+            <li>For rail days, confirm platform/station and seat reservation status before leaving the hotel.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article class="protocol-card destination-section">
+          <h3>Airport / Train Station Orientation</h3>
+          <ul>
+            <li>Identify the station/terminal, restroom, food, cash/ATM, taxi/rideshare, and information desk.</li>
+            <li>Keep passports and private references accessible but not exposed.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article class="protocol-card destination-section">
+          <h3>Hotel Area Orientation</h3>
+          <ul>
+            <li>After arrival, identify the hotel entrance, nearby food, pharmacy, transit stop, and safe walking direction.</li>
+            <li>Use Hotels for check-in notes and Daily Operations for the next-day launch plan.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article class="protocol-card destination-section">
+          <h3>Walking Zone Notes</h3>
+          <ul>
+            <li>Assume cobblestones, stairs, uneven pavement, rain risk, and luggage friction in older city centers.</li>
+            <li>Keep the day bag light and shoes practical on movement days.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+        <article class="protocol-card destination-section">
+          <h3>Backup Movement Plan</h3>
+          <ul>
+            <li>If delayed or lost, stop moving, confirm the next destination, then choose taxi/rideshare/help desk backup.</li>
+            <li>Use Private Documents for confirmation references and Language for help phrases.</li>
+          </ul>
+        
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+      </div>
+      <div class="related-strip">
+        <a class="related-app-link" data-open-app="../travel-itinerary/index.html" href="../travel-itinerary/index.html">Master Itinerary</a>
+        <a class="related-app-link" data-open-app="../travel-transportation/index.html" href="../travel-transportation/index.html">Transportation</a>
+        <a class="related-app-link" data-open-app="../travel-hotels/index.html" href="../travel-hotels/index.html">Hotels</a>
+        <a class="related-app-link" data-open-app="../travel-daily-operations/index.html" href="../travel-daily-operations/index.html">Daily Operations</a>
+        <a class="related-app-link" data-open-app="../travel-private-documents/index.html" href="../travel-private-documents/index.html">Private Documents</a>
+      </div>
+    </section>
+
+
+    <section class="overview-card">
+      <h2>Whole Trip Flow</h2>
+      <p class="muted">SFO → Istanbul → Cappadocia → Zagreb → Plitvice Lakes → Rovinj / Pula → Ljubljana / Bled / Bohinj / Postojna → Salzburg → Zermatt → Lucerne → Zurich → Istanbul Airport → SFO</p>
+      <div class="route-diagram" aria-label="Whole trip route diagram">
+        <div class="node">SFO</div><div class="line flight"></div><div class="node">Istanbul</div><div class="line flight"></div><div class="node">Cappadocia</div><div class="line flight"></div><div class="node">Zagreb</div><div class="line drive"></div><div class="node">Plitvice</div><div class="line drive"></div><div class="node">Rovinj</div><div class="line drive"></div><div class="node">Ljubljana</div><div class="line train"></div><div class="node">Salzburg</div><div class="line train"></div><div class="node">Zermatt</div><div class="line train"></div><div class="node">Lucerne</div><div class="line train"></div><div class="node">Zurich</div><div class="line flight"></div><div class="node">IST</div><div class="line flight"></div><div class="node">SFO</div>
+      </div>
+      <div class="legend"><span><b class="flight-dot"></b> Flight</span><span><b class="drive-dot"></b> Private drive / ground transfer</span><span><b class="train-dot"></b> Train / rail extension</span></div>
+    </section>
+
+    <section id="summaryMount" class="summary"></section>
+    <section id="mapMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

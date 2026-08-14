@@ -1,0 +1,9 @@
+{
+  "name": "Essentials - Turkey Eastern Europe Trip",
+  "short_name": "Essentials+",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbfaf7",
+  "theme_color": "#713f12",
+  "icons": []
+}

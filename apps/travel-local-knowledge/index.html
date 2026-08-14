@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Local Knowledge | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Local Knowledge</h1>
+    <p class="lead">Country and city reference for etiquette, dining, business hours, transportation culture, safety, emergency reminders, and practical local behavior.</p>
+  </header>
+  <main>
+    <section id="todayContextPanel" class="today-context" hidden>
+      <div>
+        <p class="context-kicker">From Daily Operations</p>
+        <h2 id="todayContextTitle">Today’s local guidance</h2>
+        <p id="todayContextText"></p>
+      </div>
+      <button id="useTodayContextBtn" type="button">Use today's destination</button>
+    </section>
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: mosque, cafe, safety, taxi, dinner, pharmacy..." />
+      <select id="countryFilter"><option value="all">All countries</option></select>
+      <select id="topicFilter"><option value="all">All topics</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+    <section class="notice"><strong>Private note:</strong> this app is a practical reference, not legal, medical, or emergency advice. Verify emergency numbers and current entry rules before departure.</section>
+    <section id="summaryMount" class="summary"></section>
+
+    <section class="mission-control" aria-labelledby="localMissionTitle">
+      <div>
+        <p class="section-kicker">Local Mission Control</p>
+        <h2 id="localMissionTitle">How to behave, pay, eat, move, and avoid common travel friction</h2>
+        <p>Use this app as the practical street-level companion to Language, Money + Tipping, Transportation, and Daily Operations.</p>
+      </div>
+      <div class="mission-links">
+        <a href="../travel-language/index.html">Language</a>
+        <a href="../travel-money-tipping/index.html">Money + Tipping</a>
+        <a href="../travel-daily-operations/index.html">Daily Operations</a>
+        <a href="../travel-transportation/index.html">Transportation</a>
+      </div>
+    </section>
+    <section class="protocols destination-section" aria-labelledby="localProtocolsTitle">
+      <p class="section-kicker">Local Knowledge Protocols</p>
+      <h2 id="localProtocolsTitle">Reusable travel behavior guides</h2>
+      <div id="protocolMount" class="protocol-grid"></div>
+    
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+
+    <section id="knowledgeMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5f7fa;color:#17212b;line-height:1.45}.hero{background:linear-gradient(135deg,#1f3f5b,#2d6a6a);color:#fff;padding:24px 18px 22px}.hero h1{font-size:clamp(1.8rem,5vw,3rem);margin:8px 0}.subtitle{margin:0;opacity:.92}.privacy-pill{display:inline-block;background:#fff;color:#1f3f5b;border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:800;letter-spacing:.08em}.hero-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}button,.tools input,.tools select{border:1px solid #c9d3df;border-radius:12px;padding:10px 12px;font:inherit}button{background:#fff;color:#1f3f5b;font-weight:700;cursor:pointer}button:hover{filter:brightness(.96)}main{max-width:1120px;margin:auto;padding:16px}.notice{background:#fff4d8;border:1px solid #ead38c;border-radius:16px;padding:14px 16px;margin:0 0 16px}.dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.dashboard article,.category,.app-card{background:#fff;border:1px solid #dde5ee;border-radius:18px;box-shadow:0 2px 8px rgba(20,40,60,.05)}.dashboard article{padding:16px}.label{display:block;color:#5d6b79;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.dashboard strong{display:block;font-size:1.1rem}.tools{display:grid;grid-template-columns:1fr 220px 220px;gap:10px;margin:16px 0}.category{margin:16px 0;overflow:hidden}.category summary{cursor:pointer;padding:16px 18px;font-weight:800;background:#eef5f8;display:flex;justify-content:space-between;gap:12px}.category-body{padding:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.app-card{padding:16px;display:flex;flex-direction:column;gap:10px}.app-card h3{margin:0;font-size:1.12rem}.meta{display:flex;flex-wrap:wrap;gap:6px}.chip{display:inline-flex;align-items:center;border-radius:999px;background:#edf2f7;color:#35485a;padding:4px 8px;font-size:.78rem}.chip.private{background:#f4e7e7;color:#7a2e2e}.chip.status{background:#e7f1ec;color:#1f5b3a}.chip.priority{background:#e8eef8;color:#244b83}.desc{margin:0;color:#435363}.sources,.links{font-size:.86rem;color:#5c6975}.source-list{margin:.25rem 0 0;padding-left:18px}.open-link{display:inline-block;text-decoration:none;border:1px solid #b8c7d6;border-radius:10px;padding:8px 10px;color:#1f3f5b;font-weight:700}.open-link.disabled{opacity:.55;pointer-events:none;background:#f2f2f2}.tag-row{display:flex;flex-wrap:wrap;gap:6px}footer{text-align:center;color:#667;padding:18px}@media(max-width:720px){.dashboard,.tools{grid-template-columns:1fr}.hero{padding-top:18px}.category-body{grid-template-columns:1fr}}@media print{.tools,.hero-actions{display:none}body{background:#fff}.category,.app-card,.dashboard article{box-shadow:none}}
+
+/* v2.4 hub app cards collapse/open controls */
+.tools{grid-template-columns:1fr 180px 180px 170px 180px}
+.hub-card{padding:0;display:block}
+.hub-card-summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 16px}
+.hub-card-summary::-webkit-details-marker{display:none}
+.hub-card-summary::before{content:'▸';font-weight:900;color:#1f3f5b;margin-right:2px;line-height:1.8}
+.hub-card[open]>.hub-card-summary::before{content:'▾'}
+.hub-card-title{font-weight:800;font-size:1.05rem;flex:1;padding-top:3px}
+.hub-card-meta{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.hub-card-body{border-top:1px solid #e2e9f0;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+@media(max-width:900px){.tools{grid-template-columns:1fr 1fr}.tools input{grid-column:1/-1}}
+@media(max-width:720px){.tools{grid-template-columns:1fr}.hub-card-summary{flex-direction:column}.hub-card-meta{justify-content:flex-start}}
+
+/* v3.9 private hub inline category app boxes
+   Replaces category dropdowns with small direct app buttons. */
+.category.inline-category{padding:0;overflow:visible}
+.category-inline-header{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:#eef5f8;border-radius:18px;flex-wrap:wrap}
+.category-inline-title{display:flex;align-items:center;gap:8px;min-width:190px;flex:0 0 auto;padding-top:4px}
+.category-name{font-weight:900;letter-spacing:.02em;text-transform:uppercase;color:#1f3f5b}
+.category-count{font-size:.76rem;border-radius:999px;background:#fff;color:#526477;border:1px solid #d6e0ea;padding:3px 8px;white-space:nowrap}
+.category-app-pills{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:240px}
+.app-pill{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #b8c7d6;border-radius:999px;background:#fff;color:#1f3f5b;font-weight:800;font-size:.9rem;line-height:1.1;padding:8px 12px;min-height:34px;box-shadow:0 1px 3px rgba(20,40,60,.06)}
+.app-pill:hover{filter:brightness(.96);transform:translateY(-1px)}
+.app-pill.disabled{opacity:.55;pointer-events:none;background:#f2f2f2;color:#6b7280}
+@media(max-width:720px){.category-inline-header{display:block}.category-inline-title{margin-bottom:10px}.category-app-pills{min-width:0}.app-pill{font-size:.86rem;padding:8px 10px}}
+@media print{.app-pill{box-shadow:none}.category.inline-category{break-inside:avoid}}
+
+/* TEE v3.3.50 — iPhone reconnection & offline readiness */
+.offline-readiness{margin:1rem 0;padding:1rem;border:1px solid #9fb9ce;border-radius:16px;background:#f7fbfe}
+.offline-readiness-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.offline-readiness-head strong{display:block;font-size:1.15rem;color:#153b59}
+.offline-badge{padding:.35rem .7rem;border-radius:999px;background:#e8eef3;color:#2c4c64;font-weight:700}
+.offline-badge.ready{background:#e7f6eb;color:#185c2d}.offline-badge.warn{background:#fff4d9;color:#805a00}.offline-badge.error{background:#fde8e8;color:#8a1f1f}
+.offline-progress{height:10px;background:#e1e8ee;border-radius:999px;overflow:hidden;margin:.8rem 0}.offline-progress>div{height:100%;width:0;background:#244e6e;transition:width .2s}
+.diagnostics-panel{margin-top:.8rem;border-top:1px solid #d2dee7;padding-top:.65rem}.diagnostics-panel summary{cursor:pointer;font-weight:700}.diagnostics-output{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;font-size:.88rem;background:#fff;border:1px solid #d8e1e8;border-radius:10px;padding:.75rem;margin-top:.6rem;overflow:auto}
+
+/* TEE v3.3.51 — Update, Install & Recovery Tools */
+.maintenance-status{margin:1rem 0;padding:1rem;border:1px solid #b9c9d8;border-radius:16px;background:#fff}
+.maintenance-status-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.maintenance-status-head strong{display:block;font-size:1.1rem;color:#153b59}
+.maintenance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin:.85rem 0}
+.maintenance-grid>div{border:1px solid #e0e7ee;border-radius:12px;padding:.7rem;background:#f8fafc}
+.maintenance-grid span{display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:#607080}
+.maintenance-grid strong{display:block;margin-top:.2rem;color:#243d50}
+.maintenance-dialog{width:min(760px,calc(100vw - 24px));max-height:88vh;border:0;border-radius:18px;padding:0;box-shadow:0 18px 60px rgba(10,30,50,.28);color:#17212b}
+.maintenance-dialog::backdrop{background:rgba(16,32,48,.5)}
+.maintenance-dialog-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;padding:1rem 1rem .7rem;border-bottom:1px solid #dde5ee;background:#f7fafc}
+.maintenance-dialog-head h2{margin:.15rem 0 0;font-size:1.35rem}
+.maintenance-tabs{display:flex;gap:.45rem;padding:.75rem 1rem;border-bottom:1px solid #e2e8ef;overflow:auto;background:#fff}
+.maintenance-tabs button{white-space:nowrap;padding:.55rem .75rem}
+.maintenance-tabs button.active{background:#1f3f5b;color:#fff;border-color:#1f3f5b}
+.maintenance-dialog-body{padding:1rem;overflow:auto;max-height:55vh}
+.maintenance-dialog-body h3{margin:1rem 0 .35rem;color:#1f3f5b}
+.maintenance-dialog-body h3:first-child{margin-top:0}
+.maintenance-dialog-body ol{padding-left:1.3rem}
+.maintenance-warning{background:#fff4d8;border:1px solid #ead38c;border-radius:12px;padding:.75rem}
+.maintenance-dialog-actions{display:flex;gap:.55rem;flex-wrap:wrap;padding:.8rem 1rem 1rem;border-top:1px solid #e2e8ef;background:#f7fafc}
+#clearCacheBtn{border-color:#c98787;color:#7f2525}
+@media(max-width:720px){.maintenance-grid{grid-template-columns:1fr}.maintenance-dialog{max-height:92vh}.maintenance-dialog-body{max-height:58vh}.hero-actions button{flex:1 1 145px}}

@@ -1,0 +1,15 @@
+{
+  "name": "Transportation | Turkey Eastern Europe Trip",
+  "short_name": "Transport",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7f7",
+  "theme_color": "#17384f",
+  "icons": [
+    {
+      "src": "../../assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "TEE Trip Archive",
+  "short_name": "Trip Archive",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f1e8",
+  "theme_color": "#513a2c",
+  "icons": [
+    {
+      "src": "../../assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

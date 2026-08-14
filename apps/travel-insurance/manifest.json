@@ -1,0 +1,9 @@
+{
+  "name": "Insurance | TEE Trip",
+  "short_name": "Insurance",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eef4f6",
+  "theme_color": "#18334a",
+  "icons": []
+}

@@ -1,0 +1,121 @@
+:root{--bg:#f5f1e9;--card:#fffdf8;--ink:#26312b;--muted:#66756b;--line:#dfd5c4;--accent:#2f6f5e;--accent2:#8a5f2b;--soft:#e7f1ed;--warn:#fff3d8;--cold:#e6eef8}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}.hero{padding:22px 18px 28px;background:linear-gradient(135deg,#214d43,#3f7f6a);color:white}.back{display:inline-block;color:white;text-decoration:none;border:1px solid rgba(255,255,255,.5);padding:8px 12px;border-radius:999px;margin-bottom:18px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;opacity:.85}.hero h1{font-size:2.1rem;margin:.2rem 0}.lead{max-width:760px;line-height:1.45;margin:0;opacity:.95}main{max-width:1120px;margin:0 auto;padding:18px}.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;margin-top:-34px;background:var(--card);padding:14px;border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.12)}input,select,button{font:inherit;padding:11px;border:1px solid var(--line);border-radius:12px;background:white}button{background:var(--accent);color:white;border:none;font-weight:700}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.summary-card,.pack-card,.notice{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}.summary-card .num{font-size:1.8rem;font-weight:800;color:var(--accent)}.summary-card .label{text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;color:var(--muted)}.summary-card p{margin:.35rem 0 0;color:var(--muted)}.notice{margin-bottom:14px;color:#5d4b24;background:var(--warn)}.cards{display:grid;gap:14px}.pack-card h2{margin:.1rem 0 .25rem;font-size:1.3rem}.meta{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.pill{font-size:.82rem;border:1px solid var(--line);border-radius:999px;padding:5px 9px;background:#f8f5ee;color:var(--muted)}.pill.essential{background:#e6f2ec;color:#1f5f4d;border-color:#bdd8ce}.pill.weather{background:var(--cold);color:#315879}.pill.lesson{background:#fff1dc;color:#7a4d13}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.section-title{font-weight:800;margin:12px 0 6px;color:var(--accent2)}ul{margin:6px 0 0;padding-left:1.2rem}li{margin:.35rem 0}.checklist{display:grid;gap:8px;margin-top:8px}.check{display:flex;gap:9px;align-items:flex-start;background:#faf7f0;border:1px solid var(--line);border-radius:12px;padding:9px}.check input{margin-top:2px}.links a{display:inline-block;margin:5px 5px 0 0;color:var(--accent);font-weight:700;text-decoration:none}.empty{text-align:center;color:var(--muted);padding:25px}@media(max-width:760px){.toolbar,.summary,.grid{grid-template-columns:1fr}.toolbar{margin-top:-24px}.hero h1{font-size:1.75rem}}
+
+
+/* Packing Core Phase 1 */
+.mission-card,.fast-tools,.protocol-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.mission-card{display:grid;grid-template-columns:1.4fr .8fr;gap:14px;align-items:center;background:linear-gradient(135deg,#fffdf8,#edf7f2)}
+.eyebrow-mini{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--accent2);font-weight:800;margin:0 0 6px}
+.mission-card h2,.fast-tools h2,.protocol-card h2{margin:.1rem 0 .45rem}
+.mission-card p{margin:.2rem 0;color:var(--muted);line-height:1.45}
+.mission-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.mission-actions a{display:inline-block;text-decoration:none;background:var(--accent);color:#fff;font-weight:800;border-radius:999px;padding:9px 12px}
+.button-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.button-row button{background:#fff;color:var(--accent);border:1px solid #bdd8ce;padding:9px 11px;border-radius:999px;font-weight:800}
+.button-row button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tool-status{margin:.8rem 0 0;color:var(--muted);font-weight:700}
+.protocol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.protocol-grid article{background:#faf7f0;border:1px solid var(--line);border-radius:16px;padding:13px;scroll-margin-top:18px}
+.protocol-grid strong{color:var(--accent);display:block;margin-bottom:5px}
+.protocol-grid p{margin:0;color:var(--muted);line-height:1.4}
+.protocol-highlight{outline:3px solid rgba(47,111,94,.35);box-shadow:0 0 0 6px rgba(47,111,94,.10)}
+@media(max-width:760px){.mission-card,.protocol-grid{grid-template-columns:1fr}.mission-actions{justify-content:flex-start}}
+
+
+/* v2.3 Universal card accordion behavior */
+.card-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.card-controls button,
+.travel-accordion-toggle {
+  cursor: pointer;
+}
+.card-controls button {
+  border: 1px solid rgba(255,255,255,.45);
+  background: rgba(255,255,255,.16);
+  color: inherit;
+  padding: 9px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.travel-accordion-ready {
+  overflow: hidden;
+}
+.travel-accordion-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  border: 1px solid rgba(41, 61, 53, .16);
+  background: rgba(255,255,255,.86);
+  color: #16251f;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1.2;
+  box-shadow: 0 8px 18px rgba(0,0,0,.06);
+}
+.travel-accordion-toggle .toggle-title {
+  display: block;
+}
+.travel-accordion-toggle .toggle-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: .78rem;
+  font-weight: 600;
+  opacity: .68;
+}
+.travel-accordion-toggle::after {
+  content: '+';
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(31, 78, 64, .12);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.travel-accordion-ready.open > .travel-accordion-toggle::after {
+  content: '−';
+}
+.travel-accordion-content {
+  display: none;
+  margin-top: 14px;
+}
+.travel-accordion-ready.open > .travel-accordion-content {
+  display: block;
+}
+@media (max-width: 620px) {
+  .travel-accordion-toggle { padding: 13px 14px; }
+  .travel-accordion-toggle .toggle-title { font-size: .98rem; }
+}
+
+
+/* GLOBAL_DESTINATION_SECTIONS_COLLAPSE_PASS */
+.destination-section{padding:0;overflow:hidden;background:#fff;border:1px solid #d9d8cc;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.destination-toggle{width:100%;border:0;background:#fff;color:#263c31;text-align:left;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font:inherit;font-weight:800;cursor:pointer}
+.destination-toggle:after{content:'+';font-size:1.4rem}
+.destination-section.open>.destination-toggle:after{content:'–'}
+.destination-title{display:block;font-size:1.05rem}
+.destination-hint{display:block;font-size:.78rem;font-weight:600;color:#66706d;margin-top:3px}
+.destination-content{padding:0 16px 16px}
+.collapse-section-row{display:flex;justify-content:flex-end;margin-top:12px}
+.collapse-destination-btn{background:#edf0e5;color:#263c31;border:1px solid #ced4bf;border-radius:999px;padding:8px 12px;font:inherit;font-weight:800;cursor:pointer}
+
+
+/* v3.3.35 Packing & Daily Carry Integration */
+.daily-carry-panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.daily-carry-head{display:grid;grid-template-columns:1.35fr .9fr;gap:14px;align-items:start}.daily-carry-head h2{margin:.1rem 0 .4rem}.daily-carry-head p{margin:.2rem 0;color:var(--muted);line-height:1.45}
+.daily-carry-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px}.daily-carry-switch button{background:#fff;color:var(--accent);border:1px solid #bdd8ce;padding:10px 9px}.daily-carry-switch button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.daily-carry-weather{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 10px;padding:11px 12px;background:#f4f7f4;border:1px solid #d8e3dc;border-radius:14px}.daily-carry-weather strong{color:var(--accent)}.daily-carry-weather span:last-child{color:var(--muted);font-size:.88rem}
+.carry-weather-badge{font-size:.72rem;font-weight:900;letter-spacing:.05em;background:#dff0e7;color:#215d48;padding:5px 7px;border-radius:999px}.carry-weather-badge.fallback{background:#fff0cf;color:#755218}
+.daily-carry-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.daily-carry-item{display:flex;gap:10px;align-items:flex-start;background:#faf7f0;border:1px solid var(--line);border-radius:13px;padding:10px}.daily-carry-item input{margin-top:3px;flex:0 0 auto}.daily-carry-item strong{display:block}.daily-carry-item small{display:block;color:var(--muted);margin-top:3px;line-height:1.25}
+.daily-carry-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.daily-carry-actions button,.daily-carry-actions a{display:inline-block;text-decoration:none;border-radius:999px;padding:9px 12px;font-weight:800}.daily-carry-actions button{background:#fff;color:var(--accent);border:1px solid #bdd8ce}.daily-carry-actions a{background:var(--accent);color:#fff}.daily-carry-note,.daily-carry-empty{color:var(--muted);font-size:.88rem;line-height:1.4}.daily-carry-note{margin:12px 0 0}
+@media(max-width:760px){.daily-carry-head,.daily-carry-list{grid-template-columns:1fr}.daily-carry-switch{grid-template-columns:1fr}.daily-carry-panel{padding:14px}.daily-carry-actions>*{flex:1 1 auto;text-align:center}}

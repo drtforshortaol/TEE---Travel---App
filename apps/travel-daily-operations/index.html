@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Operations | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Daily Operations</h1>
+    <p class="lead">Daily mission-control dashboard for morning launch, night-before prep, move days, tickets, weather/gear checks, notes, and private trip execution.</p>
+  </header>
+  <main>
+
+    <section class="rolling-day-panel" id="rollingDayPanel" aria-labelledby="rollingDayTitle">
+      <div class="rolling-head">
+        <div>
+          <p class="rolling-kicker">DAILY FIELD VIEW</p>
+          <h2 id="rollingDayTitle">Today</h2>
+          <p id="rollingDayContext" class="rolling-context">Loading the working trip day…</p>
+        </div>
+        <div class="rolling-tabs" role="tablist" aria-label="Yesterday today tomorrow">
+          <button type="button" id="yesterdayTab" data-rolling-mode="yesterday" role="tab">Yesterday</button>
+          <button type="button" id="todayTab" data-rolling-mode="today" role="tab" class="active">Today</button>
+          <button type="button" id="tomorrowTab" data-rolling-mode="tomorrow" role="tab">Tomorrow</button>
+        </div>
+      </div>
+
+      <div class="rolling-selector-wrap">
+        <label for="rollingDaySelect">Preview trip day</label>
+        <select id="rollingDaySelect" aria-label="Choose a trip day for Today preview"></select>
+      </div>
+
+      <div id="rollingHero" class="rolling-hero" aria-live="polite"></div>
+
+      <div class="rolling-actions">
+        <button type="button" id="rollingPrimaryBtn" class="rolling-primary">Mark day ready</button>
+        <button type="button" id="rollingResetBtn">Reset day checklist</button>
+      </div>
+
+      <div id="rollingTodayDetails">
+        <details class="rolling-detail" open>
+          <summary>Morning launch</summary>
+          <div id="rollingLaunch"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Movement & timing</summary>
+          <div id="rollingMovement"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Plan, base & gear</summary>
+          <div id="rollingPlan"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Today checklist</summary>
+          <div id="rollingChecklist"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Notes / changes today</summary>
+          <textarea id="rollingNotes" rows="4" placeholder="Delays, pickup changes, hotel issues, receipts, reminders…"></textarea>
+        </details>
+      </div>
+
+      <div id="rollingYesterdayDetails" hidden>
+        <details class="rolling-detail" open>
+          <summary>Yesterday recap</summary>
+          <div id="rollingRecap"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Close-out checklist</summary>
+          <div id="rollingCloseout"></div>
+        </details>
+        <details class="rolling-detail">
+          <summary>Lessons / receipts / follow-up</summary>
+          <textarea id="rollingYesterdayNotes" rows="4" placeholder="What changed, what worked, receipts to reconcile, photos to save, follow-up for later…"></textarea>
+        </details>
+      </div>
+
+      <p class="rolling-source-note">This compact field view is derived from the packaged trip plan. Confirmed Secure Travel Vault records supersede baseline itinerary details.</p>
+    </section>
+
+    <section class="tomorrow-panel" id="tomorrowPanel" aria-labelledby="tomorrowTitle">
+      <div class="tomorrow-topline">
+        <div>
+          <p class="tomorrow-kicker">EVENING PREPARATION</p>
+          <h2 id="tomorrowTitle">Tomorrow</h2>
+          <p id="tomorrowContext" class="tomorrow-context">Preparing the next trip day…</p>
+        </div>
+        <div class="tomorrow-selector-wrap">
+          <label for="tomorrowDaySelect">Preview day</label>
+          <select id="tomorrowDaySelect" aria-label="Choose a trip day to preview"></select>
+        </div>
+      </div>
+
+      <div id="tomorrowHero" class="tomorrow-hero" aria-live="polite"></div>
+
+      <div class="tomorrow-actions">
+        <button type="button" id="tomorrowReadyBtn" class="primary-action">Mark tomorrow ready</button>
+        <button type="button" id="tomorrowResetBtn">Reset checklist</button>
+      </div>
+
+      <details class="tomorrow-detail">
+        <summary>Transportation & timing</summary>
+        <div id="tomorrowTransport"></div>
+      </details>
+      <details class="tomorrow-detail">
+        <summary>Activity & lodging</summary>
+        <div id="tomorrowActivity"></div>
+      </details>
+      <details class="tomorrow-detail">
+        <summary>Weather, clothing & day bag</summary>
+        <div id="tomorrowWeather"></div>
+      </details>
+      <details class="tomorrow-detail">
+        <summary>Before-bed checklist</summary>
+        <div id="tomorrowChecklist"></div>
+      </details>
+      <details class="tomorrow-detail">
+        <summary>Notes for tomorrow</summary>
+        <textarea id="tomorrowNotes" rows="4" placeholder="Last-minute changes, pickup details, reminders…"></textarea>
+      </details>
+
+      <p class="tomorrow-source-note">
+        The itinerary shown here is an offline planning view. Confirmed airline, rail, transfer, and hotel records in the Secure Travel Vault remain the operational source of truth when they supersede the original plan.
+      </p>
+      <p class="tomorrow-source-note"><strong>v3.3.35:</strong> Today/Tomorrow day-plan context is shared locally with Packing so its Daily Carry panel can prepare the matching day without copying the master packing checklist.</p>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: date, city, hotel, transfer, activity, gear..." />
+      <select id="cityFilter"><option value="all">All cities</option></select>
+      <select id="typeFilter"><option value="all">All day types</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+
+    <section class="notice"><strong>Private note:</strong> this app is a planning dashboard. Add exact pickup times, ticket screenshots, boarding passes, and Traveler Cards later as travel documents arrive.</section>
+
+    <section class="ops-control-panel" aria-label="Daily Operations Core Phase 1">
+      <div class="ops-panel-head">
+        <span class="label">Core Phase 1</span>
+        <h2>Daily Mission Control</h2>
+        <p>Use this section first each morning, the night before a transfer, and whenever the day starts to drift.</p>
+      </div>
+      <div class="ops-grid">
+        <article class="ops-card priority"><h3>Today</h3><ul><li>Confirm city, hotel/base, main activity, transportation, weather, and cash/tip needs.</li><li>Check the matching daily card below before leaving the room.</li><li>Use notes for last-minute private updates.</li></ul></article>
+        <article class="ops-card"><h3>Tomorrow</h3><ul><li>Pack/repack before bedtime if tomorrow is a move day.</li><li>Confirm pickup, train, flight, hotel check-in, and tickets.</li><li>Charge devices and stage passport/wallet/phone.</li></ul></article>
+        <article class="ops-card"><h3>Next Movement</h3><ul><li>Review transportation app before every transfer.</li><li>Keep confirmations in Private Documents.</li><li>Leave buffer time for luggage, bathrooms, snacks, and screenshots.</li></ul></article>
+        <article class="ops-card"><h3>Problem Log</h3><ul><li>Write delays, missing items, aches, hotel issues, and plan changes in the day note.</li><li>Use the adaptive checklist for new tasks that must not be forgotten.</li></ul></article>
+      </div>
+    </section>
+
+    <section class="quick-filters" aria-label="Fast daily filters">
+      <h2>Fast Filters</h2>
+      <p>Tap a box to quickly focus the daily cards without hunting through the whole itinerary.</p>
+      <div class="quick-filter-buttons" id="quickFilterMount">
+        <button type="button" data-filter="move">Move days</button>
+        <button type="button" data-filter="tour">Tour days</button>
+        <button type="button" data-filter="rail">Rail / train</button>
+        <button type="button" data-filter="flight">Flights</button>
+        <button type="button" data-filter="hotel">Hotel checks</button>
+        <button type="button" data-filter="ticket">Tickets / reservations</button>
+        <button type="button" data-filter="weather">Weather / gear</button>
+        <button type="button" data-filter="cash">Cash / tips</button>
+      </div>
+      <p id="dailyQuickFilterStatus" class="quick-filter-status">Fast filters are ready. Tap one to focus the daily cards.</p>
+    </section>
+
+    <section class="operating-rhythm" aria-label="Repeatable travel rhythm">
+      <h2>Repeatable Daily Rhythm</h2>
+      <div class="rhythm-grid">
+        <article class="rhythm-card"><h3>Night Before</h3><label class="check"><input type="checkbox" data-key="rhythm-night-pack"><span>Pack/repack for tomorrow.</span></label><label class="check"><input type="checkbox" data-key="rhythm-night-charge"><span>Charge phone, battery, watch, camera.</span></label><label class="check"><input type="checkbox" data-key="rhythm-night-confirm"><span>Confirm tomorrow pickup/train/flight/time.</span></label></article>
+        <article class="rhythm-card"><h3>Morning Launch</h3><label class="check"><input type="checkbox" data-key="rhythm-morning-docs"><span>Phone, wallet, passport/ID if needed.</span></label><label class="check"><input type="checkbox" data-key="rhythm-morning-weather"><span>Weather layer, rain layer, sunglasses.</span></label><label class="check"><input type="checkbox" data-key="rhythm-morning-cash"><span>Small cash/coins/tip money.</span></label></article>
+        <article class="rhythm-card"><h3>Move Day</h3><label class="check"><input type="checkbox" data-key="rhythm-move-room"><span>Room sweep: safe, chargers, bathroom, closet.</span></label><label class="check"><input type="checkbox" data-key="rhythm-move-luggage"><span>Luggage count and day bag ready.</span></label><label class="check"><input type="checkbox" data-key="rhythm-move-private"><span>Private Documents checked for confirmation details.</span></label></article>
+        <article class="rhythm-card"><h3>End of Day</h3><label class="check"><input type="checkbox" data-key="rhythm-end-notes"><span>Add day notes, problems, receipts, photo reminders.</span></label><label class="check"><input type="checkbox" data-key="rhythm-end-tomorrow"><span>Review tomorrow card.</span></label><label class="check"><input type="checkbox" data-key="rhythm-end-reset"><span>Reset day bag for the morning.</span></label></article>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <article><span class="label">Mode</span><strong>Daily use</strong><p>Use this app in the morning and the night before each move.</p></article>
+      <article><span class="label">Rolling pages</span><strong>Yesterday / Today / Tomorrow</strong><p>Templates are built now; exact live content can be refined closer to departure.</p></article>
+      <article><span class="label">Future task</span><strong>Traveler Cards</strong><p>Create one card each for Couple A traveler, Vicky, Couple B traveler, and Couple B traveler later.</p></article>
+    </section>
+
+    <section class="quick-panel">
+      <h2>Adaptive Checklist</h2>
+      <p>Use this as a living trip list. Items are saved locally in this browser.</p>
+      <div class="add-row"><input id="newTaskInput" type="text" placeholder="Add an adaptive task: buy tickets, find coffee, grocery stop..." /><button id="addTaskBtn">Add</button></div>
+      <div id="customTaskMount" class="custom-tasks"></div>
+    </section>
+
+    <section id="dayMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

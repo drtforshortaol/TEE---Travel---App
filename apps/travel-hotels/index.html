@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotels | Turkey Eastern Europe Trip</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Hotels</h1>
+    <p class="sub">Lodging cards, confirmation notes, addresses, check-in/check-out fields, payment notes, and travel-day cross-links.</p>
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search hotel, city, confirmation, notes…" />
+      <select id="cityFilter"><option value="all">All cities</option></select>
+      <select id="statusFilter"><option value="all">All stays</option><option value="needs-confirmation">Needs confirmation</option><option value="has-confirmation">Has confirmation</option></select>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="notice private">
+      <strong>Protected trip workspace.</strong> Confirmation numbers and payment notes are included because this is the protected-data version. Verify all addresses, check-in/out details, and vouchers before travel.
+    </section>
+
+    <section class="mission-panel" id="hotelMissionMount" aria-label="Hotel mission control"></section>
+    <section class="fast-filter-panel" id="hotelFastFilterMount" aria-label="Fast hotel filters"></section>
+    <section class="protocol-panel destination-section" id="hotelProtocolMount" aria-label="Hotel protocols">
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+
+    <section class="quick-grid" id="summaryMount"></section>
+    <section id="hotelMount" class="hotel-list"></section>
+  </main>
+
+  <footer>
+    <p>Sources: Hotel.pdf, Miscellaneous.pdf, Trip planning.pdf, Airport and train stuff.pdf. Version 1.0.</p>
+  </footer>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

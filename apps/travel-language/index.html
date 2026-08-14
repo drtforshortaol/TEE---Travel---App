@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Language | TEE Private Travel Hub</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body id="top">
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Language</h1>
+    <p class="lead">iPhone-friendly phrasebook organized by country and phrase group. This version is designed to make the future clickable PDF cleaner: large country buttons, large phrase-section buttons, visible anchors, and standard wording such as <strong>Slovenia — Greetings and polite phrases</strong>.</p>
+    <nav class="top-links" aria-label="Related apps">
+      <a href="../travel-daily-operations/index.html">Daily Ops</a>
+      <a href="../travel-local-knowledge/index.html">Local Knowledge</a>
+      <a href="../travel-essentials/index.html">Essentials</a>
+    </nav>
+  </header>
+  <main>
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: thank you, coffee, left, how much, beautiful, 12..." />
+      <select id="countryFilter"><option value="all">All countries/languages</option></select>
+      <select id="categoryFilter"><option value="all">All phrase groups</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+    <section class="notice"><strong>Navigation upgrade:</strong> Use the country buttons for broad filtering, then open the collapsed Phrase Section Index only when you are ready to choose a phrase card. “Slovene” has been normalized in the visible headings to “Slovenia” for easier travel and PDF navigation.</section>
+    <section class="quick-panel">
+      <h2>Country Quick Buttons</h2>
+      <div id="countryMount" class="country-grid"></div>
+    </section>
+    <section class="quick-panel">
+      <h2>Phrase Section Index</h2>
+      <p class="hint">Open this only when you want to choose a phrase section. Country Quick Buttons narrow the choices; Reset returns the full choice list.</p>
+      <div id="groupMount" class="group-grid"></div>
+    </section>
+    <section id="summaryMount" class="summary"></section>
+    <section id="phraseMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

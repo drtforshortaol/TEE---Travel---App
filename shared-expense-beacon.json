@@ -1,0 +1,10 @@
+{
+  "schema": "tee-shared-expense-beacon-v1",
+  "packageId": "none",
+  "generatedAt": null,
+  "sourceProfile": null,
+  "recordCount": 0,
+  "tombstoneCount": 0,
+  "newestModifiedAt": null,
+  "note": "Initial empty beacon. Replace this file with a beacon downloaded from TEE Costs after exporting Shared expenses. No expense contents belong here."
+}

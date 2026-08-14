@@ -1,0 +1,9 @@
+{
+  "name": "Photos | TEE Trip",
+  "short_name": "Photos",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2f3ef",
+  "theme_color": "#263c31",
+  "icons": []
+}

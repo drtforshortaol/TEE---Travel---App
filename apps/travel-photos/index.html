@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photos | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Photos</h1>
+    <p class="lead">Photo operations planner: daily photo reminders, best shot opportunities, backup habits, caption notes, favorites, and post-trip archive preparation. No actual photo files are embedded yet.</p>
+  </header>
+  <main>
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search: Istanbul, Cappadocia, Matterhorn, backup, captions, sunset..." />
+      <select id="typeFilter"><option value="all">All types</option></select>
+      <select id="placeFilter"><option value="all">All places</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+
+
+    <section class="mission-control" aria-label="Photos mission control">
+      <div>
+        <p class="kicker">Photo Mission Control</p>
+        <h2>Capture now. Sort later. Archive the best.</h2>
+        <p>Use this app to remember the shots that matter: daily context, hotels, transportation, food, landmarks, receipts, and post-trip archive notes.</p>
+      </div>
+      <div class="mission-grid">
+        <div><strong>Daily</strong><span>Take a few useful photos each day.</span></div>
+        <div><strong>Proof</strong><span>Capture receipts, luggage, rooms, and travel clues.</span></div>
+        <div><strong>Memory</strong><span>Mark favorites and captions later.</span></div>
+      </div>
+    </section>
+
+    <section class="protocols photos-streamlined destination-section" aria-label="Photos streamlined workflow">
+      <article id="daily-photo-notes" class="protocol-card destination-section primary-work-card">
+        <h2>Daily Photo Notes</h2>
+        <p>Use this saved note box each evening. Enter a day label, load the template, fill in the note, and save it. Your entries stay stored by day on this device.</p>
+        <div class="daily-note-app">
+          <div class="daily-note-controls">
+            <label>
+              <span>Day label</span>
+              <input id="dailyPhotoDay" type="text" placeholder="Example: Day 04 — Istanbul" />
+            </label>
+            <div class="daily-note-buttons">
+              <button id="loadDailyPhotoNoteBtn" type="button">Load / New Template</button>
+              <button id="saveDailyPhotoNoteBtn" type="button">Save Entry</button>
+              <button id="clearDailyPhotoNoteBtn" type="button">Delete Entry</button>
+              <button id="copyDailyPhotoNoteBtn" type="button">Copy Note</button>
+            </div>
+          </div>
+          <p id="dailyPhotoStatus" class="daily-note-status">Choose a day label, then load the template or saved note.</p>
+          <textarea id="dailyPhotoText" class="daily-note-text" placeholder="Load a daily note template, then type here."></textarea>
+          <div class="saved-day-list-wrap">
+            <p class="section-title">Saved daily entries</p>
+            <div id="savedDailyPhotoList" class="saved-day-list"></div>
+          </div>
+        </div>
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+
+      <article id="nightly-photo-routine" class="protocol-card destination-section compact-guide-card">
+        <h2>Nightly Photo Routine</h2>
+        <p>Use this at the end of each travel day. Target time: 3–5 minutes. The goal is memory capture, not final photo sorting.</p>
+        <ol class="routine-list">
+          <li><strong>Open today’s photos.</strong> On the iPhone, open Photos and quickly scroll through today’s images.</li>
+          <li><strong>Favorite the best 5–15 photos.</strong> Prioritize best view, group/person photo, food photo, hotel or room photo, train/airport/station clue, receipt/document photo, and anything funny, beautiful, or memorable.</li>
+          <li><strong>Open the Travel Hub Photos app.</strong> Go to Travel Hub → Photos → Daily Photo Notes.</li>
+          <li><strong>Enter a consistent day label.</strong> Examples: Day 01 — Travel Day, Day 02 — Istanbul, Day 04 — Cappadocia.</li>
+          <li><strong>Tap Load / New Template.</strong> This loads the daily photo note template or reopens the saved entry for that day.</li>
+          <li><strong>Fill only what matters.</strong> Use short phrases for best photos, food photos, hotel/room photos, transportation photos, receipts/documents, people/group photos, caption ideas, and problems/things to remember.</li>
+          <li><strong>Tap Save Entry.</strong> Confirm the day appears under Saved daily entries.</li>
+          <li><strong>Stop there.</strong> Do not overwork it. Favorite photos first, write a short note second, save entry, go to sleep.</li>
+        </ol>
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+
+      <article id="photo-reference-guides" class="protocol-card destination-section compact-guide-card">
+        <h2>Photo Reference Guides</h2>
+        <p>Use these as quick reminders. They are grouped here so the Photos app stays clean.</p>
+        <div class="reference-guide-grid">
+          <section>
+            <h3>Photo Capture Plan</h3>
+            <ul>
+              <li>Capture now; sort later.</li>
+              <li>Take orientation photos first: hotel exterior, street sign, station/airport sign, and one wide view.</li>
+              <li>Take memory photos second: people, meals, scenery, landmarks, and small details that explain the day.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Daily Photo Checklist</h3>
+            <ul>
+              <li>Morning: battery, storage, and lens wipe.</li>
+              <li>During the day: one context photo, one people photo, one food/detail photo, and one favorite view.</li>
+              <li>Evening: favorite the best photos and save a short daily note.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Hotel / Room</h3>
+            <ul>
+              <li>Photo hotel exterior, room number if helpful, room layout, and room problems on arrival.</li>
+              <li>Photo baggage location before leaving bags with a hotel.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Transportation / Station</h3>
+            <ul>
+              <li>Photo departure boards, platform signs, baggage storage, and station/airport landmarks.</li>
+              <li>Photo taxi/rideshare pickup location when useful.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Food / Restaurant</h3>
+            <ul>
+              <li>Photo restaurant exterior/name, menu highlights, favorite dishes, and receipt if useful.</li>
+              <li>Note restaurants to remember, avoid, or recommend.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Landmark / Memory</h3>
+            <ul>
+              <li>Pair wide establishing photos with details: signs, textures, food, transit, weather, and people.</li>
+              <li>Take one “end of city” favorite photo before moving to the next destination.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Receipt / Document</h3>
+            <ul>
+              <li>Photo receipts, tickets, luggage tags, damage reports, insurance paperwork, and lost item forms.</li>
+              <li>Do not place sensitive photos into a public repo.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Find Later Notes</h3>
+            <ul>
+              <li>When a photo matters, take a second photo of a sign, receipt, menu, or map so it is searchable later.</li>
+              <li>Use the daily note box for caption ideas and missing shots.</li>
+            </ul>
+          </section>
+        </div>
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+
+      <article id="trip-archive-link" class="protocol-card destination-section compact-guide-card">
+        <h2>Trip Archive Link</h2>
+        <ul>
+          <li>After the vacation is complete, move the best images and saved daily notes into the Trip Archive workflow.</li>
+          <li>Prioritize favorites by city, hotel, restaurant, transportation lesson, and memorable experience.</li>
+        </ul>
+        <div class="links related-app-buttons" data-related-nav="true">
+          <button type="button" data-open-app="../travel-archive/index.html">Trip Archive</button>
+          <button type="button" data-open-app="../travel-daily-operations/index.html">Daily Operations</button>
+          <button type="button" data-open-app="../travel-private-documents/index.html">Private Documents</button>
+        </div>
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </article>
+    </section>
+
+    <section id="summaryMount" class="summary"></section>
+    <section class="notice"><strong>Private note:</strong> this app currently stores photo plans, reminders, and notes only. Add actual images later only if you want them inside the private hub.</section>
+    <section id="photosMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Packing | Turkey - Eastern Europe Trip</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Packing</h1>
+    <p class="lead">Filtered Eastern Europe packing list built from your master travel list, Argentina lessons learned, and destination weather/clothing needs.</p>
+  </header>
+  <main>
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search packing items: charger, rain, medicine, Zermatt..." />
+      <select id="categoryFilter"><option value="all">All categories</option></select>
+      <select id="needFilter"><option value="all">All priorities</option></select>
+      <button id="resetBtn">Reset</button>
+    </section>
+
+    <section class="mission-card packing-mission" aria-label="Packing Mission Control">
+      <div>
+        <p class="eyebrow-mini">Packing Mission Control</p>
+        <h2>Pack once, repack cleanly, avoid travel-day surprises</h2>
+        <p>Use this app as the working checklist for departure packing, day-bag setup, weather layers, electronics, medications, and final hotel-room sweeps.</p>
+      </div>
+      <div class="mission-actions">
+        <a href="../travel-weather-clothing/index.html">Weather + Clothing</a>
+        <a href="../travel-daily-operations/index.html">Daily Operations</a>
+        <a href="../travel-private-documents/index.html">Private Documents</a>
+      </div>
+    </section>
+
+    <section class="daily-carry-panel" id="dailyCarryPanel" aria-labelledby="dailyCarryTitle">
+      <div class="daily-carry-head">
+        <div>
+          <p class="eyebrow-mini">v3.3.35 · Packing + Daily Operations</p>
+          <h2 id="dailyCarryTitle">Daily Carry & Tomorrow Prep</h2>
+          <p id="dailyCarryContext">Use Today or Tomorrow from Daily Operations to create a compact carry list from the existing packing framework and cached weather.</p>
+        </div>
+        <div class="daily-carry-switch" role="group" aria-label="Choose daily carry view">
+          <button type="button" id="carryTodayBtn" class="active">Today carry</button>
+          <button type="button" id="carryTomorrowBtn">Tomorrow pack / prep</button>
+        </div>
+      </div>
+      <div id="dailyCarryWeather" class="daily-carry-weather"></div>
+      <div id="dailyCarryMount" class="daily-carry-list"></div>
+      <div class="daily-carry-actions">
+        <button type="button" id="dailyCarryResetBtn">Reset this day</button>
+        <a href="../travel-daily-operations/index.html">Open Daily Operations</a>
+        <a href="../travel-weather-clothing/index.html">Weather + Clothing</a>
+      </div>
+      <p class="daily-carry-note">This is an operational view only. It references the master Packing framework; it does not create a second master list. Exact ticket numbers, passport details, and other sensitive records stay in the Secure Vault.</p>
+    </section>
+
+    <section id="summaryMount" class="summary"></section>
+    <section class="notice"><strong>Private note:</strong> this app lists what to pack and check. It does not expose passport images or sensitive document numbers.</section>
+
+    <section class="protocol-card destination-section" aria-label="Packing protocols">
+      <h2>Packing Protocols</h2>
+      <div class="protocol-grid">
+        <article id="packing-protocol-departure" class="protocol-target">
+          <strong>Before Departure Checklist</strong>
+          <p>Confirm passport access, phone chargers, medication pouch, weather layers, rain gear, shoes, and private document access before leaving home.</p>
+        </article>
+        <article id="packing-protocol-daybag" class="protocol-target">
+          <strong>Day Bag Checklist</strong>
+          <p>Carry phone, charger/battery, water, rain layer, sunglasses, light warmth layer, medication basics, tissue, hand sanitizer, and the day’s transportation/hotel notes.</p>
+        </article>
+        <article id="packing-protocol-repack" class="protocol-target">
+          <strong>Travel-Day Repack</strong>
+          <p>Night before every move: separate tomorrow’s clothes, charging kit, documents, meds, snacks, rain layer, and luggage items needed before check-in.</p>
+        </article>
+        <article id="packing-protocol-weather" class="protocol-target">
+          <strong>Weather Layer System</strong>
+          <p>Use light base layers, fleece/warm layer, waterproof shell, hat/gloves for alpine or sunrise days, and grippy shoes for wet/stone/boardwalk surfaces.</p>
+        </article>
+        <article id="packing-protocol-laundry" class="protocol-target">
+          <strong>Laundry / Rewear Plan</strong>
+          <p>Pack repeatable outfits and quick-dry basics. Recheck laundry windows after Croatia/Slovenia and before the Switzerland segment.</p>
+        </article>
+        <article id="packing-protocol-electronics" class="protocol-target">
+          <strong>Electronics / Chargers / Adapters</strong>
+          <p>Keep a lean kit: phone charger, watch charger, USB-A/USB-C cables, battery, adapter/converter, earbuds, and backup charging plan for plane/train days.</p>
+        </article>
+        <article id="packing-protocol-health" class="protocol-target">
+          <strong>Medication / Health Items</strong>
+          <p>Carry essential meds in the personal bag, plus cough/allergy/stomach basics, eye drops, lip balm, Band-Aids, and backup supply in suitcase.</p>
+        </article>
+        <article id="packing-protocol-documents" class="protocol-target">
+          <strong>Documents / Private Documents Reminder</strong>
+          <p>Keep sensitive references outside public versions. Use Private Documents for confirmation numbers, travel IDs, insurance references, and confidential quick-access notes.</p>
+        </article>
+        <article id="packing-protocol-sweep" class="protocol-target">
+          <strong>Final Hotel Room Sweep</strong>
+          <p>Before every checkout: outlet chargers, bathroom, nightstand, safe, closet, under bed, documents, medications, phone/watch, and rain/warm layer.</p>
+        </article>
+      </div>
+    
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+
+    <section id="packingMount" class="cards"></section>
+  </main>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

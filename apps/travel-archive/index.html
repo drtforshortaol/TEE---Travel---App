@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trip Archive | Turkey - Eastern Europe</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+<header class="hero">
+  <a class="back" href="../../index.html">← Back to Hub</a>
+  <p class="eyebrow">Private Travel Operations Hub</p>
+  <h1>Trip Archive</h1>
+  <p class="lead">Post-trip preservation system for the locked itinerary, journal, photos, expenses, reviews, and lessons learned. This app is built now as the framework; final content is added during and after the trip.</p>
+</header>
+<section class="toolbar" aria-label="Archive filters">
+  <input id="searchInput" type="search" placeholder="Search archive items, lessons, reviews, photos...">
+  <select id="phaseFilter"><option value="all">All phases</option></select>
+  <select id="typeFilter"><option value="all">All types</option></select>
+  <button id="resetBtn" type="button">Reset</button>
+</section>
+<main>
+  <section class="summary" id="summaryMount"></section>
+  <section id="expenseArchiveStatus" class="notice"><strong>Expense archive:</strong> no local expense archive snapshot has been saved yet. Open Costs → Expense Reports &amp; Trip Archive when you are ready.</section>
+  <section class="mission" id="archiveMission"></section>
+  <section class="fast-tools" id="archiveFastTools"></section>
+  <section class="protocols destination-section" id="archiveProtocols">
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+  <section class="notice"><strong>Private archive:</strong> keep travel documents, expenses, personal notes, and reviews private. Publish or share only after sensitive information is removed.</section>
+  <section class="cards" id="archiveMount"></section>
+</main>
+<script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

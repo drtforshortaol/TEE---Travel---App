@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather + Clothing | Turkey Eastern Europe Trip</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="../../traveler-help.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Hub</a>
+    <p class="eyebrow">Private Travel Operations Hub</p>
+    <h1>Weather + Clothing</h1>
+    <p class="sub">Destination-by-destination expected weather, clothing strategy, rain/cold alerts, and packing cues for the September–October 2026 route.</p>
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search city, clothing, rain, cold, swimming…" />
+      <select id="countryFilter"><option value="all">All countries</option></select>
+      <select id="climateFilter"><option value="all">All conditions</option></select>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="notice private">
+      <strong>Planning baseline + limited-online live forecast.</strong> The packaged climate guidance remains available offline. Live refresh uses only fixed destination coordinates — no vault, identity, hotel confirmation, or private itinerary data is sent.
+    </section>
+
+    <section class="live-weather-ops" aria-label="Live weather operations">
+      <div>
+        <p class="eyebrow-mini">LIMITED-ONLINE WEATHER</p>
+        <h2>Nightly / manual refresh</h2>
+        <p id="liveWeatherStatus">Use hotel Wi-Fi to refresh. Forecasts are cached on this device for daytime/offline use.</p>
+      </div>
+      <div class="live-weather-actions">
+        <select id="liveWeatherLocation" aria-label="Destination to refresh"></select>
+        <button type="button" id="refreshLiveWeather">Refresh selected</button>
+        <button type="button" id="refreshAllLiveWeather">Refresh all trip stops</button>
+      </div>
+      <div id="liveWeatherPreview"></div>
+      <p class="live-weather-source">Live data: Open-Meteo forecast API. Cached locally with timestamp; planning guidance remains available when offline or outside the live forecast window.</p>
+    </section>
+
+    <section class="mission-card weather-mission" aria-label="Weather Mission Control">
+      <div>
+        <p class="eyebrow-mini">Weather Mission Control</p>
+        <h2>Morning clothing decision</h2>
+        <p>Use this app to choose the day layer, rain shell, walking shoes, and day-bag weather items before leaving the hotel.</p>
+      </div>
+      <div class="mission-actions">
+        <a href="../travel-packing/index.html">Packing</a>
+        <a href="../travel-daily-operations/index.html">Daily Operations</a>
+        <a href="../travel-transportation/index.html">Transportation</a>
+      </div>
+    </section>
+    <section class="quick-grid" id="summaryMount"></section>
+
+    <section class="strategy-card">
+      <h2>Trip Clothing Strategy</h2>
+      <div class="strategy-grid">
+        <article><strong>Layering is the core rule.</strong><p>The route moves from warm Istanbul to cool alpine Switzerland. Plan light daytime layers plus fleece/warm layer and waterproof outer layer.</p></article>
+        <article><strong>Rain layer stays accessible.</strong><p>Zagreb, Plitvice, Ljubljana, Salzburg, Lucerne, and Zurich all have meaningful shower risk.</p></article>
+        <article><strong>Cold gear is for Cappadocia sunrise and Zermatt.</strong><p>Use hat/gloves/warm jacket for balloon mornings and mountain excursions.</p></article>
+        <article><strong>Comfortable shoes are non-negotiable.</strong><p>Stone streets, national park boardwalks, hills, train stations, and airport walking distances make shoes a daily priority.</p></article>
+      </div>
+    </section>
+
+
+
+    <section class="protocol-card destination-section" aria-label="Weather and clothing protocols">
+      <h2>Weather + Clothing Protocols</h2>
+      <div class="protocol-grid">
+        <article id="weather-protocol-layering" class="protocol-target">
+          <strong>Layering Strategy</strong>
+          <p>Base layer + light mid-layer + waterproof shell. Add fleece/warm jacket for Cappadocia sunrise, Salzburg day trips, and Switzerland.</p>
+        </article>
+        <article id="weather-protocol-rain" class="protocol-target">
+          <strong>Rain / Waterproof</strong>
+          <p>Keep compact umbrella or rain shell accessible. Prioritize this for Zagreb, Plitvice, Ljubljana, Salzburg, Lucerne, Zurich, and any damp walking day.</p>
+        </article>
+        <article id="weather-protocol-cold" class="protocol-target">
+          <strong>Cold / Alpine Backup</strong>
+          <p>Use fleece, warm jacket, hat, and gloves for Cappadocia sunrise, Salzburg alpine day trips, Zermatt, Gornergrat, and mountain wind exposure.</p>
+        </article>
+        <article id="weather-protocol-walking" class="protocol-target">
+          <strong>Walking Shoes</strong>
+          <p>Prioritize broken-in walking shoes or light hikers for airports, train stations, stone streets, Plitvice boardwalks, hills, and wet surfaces.</p>
+        </article>
+        <article id="weather-protocol-travel" class="protocol-target">
+          <strong>Travel-Day Layers</strong>
+          <p>Dress for luggage handling, airports, trains, and cool interiors: comfortable shoes, light jacket, pockets, and an easy layer to remove.</p>
+        </article>
+        <article id="weather-protocol-laundry" class="protocol-target">
+          <strong>Laundry / Rewear Strategy</strong>
+          <p>Use quick-dry layers and repeatable outfits. Recheck laundry windows after Croatia/Slovenia and before alpine Switzerland.</p>
+        </article>
+        <article id="weather-protocol-daybag" class="protocol-target">
+          <strong>Day Bag Weather Items</strong>
+          <p>Carry rain layer, water, sunglasses, sunscreen when sunny, charger, and warm item when the day includes elevation or evening waterfronts.</p>
+        </article>
+      </div>
+    
+        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
+      </section>
+
+
+    <section id="weatherMount" class="weather-list"></section>
+  </main>
+
+  <footer>
+    <p>Sources: Weather.pdf, Travel list.pdf, Travel list 20180903.docx, Trip planning.pdf. Version 1.1 / Core Phase 1.</p>
+  </footer>
+  <script src="app.js"></script>
+  <script src="../../traveler-help.js"></script>
+</body>
+</html>

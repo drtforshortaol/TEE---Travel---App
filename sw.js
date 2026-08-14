@@ -1,0 +1,182 @@
+const CACHE = 'tee-v3-3-51-update-install-recovery';
+const ASSETS = [
+  './',
+  './index.html',
+  './styles.css',
+  './traveler-help.css',
+  './traveler-help.js',
+  './app.js',
+  './hub-registry.js',
+  './manifest.json',
+  './version.json',
+  './assets/icon.svg',
+  './config.js',
+  './encryption.js',
+  './auth.js',
+  './storage.js',
+  './vault.js',
+  './shared-expense-beacon.json',
+  './apps/travel-itinerary/index.html',
+  './apps/travel-itinerary/styles.css',
+  './apps/travel-itinerary/app.js',
+  './apps/travel-itinerary/manifest.json',
+  './apps/travel-hotels/index.html',
+  './apps/travel-hotels/styles.css',
+  './apps/travel-hotels/app.js',
+  './apps/travel-hotels/manifest.json',
+  './apps/travel-transportation/index.html',
+  './apps/travel-transportation/styles.css',
+  './apps/travel-transportation/app.js',
+  './apps/travel-transportation/manifest.json',
+  './apps/travel-weather-clothing/index.html',
+  './apps/travel-weather-clothing/styles.css',
+  './apps/travel-weather-clothing/app.js',
+  './apps/travel-weather-clothing/manifest.json',
+  './apps/travel-packing/index.html',
+  './apps/travel-packing/styles.css',
+  './apps/travel-packing/app.js',
+  './apps/travel-packing/manifest.json',
+  './apps/travel-money-tipping/index.html',
+  './apps/travel-money-tipping/styles.css',
+  './apps/travel-money-tipping/app.js',
+  './apps/travel-money-tipping/manifest.json',
+  './apps/travel-maps-movement/index.html',
+  './apps/travel-maps-movement/styles.css',
+  './apps/travel-maps-movement/app.js',
+  './apps/travel-maps-movement/manifest.json',
+  './apps/travel-essentials/index.html',
+  './apps/travel-essentials/styles.css',
+  './apps/travel-essentials/app.js',
+  './apps/travel-essentials/manifest.json',
+  './apps/travel-daily-operations/index.html',
+  './apps/travel-daily-operations/styles.css',
+  './apps/travel-daily-operations/app.js',
+  './apps/travel-daily-operations/manifest.json',
+  './apps/travel-local-knowledge/index.html',
+  './apps/travel-local-knowledge/styles.css',
+  './apps/travel-local-knowledge/app.js',
+  './apps/travel-local-knowledge/manifest.json',
+  './apps/travel-language/index.html',
+  './apps/travel-language/styles.css',
+  './apps/travel-language/app.js',
+  './apps/travel-language/manifest.json',
+  './apps/travel-costs/index.html',
+  './apps/travel-costs/styles.css',
+  './apps/travel-costs/app.js',
+  './apps/travel-costs/manifest.json',
+  './apps/travel-insurance/index.html',
+  './apps/travel-insurance/styles.css',
+  './apps/travel-insurance/app.js',
+  './apps/travel-insurance/manifest.json',
+  './apps/travel-photos/index.html',
+  './apps/travel-photos/styles.css',
+  './apps/travel-photos/app.js',
+  './apps/travel-photos/manifest.json',
+  './apps/travel-archive/index.html',
+  './apps/travel-archive/styles.css',
+  './apps/travel-archive/app.js',
+  './apps/travel-archive/manifest.json',
+  './apps/travel-private-documents/index.html',
+  './apps/travel-private-documents/styles.css',
+  './apps/travel-private-documents/app.js',
+  './apps/travel-private-documents/secure-records.js',
+  './apps/travel-private-documents/tee-import-candidates.js',
+  './apps/travel-private-documents/protected-migration.js',
+  './apps/travel-private-documents/source-authority.js',
+  './apps/travel-private-documents/secure-vault.js',
+  './apps/travel-private-documents/structured-documents.js',
+  './apps/travel-private-documents/smart-intake.js',
+  './apps/travel-private-documents/manifest.json',
+];
+
+
+const OFFLINE_FALLBACK = './index.html';
+
+async function cacheAssetList(cache) {
+  const results = [];
+  for (const asset of ASSETS) {
+    try {
+      const request = new Request(asset, {cache:'reload'});
+      const response = await fetch(request);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      await cache.put(request, response.clone());
+      results.push({asset, ok:true});
+    } catch (error) {
+      results.push({asset, ok:false, error:String(error?.message || error)});
+    }
+  }
+  return results;
+}
+
+self.addEventListener('install', event => {
+  event.waitUntil((async()=>{
+    const cache = await caches.open(CACHE);
+    await cacheAssetList(cache);
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil((async()=>{
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== CACHE && k.startsWith('tee-')).map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+  event.respondWith((async()=>{
+    try {
+      const fresh = await fetch(req, {cache:'no-store'});
+      if (fresh && fresh.ok) {
+        const cache = await caches.open(CACHE);
+        await cache.put(req, fresh.clone());
+      }
+      return fresh;
+    } catch {
+      return (await caches.match(req)) || (req.mode === 'navigate' ? await caches.match(OFFLINE_FALLBACK) : Response.error());
+    }
+  })());
+});
+
+self.addEventListener('message', event => {
+  const msg = event.data || {};
+  const port = event.ports && event.ports[0];
+  const reply = payload => { try { port?.postMessage(payload); } catch {} };
+
+  if (msg.type === 'TEE_PREPARE_OFFLINE') {
+    event.waitUntil((async()=>{
+      const cache = await caches.open(CACHE);
+      const results = await cacheAssetList(cache);
+      const failed = results.filter(r=>!r.ok);
+      const keys = await cache.keys();
+      reply({type:'TEE_PREPARE_RESULT', version:'3.3.51', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
+    })());
+  }
+  if (msg.type === 'TEE_OFFLINE_STATUS') {
+    event.waitUntil((async()=>{
+      const cache = await caches.open(CACHE);
+      const failed=[];
+      for (const asset of ASSETS) {
+        const hit = await cache.match(asset);
+        if (!hit) failed.push(asset);
+      }
+      reply({type:'TEE_STATUS_RESULT', version:'3.3.51', cache:CACHE, expected:ASSETS.length, missing:failed});
+    })());
+  }
+  if (msg.type === 'TEE_VERSION_STATUS') {
+    reply({type:'TEE_VERSION_RESULT', version:'3.3.51', cache:CACHE});
+  }
+  if (msg.type === 'TEE_CLEAR_APP_CACHE') {
+    event.waitUntil((async()=>{
+      const keys = await caches.keys();
+      const targets = keys.filter(k => k.startsWith('tee-'));
+      await Promise.all(targets.map(k => caches.delete(k)));
+      reply({type:'TEE_CLEAR_CACHE_RESULT', deleted:targets});
+    })());
+  }
+});

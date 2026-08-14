@@ -1,0 +1,2 @@
+"use strict";
+const m=document.getElementById('insuranceMount')||document.querySelector('[id$="Mount"]');if(m)m.innerHTML=`<article class="insurance-card"><h2>Travel insurance</h2><p>Public-safe checklist only. Policy number, traveler-specific coverage, emergency contact details and claim references belong in Secure Vault.</p><p><a href="../travel-private-documents/index.html">Open Secure Vault</a></p></article>`;if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));
