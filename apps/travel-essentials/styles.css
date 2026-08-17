@@ -91,3 +91,9 @@
 .destination-content{padding:0 16px 16px}
 .collapse-section-row{display:flex;justify-content:flex-end;margin-top:12px}
 .collapse-destination-btn{background:#edf0e5;color:#263c31;border:1px solid #ced4bf;border-radius:999px;padding:8px 12px;font:inherit;font-weight:800;cursor:pointer}
+
+/* TEE v3.3.70 — Quick Reference replaces Essentials */
+.quick-reference-home{background:#fff;border:1px solid #eadcc7;border-radius:14px;padding:14px;margin:14px 0}.quick-reference-home h2{margin-top:0}.quick-reference-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.quick-reference-grid a{display:grid;gap:4px;text-decoration:none;color:inherit;border:1px solid #eadfce;border-radius:11px;padding:11px;background:#fffaf4}.quick-reference-grid a strong{color:#713f12}.quick-reference-grid a span{font-size:.86rem;line-height:1.35;color:#6c6258}@media(max-width:650px){.quick-reference-grid{grid-template-columns:1fr}}
+
+/* TEE v3.3.70 — Quick Reference protected-record shortcut */
+.quick-reference-vault-link{display:block;margin-top:10px;text-align:center;text-decoration:none;background:#1f4d5d;color:#fff;border-radius:11px;padding:10px 12px;font-weight:850}

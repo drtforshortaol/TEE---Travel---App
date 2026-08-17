@@ -739,3 +739,304 @@ main{max-width:1120px;margin:auto;padding:16px}.warning{background:#fff4d8;borde
 
 /* TEE v3.3.42 — Contextual Help & Guided Instructions */
 .tee-section-title-row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.tee-section-title-row h2{margin:0}.tee-help-button{white-space:nowrap}.tee-help-dialog{width:min(820px,94vw);max-height:88vh;border:1px solid #9db6c9;border-radius:18px;padding:0;overflow:auto;color:#13263a}.tee-help-dialog::backdrop{background:rgba(8,24,38,.55)}.tee-help-head{display:flex;justify-content:space-between;gap:18px;padding:22px 24px 12px;align-items:flex-start}.tee-help-head h2{margin:.15rem 0}.tee-help-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:0 24px 14px;border-bottom:1px solid #d5e1ea}.tee-help-tab{background:#fff;color:#244760;border:1px solid #9db6c9}.tee-help-tab.active{background:#244760;color:#fff}.tee-help-body{padding:20px 28px;line-height:1.55}.tee-help-body ol{padding-left:1.4rem}.tee-help-body li{margin:.55rem 0}.tee-help-next{margin:0 24px 24px;padding:14px 16px;border-left:4px solid #244760;background:#eef5f9;border-radius:8px}.tee-help-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.tee-help-cards button{text-align:left;background:#f6fafc;color:#18354d;border:1px solid #b9cddd;padding:16px;border-radius:12px}.tee-help-cards strong,.tee-help-cards span{display:block}.tee-help-cards span{font-weight:400;margin-top:6px;line-height:1.35}
+
+
+/* v3.3.52 guided traveler action */
+.traveler-action-panel{position:sticky;top:.4rem;z-index:20;border-width:2px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.traveler-action-panel .top-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+
+/* v3.3.57 Document Lifecycle & Archive Cleanup */
+.structured-lifecycle-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 10px}
+.structured-lifecycle-toolbar button{border:1px solid #52708b;border-radius:10px;padding:9px 11px;font:inherit;font-weight:800;cursor:pointer;background:#fff;color:#1f3f5b}
+.structured-lifecycle-toolbar button.active{background:#1f3f5b;color:#fff}
+.structured-source-controls{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.structured-source-toggle{border:1px solid #52708b;border-radius:9px;padding:7px 10px;font:inherit;font-weight:800;cursor:pointer;background:#fff;color:#1f3f5b}
+.structured-source-details{margin-top:10px;padding:10px;border:1px solid #d4e0e8;border-radius:10px;background:#fff}
+.structured-source-details p{margin:.35rem 0}
+.structured-source-locked{font-weight:700;color:#6c4c08}
+@media(max-width:760px){.structured-lifecycle-toolbar{display:grid;grid-template-columns:1fr 1fr}.structured-lifecycle-toolbar button{width:100%}}
+
+
+/* v3.3.58 Structured Documents collapsed by default */
+.structured-documents-toggle-row{display:flex;justify-content:flex-start;align-items:center}
+.structured-documents-toggle{font-weight:800;border:1px solid #52708b;border-radius:10px;padding:10px 14px;cursor:pointer}
+.structured-documents-content[hidden]{display:none!important}
+.structured-documents-collapsed{padding:12px 16px}
+.structured-documents-collapse-row{display:flex;justify-content:flex-end;margin-top:14px}
+.structured-documents-collapse-row button{border:1px solid #52708b;border-radius:10px;padding:9px 11px;font:inherit;font-weight:800;cursor:pointer;background:#fff;color:#1f3f5b}
+@media(max-width:760px){.structured-documents-toggle,.structured-documents-collapse-row button{width:100%}}
+
+
+/* TEE v3.3.59 — Section Index guided help */
+.section-index-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-index-title-row h2{margin-bottom:4px}
+.section-index-summary{margin:0;color:var(--muted,#64748b);max-width:760px}
+.section-index-help-button{white-space:nowrap}
+.section-index-help{margin:14px 0 16px;padding:16px;border:1px solid rgba(100,116,139,.35);border-radius:14px;background:rgba(148,163,184,.08)}
+.section-index-help[hidden]{display:none!important}
+.section-index-help-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.section-index-help-head h3{margin:0 0 6px}
+.section-index-howto{margin:10px 0 14px}
+.section-index-howto p{margin:6px 0}
+.section-index-help-items{display:grid;gap:10px}
+.section-index-help-item{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:12px;border:1px solid rgba(100,116,139,.25);border-radius:12px;background:rgba(255,255,255,.04)}
+.section-index-help-number{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;border:1px solid currentColor;font-weight:700}
+.section-index-help-item h4{margin:2px 0 6px}
+.section-index-help-item p{margin:5px 0}
+.section-index-help-open{margin-top:6px}
+@media(max-width:640px){.section-index-title-row{display:block}.section-index-help-button{margin-top:10px;width:100%}.section-index-help-item{grid-template-columns:30px 1fr}.section-index-help-head button{width:100%}}
+
+
+/* TEE v3.3.61 — Source Document Manager Completion */
+.source-manager-workspace{background:#fff;border:1px solid #b8cad8;border-radius:18px;padding:16px;margin:18px 0;box-shadow:0 6px 22px rgba(31,63,91,.07)}
+.source-manager-workspace h2{margin:0 0 6px}.source-manager-workspace p{color:#536577}
+.source-manager-purpose{margin:12px 0;padding:11px 13px;border-left:5px solid #52708b;border-radius:9px;background:#f3f8fb;color:#344b5f}
+.source-manager-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
+.source-manager-toolbar button{border:1px solid #52708b;border-radius:10px;padding:9px 11px;font:inherit;font-weight:800;cursor:pointer;background:#fff;color:#1f3f5b}
+.source-manager-toolbar button.active{background:#1f3f5b;color:#fff}
+.source-manager-list{display:grid;gap:14px;margin-top:12px}
+.source-manager-card{border:1px solid #d3dee6;border-radius:14px;padding:14px;background:#fbfdfe}
+.source-manager-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.source-manager-card-head h3{margin:0 0 4px}.source-manager-card-head p{margin:0;color:#536577}
+.source-manager-status{font-size:.78rem;font-weight:900;border-radius:999px;padding:6px 9px;background:#e9f5ec;color:#285d2f;white-space:nowrap}.source-manager-status.attention{background:#fff3d9;color:#745400}.source-manager-status.archived{background:#f0f0f0;color:#555}
+.source-manager-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;margin-top:13px}.source-manager-facts>div{border-top:1px solid #e3eaf0;padding-top:8px;display:grid;gap:2px}.source-manager-facts span{font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:#6a7c8c}.source-manager-facts strong{font-size:.93rem;overflow-wrap:anywhere}
+.source-manager-linkage{margin-top:12px;padding:10px 12px;border-radius:10px;background:#f4f8fc;border:1px solid #cfdae6;display:grid;gap:4px}.source-manager-linkage span{color:#445d72;overflow-wrap:anywhere}
+.source-manager-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.source-manager-actions button{border:1px solid #52708b;border-radius:9px;padding:8px 10px;font:inherit;font-weight:800;cursor:pointer}.source-manager-actions .secondary{background:#fff;color:#1f3f5b}.source-manager-actions .danger{background:#fff2f2;color:#9b1c1c;border-color:#b94a4a}
+.legacy-source-manager[hidden]{display:none!important}
+@media(max-width:760px){.source-manager-toolbar{display:grid;grid-template-columns:1fr 1fr}.source-manager-toolbar button{width:100%}.source-manager-card-head{display:grid}.source-manager-facts{grid-template-columns:1fr}.source-manager-actions{display:grid}.source-manager-actions button{width:100%}}
+
+
+/* v3.3.68 — individual Source Documents section toggles */
+.source-app-section-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;margin:0 0 .75rem 0;padding:.8rem 1rem;text-align:left;font-weight:700;}
+.source-app-section-toggle::after{content:'▾';font-size:1rem;transition:transform .15s ease;}
+.source-app-section-toggle[aria-expanded="true"]::after{transform:rotate(180deg);}
+.source-app-section-collapsed > :not(.source-app-section-toggle){display:none !important;}
+@media (max-width:720px){.source-app-section-toggle{min-height:46px;font-size:1rem;}}
+
+
+/* v3.3.68 — Consolidated section navigation */
+.consolidated-section-index{
+  padding: 14px;
+}
+.section-index-select-label{
+  display:grid;
+  gap:6px;
+  font-weight:700;
+  margin-top:10px;
+}
+.section-index-select-label select{
+  width:100%;
+  min-height:46px;
+  font:inherit;
+  border-radius:10px;
+  padding:9px 12px;
+}
+.section-index-hint{
+  margin:8px 0 0;
+  opacity:.78;
+  font-size:.92rem;
+}
+
+.source-app-section-master{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  text-align:left;
+  min-height:72px;
+  padding:13px 16px;
+  border-radius:14px;
+  margin:0;
+}
+.source-section-button-text{
+  display:grid;
+  gap:4px;
+  min-width:0;
+}
+.source-section-button-text strong{
+  font-size:1.05rem;
+}
+.source-section-button-text small{
+  font-size:.88rem;
+  line-height:1.3;
+  font-weight:500;
+  opacity:.82;
+}
+.source-section-button-state{
+  flex:0 0 auto;
+  font-size:.82rem;
+  font-weight:800;
+  white-space:nowrap;
+}
+.source-app-section-content{
+  padding-top:12px;
+}
+.source-app-section-content[hidden]{
+  display:none !important;
+}
+
+/* Existing protected information summaries are the only control for those items. */
+.private-section > summary{
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.section-button-copy{
+  display:grid;
+  gap:4px;
+  text-align:left;
+}
+.section-button-copy small{
+  font-size:.86rem;
+  font-weight:500;
+  line-height:1.3;
+  opacity:.78;
+}
+
+/* Highlight only: the index navigates here but never opens the section. */
+.section-index-flash{
+  animation:teeSectionFlash 1.35s ease;
+}
+@keyframes teeSectionFlash{
+  0%,100%{box-shadow:none}
+  30%,70%{box-shadow:0 0 0 4px rgba(44,115,168,.30)}
+}
+
+/* Hide obsolete duplicate section-index help/button-list UI if an older cached fragment remains. */
+.section-index-help,
+.section-index-help-button,
+#sectionIndex{
+  display:none !important;
+}
+
+
+/* v3.3.68 — Section Index as a true dropdown of the sections themselves */
+.section-index-master{
+  margin-bottom:0;
+}
+.section-index-dropdown-content{
+  padding-top:10px;
+}
+.section-index-dropdown-content[hidden]{
+  display:none !important;
+}
+.section-index-dropdown-content .private-section{
+  margin:8px 0;
+}
+.section-index-dropdown-content .private-section > summary{
+  min-height:72px;
+  border-radius:14px;
+  padding:13px 16px;
+}
+.private-section-state{
+  flex:0 0 auto;
+  font-size:.82rem;
+  font-weight:800;
+  white-space:nowrap;
+}
+.legacy-section-mount{
+  display:none !important;
+}
+
+/* v3.3.68 select-based index is retired. */
+.section-index-select-label,
+.section-index-hint,
+#sectionIndexSelect{
+  display:none !important;
+}
+
+
+/* v3.3.68 — automatic Source → Section Index links */
+.linked-source-document{
+  cursor:pointer;
+  text-align:left;
+}
+.linked-source-document::before{
+  content:"↗ ";
+  font-weight:800;
+}
+
+
+/* v3.3.68 — linked source documents are actionable retained-source links */
+.linked-source-document{
+  min-height:42px;
+}
+.linked-source-document::before{
+  content:"📄 ";
+}
+
+
+/* v3.3.68 — Source Inventory linking */
+.source-inventory-panel{
+  margin-top:12px;
+  padding:12px 14px;
+}
+.source-manager-focus{
+  outline:4px solid rgba(44,115,168,.35);
+  outline-offset:3px;
+}
+.linked-source-document{
+  white-space:normal;
+  text-align:left;
+}
+
+
+/* v3.3.68 — Source Inventory collapsed by default */
+.source-inventory-workspace{
+  margin-top:12px;
+}
+.source-inventory-workspace > .source-app-section-master{
+  width:100%;
+}
+#sourceInventoryContent[hidden]{
+  display:none !important;
+}
+#sourceInventoryContent{
+  padding-top:12px;
+}
+
+/* ==========================================================
+   TEE v3.3.70 — Streamlined Source Documents workflow
+   ========================================================== */
+.streamlined-source-home{background:#fff;border:1px solid #d8e0db;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(27,52,43,.05)}
+.streamlined-source-head h2{margin:4px 0 6px;color:#173b3f}.streamlined-source-head p{margin:0;color:#5e6963;line-height:1.45}.streamlined-source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.streamlined-source-card{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;text-align:left;background:#fff;border:1px solid #d5ded8;border-radius:13px;padding:13px;cursor:pointer;color:#243027}.streamlined-source-card:hover,.streamlined-source-card:focus-visible{border-color:#75968e;box-shadow:0 4px 12px rgba(24,58,49,.09)}.streamlined-source-card>span:last-child{display:grid;gap:4px}.streamlined-source-card strong{color:#173b3f;font-size:1rem}.streamlined-source-card small{font-size:.87rem;color:#66716b;line-height:1.35}.stream-step{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;background:#edf3f0;color:#31564f;font-weight:900}.streamlined-source-status{margin:12px 0 0;padding:9px 11px;border-radius:9px;background:#f3f6f4;color:#56645e;font-size:.9rem}.source-streamlined-mode #secureVaultPanel,.source-streamlined-mode .quick-panel,.source-streamlined-mode .tools,.source-streamlined-mode .section-index,.source-streamlined-mode #sectionMountLegacy{display:none!important}.source-streamlined-mode .streamline-selected{display:block!important}.source-maintenance-mode #streamlinedSourceHome{display:none!important}@media(max-width:720px){.streamlined-source-grid{grid-template-columns:1fr}}
+
+
+/* TEE v3.3.71 — direct traveler Vault entry */
+body.source-vault-view #secureVaultPanel{
+  display:block !important;
+}
+body.source-vault-view #secureVaultPanel > .source-app-section-master{
+  display:none !important;
+}
+body.source-vault-view #secureVaultPanel > .source-app-section-content{
+  display:block !important;
+  padding-top:0;
+}
+body.source-vault-view #secureUnlockFields{
+  max-width:560px;
+  margin:18px auto;
+  border:2px solid #244e59;
+  border-radius:16px;
+  padding:18px;
+  background:#f5f9f9;
+}
+body.source-vault-view #secureUnlockFields input{
+  min-height:46px;
+  font-size:1rem;
+}
+body.source-vault-view #secureUnlockFields button{
+  width:100%;
+  min-height:48px;
+  margin-top:10px;
+}
+body.source-vault-view .secure-backup-tools{
+  display:none !important;
+}
+
+/* v3.3.72 — vault embedded inside Hub */
+body.source-vault-embed header.hero .back{display:none!important;}
+body.source-vault-embed header.hero{padding-top:12px;}
+body.source-vault-embed{background:#fff;}

@@ -1,6 +1,6 @@
-const CACHE = 'tee-daily-operations-v3-3-51-update-install-recovery';
+const CACHE = 'tee-v3-3-80-rail-pass-context-filter';
 const CACHE_PREFIX = 'tee-daily-operations-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);

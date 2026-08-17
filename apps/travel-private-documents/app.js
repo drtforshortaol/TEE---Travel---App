@@ -191,8 +191,25 @@ const privateSections = [
 ];
 
 const documents = [
-  // TEE v3.3.38: the GitHub-safe application no longer embeds the live trip source-document inventory.
-  // Source documents are retained off-repository and reconstructed through the Structured Documents workspace.
+  { title: 'Passports', category: 'Identity', status: 'private', owner: 'coupleA', packaged: false, reviewed: true, file: 'docs/passports.pdf', type: 'PDF', priority: 'Critical', notes: 'Glenn and Virginia identity source. Structured passport records are migrated into Couple A Private; the raw passport PDF is intentionally omitted from this package.', tags: ['passport', 'identity', 'critical', 'private'] },
+  { title: 'People', category: 'Contacts', status: 'private', reviewed: false, file: 'docs/people.pdf', type: 'PDF', priority: 'Critical', notes: 'Traveler and contact reference information.', tags: ['people', 'contacts', 'travelers', 'private'] },
+  { title: 'Phone Data', category: 'Phone / Data', status: 'shared', reviewed: false, file: 'docs/phone-data.pdf', type: 'PDF', priority: 'Critical', notes: 'Phone plan, connectivity, and access notes.', tags: ['phone', 'data', 'connectivity'] },
+  { title: 'Hotel', category: 'Lodging', status: 'shared', reviewed: true, file: 'docs/hotel.pdf', type: 'PDF', priority: 'High', notes: 'Hotel and lodging reference packet.', tags: ['hotel', 'lodging', 'reservation'] },
+  { title: 'Airport and Train Stuff', category: 'Transportation', status: 'shared', reviewed: true, file: 'docs/airport-train.pdf', type: 'PDF', priority: 'High', notes: 'Airport, flight, train, pass, transfer, and transportation documents.', tags: ['airport', 'train', 'flight', 'transportation', 'tickets'] },
+  { title: 'Maps', category: 'Movement', status: 'reference', reviewed: false, file: 'docs/maps.pdf', type: 'PDF', priority: 'High', notes: 'Map and movement reference pages.', tags: ['maps', 'movement', 'route', 'walking'] },
+  { title: 'Money + Tipping', category: 'Money', status: 'shared', reviewed: false, file: 'docs/money-tipping.pdf', type: 'PDF', priority: 'High', notes: 'Money, tipping, payment, currency, and spending notes.', tags: ['money', 'tips', 'cash', 'currency'] },
+  { title: 'Trip Planning', category: 'Planning', status: 'shared', reviewed: true, file: 'docs/trip-planning.pdf', type: 'PDF', priority: 'High', notes: 'Trip planning packet and route planning reference.', tags: ['planning', 'itinerary', 'route', 'schedule'] },
+  { title: 'Weather', category: 'Weather', status: 'public', reviewed: false, file: 'docs/weather.pdf', type: 'PDF', priority: 'Medium', notes: 'Weather and clothing planning reference.', tags: ['weather', 'clothing', 'packing'] },
+  { title: 'Travel List', category: 'Packing', status: 'reference', reviewed: false, file: 'docs/travel-list.pdf', type: 'PDF', priority: 'Medium', notes: 'Travel list PDF reference.', tags: ['packing', 'checklist', 'travel-list'] },
+  { title: 'Travel List 20180903', category: 'Packing', status: 'archive', reviewed: true, file: 'docs/travel-list-20180903.docx', type: 'DOCX', priority: 'Medium', notes: 'Original Word travel list reference. Opens/downloads depending on browser.', tags: ['packing', 'checklist', 'docx', 'archive'] },
+  { title: 'Miscellaneous', category: 'Reference', status: 'reference', reviewed: false, file: 'docs/miscellaneous.pdf', type: 'PDF', priority: 'Low', notes: 'Miscellaneous private reference document.', tags: ['misc', 'reference'] },
+  { title: 'ChatGPT Ideas', category: 'Planning', status: 'reference', reviewed: true, file: 'docs/chatgpt-ideas.pdf', type: 'PDF', priority: 'Low', notes: 'Idea/reference document from ChatGPT planning notes.', tags: ['ideas', 'planning', 'chatgpt'] },
+  { title: 'Handwritten Rail Schedule — Sep 30 to Oct 6, 2026', category: 'Transportation', status: 'shared', reviewed: true, file: 'docs/handwritten-rail-schedule-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'Current handwritten rail schedule used to update TEE transportation records.', tags: ['rail','train','schedule','2026','shared'] },
+  { title: 'Handwritten Trip To-Do + Rail Plan — 2026', category: 'Planning', status: 'shared', reviewed: true, file: 'docs/handwritten-trip-todo-rail-plan-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'Trip planning and rail timing source; includes visa/ETIAS reminders.', tags: ['planning','rail','visa','etias','shared'] },
+  { title: 'Handwritten Turkish Airlines Flights — 2026', category: 'Transportation', status: 'shared', reviewed: true, file: 'docs/handwritten-turkish-airlines-flights-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'Turkish Airlines flight and seat source for Michael and Susan plus Zurich-Istanbul booking.', tags: ['flight','turkish-airlines','seat','pnr','shared'] },
+  { title: 'Handwritten YOTEL Istanbul Airport — 2026', category: 'Lodging', status: 'shared', reviewed: true, file: 'docs/handwritten-yotel-istanbul-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'YOTEL Istanbul Airport airside stay notes for Oct 6-7, 2026.', tags: ['hotel','istanbul','yotel','shared'] },
+  { title: 'Handwritten Hotels — Salzburg, Lucerne, Zurich — 2026', category: 'Lodging', status: 'shared', reviewed: true, file: 'docs/handwritten-hotels-salzburg-lucerne-zurich-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'Hotel booking notes used to update Salzburg, Lucerne, and Zurich records.', tags: ['hotel','salzburg','lucerne','zurich','shared'] },
+  { title: 'Handwritten Rail Passes — 2026', category: 'Transportation', status: 'shared', reviewed: true, file: 'docs/handwritten-rail-passes-2026.jpeg', type: 'JPEG', priority: 'High', notes: 'Rail pass and PNR source for Michael and Susan plus extension rail timing notes.', tags: ['rail','pass','pnr','shared'] }
 ];
 
 const SOURCE_DOC_STATE_KEY = 'teeSourceDocumentManagerV1';
@@ -200,6 +217,15 @@ const SOURCE_STATUS_LABELS = {
   private: 'Private', shared: 'Shared', public: 'Public', reference: 'Reference', archive: 'Archive', remove: 'Remove from TEE'
 };
 function sourceDocKey(doc){ return doc.file; }
+function sourceInventoryRecord(doc){
+  return {
+    ...doc,
+    packaged:false,
+    sourceInventoryOnly:true
+  };
+}
+const sourceInventory = documents.map(sourceInventoryRecord);
+window.TEESourceInventoryCount = sourceInventory.length;
 function loadSourceDocumentState(){
   try { const parsed = JSON.parse(localStorage.getItem(SOURCE_DOC_STATE_KEY) || '{}'); return parsed && typeof parsed === 'object' ? parsed : {}; }
   catch(e){ return {}; }
@@ -260,8 +286,6 @@ const quickGrid = document.getElementById('quickGrid');
 const docMount = document.getElementById('docMount');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
-const expandAll = document.getElementById('expandAll');
-const collapseAll = document.getElementById('collapseAll');
 
 function unique(values) { return [...new Set(values)].filter(Boolean).sort(); }
 function safeId(value) { return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
@@ -274,7 +298,7 @@ function optionize(select, values) {
     select.appendChild(o);
   });
 }
-optionize(categoryFilter, unique(documents.map(d => d.category)));
+optionize(categoryFilter, unique(sourceInventory.map(d => d.category)));
 
 function searchBlobForSection(section) {
   return [section.title, section.priority, section.use, ...(section.items || []), ...(section.actions || []), ...(section.linkedDocs || [])].join(' ').toLowerCase();
@@ -297,14 +321,140 @@ function docMatches(doc) {
   return (!q || searchBlobForDoc(doc).includes(q)) && (cat === 'all' || doc.category === cat);
 }
 
-function linkedDocButtons(names) {
-  const links = (names || [])
-    .map(name => documents.find(d => d.title === name))
-    .filter(Boolean)
-    .map(doc => `<a class="mini-link" href="${doc.file}" target="_blank" rel="noopener">${doc.title}</a>`)
-    .join('');
-  return links || '<span class="muted">No source document linked yet.</span>';
+
+
+const SOURCE_SECTION_RELATIONSHIPS = {
+  'quick-reference': [
+    'Airport and Train Stuff','Hotel','People','Phone Data','Money + Tipping',
+    'Trip Planning','Handwritten Turkish Airlines Flights — 2026',
+    'Handwritten Rail Schedule — Sep 30 to Oct 6, 2026',
+    'Handwritten Hotels — Salzburg, Lucerne, Zurich — 2026',
+    'Handwritten YOTEL Istanbul Airport — 2026'
+  ],
+  'flight-airline-confirmations': [
+    'Airport and Train Stuff','Trip Planning',
+    'Handwritten Turkish Airlines Flights — 2026',
+    'Handwritten Trip To-Do + Rail Plan — 2026'
+  ],
+  'train-rail-pass-information': [
+    'Airport and Train Stuff','Maps',
+    'Handwritten Rail Schedule — Sep 30 to Oct 6, 2026',
+    'Handwritten Rail Passes — 2026',
+    'Handwritten Trip To-Do + Rail Plan — 2026'
+  ],
+  'hotel-booking-references': [
+    'Hotel','Miscellaneous',
+    'Handwritten YOTEL Istanbul Airport — 2026',
+    'Handwritten Hotels — Salzburg, Lucerne, Zurich — 2026'
+  ],
+  'insurance-information': [
+    'Trip Planning','People'
+  ],
+  'phone-data-support': [
+    'Phone Data','Trip Planning'
+  ],
+  'emergency-contacts': [
+    'People','Trip Planning','Phone Data','Hotel'
+  ],
+  'passport-global-entry-reminders': [
+    'Passports','Trip Planning',
+    'Handwritten Trip To-Do + Rail Plan — 2026'
+  ],
+  'payment-cost-references': [
+    'Money + Tipping','Hotel','Airport and Train Stuff','Trip Planning'
+  ],
+  'lost-item-problem-instructions': [
+    'People','Phone Data','Airport and Train Stuff','Hotel','Trip Planning'
+  ]
+};
+
+function sourceByTitle(title){
+  return sourceInventory.find(doc => doc.title === title) || null;
 }
+
+function uniqueSourceRecords(records){
+  const seen = new Set();
+  return records.filter(doc => {
+    if(!doc) return false;
+    const key = doc.file || doc.title;
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function linkedSourceRecords(sectionId){
+  return uniqueSourceRecords(
+    (SOURCE_SECTION_RELATIONSHIPS[sectionId] || []).map(sourceByTitle)
+  );
+}
+
+function sourceAvailability(doc){
+  // A matching Structured Document may carry an embedded/referenced source at runtime.
+  try{
+    const rows = JSON.parse(localStorage.getItem('teeStructuredDocumentsPublicV1') || '[]');
+    if(Array.isArray(rows)){
+      const normalizedTitle = String(doc.title || '').toLowerCase();
+      const match = rows.find(row => {
+        const title = String(row.title || '').toLowerCase();
+        const ref = String(row.originalReference || '').toLowerCase();
+        const file = String(doc.file || '').split('/').pop().toLowerCase();
+        return title === normalizedTitle ||
+               ref.includes(file) ||
+               normalizedTitle.includes(title) ||
+               title.includes(normalizedTitle);
+      });
+      if(match) return {kind:'structured', documentId:match.documentId};
+    }
+  }catch{}
+  return {kind:'inventory'};
+}
+
+function openSourceManagerFor(doc){
+  const section = document.getElementById('teeSourceDocumentManager');
+  const master = section?.querySelector(':scope > .source-app-section-master');
+  if(master && master.getAttribute('aria-expanded') !== 'true') master.click();
+
+  // Request the Source Document Manager to show/highlight this inventory source.
+  window.dispatchEvent(new CustomEvent('tee-source-manager-focus', {
+    detail:{ title:doc.title, file:doc.file }
+  }));
+
+  requestAnimationFrame(() => {
+    section?.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+
+async function openLinkedSourceInventory(doc){
+  const available = sourceAvailability(doc);
+
+  if(available.kind === 'structured' && window.TEEStructuredDocumentsAPI?.focusDocument){
+    try{
+      await window.TEEStructuredDocumentsAPI.focusDocument(available.documentId, true);
+      return;
+    }catch{
+      // If protected/locked, fall through to Source Manager where status is explicit.
+    }
+  }
+
+  openSourceManagerFor(doc);
+}
+
+function linkedSourceButtons(sectionId){
+  const records = linkedSourceRecords(sectionId);
+  if(!records.length){
+    return '<span class="muted">No source documents assigned to this section.</span>';
+  }
+
+  return records.map(doc => `
+    <button type="button"
+            class="mini-link linked-source-document"
+            data-source-file="${doc.file}"
+            title="Go to this source document in Source Document Manager.">
+      ${doc.title}
+    </button>`).join('');
+}
+
 
 function renderQuickGrid() {
   const quickItems = [
@@ -333,19 +483,38 @@ function renderQuickGrid() {
   });
 }
 
-function renderSectionIndex(sections) {
-  sectionIndex.innerHTML = sections.map(s => `<button type="button" data-section="${s.id}">${s.title}</button>`).join('');
-  sectionIndex.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => openSection(btn.dataset.section)));
+function initSectionIndexDropdown() {
+  const toggle = document.getElementById('sectionIndexToggle');
+  const content = document.getElementById('sectionIndexContent');
+  if (!toggle || !content || toggle.dataset.bound === '1') return;
+
+  toggle.dataset.bound = '1';
+
+  const state = toggle.querySelector('.source-section-button-state');
+  const setOpen = (open) => {
+    content.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (state) state.textContent = open ? 'Collapse' : 'Expand';
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  setOpen(false);
+}
+
+function renderSectionIndex() {
+  initSectionIndexDropdown();
 }
 
 function sectionCard(section) {
   const details = document.createElement('details');
   details.className = 'private-section';
   details.id = section.id;
-  if (section.id === 'quick-reference') details.open = true;
 
   const summary = document.createElement('summary');
-  summary.innerHTML = `<span>${section.title}</span><span class="summary-meta">${section.priority}</span>`;
+  summary.innerHTML = `<span class="section-button-copy"><strong>${section.title}</strong><small>${section.use}</small></span><span class="private-section-state">Expand</span>`;
 
   const body = document.createElement('div');
   body.className = 'section-body';
@@ -363,19 +532,34 @@ function sectionCard(section) {
     </div>
     <div class="linked-docs">
       <h4>Linked source documents</h4>
-      <div class="mini-links">${linkedDocButtons(section.linkedDocs)}</div>
+      <div class="mini-links">${linkedSourceButtons(section.id)}</div>
     </div>
   `;
+
+  body.querySelectorAll('[data-source-file]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const doc = sourceInventory.find(x => x.file === btn.dataset.sourceFile);
+      if(doc) openLinkedSourceInventory(doc);
+    });
+  });
+
   details.append(summary, body);
+  details.addEventListener('toggle', () => {
+    const state = summary.querySelector('.private-section-state');
+    if (state) state.textContent = details.open ? 'Collapse' : 'Expand';
+  });
   return details;
 }
 
 function docCard(doc){
   const state=sourceDocState(doc), removed=state.status==='remove', privateOwner=state.status==='private'?sourceOwnerLabel(state.owner):'', canOpen=sourceDocCanOpen(doc,state);
   const article=document.createElement('article'); article.className=`doc-card source-${state.status}`;
+  article.dataset.sourceFile=doc.file;
+  article.dataset.sourceTitle=doc.title;
   const statusButtons=['private','shared','public','reference','archive','remove'].map(status=>`<button type="button" class="source-status-btn ${state.status===status?'active':''} ${status==='remove'?'danger':''}" data-source-status="${status}">${SOURCE_STATUS_LABELS[status]}</button>`).join('');
   let accessMessage='';
   if(removed) accessMessage='<strong class="purge-note">PURGE REQUESTED · source links disabled until next package rebuild</strong>';
+  else if(doc.sourceInventoryOnly) accessMessage='<strong class="source-private-note">SOURCE INVENTORY ONLY · original file is not packaged in this GitHub-safe app. If a structured copy is retained locally, use Structured Documents → View Source.</strong>';
   else if(doc.packaged===false) accessMessage='<strong class="source-private-note">RAW PRIVATE SOURCE REMOVED · use the encrypted vault records instead</strong>';
   else if(state.status==='private'&&state.owner==='split') accessMessage='<strong class="source-private-note">PRIVATE SOURCE CONTAINS BOTH COUPLES · split required before either couple may open it</strong>';
   else if(state.status==='private'&&!canOpen) accessMessage=`<strong class="source-private-note">PRIVATE · available only when ${privateOwner} unlocks the vault</strong>`;
@@ -401,7 +585,7 @@ function renderSections() {
 }
 
 function renderDocuments() {
-  const filtered = documents.filter(docMatches);
+  const filtered = sourceInventory.filter(docMatches);
   const groups = {};
   filtered.forEach(doc => (groups[doc.category] ||= []).push(doc));
   docMount.innerHTML = '';
@@ -421,11 +605,58 @@ function renderDocuments() {
 }
 
 function openSection(id) {
-  const details = document.getElementById(id);
-  if (!details) return;
-  details.open = true;
-  details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  const indexToggle = document.getElementById('sectionIndexToggle');
+  const indexContent = document.getElementById('sectionIndexContent');
+  if (indexToggle && indexContent && indexContent.hidden) {
+    indexContent.hidden = false;
+    indexToggle.setAttribute('aria-expanded', 'true');
+    const state = indexToggle.querySelector('.source-section-button-state');
+    if (state) state.textContent = 'Collapse';
+  }
+
+  const control = target.querySelector(':scope > summary') || target;
+  control.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (control.classList) {
+    control.classList.add('section-index-flash');
+    setTimeout(() => control.classList.remove('section-index-flash'), 1400);
+  }
 }
+
+
+window.addEventListener('storage', e => {
+  if(e.key === STRUCTURED_DOC_STORAGE_KEY || e.key === SOURCE_SECTION_LINK_KEY){
+    render();
+  }
+});
+
+window.addEventListener('tee-structured-documents-changed', () => {
+  render();
+});
+
+
+window.addEventListener('tee-source-manager-focus', event => {
+  const file = event.detail?.file || '';
+  const title = event.detail?.title || '';
+  renderDocuments();
+
+  const inventoryToggle = document.getElementById('sourceInventoryToggle');
+  if(inventoryToggle && inventoryToggle.getAttribute('aria-expanded') !== 'true'){
+    inventoryToggle.click();
+  }
+
+  const cards = [...document.querySelectorAll('.doc-card[data-source-file]')];
+  const card = cards.find(c => c.dataset.sourceFile === file || c.dataset.sourceTitle === title);
+  if(card){
+    const category = card.closest('details.category');
+    if(category) category.open = true;
+    card.classList.add('source-manager-focus');
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(() => card.classList.remove('source-manager-focus'), 1800);
+  }
+});
 
 function render() {
   renderSections();
@@ -433,81 +664,107 @@ function render() {
 }
 
 [searchInput, categoryFilter].forEach(el => el.addEventListener('input', render));
-expandAll.addEventListener('click', () => document.querySelectorAll('details').forEach(d => d.open = true));
-collapseAll.addEventListener('click', () => document.querySelectorAll('details').forEach(d => d.open = false));
 renderQuickGrid();
 render();
+initSectionIndexDropdown();
 
 
-function initDestinationSections(){
-  const sections = Array.from(document.querySelectorAll('.destination-section'));
-  if(!sections.length) return;
 
-  function getTitle(section){
-    const h = section.querySelector('h2, h3, .section-head h2, .kicker + h2');
-    const aria = section.getAttribute('aria-label');
-    return h ? h.textContent.trim() : (aria || 'Open section');
-  }
 
-  function setOpen(section, open, scroll){
-    const content = section.querySelector(':scope > .destination-content');
-    const btn = section.querySelector(':scope > .destination-toggle');
-    section.classList.toggle('open', open);
-    if(content) content.hidden = !open;
-    if(btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if(open && scroll) section.scrollIntoView({behavior:'smooth', block:'start'});
-  }
+function initSourceInventoryToggle(){
+  const toggle = document.getElementById('sourceInventoryToggle');
+  const content = document.getElementById('sourceInventoryContent');
+  if(!toggle || !content || toggle.dataset.bound === '1') return;
 
-  function closeAll(except){
-    sections.forEach(sec => {
-      if(sec !== except) setOpen(sec, false, false);
-    });
-  }
+  toggle.dataset.bound = '1';
+  const state = toggle.querySelector('.source-section-button-state');
 
-  sections.forEach(section => {
-    if(section.dataset.destinationReady === '1') return;
-    const title = getTitle(section);
+  const setOpen = (open) => {
+    content.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if(state) state.textContent = open ? 'Collapse' : 'Expand';
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  setOpen(false);
+}
+
+function initSourceAppSectionToggles(){
+  const configs = [
+    {selector:'#smartDocumentIntake', id:'smartDocumentIntake', label:'Smart Document Intake', purpose:'Add a source document and prepare its structured information for review.'},
+    {selector:'#structuredDocumentsWorkspace', id:'structuredDocumentsWorkspace', label:'Structured Documents', purpose:'Review, edit, verify, file, or archive information extracted from source documents.'},
+    {selector:'#secureVaultPanel', id:'secureVaultPanel', label:'Secure Travel Vault', purpose:'Unlock and manage encrypted Shared and Private travel records.'},
+    {selector:'#secureVaultManager', id:'secureVaultManager', label:'Vault Manager', purpose:'Set up, unlock, restore, or diagnose the two-couple vault.'},
+    {selector:'.secure-backup-tools', id:'secureBackupTools', label:'Encrypted Backup', purpose:'Export, verify, inspect, or restore an encrypted vault backup.'},
+    {selector:'#secureAccessArchitecture', id:'secureAccessArchitecture', label:'Access Architecture', purpose:'Review how Public, Shared, and couple-private access is separated.'},
+    {selector:'#secureVaultHealth', id:'secureVaultHealth', label:'Vault Health', purpose:'Check the integrity and readiness of the encrypted vault.'},
+    {selector:'#secureVaultStatistics', id:'secureVaultStatistics', label:'Vault Statistics', purpose:'See high-level counts and vault usage information.'},
+    {selector:'#secureActivityCenter', id:'secureActivityCenter', label:'Activity Center', purpose:'Review recent vault activity and record changes.'},
+    {selector:'#secureRecycleBin', id:'secureRecycleBin', label:'Recycle Bin', purpose:'Review or recover items removed from active use.'},
+    {selector:'#secureFavorites', id:'secureFavorites', label:'Favorites', purpose:'Reach records you have marked for quick access.'},
+    {selector:'#secureTagExplorer', id:'secureTagExplorer', label:'Smart Tag Explorer', purpose:'Find related encrypted records by tag.'},
+    {selector:'#secureExpirationDashboard', id:'secureExpirationDashboard', label:'Upcoming Expirations', purpose:'See time-sensitive document or credential expirations.'},
+    {selector:'#secureVaultDashboard', id:'secureVaultDashboard', label:'Vault Dashboard', purpose:'See the overall secure-record dashboard and categories.'},
+    {selector:'.quick-panel', id:'quickPanel', label:'On-the-fly Quick Reference', purpose:'Jump quickly to common travel information categories.'},
+    {selector:'.tools', id:'searchTools', label:'Search & Filter', purpose:'Search source documents and information sections or narrow by category.'},
+    {selector:'#teeSourceDocumentManager', id:'teeSourceDocumentManager', label:'Source Document Manager', purpose:'Manage original documents, processing status, structured links, and archive history.'}
+  ];
+
+  configs.forEach(({selector,id,label,purpose}) => {
+    const section = document.querySelector(selector);
+    if(!section || section.dataset.sourceCollapsibleReady === '1') return;
+
+    if (!section.id) section.id = id;
+
+    // Remove prior/legacy controls so this large button is the only section control.
+    section.querySelectorAll(':scope > .source-app-section-toggle, :scope > .structured-documents-toggle-row').forEach(el => el.remove());
+    section.querySelectorAll('.collapse-destination-btn, .structured-documents-collapse, #structuredDocumentsCollapse').forEach(el => el.remove());
+
     const content = document.createElement('div');
-    content.className = 'destination-content';
-
+    content.className = 'source-app-section-content';
     while(section.firstChild){
       content.appendChild(section.firstChild);
     }
 
     const toggle = document.createElement('button');
     toggle.type = 'button';
-    toggle.className = 'destination-toggle';
+    toggle.className = 'source-app-section-toggle source-app-section-master';
     toggle.setAttribute('aria-expanded','false');
-    toggle.innerHTML = `<span><span class="destination-title">${title}</span><span class="destination-hint">Tap to open / collapse</span></span>`;
+    toggle.setAttribute('aria-controls', `${section.id}-content`);
+    content.id = `${section.id}-content`;
 
-    toggle.addEventListener('click', () => {
-      const isOpen = section.classList.contains('open');
-      if(isOpen){
-        setOpen(section, false, false);
-      } else {
-        closeAll(section);
-        setOpen(section, true, true);
-      }
-    });
+    const renderButton = (open) => {
+      toggle.innerHTML = `
+        <span class="source-section-button-text">
+          <strong>${label}</strong>
+          <small>${purpose}</small>
+        </span>
+        <span class="source-section-button-state">${open ? 'Collapse' : 'Expand'}</span>`;
+    };
+
+    const setOpen = (open) => {
+      content.hidden = !open;
+      section.classList.toggle('source-app-section-collapsed', !open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      renderButton(open);
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
 
     section.appendChild(toggle);
     section.appendChild(content);
-    section.dataset.destinationReady = '1';
-    setOpen(section, false, false);
+    section.dataset.sourceCollapsibleReady = '1';
+    setOpen(false);
   });
 
-  document.querySelectorAll('.collapse-destination-btn').forEach(btn => {
-    if(btn.dataset.bound === '1') return;
-    btn.dataset.bound = '1';
-    btn.addEventListener('click', () => {
-      const section = btn.closest('.destination-section');
-      if(section){
-        setOpen(section, false, false);
-        const toggle = section.querySelector(':scope > .destination-toggle');
-        if(toggle) toggle.scrollIntoView({behavior:'smooth', block:'nearest'});
-      }
-    });
-  });
+  // Protected information cards use their summary as the one and only expand/collapse control.
+  document.querySelectorAll('#sectionMount details.private-section').forEach(d => { d.open = false; });
+
+  renderSectionIndex();
 }
 
-initDestinationSections();
+initSourceAppSectionToggles();
+initSourceInventoryToggle();

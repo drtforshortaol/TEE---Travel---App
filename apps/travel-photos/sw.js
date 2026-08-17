@@ -1,4 +1,4 @@
-const CACHE = 'tee-photos-v3-3-51-update-install-recovery';
+const CACHE = 'tee-photos-v3-3-52-simple-traveler-setup';
 const CACHE_PREFIX = 'tee-photos-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
 

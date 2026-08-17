@@ -1,6 +1,6 @@
 {
-  "name": "TEE Costs",
-  "short_name": "Costs",
+  "name": "TEE Expenses",
+  "short_name": "Expenses",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f6f1e8",

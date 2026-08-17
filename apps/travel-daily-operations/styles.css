@@ -192,3 +192,349 @@
 
 /* v3.3.34 cached live weather inside Today/Tomorrow */
 .live-weather-card{background:#eef6f8;border-left:4px solid #527f92;border-radius:10px;padding:.65rem;margin:.45rem 0}.live-weather-card.fallback{background:#fff7df;border-left-color:#d6a526}.live-weather-card p{margin:.28rem 0}.live-weather-badges{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.3rem}.live-weather-badges span{font-size:.67rem;font-weight:900;background:#fff;border:1px solid #c8d6dc;border-radius:999px;padding:.17rem .36rem}
+
+
+/* v3.3.72 — streamlined Today/Tomorrow + country dropdowns */
+body{background:#f5f7f6}.hero{padding-bottom:22px}.hero .lead{max-width:850px}main{max-width:1120px;margin:0 auto;padding:18px 16px 52px}.day-test-panel,.adaptive-panel,.country-plan,.protocols{background:#fff;border:1px solid rgba(38,67,61,.18);border-radius:16px;padding:16px;margin:0 0 16px;box-shadow:0 4px 18px rgba(30,50,45,.05)}.section-kicker{font-size:.72rem;letter-spacing:.09em;font-weight:850;color:#61716d}.day-test-panel h2,.section-head h2{margin:4px 0 6px}.test-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin:14px 0}.test-controls label{display:grid;gap:5px;font-weight:750}.test-controls select,.test-controls button{min-height:46px;border-radius:10px;border:1px solid #9aa9a6;background:#fff;padding:8px 10px;font:inherit}.test-controls button{font-weight:800;cursor:pointer}.today-tomorrow-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px}.today-tomorrow-strip article{display:grid;gap:4px;padding:12px;border-radius:12px;background:#eef5f3;border:1px solid #cbdad6}.today-tomorrow-strip span{font-size:.72rem;font-weight:850;letter-spacing:.08em}.today-tomorrow-strip strong{font-size:.98rem}.add-row{display:grid;grid-template-columns:1fr auto;gap:8px}.add-row input,.add-row button{min-height:44px;border-radius:10px;border:1px solid #aebbb8;padding:8px 10px;font:inherit}.add-row button{font-weight:800}.custom-tasks{display:grid;gap:7px;margin-top:10px}.custom-task{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;padding:9px 10px;border-radius:10px;background:#f6f8f7}.custom-task button{border:0;background:transparent;text-decoration:underline;cursor:pointer}.empty-note{opacity:.7}.country-mount{display:grid;gap:10px}.country-dropdown{border:1px solid #cbd5d2;border-radius:14px;background:#fbfcfc;overflow:hidden}.country-dropdown>summary,.trip-day-dropdown>summary,.protocols>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px}.country-dropdown>summary::-webkit-details-marker,.trip-day-dropdown>summary::-webkit-details-marker,.protocols>summary::-webkit-details-marker{display:none}.country-dropdown>summary span:first-child,.day-summary-main,.protocols>summary span:first-child{display:grid;gap:3px}.country-dropdown>summary small,.trip-day-dropdown>summary small,.protocols>summary small{font-weight:500;color:#65736f}.country-state,.day-state,.day-status{font-size:.76rem;font-weight:850;white-space:nowrap}.day-status.today{background:#dcefe8;color:#1f5949;border-radius:999px;padding:5px 8px}.day-status.tomorrow{background:#edf0dc;color:#595f22;border-radius:999px;padding:5px 8px}.country-days{display:grid;gap:8px;padding:0 10px 10px}.trip-day-dropdown{border:1px solid #dde4e2;border-radius:11px;background:#fff}.trip-day-dropdown[open]{box-shadow:0 3px 12px rgba(30,50,45,.05)}.day-detail-body{padding:0 14px 14px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.detail-grid h4{margin:14px 0 5px}.detail-grid ul{margin:5px 0 12px;padding-left:19px}.day-checks{display:grid;gap:6px}.day-checks label{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start}.day-notes,.day-related{margin-top:10px;border-top:1px solid #e3e9e7;padding-top:8px}.day-notes summary,.day-related summary{cursor:pointer;font-weight:750}.day-notes textarea{width:100%;box-sizing:border-box;margin-top:8px;border-radius:9px;border:1px solid #b8c4c1;padding:9px;font:inherit}.related-links{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.related-links a{display:inline-block;padding:7px 9px;border-radius:999px;background:#eef4f2;color:#264e45;text-decoration:none;font-weight:700;font-size:.85rem}.protected-note{margin:12px 0 0;padding:9px 10px;border-radius:9px;background:#f6f3eb;font-size:.86rem}.protocols{padding:0}.protocols>summary{padding:15px}.protocol-body{padding:0 16px 16px}.protocol-body h3{margin:12px 0 4px}.protocol-body ul{margin-top:4px}.protocols[open]>summary span:last-child::after{content:'Collapse';font-size:.8rem}.protocols>summary span:last-child{font-size:0}.protocols:not([open])>summary span:last-child::after{content:'Expand';font-size:.8rem}.country-dropdown[open]>summary{background:#eef5f3}.trip-day-dropdown[open]>summary{background:#f4f8f7}@media(max-width:720px){.test-controls,.today-tomorrow-strip,.detail-grid{grid-template-columns:1fr}.test-controls button{width:100%}.country-dropdown>summary,.trip-day-dropdown>summary{align-items:flex-start}.day-status,.country-state{margin-top:2px}}
+
+
+/* v3.3.73 — authorized secure context appears in Daily Operations */
+.daily-vault-status{
+  display:grid;
+  gap:4px;
+  padding:12px 14px;
+  border-radius:12px;
+  margin:0 0 14px;
+}
+.daily-vault-status strong{font-size:.98rem;}
+.daily-vault-status span{font-size:.9rem;line-height:1.35;}
+.daily-vault-status.locked{background:#f4f1eb;border:1px solid #cfc5b4;color:#5b5146;}
+.daily-vault-status.authorized{background:#eef8f2;border:1px solid #8ab9a1;color:#244f3b;}
+.authorized-day-details{
+  margin-top:14px;
+  border:2px solid #88ad9a;
+  border-radius:12px;
+  background:#f5fbf7;
+}
+.authorized-day-details > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  padding:12px 14px;
+  font-weight:850;
+}
+.authorized-state{font-size:.82rem;white-space:nowrap;}
+.authorized-day-body{padding:0 14px 14px;display:grid;gap:10px;}
+.authorized-record{
+  background:#fff;
+  border:1px solid #c5d9cd;
+  border-radius:10px;
+  padding:12px;
+}
+.authorized-record-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.authorized-record-head span{
+  font-size:.75rem;
+  font-weight:850;
+  border-radius:999px;
+  padding:3px 8px;
+  background:#e7f1ea;
+}
+.authorized-record h5{font-size:1rem;margin:8px 0;}
+.authorized-record dl{
+  display:grid;
+  grid-template-columns:minmax(120px,180px) 1fr;
+  gap:6px 12px;
+  margin:0;
+}
+.authorized-record dt{font-weight:800;font-size:.82rem;}
+.authorized-record dd{margin:0;overflow-wrap:anywhere;}
+@media(max-width:620px){
+  .authorized-record dl{grid-template-columns:1fr;}
+  .authorized-record dd{padding-bottom:5px;}
+}
+
+
+/* v3.3.74 — complete Today operational brief + Tomorrow preparation brief */
+.today-card{border-color:#8db5a3;background:#fcfffd;}
+.tomorrow-card{border-color:#bec39a;background:#fffffc;}
+.day-role-banner{display:grid;gap:3px;padding:11px 13px;border-radius:11px;margin:0 0 12px;}
+.day-role-banner strong{font-size:1rem;}
+.day-role-banner span{font-size:.86rem;line-height:1.35;}
+.today-role{background:#e9f6ef;border:1px solid #a9cfbb;color:#24533f;}
+.tomorrow-role{background:#f5f6e8;border:1px solid #d0d3a9;color:#565a29;}
+.ops-section{border-top:1px solid #e1e8e5;padding:11px 0 3px;}
+.ops-section:first-of-type{border-top:0;}
+.ops-section>h3{margin:0 0 7px;font-size:1rem;color:#314a42;}
+.ops-section.primary{background:#f6f9f8;border:1px solid #dbe5e1;border-radius:11px;padding:11px 12px;margin-bottom:5px;}
+.ops-section.support{margin-top:4px;}
+.context-ok{margin:5px 0;color:#68736f;font-size:.9rem;}
+.weather-context{border-radius:10px;padding:10px 11px;}
+.weather-context p{margin:4px 0;}
+.weather-context small{display:block;line-height:1.35;color:#5f6e69;}
+.weather-context.live{background:#edf7f9;border-left:4px solid #5d8796;}
+.weather-context.planning{background:#faf5e7;border-left:4px solid #b98b45;}
+.local-money-context{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.local-money-context>div{background:#f8faf9;border:1px solid #e0e6e3;border-radius:10px;padding:10px 11px;}
+.local-money-context h4{margin:0 0 5px;}
+.local-money-context strong{font-size:.9rem;}
+.local-money-context ul{margin:6px 0 0;padding-left:18px;}
+.authorized-context-block{border:1px solid #93b8a4;border-radius:10px;background:#f4fbf7;margin-top:8px;overflow:hidden;}
+.authorized-context-block>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 11px;font-weight:850;}
+.authorized-context-block>summary::-webkit-details-marker{display:none;}
+.authorized-context-block[open]>summary{background:#eaf5ee;}
+.authorized-context-body{display:grid;gap:8px;padding:0 10px 10px;}
+.future-compact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.future-compact-grid section{background:#f8faf9;border:1px solid #e1e7e4;border-radius:9px;padding:9px 10px;}
+.future-compact-grid h4{margin:0 0 5px;}
+.future-compact-grid ul{margin:4px 0;padding-left:18px;}
+@media(max-width:720px){
+  .local-money-context,.future-compact-grid{grid-template-columns:1fr;}
+  .ops-section>h3{font-size:.96rem;}
+}
+
+
+/* v3.3.75 — secure-context bridge repair */
+.daily-secure-warning{
+  display:block;
+  margin-top:6px;
+  font-weight:750;
+}
+.ops-section.secure-source{
+  border-color:#87a695;
+  background:#f7fbf8;
+}
+
+/* v3.3.76 — authorization-module load diagnostic */
+.daily-vault-status.error{
+  background:#fff1f0;
+  border:1px solid #d69a96;
+  color:#6d2b27;
+}
+
+
+/* v3.3.77 — compact all-dropdown Daily Operations */
+.top-dropdown{
+  padding:0 !important;
+  overflow:hidden;
+}
+.top-dropdown>summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:13px 15px;
+}
+.top-dropdown>summary::-webkit-details-marker{display:none;}
+.top-dropdown>summary>span:first-child{display:grid;gap:3px;}
+.top-dropdown>summary strong{font-size:1rem;}
+.top-dropdown-state{
+  flex:0 0 auto;
+  font-size:.78rem;
+  font-weight:850;
+  color:#365b50;
+}
+.top-dropdown[open]>summary{background:#f1f6f4;}
+.top-dropdown-body{padding:0 15px 15px;}
+
+.focus-strip{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:0 0 14px;
+}
+.focus-card{
+  display:grid;
+  gap:4px;
+  border-radius:14px;
+  padding:13px 15px;
+  border:2px solid;
+  box-shadow:0 3px 12px rgba(30,50,45,.05);
+}
+.today-focus{
+  background:#eaf7f0;
+  border-color:#4b8b70;
+  color:#173e31;
+}
+.tomorrow-focus{
+  background:#f7f5e6;
+  border-color:#a9a253;
+  color:#4f5223;
+}
+.focus-label{
+  font-size:.82rem;
+  font-weight:950;
+  letter-spacing:.13em;
+}
+.focus-card strong{
+  font-size:1.03rem;
+  line-height:1.25;
+}
+
+.daily-vault-status{
+  padding:0 !important;
+  overflow:hidden;
+}
+.secure-status-dropdown>summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:10px 13px;
+}
+.secure-status-dropdown>summary::-webkit-details-marker{display:none;}
+.secure-status-dropdown>summary span{
+  font-size:.82rem;
+  font-weight:800;
+  white-space:nowrap;
+}
+.secure-status-dropdown>div{padding:0 13px 11px;}
+.secure-status-dropdown p{margin:4px 0;}
+
+.trip-day-dropdown.today-card,
+.trip-day-dropdown.tomorrow-card{
+  border-width:2px;
+}
+.trip-day-dropdown.today-card{
+  border-color:#4b8b70;
+  box-shadow:0 4px 16px rgba(54,112,86,.10);
+}
+.trip-day-dropdown.tomorrow-card{
+  border-color:#aaa552;
+  box-shadow:0 4px 16px rgba(124,122,57,.08);
+}
+.trip-day-dropdown.today-card>summary{
+  background:#eaf7f0 !important;
+}
+.trip-day-dropdown.tomorrow-card>summary{
+  background:#f7f5e6 !important;
+}
+.day-title-label{
+  width:max-content;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:.72rem;
+  font-weight:950;
+  letter-spacing:.13em;
+}
+.day-title-label.today{
+  background:#2f7357;
+  color:#fff;
+}
+.day-title-label.tomorrow{
+  background:#7d7a2f;
+  color:#fff;
+}
+.day-summary-main>strong{
+  font-size:1.08rem;
+  line-height:1.2;
+}
+.day-status.today,
+.day-status.tomorrow{
+  min-width:72px;
+  text-align:center;
+}
+
+.ops-dropdown-list{
+  display:grid;
+  gap:7px;
+}
+.ops-dropdown{
+  border:1px solid #d8e1de;
+  border-radius:10px;
+  background:#fff;
+  overflow:hidden;
+}
+.ops-dropdown>summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+}
+.ops-dropdown>summary::-webkit-details-marker{display:none;}
+.ops-dropdown[open]>summary{
+  background:#f3f7f5;
+  border-bottom:1px solid #dde5e2;
+}
+.ops-dropdown.primary{border-color:#9fbeb0;}
+.ops-dropdown.primary>summary{background:#edf6f1;}
+.ops-dropdown.secure-source{border-color:#8eae9c;}
+.ops-dropdown.support{border-color:#b9c7c1;}
+.ops-dropdown-title{
+  font-weight:850;
+  color:#2d463d;
+}
+.ops-dropdown-meta{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex:0 0 auto;
+}
+.ops-dropdown-meta b{
+  font-size:.65rem;
+  letter-spacing:.06em;
+  padding:3px 6px;
+  border-radius:999px;
+  background:#dfeee6;
+  color:#2c604b;
+}
+.ops-dropdown-state{
+  font-size:.75rem;
+  font-weight:800;
+  color:#60706b;
+}
+.ops-dropdown-body{padding:10px 12px 12px;}
+.ops-dropdown-body>ul:first-child,
+.ops-dropdown-body>p:first-child{margin-top:0;}
+.ops-dropdown-body>ul:last-child,
+.ops-dropdown-body>p:last-child{margin-bottom:0;}
+
+.day-role-banner{margin-bottom:8px;}
+.day-detail-body{padding-top:2px;}
+.ops-section{display:none;}
+.future-dropdowns .ops-dropdown>summary{padding:9px 11px;}
+
+@media(max-width:720px){
+  .focus-strip{grid-template-columns:1fr;}
+  .focus-card{padding:11px 12px;}
+  .ops-dropdown>summary{align-items:flex-start;}
+  .ops-dropdown-meta{padding-top:1px;}
+  .ops-dropdown-meta b{display:none;}
+  .day-summary-main>strong{font-size:1rem;}
+}
+
+
+/* v3.3.78 — date-authoritative lodging matching */
+.authorized-stay-dates{
+  display:inline-block;
+  margin:0 0 9px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#edf4f0;
+  color:#36594b;
+  font-size:.76rem;
+  font-weight:800;
+}
+
+
+/* v3.3.79 — explicit in-transit lodging state */
+.transit-lodging{
+  margin:0;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#f3f6f7;
+  border:1px solid #d3dcdf;
+}

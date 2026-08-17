@@ -1,7 +1,11 @@
-./FILE_MANIFEST.txt
+./.gitattributes
+./MILESTONE_v3.3.80.txt
 ./README_GITHUB_PUBLIC.txt
 ./app.js
 ./apps/README.txt
+./apps/tee-maintenance/app.js
+./apps/tee-maintenance/index.html
+./apps/tee-maintenance/styles.css
 ./apps/travel-archive/app.js
 ./apps/travel-archive/index.html
 ./apps/travel-archive/manifest.json
@@ -76,6 +80,8 @@
 ./apps/travel-private-documents/secure-vault.js
 ./apps/travel-private-documents/smart-intake.js
 ./apps/travel-private-documents/source-authority.js
+./apps/travel-private-documents/source-document-manager.js
+./apps/travel-private-documents/streamline-source-docs.js
 ./apps/travel-private-documents/structured-documents.js
 ./apps/travel-private-documents/styles.css
 ./apps/travel-private-documents/tee-import-candidates.js
@@ -94,6 +100,7 @@
 ./config.js
 ./encryption.js
 ./hub-registry.js
+./hub-v369.js
 ./index.html
 ./manifest.json
 ./shared-expense-beacon.json
@@ -102,5 +109,6 @@
 ./sw.js
 ./traveler-help.css
 ./traveler-help.js
+./vault-session.js
 ./vault.js
 ./version.json

@@ -7,9 +7,20 @@ const cacheBtn = document.getElementById('cacheBtn');
 const expandHubCardsBtn = document.getElementById('expandHubCardsBtn');
 const collapseHubCardsBtn = document.getElementById('collapseHubCardsBtn');
 const installBtn = document.getElementById('installBtn');
+const backupTeeBtn=document.getElementById('backupTeeBtn');
+const restoreTeeBtn=document.getElementById('restoreTeeBtn');
+const updateTeeBtn=document.getElementById('updateTeeBtn');
+const fixTeeBtn=document.getElementById('fixTeeBtn');
+const quickReferenceBtn=document.getElementById('quickReferenceBtn');
+const backupStatusText=document.getElementById('backupStatusText');
+const backupStatusBadge=document.getElementById('backupStatusBadge');
+const firstRunDialog=document.getElementById('firstRunDialog');
+const firstRunRestore=document.getElementById('firstRunRestore');
+const firstRunCreate=document.getElementById('firstRunCreate');
+const firstRunLater=document.getElementById('firstRunLater');
 
-const TEE_BUILD_VERSION = '3.3.51';
-const TEE_EXPECTED_CACHE = 'tee-v3-3-51-update-install-recovery';
+const TEE_BUILD_VERSION = '3.3.68';
+const TEE_EXPECTED_CACHE = 'tee-v3-3-55-all-apps-default-expanded';
 const UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 function unique(values){return [...new Set(values)].filter(Boolean).sort();}
@@ -137,7 +148,7 @@ prepareOfflineBtn?.addEventListener('click',async()=>{
   finally{prepareOfflineBtn.disabled=false;}
 });
 
-// ---- v3.3.51 update status / daily check ----
+// ---- v3.3.68 update status / daily check ----
 const updateBadge = document.getElementById('updateBadge');
 const currentVersionText = document.getElementById('currentVersionText');
 const latestVersionText = document.getElementById('latestVersionText');
@@ -268,7 +279,8 @@ const runIntegrityBtn=document.getElementById('runIntegrityBtn');
 const MAINT_HELP={
   install:`<h3>Install TEE on iPhone</h3><ol><li>Open the TEE HTTPS address in <strong>Safari</strong>.</li><li>Confirm the correct TEE version appears.</li><li>Tap <strong>Prepare for Offline Use</strong> and wait for Ready.</li><li>Tap Safari's <strong>Share</strong> button → <strong>Add to Home Screen</strong> → Add.</li><li>Open TEE from the new Home Screen icon and verify the vault before traveling offline.</li><li>If TEE asks to create a new two-couple vault but you already have one, do <strong>not</strong> create a replacement. Restore your verified encrypted TEE backup instead.</li></ol><h3>Install / use TEE on PC</h3><ol><li>Development testing: start the TEE HTTPS server and open the exact server address used for that vault.</li><li>Published milestone: open the GitHub Pages HTTPS address in Chrome or Edge.</li><li>If the browser offers an install icon/menu, you may install TEE as an app; otherwise a normal browser tab/bookmark works.</li></ol><p class="maintenance-warning"><strong>Origin safety:</strong> <code>https://127.0.0.1:8443</code> and <code>https://10.x.x.x:8443</code> are different browser storage origins. A vault stored under one address does not automatically appear under the other.</p>`,
   refresh:`<h3>Refresh the Hub</h3><p>Use <strong>Check for Update</strong> first. It checks <code>version.json</code> and asks the service worker to update. If a newer published build is found, use <strong>Update &amp; Restart</strong>.</p><h3>PC refresh</h3><ol><li>Confirm the HTTPS server is serving the intended ACTIVE/APP folder.</li><li>Open the same HTTPS origin that contains your expected local vault.</li><li>Use Check for Update, then reload the page.</li><li>If the old build persists, use Clear App Cache, then reload online and Prepare for Offline Use again.</li></ol><h3>iPhone refresh</h3><ol><li>Open TEE while online.</li><li>Tap Check for Update.</li><li>If offered, tap Update &amp; Restart.</li><li>If the Home Screen app still shows an old build, close it fully and reopen.</li><li>If necessary, open the TEE address once in Safari, verify the current build, then reopen the Home Screen app.</li></ol><h3>Broken app/Home Screen link</h3><p>First confirm the underlying HTTPS address still opens in Safari. A local-PC address only works while the phone can reach that PC/network. A published GitHub Pages address is the intended remote distribution address.</p><h3>Service worker appears to block an update</h3><p>Run Repair Diagnostics. Then use Clear App Cache → Check for Update → Prepare for Offline Use. Do <strong>not</strong> clear Safari website data merely to fix an app-shell update; website-data clearing can remove local vault data.</p>`,
-  safety:`<h3>Tags</h3><p>Tags support search/filtering and relationships. Rename or remove tags only when you have checked where they are referenced. A spelling-only change can make an expected filter appear empty.</p><h3>Cross-links</h3><p>Cross-links should point to stable app IDs/URLs. Repair Diagnostics checks registry related-app IDs and attempts to verify built app links while online. Do not replace a working relative link with a device-specific absolute path.</p><h3>References</h3><p>A reference may point to supporting material without being the authoritative protected record. Do not delete a referenced source merely because the structured record exists unless the source-retention decision is intentional.</p><h3>Notes</h3><p>Keep notes attached to their owning record/app unless intentionally promoted to a reusable reference. Changing labels or navigation should not silently detach note data.</p><h3>Hub Registry safety</h3><p><code>hub-registry.js</code> controls Hub app names, IDs, URLs, categories, tags and related-app links. Avoid casual manual edits. Keep IDs unique, preserve stable IDs once other apps reference them, and run Repair Diagnostics after registry changes.</p><p class="maintenance-warning"><strong>Clear App Cache is safe for app-shell repair only.</strong> It does not intentionally clear vault records, passphrases, expenses, notes, IndexedDB or localStorage. Never substitute “clear all website data” for this button.</p>`
+  safety:`<h3>Tags</h3><p>Tags support search/filtering and relationships. Rename or remove tags only when you have checked where they are referenced. A spelling-only change can make an expected filter appear empty.</p><h3>Cross-links</h3><p>Cross-links should point to stable app IDs/URLs. Repair Diagnostics checks registry related-app IDs and attempts to verify built app links while online. Do not replace a working relative link with a device-specific absolute path.</p><h3>References</h3><p>A reference may point to supporting material without being the authoritative protected record. Do not delete a referenced source merely because the structured record exists unless the source-retention decision is intentional.</p><h3>Notes</h3><p>Keep notes attached to their owning record/app unless intentionally promoted to a reusable reference. Changing labels or navigation should not silently detach note data.</p><h3>Hub Registry safety</h3><p><code>hub-registry.js</code> controls Hub app names, IDs, URLs, categories, tags and related-app links. Avoid casual manual edits. Keep IDs unique, preserve stable IDs once other apps reference them, and run Repair Diagnostics after registry changes.</p><p class="maintenance-warning"><strong>Clear App Cache is safe for app-shell repair only.</strong> It does not intentionally clear vault records, passphrases, expenses, notes, IndexedDB or localStorage. Never substitute “clear all website data” for this button.</p>`,
+  reference:`<h3>TEE Quick Reference</h3><div class="reference-key"><p><strong>Update TEE</strong> → Get the newest app software.</p><p><strong>Backup TEE</strong> → Create a fresh encrypted copy of trip data.</p><p><strong>Restore TEE</strong> → Load trip data from an encrypted backup.</p><p><strong>Prepare Offline</strong> → Cache TEE so it can open without internet.</p><p><strong>Lock TEE</strong> → Protect Shared/Private information.</p><p><strong>Unlock TEE</strong> → Enter your couple passphrase.</p><p><strong>Public</strong> → Safe for anyone to see.</p><p><strong>Shared</strong> → Available to both traveling couples after authorization.</p><p><strong>Private</strong> → Available only to the owning couple.</p></div><h3>iCloud backup</h3><p>Save the newest encrypted backup to <strong>iCloud Drive → TEE Backups → Current</strong>. Older backups can go in Archive.</p><h3>If something looks wrong</h3><p><strong>Old version:</strong> Update TEE. <strong>Broken link:</strong> Fix TEE. <strong>Won’t work offline:</strong> Prepare for Offline Use again. <strong>Changed phones or records missing:</strong> Restore TEE — do not create a replacement vault.</p><p class="maintenance-warning"><strong>Remember:</strong> Update TEE changes the software. Backup/Restore TEE handles your encrypted trip information.</p>`
 };
 function showMaintenance(tab='install'){
   if(!maintenanceDialog||!maintenanceDialogBody)return;
@@ -276,6 +288,43 @@ function showMaintenance(tab='install'){
   document.querySelectorAll('[data-maint-tab]').forEach(b=>b.classList.toggle('active',b.dataset.maintTab===tab));
   if(!maintenanceDialog.open){if(typeof maintenanceDialog.showModal==='function')maintenanceDialog.showModal();else maintenanceDialog.setAttribute('open','');}
 }
+
+function openTravelerVaultAction(action){
+  const url=new URL('apps/travel-private-documents/index.html',location.href);
+  url.searchParams.set('teeAction',action);
+  location.href=url.toString();
+}
+function refreshBackupStatus(){
+  let meta={};
+  try{meta=JSON.parse(localStorage.getItem('teeSecureVaultHealthMetadata')||'{}')||{};}catch{}
+  const last=meta.lastBackupAt;
+  if(last){
+    const d=new Date(last);
+    backupStatusText.textContent=`Last encrypted backup on this device: ${d.toLocaleString()}. Save the newest copy to iCloud Drive → TEE Backups → Current.`;
+    backupStatusBadge.textContent='Backup available';
+    backupStatusBadge.className='offline-badge ready';
+  }else{
+    backupStatusText.textContent='No recent backup is recorded on this device. Use Backup TEE after important trip changes.';
+    backupStatusBadge.textContent='Backup recommended';
+    backupStatusBadge.className='offline-badge warn';
+  }
+}
+function maybeShowFirstRun(){
+  const hasVault=localStorage.getItem('teeSecureVaultV1');
+  const dismissed=sessionStorage.getItem('tee-first-run-dismissed');
+  if(!hasVault && !dismissed && firstRunDialog && !firstRunDialog.open){
+    setTimeout(()=>firstRunDialog.showModal(),350);
+  }
+}
+backupTeeBtn?.addEventListener('click',()=>openTravelerVaultAction('backup'));
+restoreTeeBtn?.addEventListener('click',()=>openTravelerVaultAction('restore'));
+updateTeeBtn?.addEventListener('click',()=>cacheBtn?.click());
+fixTeeBtn?.addEventListener('click',()=>showMaintenance('refresh'));
+quickReferenceBtn?.addEventListener('click',()=>showMaintenance('reference'));
+firstRunRestore?.addEventListener('click',()=>openTravelerVaultAction('restore'));
+firstRunCreate?.addEventListener('click',()=>openTravelerVaultAction('create'));
+firstRunLater?.addEventListener('click',()=>{sessionStorage.setItem('tee-first-run-dismissed','1');firstRunDialog?.close();});
+
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(nativeInstallBtn)nativeInstallBtn.hidden=false;});
 installBtn?.addEventListener('click',()=>showMaintenance('install'));
 maintenanceHelpBtn?.addEventListener('click',()=>showMaintenance('refresh'));
@@ -386,6 +435,8 @@ runIntegrityBtn?.addEventListener('click',async()=>{maintenanceDialog?.close();a
 
 window.addEventListener('load',async()=>{
   refreshSavedUpdateStatus();
+  refreshBackupStatus();
+  maybeShowFirstRun();
   dailyUpdateCheckIfDue();
   try{
     const st=await getOfflineStatus();
@@ -396,3 +447,128 @@ window.addEventListener('load',async()=>{
     }
   }catch{}
 });
+
+
+// ---- TEE v3.3.68 Clean Hub Interface ----
+const travelerHome = document.getElementById('travelerHome');
+const travelerQuickGrid = document.getElementById('travelerQuickGrid');
+const uiModeBtn = document.getElementById('uiModeBtn');
+const showTravelerToolsBtn = document.getElementById('showTravelerToolsBtn');
+const showAllAppsBtn = document.getElementById('showAllAppsBtn');
+const travelerHelpBtn = document.getElementById('travelerHelpBtn');
+const travelerTools = document.getElementById('travelerTools');
+const collapseTravelerToolsBtn = document.getElementById('collapseTravelerToolsBtn');
+const showTripWindowBtn = document.getElementById('showTripWindowBtn');
+const showUhdfBtn = document.getElementById('showUhdfBtn');
+const showBuildModeBtn = document.getElementById('showBuildModeBtn');
+const showIphoneTestBtn = document.getElementById('showIphoneTestBtn');
+const showAppMaintenanceBtn = document.getElementById('showAppMaintenanceBtn');
+const tripWindowPanel = document.getElementById('tripWindowPanel');
+const uhdfPanel = document.getElementById('uhdfPanel');
+const buildModePanel = document.getElementById('buildModePanel');
+const appMaintenancePanel = document.getElementById('appMaintenancePanel');
+const collapseTripWindowBtn = document.getElementById('collapseTripWindowBtn');
+const collapseUhdfBtn = document.getElementById('collapseUhdfBtn');
+const collapseBuildModeBtn = document.getElementById('collapseBuildModeBtn');
+const collapseIphoneTestBtn = document.getElementById('collapseIphoneTestBtn');
+const collapseAppMaintenanceBtn = document.getElementById('collapseAppMaintenanceBtn');
+
+const TRAVELER_QUICK_IDS = [
+  ['travel-daily-operations','Today'],
+  ['travel-itinerary','Itinerary'],
+  ['travel-transportation','Transportation'],
+  ['travel-hotels','Hotels'],
+  ['travel-essentials','Essentials'],
+  ['travel-weather-clothing','Weather'],
+  ['travel-costs','Costs']
+];
+
+function travelerModePreferred(){
+  return window.matchMedia('(max-width: 820px)').matches ||
+    window.matchMedia('(display-mode: standalone)').matches ||
+    navigator.standalone === true;
+}
+function currentUiMode(){
+  const saved=localStorage.getItem('tee-ui-mode');
+  return saved==='full'||saved==='traveler' ? saved : (travelerModePreferred()?'traveler':'full');
+}
+function setPanel(panel, button, open, openLabel, closeLabel){
+  if(!panel)return;
+  panel.hidden=!open;
+  if(button)button.textContent=open?closeLabel:openLabel;
+  if(open) panel.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function collapseAllHubPanels(){
+  setPanel(travelerTools,showTravelerToolsBtn,false,'TEE Tools','Collapse TEE Tools');
+  setPanel(tripWindowPanel,showTripWindowBtn,false,'Trip Window','Collapse Trip Window');
+  setPanel(uhdfPanel,showUhdfBtn,false,'UHDF Status','Collapse UHDF Status');
+  setPanel(buildModePanel,showBuildModeBtn,false,'Build Mode','Collapse Build Mode');
+  setPanel(offlinePanel,showIphoneTestBtn,false,'iPhone Test','Collapse iPhone Test');
+  setPanel(appMaintenancePanel,showAppMaintenanceBtn,false,'App Maintenance','Collapse App Maintenance');
+}
+function applyUiMode(mode, persist=false){
+  const traveler=mode==='traveler';
+  document.body.classList.toggle('traveler-mode',traveler);
+  // v3.3.68: the complete app list is visible by default in both Traveler and Full modes.
+  document.body.classList.add('traveler-show-all');
+  document.querySelector('.tools')?.removeAttribute('hidden');
+  categoryMount?.removeAttribute('hidden');
+  collapseAllHubPanels();
+  if(persist)localStorage.setItem('tee-ui-mode',mode);
+  if(uiModeBtn) uiModeBtn.textContent=traveler?'Full Mode':'Traveler Mode';
+  if(showAllAppsBtn) showAllAppsBtn.textContent='Collapse All Apps';
+  if(travelerHome) travelerHome.hidden=false;
+}
+function buildTravelerQuickGrid(){
+  if(!travelerQuickGrid)return;
+  travelerQuickGrid.innerHTML='';
+  TRAVELER_QUICK_IDS.forEach(([id,label])=>{
+    const app=registry.find(x=>x.id===id);
+    if(!app||!isBuilt(app))return;
+    const a=document.createElement('a');
+    a.className='traveler-quick-card';
+    a.href=app.url;
+    a.dataset.appId=id;
+    a.innerHTML=`<strong>${label}</strong><span>${app.name}</span>`;
+    travelerQuickGrid.appendChild(a);
+  });
+}
+buildTravelerQuickGrid();
+applyUiMode(currentUiMode());
+
+uiModeBtn?.addEventListener('click',()=>{
+  const next=document.body.classList.contains('traveler-mode')?'full':'traveler';
+  applyUiMode(next,true);
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+showAllAppsBtn?.addEventListener('click',()=>{
+  const open=document.body.classList.toggle('traveler-show-all');
+  showAllAppsBtn.textContent=open?'Collapse All Apps':'All Apps';
+  if(open){
+    document.querySelector('.tools')?.removeAttribute('hidden');
+    categoryMount?.removeAttribute('hidden');
+    categoryMount?.scrollIntoView({behavior:'smooth',block:'start'});
+  }else{
+    document.querySelector('.tools')?.setAttribute('hidden','');
+    categoryMount?.setAttribute('hidden','');
+  }
+});
+function togglePanel(panel,button,openLabel,closeLabel){
+  const open=panel?.hidden!==false;
+  setPanel(panel,button,open,openLabel,closeLabel);
+}
+showTravelerToolsBtn?.addEventListener('click',()=>togglePanel(travelerTools,showTravelerToolsBtn,'TEE Tools','Collapse TEE Tools'));
+collapseTravelerToolsBtn?.addEventListener('click',()=>setPanel(travelerTools,showTravelerToolsBtn,false,'TEE Tools','Collapse TEE Tools'));
+showTripWindowBtn?.addEventListener('click',()=>togglePanel(tripWindowPanel,showTripWindowBtn,'Trip Window','Collapse Trip Window'));
+collapseTripWindowBtn?.addEventListener('click',()=>setPanel(tripWindowPanel,showTripWindowBtn,false,'Trip Window','Collapse Trip Window'));
+showUhdfBtn?.addEventListener('click',()=>togglePanel(uhdfPanel,showUhdfBtn,'UHDF Status','Collapse UHDF Status'));
+collapseUhdfBtn?.addEventListener('click',()=>setPanel(uhdfPanel,showUhdfBtn,false,'UHDF Status','Collapse UHDF Status'));
+showBuildModeBtn?.addEventListener('click',()=>togglePanel(buildModePanel,showBuildModeBtn,'Build Mode','Collapse Build Mode'));
+collapseBuildModeBtn?.addEventListener('click',()=>setPanel(buildModePanel,showBuildModeBtn,false,'Build Mode','Collapse Build Mode'));
+showIphoneTestBtn?.addEventListener('click',()=>togglePanel(offlinePanel,showIphoneTestBtn,'iPhone Test','Collapse iPhone Test'));
+collapseIphoneTestBtn?.addEventListener('click',()=>setPanel(offlinePanel,showIphoneTestBtn,false,'iPhone Test','Collapse iPhone Test'));
+showAppMaintenanceBtn?.addEventListener('click',()=>togglePanel(appMaintenancePanel,showAppMaintenanceBtn,'App Maintenance','Collapse App Maintenance'));
+collapseAppMaintenanceBtn?.addEventListener('click',()=>setPanel(appMaintenancePanel,showAppMaintenanceBtn,false,'App Maintenance','Collapse App Maintenance'));
+travelerHelpBtn?.addEventListener('click',()=>quickReferenceBtn?.click());
+
+// The detailed app list/search is intentionally collapsed on a clean Hub start.

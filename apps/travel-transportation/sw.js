@@ -1,4 +1,4 @@
-const CACHE = 'tee-transportation-v3-3-51-update-install-recovery';
+const CACHE = 'tee-transportation-v3-3-52-simple-traveler-setup';
 const CACHE_PREFIX = 'tee-transportation-';
 const ASSETS = ['./index.html','./styles.css','./app.js','./manifest.json','../../assets/icon.svg'];
 

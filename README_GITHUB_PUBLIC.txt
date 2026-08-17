@@ -1,22 +1,39 @@
-TEE v3.3.51 — GitHub Public Milestone
+TEE v3.3.80 — GitHub Public Tester Milestone
 
 PURPOSE
-This folder is the GitHub-safe deployable TEE application. It contains the complete application code needed to run TEE, including the local encrypted-vault functionality, plus intentionally Public trip context.
+This repository is the GitHub-safe deployable TEE application for tester distribution.
+It contains the application code needed to run TEE, including local encrypted-Vault
+functionality, plus intentionally Public trip context.
 
-NOT INCLUDED
-- Encrypted vault backup files
-- .tee37 / .tee49 migration or archive packages
+MILESTONE
+v3.3.80 — Rail Pass Context Filter / Daily Operations Tester Milestone
+
+CURRENT TEST FOCUS
+- Hub usability
+- Secure Vault unlock and 30-minute authorized session
+- Daily Operations Today/Tomorrow workflow
+- Contextual display of authorized secure records after the tester restores their
+  encrypted Vault backup locally
+- Compact dropdown navigation
+- Hotel/date and rail-pass relevance filtering
+
+NOT INCLUDED IN GITHUB
+- Encrypted Vault backup files
 - Passphrases, recovery keys, migration codes, or credentials
 - Private or Shared record values
 - Passport / Global Entry source files or images
-- Booking confirmations, PNRs, ticket numbers, receipts, payment details, private contacts, or protected source documents
+- Booking confirmations, PNRs, ticket numbers, receipts, payment details,
+  private contacts, or protected source-document files
 - Local HTTPS server certificates / private keys
 
 HOW PROTECTED DATA WORKS
-The published application can create or restore the TEE encrypted vault locally on each authorized device. Shared and Private data is imported/restored separately from an encrypted TEE backup. Do not commit those backup files to GitHub.
+The published application stores/restores the encrypted Vault locally on each
+authorized tester device. Protected trip data is restored separately from the user's
+encrypted TEE backup. Do not commit encrypted backup files or protected source files
+to this repository.
 
 GITHUB PAGES
-Publish the CONTENTS of this folder at the repository root (index.html must be at the Pages root). Keep protected backup files in your chosen secure backup location, not in the repository.
+The repository root is the deployable app root (index.html is at the Pages root).
 
 VERSION
-TEE v3.3.51 — github-public-milestone
+TEE v3.3.80

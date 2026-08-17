@@ -957,6 +957,143 @@ async function saveRecordTags() {
   }
 }
 
+
+const AUTHORIZED_SESSION_KEY = "teeAuthorizedVaultSessionV1";
+const AUTHORIZED_SESSION_MS = 30 * 60 * 1000;
+let authorizedSessionHardTimer = null;
+
+function authorizedSessionDisplayRecord(record){
+  const definition = getSecureRecordDefinition(record.type);
+
+  // Structured Documents are a major protected-data source in TEE.
+  // Publish only their text fields to the temporary authorized session.
+  // Protected images, embedded original files, and raw payload JSON stay out
+  // of sessionStorage and remain inside the encrypted vault.
+  if(record.type === "structuredDocument"){
+    let protectedFields = [];
+    try{
+      const payload = JSON.parse(record.fields?.payloadJson || "{}");
+      protectedFields = (Array.isArray(payload.fields) ? payload.fields : [])
+        .map((field,index)=>({
+          key:`structuredField${index+1}`,
+          label:String(field?.label || `Field ${index+1}`),
+          sensitivity:record.accessScope === "private" ? "private" : "shared",
+          value:String(field?.value ?? "")
+        }))
+        .filter(field=>field.value.trim() !== "");
+    }catch{}
+
+    return {
+      recordId: record.recordId || "",
+      type: "structuredDocument",
+      typeLabel: "Protected Source Document",
+      title: record.fields?.documentTitle || "Structured Document",
+      category: record.fields?.category || "",
+      documentId: record.fields?.documentId || "",
+      accessScope: record.accessScope === "private" ? "private" : "shared",
+      recordStatus: record.recordStatus || "active",
+      fields: protectedFields
+    };
+  }
+
+  const fields = (definition?.fields || []).map(field => ({
+    key: field.key,
+    label: field.label || field.key,
+    sensitivity: field.sensitivity || "private",
+    value: record.fields?.[field.key] ?? ""
+  })).filter(field => String(field.value ?? "").trim() !== "");
+
+  return {
+    recordId: record.recordId || "",
+    type: record.type || "",
+    typeLabel: definition?.label || record.type || "Record",
+    title: getRecordTitle(record),
+    accessScope: record.accessScope === "private" ? "private" : "shared",
+    recordStatus: record.recordStatus || "active",
+    fields
+  };
+}
+
+function currentAuthorizedSessionPayload(existingExpiry = null){
+  if(getVaultState() !== "unlocked") return null;
+  const normalized = normalizeVaultData(getActiveVaultData()).data;
+  const now = Date.now();
+  const expiresAt = existingExpiry && Number(existingExpiry) > now
+    ? Number(existingExpiry)
+    : now + AUTHORIZED_SESSION_MS;
+
+  return {
+    version: 2,
+    profileId: getActiveProfileId(),
+    profileLabel: getActiveProfileLabel(),
+    unlockedAt: new Date(now).toISOString(),
+    expiresAt,
+    records: (normalized.records || [])
+      .filter(record => (record.recordStatus || "active") !== "deleted")
+      .map(authorizedSessionDisplayRecord)
+  };
+}
+
+function notifyAuthorizedSession(type, payload = null){
+  const message = { type, payload };
+  try { window.dispatchEvent(new CustomEvent("tee-vault-session-changed", {detail:message})); } catch {}
+  try {
+    if(window.parent && window.parent !== window){
+      window.parent.postMessage(message, window.location.origin);
+    }
+  } catch {}
+}
+
+function scheduleAuthorizedSessionHardLock(expiresAt){
+  if(authorizedSessionHardTimer !== null) window.clearTimeout(authorizedSessionHardTimer);
+  authorizedSessionHardTimer = null;
+  const delay = Math.max(0, Number(expiresAt) - Date.now());
+  authorizedSessionHardTimer = window.setTimeout(()=>{
+    authorizedSessionHardTimer = null;
+    if(getVaultState() === "unlocked"){
+      lockSecureVault("The 30-minute authorization session ended.");
+    }else{
+      try { sessionStorage.removeItem(AUTHORIZED_SESSION_KEY); } catch {}
+      notifyAuthorizedSession("TEE_VAULT_SESSION_CLOSED");
+    }
+  }, delay + 25);
+}
+
+function publishAuthorizedSession({preserveExpiry=false} = {}){
+  if(getVaultState() !== "unlocked") return null;
+  let prior = null;
+  try { prior = JSON.parse(sessionStorage.getItem(AUTHORIZED_SESSION_KEY) || "null"); } catch {}
+  const payload = currentAuthorizedSessionPayload(
+    preserveExpiry && prior?.expiresAt ? prior.expiresAt : null
+  );
+  if(!payload) return null;
+  sessionStorage.setItem(AUTHORIZED_SESSION_KEY, JSON.stringify(payload));
+  scheduleAuthorizedSessionHardLock(payload.expiresAt);
+  notifyAuthorizedSession("TEE_VAULT_SESSION_OPEN", {
+    profileId: payload.profileId,
+    profileLabel: payload.profileLabel,
+    unlockedAt: payload.unlockedAt,
+    expiresAt: payload.expiresAt,
+    recordCount: payload.records.length
+  });
+  return payload;
+}
+
+function refreshAuthorizedSession(){
+  try{
+    const prior = JSON.parse(sessionStorage.getItem(AUTHORIZED_SESSION_KEY) || "null");
+    if(!prior?.expiresAt || Number(prior.expiresAt) <= Date.now()) return;
+    publishAuthorizedSession({preserveExpiry:true});
+  }catch{}
+}
+
+function clearAuthorizedSessionNotice(){
+  if(authorizedSessionHardTimer !== null) window.clearTimeout(authorizedSessionHardTimer);
+  authorizedSessionHardTimer = null;
+  try { sessionStorage.removeItem(AUTHORIZED_SESSION_KEY); } catch {}
+  notifyAuthorizedSession("TEE_VAULT_SESSION_CLOSED");
+}
+
 async function persistActiveVaultData() {
   const data = getActiveVaultData();
   const key = getActiveEncryptionKey();
@@ -976,6 +1113,7 @@ async function persistActiveVaultData() {
   if (!saveVault(storedVault)) {
     throw new Error("The browser could not save the encrypted vault.");
   }
+  refreshAuthorizedSession();
 }
 
 
@@ -1099,6 +1237,24 @@ const VAULT_DASHBOARD_SECTIONS = Object.freeze([
 
 let activeDashboardSection = null;
 
+function applyRequestedVaultSection(){
+  const requested=(sessionStorage.getItem('teeVaultRequestedSectionV1')||new URLSearchParams(location.search).get('teeVaultSection')||'').trim();
+  if(!requested||getVaultState()!=='unlocked')return false;
+  const section=VAULT_DASHBOARD_SECTIONS.find(item=>item.key===requested);
+  if(!section)return false;
+  activeDashboardSection=section.key;
+  if(secureVaultUi.recordFilter)secureVaultUi.recordFilter.value='all';
+  if(secureVaultUi.recordSearch)secureVaultUi.recordSearch.value='';
+  activeTagFilters.clear();
+  const recordsWorkspace=document.getElementById('secureRecordsWorkspace');
+  if(recordsWorkspace)recordsWorkspace.hidden=false;
+  expandSecureRecordsWorkspace({scroll:false});
+  renderRecords();
+  sessionStorage.removeItem('teeVaultRequestedSectionV1');
+  requestAnimationFrame(()=>secureVaultUi.recordList?.scrollIntoView({behavior:'smooth',block:'start'}));
+  return true;
+}
+
 function recordMatchesDashboardSection(record) {
   if (!activeDashboardSection) return true;
   const section = VAULT_DASHBOARD_SECTIONS.find(item => item.key === activeDashboardSection);
@@ -1153,7 +1309,8 @@ function renderVaultDashboard(records) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "secure-dashboard-card";
-    button.innerHTML = '<span class="secure-dashboard-label">Source Documents</span><strong class="secure-dashboard-count">12</strong><small>managed sources</small>';
+    const sourceCount = (window.TEESourceInventoryCount || 0);
+    button.innerHTML = `<span class="secure-dashboard-label">Source Documents</span><strong class="secure-dashboard-count">${sourceCount || '—'}</strong><small>known source records</small>`;
     button.addEventListener("click", () => sourceSection.scrollIntoView({ behavior: "smooth", block: "start" }));
     secureVaultUi.dashboardGrid.appendChild(button);
   }
@@ -3517,7 +3674,9 @@ async function handleSecureUnlock() {
   }
 
   startAutoLock(() => lockSecureVault("The vault locked automatically."));
+  publishAuthorizedSession();
   updateSecureVaultUi();
+  applyRequestedVaultSection();
   window.dispatchEvent(new CustomEvent("tee-vault-state-changed"));
 }
 
@@ -3568,7 +3727,8 @@ async function handleLegacyArchitectureUpgrade() {
 }
 
 function lockSecureVault(message = "Vault locked.") {
-  lockVault();
+  lockVault({reason:"locked"});
+  clearAuthorizedSessionNotice();
   updateSecureVaultUi();
   setSecureMessage(message, "info");
   window.dispatchEvent(new CustomEvent("tee-vault-state-changed"));
@@ -4520,8 +4680,15 @@ function bindSecureVault() {
     secureVaultUi.panel.addEventListener(type, () => noteVaultActivity(), { passive: true });
   });
 
-  window.addEventListener("pagehide", () => lockVault());
+  window.addEventListener("message", event => {
+    if(event.origin !== window.location.origin) return;
+    if(event.data?.type === "TEE_VAULT_SESSION_LOCK"){
+      lockSecureVault("Vault locked from the Hub.");
+    }
+  });
+  window.addEventListener("pagehide", () => lockVault({preserveAuthorizedSession:true}));
   restoreSecureVault();
+  setTimeout(applyRequestedVaultSection,80);
 }
 
 
@@ -4658,3 +4825,36 @@ window.TEEStructuredDocumentVault = Object.freeze({
 
 
 bindSecureVault();
+
+// v3.3.52 — simple traveler setup / backup / restore entry points from the Hub.
+function setupTravelerActionFromUrl(){
+  const action=new URLSearchParams(location.search).get('teeAction');
+  if(!action) return;
+  const panel=document.getElementById('travelerActionPanel');
+  const title=document.getElementById('travelerActionTitle');
+  const text=document.getElementById('travelerActionText');
+  const primary=document.getElementById('travelerActionPrimary');
+  if(!panel||!title||!text||!primary)return;
+  panel.hidden=false;
+  if(action==='backup'){
+    title.textContent='Backup TEE';
+    text.innerHTML='Create a fresh encrypted backup, then save it to <strong>iCloud Drive → TEE Backups → Current</strong>. TEE never includes your passphrase in the backup.';
+    primary.textContent='Create Encrypted Backup';
+    primary.onclick=()=>{handleEncryptedExport();setTimeout(()=>{panel.scrollIntoView({behavior:'smooth',block:'start'});},150);};
+  }else if(action==='restore'){
+    title.textContent='Restore Existing TEE';
+    text.innerHTML='Choose the newest encrypted backup from <strong>iCloud Drive → TEE Backups → Current</strong>. TEE verifies the backup before replacing a local vault.';
+    primary.textContent='Choose Backup';
+    primary.onclick=()=>{pendingBackupAction='import';secureVaultUi.importFile?.click();};
+  }else if(action==='create'){
+    title.textContent='Create New TEE Vault';
+    text.innerHTML='<strong>Only use this for a genuinely new trip.</strong> If you already have a TEE backup, return to the Hub and choose Restore TEE instead.';
+    primary.textContent='Continue to New Vault Setup';
+    primary.onclick=()=>secureVaultUi.managerCreate?.click();
+  }else{
+    panel.hidden=true;return;
+  }
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+setupTravelerActionFromUrl();
+

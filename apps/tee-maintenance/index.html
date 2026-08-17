@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEE Maintenance 🔒</title>
+  <meta name="theme-color" content="#1f3f5b" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <a class="back" href="../../index.html">← Return to Hub</a>
+    <div class="lock-pill">COUPLE A AUTHORIZATION REQUIRED</div>
+    <h1>Maintenance 🔒</h1>
+    <p>Advanced TEE administration and system care for Couple A + ChatGPT-assisted maintenance.</p>
+  </header>
+
+  <main>
+    <section id="authPanel" class="auth-panel">
+      <h2>Unlock Maintenance</h2>
+      <p>Enter the existing <strong>Couple A passphrase</strong>. TEE verifies it against the current vault; the passphrase is not stored by this app.</p>
+      <label>Couple A passphrase
+        <input id="maintenancePassphrase" type="password" autocomplete="current-password" />
+      </label>
+      <button id="unlockMaintenance" type="button">Unlock Maintenance</button>
+      <p id="authMessage" class="status" aria-live="polite"></p>
+    </section>
+
+    <section id="maintenanceWorkspace" hidden>
+      <section class="maintenance-intro">
+        <div><span class="kicker">AUTHORIZED</span><h2>System Care</h2></div>
+        <button id="lockMaintenance" type="button" class="secondary">Lock Maintenance</button>
+        <p>These controls are intentionally kept out of normal Traveler, Preparation and Library workflows.</p>
+      </section>
+
+      <div class="maintenance-grid">
+        <a class="tool-card" href="../travel-private-documents/index.html?teeMode=maintenance">
+          <strong>Source / Vault Maintenance</strong>
+          <span>Open the full technical Source Documents and Secure Vault workspace.</span>
+        </a>
+        <a class="tool-card" href="../travel-private-documents/index.html?teeMode=maintenance&teeAction=backup">
+          <strong>Backup TEE</strong>
+          <span>Create or verify an encrypted vault backup.</span>
+        </a>
+        <a class="tool-card" href="../travel-private-documents/index.html?teeMode=maintenance&teeAction=restore">
+          <strong>Restore TEE</strong>
+          <span>Restore encrypted trip data without creating a replacement vault.</span>
+        </a>
+        <button id="prepareOfflineBtn" type="button" class="tool-card button-card">
+          <strong>Prepare for Offline Use</strong>
+          <span>Refresh the complete TEE app shell for offline travel.</span>
+        </button>
+        <button id="checkVersionBtn" type="button" class="tool-card button-card">
+          <strong>Check Version</strong>
+          <span>Compare this build with the current local published version file.</span>
+        </button>
+        <button id="diagnosticsBtn" type="button" class="tool-card button-card">
+          <strong>Diagnostics</strong>
+          <span>Review origin, vault presence, service worker and storage basics.</span>
+        </button>
+        <button id="clearCacheBtn" type="button" class="tool-card button-card danger-edge">
+          <strong>Clear App Cache</strong>
+          <span>Clear TEE app-shell caches only. Does not intentionally clear vault/localStorage data.</span>
+        </button>
+      </div>
+
+      <section class="maintenance-report">
+        <h2>Maintenance Status</h2>
+        <pre id="maintenanceReport">Ready.</pre>
+      </section>
+    </section>
+  </main>
+
+  <footer><p>TEE v3.3.70 · Maintenance is restricted to Couple A authentication.</p></footer>
+
+  <script src="../../config.js"></script>
+  <script src="../../encryption.js"></script>
+  <script src="../../auth.js"></script>
+  <script src="../../storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

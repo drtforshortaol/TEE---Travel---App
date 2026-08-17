@@ -13,19 +13,42 @@
   <header class="hero">
     <div class="privacy-pill">PRIVATE · DO NOT PUBLISH</div>
     <h1>Source Documents</h1>
-    <p class="subtitle"><strong>Current TEE build v3.3.51</strong> · Source Document / Secure Vault workspace</p>
-    <p class="subtitle">Manage retained TEE source documents by Private, Shared, Public, Reference, Archive, or Remove from TEE status.</p>
+    <p class="subtitle"><strong>Current TEE build v3.3.72</strong> · Streamlined Source Documents workflow</p>
+    <p class="subtitle">Turn incoming travel documents into usable TEE information.</p>
     <nav class="top-actions">
       <a href="../../index.html">Return to Hub</a>
-      <button id="expandAll" type="button">Expand all</button>
-      <button id="collapseAll" type="button">Collapse all</button>
       <button type="button" class="tee-help-button" data-help-topic="help-center">? TEE Help Center</button>
     </nav>
   </header>
 
   <main>
     <section class="warning">
-      <strong>Controlled source library.</strong> Source documents retain their assigned access level. Private sources require the owning couple; Shared sources require an unlocked authorized vault; Public sources must be explicitly approved.
+      <strong>Start with the four choices below.</strong> TEE handles the underlying source, privacy and vault details; use advanced maintenance only when needed.
+    </section>
+
+
+    <section id="travelerActionPanel" class="warning traveler-action-panel" hidden>
+      <strong id="travelerActionTitle">TEE Traveler Action</strong>
+      <p id="travelerActionText"></p>
+      <div class="top-actions">
+        <button id="travelerActionPrimary" type="button">Continue</button>
+        <a href="../../index.html">Cancel / Return to Hub</a>
+      </div>
+    </section>
+
+    <section id="streamlinedSourceHome" class="streamlined-source-home" aria-labelledby="streamlinedSourceTitle">
+      <div class="streamlined-source-head">
+        <span class="secure-trip-workspace-kicker">PREPARATION — TOMORROW</span>
+        <h2 id="streamlinedSourceTitle">What do you want to do with a document?</h2>
+        <p>Use one simple workflow: <strong>Add → Review → Approve/Save → Verify Destination → Done.</strong> TEE proposes privacy; change it only when the suggestion is wrong.</p>
+      </div>
+      <div class="streamlined-source-grid">
+        <button id="streamAddDocument" type="button" class="streamlined-source-card"><span class="stream-step">1</span><span><strong>Add Document</strong><small>Start with a new PDF, image, confirmation, receipt or other travel source.</small></span></button>
+        <button id="streamNeedsAttention" type="button" class="streamlined-source-card"><span class="stream-step">2</span><span><strong>Needs Attention</strong><small>Finish documents that still need review, correction, approval or verification.</small></span></button>
+        <button id="streamCompleted" type="button" class="streamlined-source-card"><span class="stream-step">3</span><span><strong>Completed</strong><small>Review documents that have been processed and filed into TEE.</small></span></button>
+        <button id="streamDocumentLibrary" type="button" class="streamlined-source-card"><span class="stream-step">4</span><span><strong>Document Library</strong><small>Find retained originals and processing history when you need supporting evidence.</small></span></button>
+      </div>
+      <p id="streamlinedSourceStatus" class="streamlined-source-status">Choose the job you want to do. TEE will open only the section you need.</p>
     </section>
 
     <section id="smartDocumentIntake" class="smart-intake" aria-labelledby="smartIntakeTitle">
@@ -58,7 +81,9 @@
       </section>
     </section>
 
-    <section id="structuredDocumentsWorkspace" class="structured-documents-workspace" aria-labelledby="structuredDocumentsTitle">
+    <section id="structuredDocumentsWorkspace" class="structured-documents-workspace structured-documents-collapsed" aria-labelledby="structuredDocumentsTitle">
+      
+      <div id="structuredDocumentsContent" class="structured-documents-content" hidden>
       <div class="structured-workspace-head">
         <div>
           <p class="secure-trip-workspace-kicker">Feature introduced v3.3.42 · Structured document engine</p>
@@ -70,9 +95,17 @@
           <button id="structuredDocumentRefresh" type="button" class="secondary">Refresh Protected View</button>
         </div>
       </div>
-      <p class="structured-rule"><strong>Original-document rule:</strong> retain the original PDF/image separately at the highest sensitivity present in that source. TEE reconstructs the useful contents field-by-field and image-by-image.</p>
+      <p class="structured-rule"><strong>Document lifecycle:</strong> Add source → Structure → Review → Approve/Commit → Verify the destination record → Archive when complete. Approve/Commit creates the usable TEE record. Archive means the processing job is finished; it does not delete the record or supporting source.</p>
+      <div class="structured-lifecycle-toolbar" aria-label="Structured document lifecycle views">
+        <button id="structuredViewReview" type="button" class="secondary">Needs Review</button>
+        <button id="structuredViewRecent" type="button" class="secondary">Recently Structured</button>
+        <button id="structuredViewAll" type="button" class="secondary">All Structured</button>
+        <button id="structuredViewArchived" type="button" class="secondary">Archived</button>
+      </div>
       <p id="structuredDocumentSummary" class="secure-search-summary" aria-live="polite"></p>
       <div id="structuredDocumentList" class="structured-document-list"></div>
+      <div class="structured-documents-collapse-row"></div>
+      </div>
     </section>
 
     <dialog id="structuredDocumentDialog" class="structured-document-dialog" aria-labelledby="structuredDocumentDialogHeading">
@@ -450,18 +483,59 @@
       </select>
     </section>
 
-    <section class="section-index" aria-label="Private document section index">
-      <h2>Section index</h2>
-      <div id="sectionIndex" class="section-buttons"></div>
+    <section class="section-index consolidated-section-index" aria-label="Source Documents section index">
+      <button id="sectionIndexToggle" type="button" class="source-app-section-toggle source-app-section-master section-index-master" aria-expanded="false" aria-controls="sectionIndexContent">
+        <span class="source-section-button-text">
+          <strong>Section Index</strong>
+          <small>Open this list when you need a specific protected-information section. Each item below explains its purpose and opens/collapses its own content. Linked source documents are created automatically from the structured records already in TEE.</small>
+        </span>
+        <span class="source-section-button-state">Expand</span>
+      </button>
+      <div id="sectionIndexContent" class="section-index-dropdown-content" hidden>
+        <div id="sectionMount" class="section-mount" aria-live="polite"></div>
+      </div>
     </section>
 
-    <section id="sectionMount" class="section-mount" aria-live="polite"></section>
+    <section id="sectionMountLegacy" class="section-mount legacy-section-mount" aria-live="polite" hidden></section>
 
-    <section id="teeSourceDocumentManager" class="vault-heading">
-      <div class="tee-section-title-row"><h2>Source Document Manager</h2><button type="button" class="tee-help-button secondary" data-help-topic="source-manager">? How to use this</button></div>
-      <p>Classify each original TEE source independently. Archive is the normal retention path. Use Remove from TEE only for material that never belonged in TEE; removal becomes a purge request for the next rebuilt package.</p>
+    <section id="teeSourceDocumentManager" class="source-manager-workspace" aria-labelledby="sourceManagerTitle">
+      <div class="structured-workspace-head">
+        <div>
+          <p class="secure-trip-workspace-kicker">v3.3.68 · Section Index dropdown</p>
+          <div class="tee-section-title-row"><h2 id="sourceManagerTitle">Source Document Manager</h2><button type="button" class="tee-help-button secondary" data-help-topic="source-manager">? How to use this</button></div>
+          <p><strong>This is the document control center.</strong> Use it to see what original documents TEE has retained, whether they still need attention, what structured records were created from them, where those records belong, and how to get back to the original when needed.</p><p><strong>Standard workflow:</strong> 1 Add source → 2 Structure → 3 Review → 4 Approve/Commit → 5 Verify destination → 6 Archive when complete.</p>
+        </div>
+      </div>
+      <div class="source-manager-purpose">
+        <strong>The simple rule:</strong> Source Document Manager manages the original and its processing history. Structured Documents holds the organized extraction. Flights, Hotels, Rail, Insurance, Identity, and other TEE apps are where you use the resulting information during the trip.
+      </div>
+      <div class="source-manager-toolbar" role="group" aria-label="Source document manager views">
+        <button id="sourceManagerNeeds" type="button" class="secondary">Needs Attention</button>
+        <button id="sourceManagerStructured" type="button" class="secondary">Structured</button>
+        <button id="sourceManagerArchived" type="button" class="secondary">Archived</button>
+        <button id="sourceManagerAll" type="button" class="secondary">All Sources</button>
+      </div>
+      <p id="sourceManagerSummary" class="secure-search-summary" aria-live="polite"></p>
+      <div id="sourceManagerList" class="source-manager-list" aria-live="polite"></div>
     </section>
-    <section id="docMount" class="doc-mount" aria-live="polite"></section>
+    <section id="sourceInventoryWorkspace" class="source-inventory-workspace" aria-labelledby="sourceInventoryToggle">
+      <button id="sourceInventoryToggle" type="button"
+              class="source-app-section-toggle source-app-section-master"
+              aria-expanded="false"
+              aria-controls="sourceInventoryContent">
+        <span class="source-section-button-text">
+          <strong>Document Library</strong>
+          <small>Find original source documents, source status, processing history, sensitivity and original-file availability.</small>
+        </span>
+        <span class="source-section-button-state">Expand</span>
+      </button>
+      <div id="sourceInventoryContent" class="source-app-section-content" hidden>
+        <div id="sourceInventoryPanel" class="source-inventory-panel">
+          <p>This is the known source-document inventory. Protected originals are intentionally not bundled into the public-safe app package.</p>
+        </div>
+        <section id="docMount" class="doc-mount legacy-source-manager" aria-live="polite"></section>
+      </div>
+    </section>
 
 
 
@@ -524,7 +598,7 @@
   </main>
 
   <footer>
-    <p>Private Documents · Full private app only · Future source for confidential iPhone quick-reference PDF</p>
+    <p>Source Documents · Preparation workflow · Advanced vault controls available through Maintenance</p>
   </footer>
 
   <script src="../../config.js"></script>
@@ -539,7 +613,9 @@
   <script src="source-authority.js"></script>
   <script src="secure-vault.js"></script>
   <script src="structured-documents.js"></script>
+  <script src="source-document-manager.js"></script>
   <script src="smart-intake.js"></script>
   <script src="help.js"></script>
+  <script src="streamline-source-docs.js"></script>
 </body>
 </html>

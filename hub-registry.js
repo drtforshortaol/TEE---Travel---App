@@ -1,4 +1,4 @@
-// Turkey - Eastern Europe Trip Private Hub Registry v3.5
+// TEE Hub Registry · Streamlined preview v3.3.70
 // UHDF Stage 2: Registry and category cleanup pass.
 // Changes: removed non-app Incoming/Source Material card from user-facing hub, confirmed all visible entries are built private apps, normalized categories, and verified no duplicate app ids or duplicate Trip Archive entries remain.
 // Active app count: 16 built private apps. v3.5 improves the Language app with country quick buttons, phrase-section jump links, Slovenia naming, and PDF-ready anchors.
@@ -9,11 +9,11 @@ window.HUB_REGISTRY = [
     name: "Source Documents",
     folder: "apps/travel-private-documents/",
     url: "apps/travel-private-documents/index.html",
-    category: "Essentials",
+    category: "Preparation",
     priority: "High",
     status: "built",
     visibility: "private",
-    description: "Controlled source-document manager for retained TEE source material. Passport and Global Entry are structured encrypted Identity records and are not retained here as source PDFs.",
+    description: "Preparation workflow for turning incoming source documents into usable TEE information; Document Library provides supporting originals and history.",
     sourceFiles: ["People.pdf", "Phone data.pdf", "Airport and train stuff.pdf", "Hotel.pdf", "Maps.pdf", "Money/tip info.pdf", "Trip planning.pdf", "Weather.pdf", "Travel list.pdf", "Travel list 20180903.docx", "ChatGPT ideas.pdf", "Miscellaneous.pdf"],
     tags: ["source-documents", "reference", "archive", "classification", "secure"],
     relatedApps: ["travel-essentials", "travel-itinerary", "travel-transportation", "travel-hotels"]
@@ -21,14 +21,14 @@ window.HUB_REGISTRY = [
 
   {
     id: "travel-essentials",
-    name: "Essentials",
+    name: "Quick Reference",
     folder: "apps/travel-essentials/",
     url: "apps/travel-essentials/index.html",
-    category: "Essentials",
+    category: "Traveler — Today",
     priority: "Critical",
     status: "built",
     visibility: "private",
-    description: "Quick access to critical travel-document checklist/status, traveler party info, emergency/contact placeholders, phone plan notes, current hotel reminders, confirmation references, and direct private source-document links for passports, people, phone data, hotel, airport/train, maps, money/tipping, planning, weather, and travel lists.",
+    description: "Hub-level traveler Quick Reference for flights, hotels, emergency, identity, phone/data, insurance, money and problem information.",
     sourceFiles: ["People.pdf", "Phone data.pdf", "Airport and train stuff.pdf", "Hotel.pdf", "Maps.pdf", "Money/tip info.pdf", "Trip planning.pdf", "Weather.pdf", "Travel list.pdf", "Travel list 20180903.docx", "ChatGPT ideas.pdf", "Miscellaneous.pdf"],
     tags: ["passport", "identity", "emergency", "contacts", "private", "quick-access", "pdf-ready", "source-documents"],
     relatedApps: ["travel-itinerary", "travel-transportation", "travel-hotels", "travel-insurance"]
@@ -125,6 +125,7 @@ window.HUB_REGISTRY = [
     category: "Local Knowledge",
     priority: "Medium",
     status: "built",
+    hubHidden: true,
     visibility: "private",
     description: "Currencies, cash/card strategy, tipping norms, small tip examples, payment notes, and country/city practical money guidance.",
     sourceFiles: ["Money^J tip info.pdf"],
@@ -133,7 +134,7 @@ window.HUB_REGISTRY = [
   },
   {
     id: "travel-maps-movement",
-    name: "Maps + Movement",
+    name: "Maps & Routes",
     folder: "apps/travel-maps-movement/",
     url: "apps/travel-maps-movement/index.html",
     category: "Logistics",
@@ -154,7 +155,7 @@ window.HUB_REGISTRY = [
     priority: "Medium",
     status: "built",
     visibility: "private",
-    description: "Country/city practical reference for etiquette, dining, business hours, transportation culture, safety, scams, weather behavior, and local operating notes.",
+    description: "Preparation reference for etiquette, dining, business hours, transportation culture, safety, scams, currencies, cash/card strategy, tipping and other local operating notes.",
     sourceFiles: ["Money^J tip info.pdf", "Weather.pdf", "Trip planning.pdf", "Airport and train stuff.pdf"],
     tags: ["etiquette", "dining", "business-hours", "safety", "country", "city"],
     relatedApps: ["travel-money-tipping", "travel-language", "travel-daily-operations"]
@@ -175,7 +176,7 @@ window.HUB_REGISTRY = [
   },
   {
     id: "travel-costs",
-    name: "Costs",
+    name: "Expenses",
     folder: "apps/travel-costs/",
     url: "apps/travel-costs/index.html",
     category: "Finance",
@@ -195,6 +196,7 @@ window.HUB_REGISTRY = [
     category: "Essentials",
     priority: "High",
     status: "built",
+    hubHidden: true,
     visibility: "private",
     description: "Travel insurance checklist and policy placeholder for emergency assistance, medical coverage, trip cancellation, baggage/travel delay, claim steps, documents to add later, and departure verification.",
     sourceFiles: ["Insurance category placeholder", "Trip planning.pdf", "Future insurance upload"],
@@ -228,4 +230,19 @@ window.HUB_REGISTRY = [
     sourceFiles: ["Travel list.pdf", "Travel list 20180903.docx", "Trip planning.pdf", "Hotel.pdf", "Airport and train stuff.pdf", "Costs app", "Photos app", "Daily Operations app"],
     tags: ["archive", "journal", "lessons-learned", "reviews", "photos", "future-trips"],
     relatedApps: ["travel-daily-operations", "travel-photos", "travel-costs", "travel-packing", "travel-itinerary"]
-  },];
+  },
+  {
+    id: "tee-maintenance",
+    name: "Maintenance",
+    folder: "apps/tee-maintenance/",
+    url: "apps/tee-maintenance/index.html",
+    category: "Maintenance — System Care",
+    priority: "Restricted",
+    status: "built",
+    visibility: "coupleA",
+    description: "Passphrase-protected advanced TEE administration for Couple A and ChatGPT-assisted system care.",
+    sourceFiles: [],
+    tags: ["maintenance", "backup", "restore", "diagnostics", "vault", "restricted"],
+    relatedApps: ["travel-source-documents"]
+  },
+];

@@ -439,12 +439,19 @@ function checkAutoLockDeadline() {
   }
   return false;
 }
-function lockVault() {
+function clearAuthorizedVaultSessionCache(reason = "locked") {
+  try {
+    sessionStorage.removeItem("teeAuthorizedVaultSessionV1");
+    window.dispatchEvent(new CustomEvent("tee-vault-session-changed", { detail: { reason } }));
+  } catch {}
+}
+function lockVault(options = {}) {
   clearAutoLockTimer();
   activeEncryptionKey = null;
   activeVaultData = null;
   activeProfileId = null;
   activeZoneKeys = null;
   vault.state = "locked";
+  if (!options.preserveAuthorizedSession) clearAuthorizedVaultSessionCache(options.reason || "locked");
   return true;
 }

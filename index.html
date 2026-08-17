@@ -3,122 +3,111 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Turkey - Eastern Europe Trip Hub</title>
-  <meta name="description" content="Private Travel Operations Hub for the Turkey - Eastern Europe Trip." />
+  <title>TEE · Turkey - Eastern Europe Trip Hub</title>
+  <meta name="description" content="TEE streamlined Travel Operations Hub." />
   <meta name="theme-color" content="#1f3f5b" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="traveler-help.css" />
 </head>
-<body>
-  <header class="hero">
-    <div class="privacy-pill">TEE APP ONLY</div>
-    <h1>Turkey - Eastern Europe Trip Hub</h1>
-    <p class="subtitle">TEE v3.3.51 · Turkey · Croatia · Slovenia · Austria · Switzerland</p>
-    <div class="hero-actions">
-      <button id="installBtn" type="button">Install TEE</button>
-      <button id="prepareOfflineBtn" type="button">Prepare for Offline Use</button>
-      <button id="cacheBtn" type="button">Check for Update / Refresh Cache</button>
-      <button id="maintenanceHelpBtn" type="button">Maintenance Help</button>
-      <button id="diagnosticsBtn" type="button">Diagnostics</button>
-    </div>
+<body class="streamlined-hub">
+  <header class="hero streamline-hero">
+    <div class="privacy-pill">TEE TRAVEL HUB</div>
+    <h1>Turkey - Eastern Europe Trip</h1>
+    <p class="subtitle"><strong>TEE v3.3.80</strong> · Streamlined Hub Preview</p>
+    <p class="subtitle">Sep 16 - Oct 7, 2026 · Turkey · Croatia · Slovenia · Austria · Switzerland</p>
   </header>
 
-  <main>
-    <section class="notice" aria-label="private notice">
-      <strong>GitHub-safe TEE application shell.</strong> This published build contains app code and intentionally Public trip context only. Shared and Private records, passphrases, recovery material, receipts, source documents, confirmation credentials, and encrypted vault backups are not embedded in the published files; protected data is restored separately into the device-local encrypted vault.
-    </section>
-
-    <section class="dashboard" aria-label="trip dashboard">
-      <article>
-        <span class="label">UHDF Status</span>
-        <strong>Gate 1 approved</strong>
-        <p>Protected trip workspace. Stage 2 initial build active; registry/category cleanup passed.</p>
-      </article>
-      <article>
-        <span class="label">Trip Window</span>
-        <strong>Sep 16 - Oct 7, 2026</strong>
-        <p>Initial route loaded from planning sources.</p>
-      </article>
-      <article>
-        <span class="label">Build Mode</span>
-        <strong>16 apps built</strong>
-        <p>Essentials, Master Itinerary, Hotels, Transportation, Weather + Clothing, Packing, Money + Tipping, Maps + Movement, Daily Operations, Local Knowledge, Language, Costs, Insurance, Photos, and Trip Archive are active. Hub categories now use direct app buttons instead of dropdowns.</p>
-      </article>
-    </section>
-
-
-    <section id="offlinePanel" class="offline-readiness" aria-label="iPhone offline readiness">
-      <div class="offline-readiness-head">
-        <div><span class="label">iPhone Test Access</span><strong>Offline readiness</strong></div>
-        <span id="offlineBadge" class="offline-badge">Not checked</span>
+  <main class="streamline-main">
+    <section class="hub-vault-entry" aria-label="Secure Vault">
+      <button id="hubVaultToggle" type="button" class="hub-vault-entry-button" aria-expanded="false" aria-controls="hubVaultPanel">
+        <span class="hub-vault-entry-copy">
+          <strong>Secure Vault 🔒</strong>
+          <small>Unlock or view protected traveler records without leaving the Hub.</small>
+        </span>
+        <span id="hubVaultEntryAction" class="hub-vault-entry-action">Open Vault</span>
+      </button>
+      <div id="hubVaultPanel" class="hub-vault-panel" hidden>
+        <div class="hub-vault-panel-head">
+          <div><strong id="hubVaultPanelTitle">Secure Vault</strong><small id="hubVaultPanelSubtitle">Enter the authorized Couple A or Couple B passphrase when the vault is locked.</small></div>
+          <button id="hubVaultClose" type="button" class="hub-vault-close">Return to Hub</button>
+        </div>
+        <div id="hubVaultSessionSummary" class="hub-vault-session-summary" hidden>
+          <strong id="hubVaultSessionLabel">Vault Open</strong>
+          <span id="hubVaultSessionCountdown">30:00 remaining</span>
+          <p>Protected information is authorized throughout TEE for this session. You do not need to return to the Vault to view it in supported apps.</p>
+          <button id="hubVaultLockNow" type="button" class="hub-vault-lock-now">Lock Now</button>
+        </div>
+        <iframe id="hubVaultFrame" title="TEE Secure Vault" data-src="apps/travel-private-documents/index.html?teeView=vault&amp;teeEnter=1&amp;teeEmbed=1"></iframe>
       </div>
-      <p id="offlineStatus">While connected to the PC HTTPS server, tap <strong>Prepare for Offline Use</strong>. Do not disconnect Wi-Fi or stop the server until TEE reports <strong>Ready for offline use</strong>.</p>
-      <div id="offlineProgress" class="offline-progress" hidden><div id="offlineProgressBar"></div></div>
-      <details id="diagnosticsPanel" class="diagnostics-panel">
-        <summary>Connection &amp; cache diagnostics</summary>
-        <div id="diagnosticsOutput" class="diagnostics-output">Diagnostics have not been run yet.</div>
-      </details>
     </section>
 
+    <section class="notice streamline-notice">
+      <strong>Private travel project.</strong> Protected information remains controlled by TEE authorization.
+    </section>
 
-
-    <section class="maintenance-status" aria-label="app maintenance status">
-      <div class="maintenance-status-head">
-        <div><span class="label">App Maintenance</span><strong>Update &amp; recovery status</strong></div>
-        <span id="updateBadge" class="offline-badge">Not checked</span>
+    <section class="hub-philosophy" aria-labelledby="hubPhilosophyTitle">
+      <div class="hub-philosophy-head">
+        <div>
+          <span class="label">How TEE is organized</span>
+          <h2 id="hubPhilosophyTitle">Use TEE by what you need next</h2>
+        </div>
       </div>
-      <div class="maintenance-grid">
-        <div><span>Current version</span><strong id="currentVersionText">v3.3.51</strong></div>
-        <div><span>Latest published</span><strong id="latestVersionText">Not checked</strong></div>
-        <div><span>Last update check</span><strong id="lastUpdateCheckText">Never</strong></div>
+      <div class="philosophy-grid">
+        <article><strong>Traveler — Today</strong><span>What you need during the trip, right now.</span></article>
+        <article><strong>Preparation — Tomorrow</strong><span>Get ready for what is coming next.</span></article>
+        <article><strong>Library — Support</strong><span>Documents and reference material when you need them.</span></article>
+        <article><strong>Maintenance 🔒 — System Care</strong><span>Advanced TEE administration for Couple A + ChatGPT.</span></article>
       </div>
-      <p id="updateStatusText">TEE checks for a published update once each day when the app is opened or brought back to the foreground. Use <strong>Check for Update</strong> anytime for an immediate check.</p>
-      <button id="updateRestartBtn" type="button" hidden>Update &amp; Restart</button>
     </section>
 
-    <section class="tools" aria-label="search and filters">
-      <input id="searchInput" type="search" placeholder="Search apps, tags, descriptions..." />
-      <select id="categoryFilter" aria-label="Filter by category">
-        <option value="all">All categories</option>
-      </select>
-      <select id="statusFilter" aria-label="Filter by status">
-        <option value="all">All statuses</option>
-      </select>
-      <button id="expandHubCardsBtn" type="button" hidden>Expand hub cards</button>
-      <button id="collapseHubCardsBtn" type="button" hidden>Collapse hub cards</button>
+    <section class="hub-stream-section" aria-labelledby="travelerTitle">
+      <div class="hub-stream-head">
+        <div><span class="stream-kicker">TODAY</span><h2 id="travelerTitle">Traveler</h2><p>Start here while you are traveling. Items are ordered by likely use and importance.</p></div>
+      </div>
+      <div id="travelerGrid" class="stream-card-grid"></div>
     </section>
 
-    <section id="categoryMount" class="category-mount" aria-live="polite"></section>
+    <section class="hub-stream-section" aria-labelledby="preparationTitle">
+      <div class="hub-stream-head">
+        <div><span class="stream-kicker">TOMORROW</span><h2 id="preparationTitle">Preparation</h2><p>Prepare documents, clothing, packing and destination knowledge before you need them.</p></div>
+      </div>
+      <div id="preparationGrid" class="stream-card-grid"></div>
+    </section>
+
+    <section class="hub-stream-section" aria-labelledby="libraryTitle">
+      <div class="hub-stream-head">
+        <div><span class="stream-kicker">SUPPORT</span><h2 id="libraryTitle">Library</h2><p>Supporting originals, processing history and post-trip reference material.</p></div>
+      </div>
+      <div id="libraryGrid" class="stream-card-grid"></div>
+    </section>
+
+    <section id="maintenanceHubSection" class="hub-stream-section maintenance-hub-section" aria-labelledby="maintenanceHubToggleTitle">
+      <button id="maintenanceHubToggle" type="button" class="maintenance-hub-toggle" aria-expanded="false" aria-controls="maintenanceHubContent">
+        <span><span class="stream-kicker">SYSTEM CARE</span><strong id="maintenanceHubToggleTitle">Maintenance 🔒</strong><small>Advanced TEE administration, backup, repair and technical tools. Intended for Couple A + ChatGPT.</small></span>
+        <span id="maintenanceHubState">Expand</span>
+      </button>
+      <div id="maintenanceHubContent" class="maintenance-hub-content" hidden>
+        <p>Maintenance is intentionally separate from normal traveler use. Opening the Maintenance app requires the existing <strong>Couple A passphrase</strong>.</p>
+        <a class="maintenance-open-button" href="apps/tee-maintenance/index.html">Open Maintenance 🔒</a>
+      </div>
+    </section>
+
+    <details class="streamline-secondary-tools">
+      <summary>Hub search / complete app reference</summary>
+      <p>This is secondary reference only. The four sections above are the normal TEE workflow.</p>
+      <div class="stream-search-row">
+        <input id="hubSearch" type="search" placeholder="Search visible TEE apps…" />
+      </div>
+      <div id="searchResults" class="stream-card-grid compact-grid"></div>
+    </details>
   </main>
 
-  <dialog id="maintenanceDialog" class="maintenance-dialog">
-    <div class="maintenance-dialog-head">
-      <div>
-        <span class="label">TEE v3.3.51</span>
-        <h2 id="maintenanceDialogTitle">Install &amp; Maintenance Help</h2>
-      </div>
-      <button id="maintenanceDialogClose" type="button">Close</button>
-    </div>
-    <div class="maintenance-tabs" role="tablist" aria-label="maintenance help sections">
-      <button type="button" data-maint-tab="install" class="active">Install</button>
-      <button type="button" data-maint-tab="refresh">Refresh / Repair</button>
-      <button type="button" data-maint-tab="safety">Hub Safety</button>
-    </div>
-    <div id="maintenanceDialogBody" class="maintenance-dialog-body"></div>
-    <div class="maintenance-dialog-actions">
-      <button id="nativeInstallBtn" type="button" hidden>Use Browser Install</button>
-      <button id="clearCacheBtn" type="button">Clear App Cache</button>
-      <button id="runIntegrityBtn" type="button">Run Repair Diagnostics</button>
-    </div>
-  </dialog>
-
-  <footer>
-    <p>TEE v3.3.51 · Update, Install & Recovery Tools · Apps folder: <code>apps/</code></p>
+  <footer class="streamline-footer">
+    <p>TEE v3.3.80 · Streamlined redesign built forward from the preserved v3.3.68 milestone.</p>
   </footer>
 
+  <script src="vault-session.js"></script>
   <script src="hub-registry.js"></script>
-  <script src="app.js"></script>
-  <script src="traveler-help.js"></script>
+  <script src="hub-v369.js"></script>
 </body>
 </html>
