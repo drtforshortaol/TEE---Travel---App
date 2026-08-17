@@ -11,9 +11,12 @@
 </head>
 <body class="streamlined-hub">
   <header class="hero streamline-hero">
-    <div class="privacy-pill">TEE TRAVEL HUB</div>
+    <div class="hub-top-row">
+      <div class="privacy-pill">TEE TRAVEL HUB</div>
+      <div class="hub-utility-actions"><button id="installTeeButton" class="hub-utility-button" type="button">Install</button><button id="refreshTeeButton" class="hub-utility-button hub-utility-primary" type="button">Refresh / Update</button><button id="helpTeeButton" class="hub-utility-button" type="button">Help</button></div>
+    </div>
     <h1>Turkey - Eastern Europe Trip</h1>
-    <p class="subtitle"><strong>TEE v3.3.81</strong> · Streamlined Hub Preview</p>
+    <p class="subtitle"><strong>TEE v3.3.86</strong> · Streamlined Hub Preview</p>
     <p class="subtitle">Sep 16 - Oct 7, 2026 · Turkey · Croatia · Slovenia · Austria · Switzerland</p>
   </header>
 
@@ -121,11 +124,14 @@
   </main>
 
   <footer class="streamline-footer">
-    <p>TEE v3.3.81 · Streamlined redesign built forward from the preserved v3.3.68 milestone.</p>
+    <p>TEE v3.3.86 · Streamlined redesign built forward from the preserved v3.3.68 milestone.</p>
   </footer>
 
-  <script src="vault-session.js"></script>
-  <script src="hub-registry.js"></script>
-  <script src="hub-v369.js"></script>
+  <script defer src="vault-session.js"></script>
+  <script defer src="hub-registry.js"></script>
+  <script defer src="hub-v369.js"></script>
+
+  <dialog id="installTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">SHARE & INSTALL TEE</span><h2>Install TEE</h2><p>Copy these instructions into a text. The recipient taps the link and follows the steps.</p></div><button id="installTeeClose" class="install-close" type="button">× Close</button></div><div id="installTeeStatus" class="install-status" hidden></div><div class="install-share-wrap"><strong>Ready-to-send instructions</strong><textarea id="installShareText" class="install-share-text" readonly></textarea><button id="copyInstallInstructions" class="hub-primary-action" type="button">Copy Instructions</button><p id="copyInstallStatus" class="copy-status"></p></div><div class="install-device-grid"><section class="install-device-card install-primary"><h3>iPhone / iPad</h3><ol><li>Tap the TEE link.</li><li>Open it in <strong>Safari</strong>.</li><li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>.</li><li>Name it <strong>TEE Hub</strong> and tap <strong>Add</strong>.</li></ol><p class="install-note"><strong>New device:</strong> Restore Existing TEE using the authorized encrypted backup. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>Mac</h3><button id="installNativeButton" class="install-native-button" type="button" hidden>Install TEE Now</button><p>Safari: <strong>File → Add to Dock</strong>. Chrome: use the Install icon/menu when available.</p></section></div><div class="install-tee-footer"><button id="installTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
+  <dialog id="helpTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">TEE SUPPORT</span><h2>Help</h2></div><button id="helpTeeClose" class="install-close" type="button">× Close</button></div><div class="help-card-grid"><section class="install-device-card"><h3>Refresh / Update TEE</h3><ol><li>Tap <strong>Refresh / Update</strong>.</li><li>TEE refreshes only cached app files and reloads.</li><li>Confirm the newest version appears.</li></ol><p class="install-note">This does not intentionally clear Vault records, passphrases, expenses, notes, localStorage, or IndexedDB.</p></section><section class="install-device-card"><h3>Install on iPhone</h3><p>Tap <strong>Install</strong> → <strong>Copy Instructions</strong>. Send the message. Recipient opens the link in Safari → Share → Add to Home Screen.</p></section><section class="install-device-card"><h3>New or replacement phone</h3><p>Choose <strong>Restore Existing TEE</strong>, select the authorized encrypted backup, then unlock the Vault. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>If an old version remains</h3><p>Use <strong>Refresh / Update</strong> first. Do not clear all Safari Website Data merely to update TEE; that can remove locally stored Vault data.</p></section><section class="install-device-card"><h3>Privacy</h3><p><strong>Private</strong> = owning couple only. <strong>Shared</strong> = both couples after authorization. <strong>Public</strong> = open to everyone.</p></section></div><div class="install-tee-footer"><button id="helpTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
 </body>
 </html>
