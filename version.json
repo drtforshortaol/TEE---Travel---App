@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.3.81",
-  "channel": "tester-onboarding",
-  "publishedAt": "2026-08-16T19:03:00-07:00",
-  "notes": "Preserves validated v3.3.80 Daily Operations behavior while fixing first-run tester onboarding. When no local Vault exists, the Hub prominently offers Restore Existing TEE and the Secure Vault entry routes to restore instead of a dead-end unlock. Successful restore returns automatically to the Hub with Unlock Vault as the next action. Maintenance now offers Restore Existing TEE when no Vault exists rather than requesting an unverifiable Couple A passphrase. Stale Source Documents and Maintenance version labels are updated.",
-  "name": "TEE v3.3.81 \u2014 Tester Onboarding Cleanup"
+  "version": "3.3.86",
+  "channel": "install-refresh-help",
+  "publishedAt": "2026-08-16T23:20:00-07:00",
+  "notes": "Adds Hub Install, Refresh / Update, and Help controls. Install provides ready-to-text instructions using the fixed public GitHub Pages URL. Utility behavior is isolated in hub-utility-v386.js and hub-utility-v386.css; core Hub and Vault logic remain unchanged.",
+  "name": "TEE v3.3.86 — Install Refresh Help"
 }
