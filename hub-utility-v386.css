@@ -1,0 +1,22 @@
+
+/* v3.3.82 — Install TEE */
+.hub-top-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;}
+.install-tee-button{appearance:none;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:9px 15px;font:inherit;font-size:.9rem;font-weight:900;cursor:pointer;backdrop-filter:blur(5px);}
+.install-tee-button:hover{background:rgba(255,255,255,.22);}.install-tee-button.installed{background:rgba(220,245,230,.22);}
+.install-tee-dialog{width:min(820px,calc(100vw - 28px));max-height:calc(100vh - 36px);border:0;padding:0;border-radius:20px;background:transparent;box-shadow:0 24px 70px rgba(0,0,0,.28);}
+.install-tee-dialog::backdrop{background:rgba(15,31,34,.58);backdrop-filter:blur(2px);}
+.install-tee-card{background:#fff;color:#173f42;border-radius:20px;overflow:auto;max-height:calc(100vh - 36px);}
+.install-tee-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:22px 24px 16px;background:linear-gradient(135deg,#edf7f3,#f9fbfa);border-bottom:1px solid #d7e3df;}
+.install-tee-head h2{margin:3px 0 4px;font-size:1.75rem;}.install-tee-head p{margin:0;color:#526863;}
+.install-close{width:40px;height:40px;flex:0 0 40px;border:1px solid #c9d6d2;background:#fff;border-radius:50%;font-size:1.6rem;line-height:1;cursor:pointer;color:#31534d;}
+.install-status{margin:16px 24px 0;padding:10px 12px;border-radius:10px;background:#eaf7ef;border:1px solid #8bb49d;font-weight:800;}
+.install-device-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px 24px;}
+.install-device-card{border:1px solid #d5dfdc;border-radius:16px;padding:17px 18px;background:#fbfcfc;}.install-device-card.install-primary{border:2px solid #4f9478;background:#f1faf5;}
+.install-device-label{display:inline-block;margin-bottom:4px;font-size:.72rem;font-weight:950;letter-spacing:.12em;color:#45685e;}.install-device-card h3{margin:3px 0 10px;font-size:1.15rem;}
+.install-device-card ol{margin:0;padding-left:1.25rem;}.install-device-card li{margin:0 0 8px;line-height:1.35;}
+.install-note{margin:13px 0 0;padding:10px 11px;background:#fff5d7;border-radius:9px;border:1px solid #e3c96e;font-size:.9rem;}
+.install-native-button{width:100%;margin:0 0 12px;border:0;border-radius:10px;background:#164c52;color:#fff;padding:11px 13px;font:inherit;font-weight:900;cursor:pointer;}
+.install-tee-footer{display:flex;justify-content:flex-end;padding:0 24px 22px;}
+@media(max-width:720px){.hub-top-row{align-items:flex-start;}.install-tee-button{padding:8px 12px;font-size:.82rem;}.install-device-grid{grid-template-columns:1fr;padding:15px;}.install-tee-head{padding:18px 17px 13px;}.install-tee-footer{padding:0 15px 16px;}}
+
+.hub-utility-actions{display:flex;gap:8px;align-items:center}.hub-utility-button{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:9px 13px;font:inherit;font-size:.86rem;font-weight:900}.hub-utility-primary{background:#15979b}.install-share-wrap{padding:18px 24px 4px}.install-share-text{width:100%;min-height:320px;margin:8px 0 12px;border:1px solid #c9d6d2;border-radius:14px;padding:14px;font:inherit;line-height:1.45;background:#f7faf9}.copy-status{min-height:1.3em;font-weight:800}.help-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px 24px}@media(max-width:720px){.hub-top-row{display:block}.privacy-pill{margin-bottom:12px}.hub-utility-actions{display:grid;grid-template-columns:auto 1fr auto}.hub-utility-button{padding:9px 8px;font-size:.76rem;white-space:nowrap}.help-card-grid{grid-template-columns:1fr;padding:15px}.install-share-wrap{padding:15px 15px 4px}}
