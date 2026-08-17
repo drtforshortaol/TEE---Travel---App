@@ -16,6 +16,14 @@
   </header>
 
   <main>
+    <section id="maintenanceRestorePanel" class="auth-panel maintenance-restore-panel" hidden>
+      <h2>Restore Existing TEE First</h2>
+      <p>This browser does not have an encrypted TEE Vault yet, so Maintenance cannot verify the Couple A passphrase.</p>
+      <p>Restore the existing encrypted backup first. After restore, TEE returns to the Hub and you can unlock the Vault normally.</p>
+      <a class="primary-link" href="../travel-private-documents/index.html?teeAction=restore&amp;teeReturn=hub">Restore Existing TEE</a>
+      <a class="secondary-link" href="../../index.html">Return to Hub</a>
+    </section>
+
     <section id="authPanel" class="auth-panel">
       <h2>Unlock Maintenance</h2>
       <p>Enter the existing <strong>Couple A passphrase</strong>. TEE verifies it against the current vault; the passphrase is not stored by this app.</p>
@@ -71,7 +79,7 @@
     </section>
   </main>
 
-  <footer><p>TEE v3.3.70 · Maintenance is restricted to Couple A authentication.</p></footer>
+  <footer><p>TEE v3.3.81 · Maintenance is restricted to Couple A authentication.</p></footer>
 
   <script src="../../config.js"></script>
   <script src="../../encryption.js"></script>

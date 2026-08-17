@@ -1,39 +1,25 @@
-TEE v3.3.80 — GitHub Public Tester Milestone
+TEE v3.3.81 — GitHub Public Outside-Tester Milestone
 
-PURPOSE
-This repository is the GitHub-safe deployable TEE application for tester distribution.
-It contains the application code needed to run TEE, including local encrypted-Vault
-functionality, plus intentionally Public trip context.
+This is the GitHub-safe deployable TEE application for outside testers.
 
-MILESTONE
-v3.3.80 — Rail Pass Context Filter / Daily Operations Tester Milestone
+First-run flow:
+1. Open TEE.
+2. Select Restore Existing TEE if no local Vault exists.
+3. Choose the authorized encrypted backup.
+4. TEE verifies/restores it locally and returns to the Hub.
+5. Select Unlock Vault and enter the authorized couple passphrase.
+6. Use Daily Operations and other traveler apps.
 
-CURRENT TEST FOCUS
-- Hub usability
-- Secure Vault unlock and 30-minute authorized session
-- Daily Operations Today/Tomorrow workflow
-- Contextual display of authorized secure records after the tester restores their
-  encrypted Vault backup locally
-- Compact dropdown navigation
-- Hotel/date and rail-pass relevance filtering
+Not included in GitHub:
+- encrypted Vault backups
+- passphrases/recovery keys/credentials
+- private/shared record values
+- passport or Global Entry source images
+- booking confirmations, PNRs, receipts, payment details, protected source files
+- local HTTPS certificates/private keys
 
-NOT INCLUDED IN GITHUB
-- Encrypted Vault backup files
-- Passphrases, recovery keys, migration codes, or credentials
-- Private or Shared record values
-- Passport / Global Entry source files or images
-- Booking confirmations, PNRs, ticket numbers, receipts, payment details,
-  private contacts, or protected source-document files
-- Local HTTPS server certificates / private keys
-
-HOW PROTECTED DATA WORKS
-The published application stores/restores the encrypted Vault locally on each
-authorized tester device. Protected trip data is restored separately from the user's
-encrypted TEE backup. Do not commit encrypted backup files or protected source files
-to this repository.
-
-GITHUB PAGES
-The repository root is the deployable app root (index.html is at the Pages root).
+Protected information is restored separately and remains local to the authorized
+browser/device. Do not commit the encrypted backup or protected source files.
 
 VERSION
-TEE v3.3.80
+TEE v3.3.81

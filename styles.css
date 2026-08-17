@@ -220,3 +220,52 @@
 .hub-vault-lock-now{
   min-height:44px;
 }
+
+
+/* v3.3.81 — first-run tester onboarding */
+.hub-first-run-restore,
+.hub-post-restore-notice{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:0 0 20px;
+  padding:18px 20px;
+  border-radius:18px;
+  border:2px solid #c49d39;
+  background:#fff6d9;
+  box-shadow:0 5px 18px rgba(53,61,43,.06);
+}
+.hub-post-restore-notice{
+  border-color:#4c9473;
+  background:#eaf7ef;
+}
+.hub-first-run-restore[hidden],
+.hub-post-restore-notice[hidden]{display:none !important;}
+.hub-first-run-restore h2,
+.hub-post-restore-notice h2{margin:2px 0 5px;font-size:1.35rem;}
+.hub-first-run-restore p,
+.hub-post-restore-notice p{margin:0;max-width:760px;}
+.hub-primary-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  min-height:48px;
+  padding:11px 16px;
+  border:0;
+  border-radius:12px;
+  background:#164c52;
+  color:#fff;
+  text-decoration:none;
+  font:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+.hub-needs-restore .hub-vault-entry{border-color:#c49d39;}
+.hub-needs-restore .hub-vault-entry-button{background:#fffaf0;}
+@media(max-width:720px){
+  .hub-first-run-restore,
+  .hub-post-restore-notice{align-items:stretch;flex-direction:column;}
+  .hub-primary-action{width:100%;}
+}

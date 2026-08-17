@@ -133,7 +133,7 @@
         if(manager)manager.hidden=true;
         if(unlockFields)unlockFields.hidden=true;
         const message=document.getElementById('secureVaultMessage');
-        if(message)message.innerHTML='No encrypted vault is stored on this browser origin. Return to the Hub and use <strong>Maintenance 🔒</strong> to restore the existing backup.';
+        if(message)message.innerHTML='No encrypted vault is stored on this browser origin. <a target="_top" href="index.html?teeAction=restore&teeReturn=hub"><strong>Restore Existing TEE</strong></a> before trying to unlock protected records.';
       }
     };
 

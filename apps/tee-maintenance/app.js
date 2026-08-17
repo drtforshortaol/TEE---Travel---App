@@ -2,11 +2,20 @@
 const $=id=>document.getElementById(id);
 const pass=$('maintenancePassphrase'), unlockBtn=$('unlockMaintenance'), lockBtn=$('lockMaintenance');
 const authPanel=$('authPanel'), workspace=$('maintenanceWorkspace'), authMessage=$('authMessage'), report=$('maintenanceReport');
+const maintenanceRestorePanel=$('maintenanceRestorePanel');
 let maintenanceAuthorized=false;
 const MAINT_AUTH_KEY="teeMaintenanceAuthorizedUntilV1";
 const MAINT_AUTH_MS=15*60*1000;
 
 function savedVault(){ return loadVault(); }
+function configureMaintenanceEntry(){
+  const hasVault=Boolean(savedVault()?.id);
+  if(maintenanceRestorePanel)maintenanceRestorePanel.hidden=hasVault;
+  if(authPanel)authPanel.hidden=!hasVault;
+  if(workspace)workspace.hidden=true;
+  if(!hasVault && authMessage)authMessage.textContent='';
+  return hasVault;
+}
 async function verifyCoupleA(passphrase){
   const saved=savedVault();
   if(!saved?.id) throw new Error('No TEE vault exists on this browser origin. Open the correct TEE installation or restore the vault first.');
@@ -76,3 +85,5 @@ $('clearCacheBtn')?.addEventListener('click',async()=>{
 });
 
 setAuthorized(false);
+
+configureMaintenanceEntry();

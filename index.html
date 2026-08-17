@@ -13,7 +13,7 @@
   <header class="hero streamline-hero">
     <div class="privacy-pill">TEE TRAVEL HUB</div>
     <h1>Turkey - Eastern Europe Trip</h1>
-    <p class="subtitle"><strong>TEE v3.3.80</strong> · Streamlined Hub Preview</p>
+    <p class="subtitle"><strong>TEE v3.3.81</strong> · Streamlined Hub Preview</p>
     <p class="subtitle">Sep 16 - Oct 7, 2026 · Turkey · Croatia · Slovenia · Austria · Switzerland</p>
   </header>
 
@@ -39,6 +39,24 @@
         </div>
         <iframe id="hubVaultFrame" title="TEE Secure Vault" data-src="apps/travel-private-documents/index.html?teeView=vault&amp;teeEnter=1&amp;teeEmbed=1"></iframe>
       </div>
+    </section>
+
+    <section id="hubFirstRunRestore" class="hub-first-run-restore" hidden aria-labelledby="hubFirstRunRestoreTitle">
+      <div>
+        <span class="stream-kicker">FIRST TIME ON THIS DEVICE</span>
+        <h2 id="hubFirstRunRestoreTitle">Restore Existing TEE</h2>
+        <p>This browser does not have your encrypted TEE Vault yet. Restore the existing encrypted backup before trying to unlock protected traveler information.</p>
+      </div>
+      <a id="hubFirstRunRestoreButton" class="hub-primary-action" href="apps/travel-private-documents/index.html?teeAction=restore&amp;teeReturn=hub">Restore Existing TEE</a>
+    </section>
+
+    <section id="hubPostRestoreNotice" class="hub-post-restore-notice" hidden aria-labelledby="hubPostRestoreTitle">
+      <div>
+        <span class="stream-kicker">RESTORE COMPLETE</span>
+        <h2 id="hubPostRestoreTitle">TEE is restored on this device</h2>
+        <p>Your encrypted Vault is stored locally. Unlock it once to authorize protected information throughout TEE for 30 minutes.</p>
+      </div>
+      <button id="hubPostRestoreUnlock" type="button" class="hub-primary-action">Unlock Vault</button>
     </section>
 
     <section class="notice streamline-notice">
@@ -103,7 +121,7 @@
   </main>
 
   <footer class="streamline-footer">
-    <p>TEE v3.3.80 · Streamlined redesign built forward from the preserved v3.3.68 milestone.</p>
+    <p>TEE v3.3.81 · Streamlined redesign built forward from the preserved v3.3.68 milestone.</p>
   </footer>
 
   <script src="vault-session.js"></script>

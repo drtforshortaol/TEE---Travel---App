@@ -81,6 +81,40 @@ if('serviceWorker' in navigator && window.isSecureContext){
 }
 
 
+
+// v3.3.81 — first-run tester onboarding.
+const hubFirstRunRestore=document.getElementById('hubFirstRunRestore');
+const hubFirstRunRestoreButton=document.getElementById('hubFirstRunRestoreButton');
+const hubPostRestoreNotice=document.getElementById('hubPostRestoreNotice');
+const hubPostRestoreUnlock=document.getElementById('hubPostRestoreUnlock');
+
+function hubHasSavedVault(){
+  try{
+    const raw=localStorage.getItem('teeSecureVaultV1');
+    if(!raw)return false;
+    const parsed=JSON.parse(raw);
+    return Boolean(parsed?.id);
+  }catch{
+    return Boolean(localStorage.getItem('teeSecureVaultV1'));
+  }
+}
+function hubRestoreUrl(){
+  const url=new URL('apps/travel-private-documents/index.html',location.href);
+  url.searchParams.set('teeAction','restore');
+  url.searchParams.set('teeReturn','hub');
+  return url.toString();
+}
+function updateHubFirstRunState(){
+  const hasVault=hubHasSavedVault();
+  if(hubFirstRunRestore)hubFirstRunRestore.hidden=hasVault;
+  document.body.classList.toggle('hub-needs-restore',!hasVault);
+  return hasVault;
+}
+hubFirstRunRestoreButton?.addEventListener('click',event=>{
+  event.preventDefault();
+  location.href=hubRestoreUrl();
+});
+
 // v3.3.73 — one unlock creates a 30-minute TEE authorization session.
 const hubVaultToggle=document.getElementById('hubVaultToggle');
 const hubVaultPanel=document.getElementById('hubVaultPanel');
@@ -114,11 +148,14 @@ function updateHubVaultAuthorization(){
     if(hubVaultFrame)hubVaultFrame.hidden=true;
   }else{
     hubVaultToggle?.classList.remove('authorized');
-    if(hubVaultEntryAction)hubVaultEntryAction.textContent='Unlock Vault';
-    if(hubVaultPanelTitle)hubVaultPanelTitle.textContent='Secure Vault';
-    if(hubVaultPanelSubtitle)hubVaultPanelSubtitle.textContent='Enter the authorized Couple A or Couple B passphrase once. Authorization lasts 30 minutes.';
+    const hasVault=updateHubFirstRunState();
+    if(hubVaultEntryAction)hubVaultEntryAction.textContent=hasVault?'Unlock Vault':'Restore Existing TEE';
+    if(hubVaultPanelTitle)hubVaultPanelTitle.textContent=hasVault?'Secure Vault':'Restore Existing TEE';
+    if(hubVaultPanelSubtitle)hubVaultPanelSubtitle.textContent=hasVault
+      ?'Enter the authorized Couple A or Couple B passphrase once. Authorization lasts 30 minutes.'
+      :'This browser does not have the encrypted TEE Vault yet. Restore the existing backup first.';
     if(hubVaultSessionSummary)hubVaultSessionSummary.hidden=true;
-    if(hubVaultFrame && hubVaultPanel && !hubVaultPanel.hidden)hubVaultFrame.hidden=false;
+    if(hubVaultFrame && hubVaultPanel && !hubVaultPanel.hidden)hubVaultFrame.hidden=!hasVault;
   }
 }
 
@@ -150,7 +187,13 @@ function setHubVaultOpen(open){
   }
 }
 
-hubVaultToggle?.addEventListener('click',()=>setHubVaultOpen(hubVaultPanel?.hidden!==false));
+hubVaultToggle?.addEventListener('click',()=>{
+  if(!hubHasSavedVault()){
+    location.href=hubRestoreUrl();
+    return;
+  }
+  setHubVaultOpen(hubVaultPanel?.hidden!==false);
+});
 hubVaultClose?.addEventListener('click',()=>setHubVaultOpen(false));
 
 hubVaultLockNow?.addEventListener('click',()=>{
@@ -180,5 +223,19 @@ window.addEventListener(window.TEEVaultSession?.eventName || 'tee-vault-session-
   if(hubSession())ensureHubVaultTicker();
 });
 
+updateHubFirstRunState();
 updateHubVaultAuthorization();
+
+const hubParams=new URLSearchParams(location.search);
+if(hubParams.get('teeRestored')==='1' && hubHasSavedVault()){
+  if(hubPostRestoreNotice)hubPostRestoreNotice.hidden=false;
+  const cleanUrl=new URL(location.href);
+  cleanUrl.searchParams.delete('teeRestored');
+  history.replaceState({},'',cleanUrl.pathname+cleanUrl.search+cleanUrl.hash);
+  requestAnimationFrame(()=>hubPostRestoreNotice?.scrollIntoView({behavior:'smooth',block:'center'}));
+}
+hubPostRestoreUnlock?.addEventListener('click',()=>{
+  if(hubPostRestoreNotice)hubPostRestoreNotice.hidden=true;
+  setHubVaultOpen(true);
+});
 if(hubSession())ensureHubVaultTicker();

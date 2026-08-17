@@ -1,0 +1,24 @@
+TEE v3.3.81 — OUTSIDE TESTER DISTRIBUTION MILESTONE
+Validated: 2026-08-16
+
+Status: validated fresh-device onboarding build for outside tester distribution.
+
+Source SHA-256:
+52c0107ae9fb1f42c3ede2b06a7541b9d23ebf1240b8013d8fdb18e8a191ada3
+
+Validated flow:
+Fresh HTTPS browser/device → Restore Existing TEE → choose verified encrypted backup
+→ automatic return to Hub → Restore Complete → Unlock Vault → traveler use.
+
+Inherited validated v3.3.80 behavior:
+- compact Today/Tomorrow Daily Operations
+- contextual protected information after authorization
+- Sep 15 flight day: no rail pass
+- Sep 15: in transit / overnight flight; no hotel stay
+- Sep 16: correct Istanbul hotel only
+- 30-minute authorized session
+
+v3.3.80 remains the prior rollback milestone.
+
+Privacy: never publish encrypted Vault backups, passphrases, keys/certificates,
+private/shared source documents, receipts, passport images, or protected trip data.

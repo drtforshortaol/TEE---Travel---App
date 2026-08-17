@@ -4071,6 +4071,12 @@ async function handleEncryptedImport(file) {
     saveVaultHealthMetadata({ lastRestoreAt: new Date().toISOString() });
     updateSecureVaultUi();
     setSecureMessage("Encrypted backup imported. Enter its passphrase to unlock and verify it.", "success");
+
+    const restoreParams=new URLSearchParams(location.search);
+    if(restoreParams.get('teeAction')==='restore' && restoreParams.get('teeReturn')==='hub'){
+      setSecureMessage("Encrypted backup restored. Returning to the Hub so you can unlock TEE.", "success");
+      window.setTimeout(()=>location.replace('../../index.html?teeRestored=1'),650);
+    }
   } catch (error) {
     console.error(error);
     setSecureMessage(error.message || "Unable to import the encrypted backup.", "error");
