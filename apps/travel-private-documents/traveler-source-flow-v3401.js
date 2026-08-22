@@ -284,9 +284,9 @@
 
   function renameManagerButtons(){
     if(!manager)return;
-    manager.querySelectorAll('[data-action="source"]').forEach(b=>b.textContent='View Original Document');
-    manager.querySelectorAll('[data-action="structured"]').forEach(b=>b.textContent='View Saved Information');
-    manager.querySelectorAll('[data-action="edit"]').forEach(b=>b.textContent='Edit Document');
+    manager.querySelectorAll('[data-action="source"]').forEach(b=>{if(b.textContent!=='View Original Document')b.textContent='View Original Document';});
+    manager.querySelectorAll('[data-action="structured"]').forEach(b=>{if(b.textContent!=='View Saved Information')b.textContent='View Saved Information';});
+    manager.querySelectorAll('[data-action="edit"]').forEach(b=>{if(b.textContent!=='Edit Document')b.textContent='Edit Document';});
     manager.querySelectorAll('.source-manager-status').forEach(s=>{if(s.textContent.trim()==='Structured')s.textContent='Saved';});
     manager.querySelectorAll('.source-manager-facts span').forEach(s=>{
       if(s.textContent.trim()==='TEE created')s.textContent='Saved information';
@@ -335,7 +335,6 @@
   document.getElementById('streamCompleted')?.addEventListener('click',()=>setTimeout(()=>{installManagerGuide('saved');renameManagerButtons();},80));
   document.getElementById('streamNeedsAttention')?.addEventListener('click',()=>setTimeout(()=>{installManagerGuide('needs');renameManagerButtons();},80));
 
-  // Existing manager buttons still call the underlying record engine. This layer reveals the result screen and supplies an exact return button.
   manager?.addEventListener('click',e=>{
     const button=e.target.closest('button[data-action]'); if(!button)return;
     if(button.dataset.action==='structured'||button.dataset.action==='source'){
