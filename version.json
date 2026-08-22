@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.00",
-  "channel": "problem-solver-public-deploy",
-  "publishedAt": "2026-08-21T17:42:00-07:00",
-  "notes": "Publishes the v3.4.00 public-safe travel app update: Quick Reference cleanup, confirmed international phone plan, emergency and insurance reference, Problem Solver contact/recovery workflows, luggage protocol, and transportation receipt register. Encrypted Vault records and private identifiers remain local/private; pending wallet, credit-card, luggage-profile, and complete receipt inventory tasks remain unfinished.",
-  "name": "TEE v3.4.00 — Problem Solver & Recovery Center"
+  "version": "3.4.01",
+  "channel": "source-documents-workflow-cleanup",
+  "publishedAt": "2026-08-22T12:25:00-07:00",
+  "notes": "Streamlines traveler Source Documents and Vault use with an Add → Review → Save → Verify workflow, exact visible button names in instructions, green/yellow/red next-step announcements, a new-record path that does not reuse another traveler’s structured data, simpler Saved Documents labels, and a visible structured-result/original-document review path. Encrypted Vault records and private identifiers remain local/private.",
+  "name": "TEE v3.4.01 — Source Documents & Vault Workflow Cleanup"
 }
