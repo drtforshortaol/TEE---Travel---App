@@ -1,4 +1,4 @@
-const CACHE = 'tee-v3-4-00-problem-solver';
+const CACHE = 'tee-v3-4-01-source-workflow';
 const ASSETS = [
   './',
   './index.html',
@@ -89,13 +89,13 @@ const ASSETS = [
   './apps/travel-private-documents/structured-documents.js',
   './apps/travel-private-documents/smart-intake.js',
   './apps/travel-private-documents/streamline-source-docs.js',
+  './apps/travel-private-documents/traveler-source-flow-v3401.js',
   './apps/travel-private-documents/vault-return.js',
   './apps/travel-private-documents/manifest.json',
   './apps/tee-maintenance/index.html',
   './apps/tee-maintenance/styles.css',
   './apps/tee-maintenance/app.js',
 ];
-
 
 const OFFLINE_FALLBACK = './index.html';
 
@@ -161,7 +161,7 @@ self.addEventListener('message', event => {
       const results = await cacheAssetList(cache);
       const failed = results.filter(r=>!r.ok);
       const keys = await cache.keys();
-      reply({type:'TEE_PREPARE_RESULT', version:'3.3.85', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
+      reply({type:'TEE_PREPARE_RESULT', version:'3.4.01', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
     })());
   }
   if (msg.type === 'TEE_OFFLINE_STATUS') {
@@ -172,11 +172,11 @@ self.addEventListener('message', event => {
         const hit = await cache.match(asset);
         if (!hit) failed.push(asset);
       }
-      reply({type:'TEE_STATUS_RESULT', version:'3.3.85', cache:CACHE, expected:ASSETS.length, missing:failed});
+      reply({type:'TEE_STATUS_RESULT', version:'3.4.01', cache:CACHE, expected:ASSETS.length, missing:failed});
     })());
   }
   if (msg.type === 'TEE_VERSION_STATUS') {
-    reply({type:'TEE_VERSION_RESULT', version:'3.3.85', cache:CACHE});
+    reply({type:'TEE_VERSION_RESULT', version:'3.4.01', cache:CACHE});
   }
   if (msg.type === 'TEE_CLEAR_APP_CACHE') {
     event.waitUntil((async()=>{
