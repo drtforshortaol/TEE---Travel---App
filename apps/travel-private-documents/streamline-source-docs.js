@@ -45,11 +45,11 @@
   }
   function showAdd(){
     const section=document.getElementById('smartDocumentIntake');
-    showOnly(section,'Add a source, review TEE’s proposed privacy/classification, then Approve & Commit.');
+    showOnly(section,'Add a document, review it, save it to the TEE Vault, then verify the saved information and original.');
   }
   function showManager(view){
     const section=document.getElementById('teeSourceDocumentManager');
-    showOnly(section,view==='structured'?'Completed documents: processed and filed into TEE.':'Needs Attention: finish the items that still require work.');
+    showOnly(section,view==='structured'?'Saved Documents: verify information, original document, and edit only if needed.':'Needs Attention: finish the items that still require work.');
     setTimeout(()=>{
       const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';
       document.getElementById(id)?.click();
@@ -62,6 +62,8 @@
     if(toggle && toggle.getAttribute('aria-expanded')!=='true')toggle.click();
   }
 
+  window.TEETravelerSourceNavV3401={showOnly,showAdd,showManager,showLibrary,normalTargets};
+
   if(maintenanceMode){
     document.body.classList.add('source-maintenance-mode');
     home?.setAttribute('hidden','');
@@ -70,8 +72,6 @@
     return;
   }
 
-  // Traveler-facing Secure Vault entry. There is one normal entry point:
-  // the Secure Vault button at the top of the Hub.
   if(requestedView==='vault'){
     document.body.classList.add('source-streamlined-mode','source-vault-view');
     if(home)home.hidden=true;
@@ -150,10 +150,22 @@
   normalTargets.forEach(el=>el.hidden=true);
   if(home)home.hidden=false;
 
+  const completedButton=document.getElementById('streamCompleted');
+  if(completedButton){
+    completedButton.querySelector('strong')?.replaceChildren(document.createTextNode('Saved Documents'));
+    const small=completedButton.querySelector('small');
+    if(small)small.textContent='View information and original documents already saved to TEE.';
+  }
+
   document.getElementById('streamAddDocument')?.addEventListener('click',showAdd);
   document.getElementById('streamNeedsAttention')?.addEventListener('click',()=>showManager('needs'));
-  document.getElementById('streamCompleted')?.addEventListener('click',()=>showManager('structured'));
+  completedButton?.addEventListener('click',()=>showManager('structured'));
   document.getElementById('streamDocumentLibrary')?.addEventListener('click',showLibrary);
 
   if(requestedView==='library')setTimeout(showLibrary,80);
+
+  const ux=document.createElement('script');
+  ux.src='traveler-source-flow-v3401.js?v=3.4.01';
+  ux.dataset.teeTravelerSourceUx='3.4.01';
+  document.head.appendChild(ux);
 })();
