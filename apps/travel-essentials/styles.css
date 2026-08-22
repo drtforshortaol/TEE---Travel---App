@@ -97,3 +97,258 @@
 
 /* TEE v3.3.70 — Quick Reference protected-record shortcut */
 .quick-reference-vault-link{display:block;margin-top:10px;text-align:center;text-decoration:none;background:#1f4d5d;color:#fff;border-radius:11px;padding:10px 12px;font-weight:850}
+
+/* v3.3.87 Quick Reference cleanup */
+.protocol-card.is-collapsed{padding-bottom:10px}
+.protocol-card.is-collapsed h3{margin-bottom:6px}
+
+
+/* v3.3.89 Quick Reference — five collapsed dropdowns */
+.quick-reference-dropdowns{
+  margin:1rem 0;
+}
+.quick-reference-dropdowns>h2{
+  margin:0 0 .75rem;
+  color:#173c59;
+}
+.quick-reference-dropdown{
+  background:#fff;
+  border:1px solid #d5e0e8;
+  border-radius:14px;
+  margin:.65rem 0;
+  overflow:hidden;
+  box-shadow:0 1px 4px rgba(20,40,60,.05);
+}
+.quick-reference-dropdown summary{
+  list-style:none;
+  cursor:pointer;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:.2rem .8rem;
+  align-items:center;
+  padding:.9rem 1rem;
+  color:#173c59;
+}
+.quick-reference-dropdown summary::-webkit-details-marker{display:none}
+.quick-reference-dropdown summary::after{
+  content:'▸';
+  grid-column:2;
+  grid-row:1 / span 2;
+  align-self:center;
+  font-size:1.15rem;
+  font-weight:900;
+}
+.quick-reference-dropdown[open] summary::after{content:'▾'}
+.quick-reference-dropdown summary strong{
+  display:block;
+  font-size:1.02rem;
+}
+.quick-reference-dropdown summary span{
+  display:block;
+  color:#607080;
+  font-size:.82rem;
+  font-weight:400;
+}
+.quick-reference-dropdown-body{
+  border-top:1px solid #e2e9ef;
+  padding:.85rem 1rem 1rem;
+}
+.quick-reference-dropdown-body ul{
+  margin:.2rem 0 .85rem;
+  padding-left:1.25rem;
+}
+.quick-reference-dropdown-body li{
+  margin:.38rem 0;
+}
+@media(max-width:720px){
+  .quick-reference-dropdown summary{
+    padding:.8rem .85rem;
+  }
+  .quick-reference-dropdown summary span{
+    font-size:.78rem;
+  }
+  .quick-reference-dropdown-body{
+    padding:.75rem .85rem .9rem;
+  }
+}
+
+
+/* v3.3.90 Emergency & Insurance action layout */
+.emergency-now-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  border:1px solid #e2b56f;
+  border-radius:14px;
+  padding:.9rem 1rem;
+  background:#fff8ed;
+  margin:0 0 .85rem;
+}
+.emergency-now-card h3,.emergency-country-card h3,.quick-reference-action-card h3{
+  margin:0 0 .3rem;
+  color:#713f12;
+}
+.emergency-now-card p,.quick-reference-action-card p{margin:.2rem 0}
+.emergency-call-primary,.quick-reference-action-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border-radius:12px;
+  padding:.7rem .9rem;
+  font-weight:800;
+  background:#713f12;
+  color:#fff;
+  white-space:nowrap;
+}
+.quick-reference-action-button.secondary{
+  background:#fff;
+  color:#713f12;
+  border:1px solid #caa46a;
+}
+.emergency-country-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.65rem;
+  margin:.75rem 0;
+}
+.emergency-country-card{
+  border:1px solid #e3e8ed;
+  border-radius:12px;
+  padding:.75rem .85rem;
+  background:#fbfcfd;
+}
+.emergency-country-card p{
+  margin:.28rem 0;
+}
+.emergency-country-card a{
+  color:#713f12;
+}
+.quick-reference-action-card{
+  border-top:1px solid #e3e8ed;
+  padding:.85rem 0 .1rem;
+  margin-top:.65rem;
+}
+.quick-reference-action-card .quick-reference-action-button{
+  margin-top:.55rem;
+}
+.emergency-source-note{
+  margin:1rem 0 0;
+  color:#687580;
+  font-size:.76rem;
+}
+@media(max-width:720px){
+  .emergency-now-card{display:block}
+  .emergency-call-primary{margin-top:.7rem;width:100%}
+  .emergency-country-grid{grid-template-columns:1fr}
+  .quick-reference-action-button{width:100%}
+}
+
+/* v3.3.92 Kaiser medical insurance quick-reference details */
+.insurance-contact-list{
+  margin:.55rem 0;
+  padding:.7rem .85rem;
+  border:1px solid #e3e8ed;
+  border-radius:12px;
+  background:#fbfcfd;
+}
+.insurance-contact-list p{margin:.36rem 0}
+.insurance-contact-list a{font-weight:800}
+
+/* v3.3.93 Identity & Travelers */
+.traveler-chip-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.5rem;
+  margin:.55rem 0 .7rem;
+}
+.traveler-chip{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  border:1px solid #dbe3e8;
+  border-radius:10px;
+  background:#fbfcfd;
+  font-weight:800;
+  color:#173c59;
+}
+@media(max-width:520px){
+  .traveler-chip-grid{grid-template-columns:1fr 1fr}
+}
+
+/* v3.3.94 Identity & Travelers simplification */
+.traveler-name-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:.45rem 0 .1rem;
+}
+.traveler-name-list span{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:.35rem .65rem;
+  border:1px solid #dbe3e8;
+  border-radius:999px;
+  background:#fbfcfd;
+  font-weight:700;
+  color:#173c59;
+}
+.identity-vault-entry{
+  margin-top:.9rem;
+  border-top:2px solid #dbe3e8;
+}
+
+/* v3.3.95 Emergency Contacts structure */
+.emergency-contact-group{
+  margin:.55rem 0;
+  padding:.65rem .8rem;
+  border:1px solid #e3e8ed;
+  border-radius:10px;
+  background:#fbfcfd;
+}
+.emergency-contact-group p{margin:.25rem 0}
+
+/* v3.3.98 Blue Shield Plan G Extra */
+.insurance-snapshot-list{
+  margin:.65rem 0 .8rem;
+  padding-left:1.2rem;
+}
+.insurance-snapshot-list li{margin:.38rem 0}
+.blueshield-card{border-top:2px solid #d5e0e8}
+
+
+/* v3.4.00 Problem Solver & Recovery Center */
+.problem-solver-center{display:grid;gap:.65rem}
+.problem-solver-alert{display:grid;grid-template-columns:1fr auto;gap:.25rem .8rem;align-items:center;padding:.85rem;border:1px solid #e2b56f;border-radius:12px;background:#fff8ed}
+.problem-solver-alert strong,.problem-solver-alert span{grid-column:1}
+.problem-solver-alert .quick-reference-action-button{grid-column:2;grid-row:1 / span 2;margin:0}
+.problem-action{border:1px solid #dbe4ea;border-radius:12px;background:#fbfcfd;overflow:hidden}
+.problem-action>summary{list-style:none;cursor:pointer;padding:.78rem .85rem;display:grid;grid-template-columns:1fr auto;gap:.15rem .7rem;color:#173c59}
+.problem-action>summary::-webkit-details-marker{display:none}
+.problem-action>summary::after{content:'+';grid-column:2;grid-row:1 / span 2;font-size:1.2rem;font-weight:900}
+.problem-action[open]>summary::after{content:'−'}
+.problem-action>summary strong{display:block}.problem-action>summary span{font-size:.78rem;color:#657481;font-weight:400}
+.problem-action-body{border-top:1px solid #e3e9ee;padding:.8rem .85rem;background:#fff}
+.problem-action-body h4{margin:.25rem 0 .5rem;color:#713f12}
+.problem-action-body ul,.problem-action-body ol{margin:.3rem 0 .8rem;padding-left:1.2rem}
+.problem-action-body li{margin:.38rem 0}
+.problem-actions-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.65rem}
+.problem-actions-row .quick-reference-action-button{margin:0}
+.contact-directory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin:.45rem 0 .9rem}
+.contact-directory-grid>a{display:grid;gap:.15rem;text-decoration:none;color:#173c59;padding:.65rem .7rem;border:1px solid #dbe4ea;border-radius:10px;background:#fbfcfd}
+.contact-directory-grid>a strong{color:#713f12}.contact-directory-grid>a span{font-size:.78rem;color:#657481}
+.embassy-directory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin:.45rem 0 .9rem}
+.embassy-directory article{display:grid;gap:.16rem;padding:.65rem .7rem;border:1px solid #dbe4ea;border-radius:10px;background:#fbfcfd}
+.embassy-directory article>a:first-of-type{font-weight:850;color:#713f12;text-decoration:none}
+.embassy-directory article span{font-size:.77rem;color:#657481}
+.small-official-link{font-size:.74rem;color:#173c59}
+.problem-source-note{font-size:.74rem;color:#687580;margin:.4rem 0 0}
+.pretravel-status{padding:.65rem .75rem;border-left:4px solid #d99b32;background:#fff8ed;border-radius:8px;margin:.7rem 0}
+@media(max-width:720px){
+  .problem-solver-alert{grid-template-columns:1fr}.problem-solver-alert .quick-reference-action-button{grid-column:1;grid-row:auto;width:100%;margin-top:.5rem}
+  .contact-directory-grid,.embassy-directory{grid-template-columns:1fr}
+  .problem-actions-row{display:grid}.problem-actions-row .quick-reference-action-button{width:100%}
+}

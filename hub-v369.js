@@ -6,7 +6,7 @@ const byId = id => registry.find(app => app.id === id);
 const HUB_LAYOUT = {
   traveler: [
     {id:'travel-daily-operations', label:'Daily Operations', purpose:'See what matters today: timeline, reminders, gear, notes and immediate next actions.'},
-    {id:'travel-essentials', label:'Quick Reference', purpose:'Fast access to flights, hotels, emergency, identity, phone/data, insurance, money and problem information.'},
+    {id:'travel-essentials', label:'Quick Reference', purpose:'Emergency, identity/traveler, phone/data, insurance/medical and problem-solving reference.'},
     {id:'travel-itinerary', label:'Master Itinerary', purpose:'See the full trip schedule and how today fits into the overall journey.'},
     {id:'travel-transportation', label:'Transportation', purpose:'Flights, trains, transfers, tickets, seats, baggage and routing.'},
     {id:'travel-hotels', label:'Hotels', purpose:'Lodging, check-in details, addresses, confirmations and hotel notes.'},
@@ -117,6 +117,143 @@ hubFirstRunRestoreButton?.addEventListener('click',event=>{
 
 // v3.3.73 — one unlock creates a 30-minute TEE authorization session.
 const hubVaultToggle=document.getElementById('hubVaultToggle');
+
+// v3.3.84 — TEE Hub Install / Refresh-Update / Help.
+const installTeeButton=document.getElementById('installTeeButton');
+const installTeeDialog=document.getElementById('installTeeDialog');
+const installTeeClose=document.getElementById('installTeeClose');
+const installTeeDone=document.getElementById('installTeeDone');
+const installTeeStatus=document.getElementById('installTeeStatus');
+const installNativeButton=document.getElementById('installNativeButton');
+const refreshTeeButton=document.getElementById('refreshTeeButton');
+const helpTeeButton=document.getElementById('helpTeeButton');
+const helpTeeDialog=document.getElementById('helpTeeDialog');
+const helpTeeClose=document.getElementById('helpTeeClose');
+const helpTeeDone=document.getElementById('helpTeeDone');
+const installShareText=document.getElementById('installShareText');
+const copyInstallInstructions=document.getElementById('copyInstallInstructions');
+const copyInstallStatus=document.getElementById('copyInstallStatus');
+
+let teeDeferredInstallPrompt=null;
+
+function teeIsStandalone(){
+  return window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone === true;
+}
+const TEE_PUBLIC_INSTALL_URL='https://drtforshortaol.github.io/TEE---Travel---App/';
+function teePublicLink(){
+  return TEE_PUBLIC_INSTALL_URL;
+}
+function teeInstallMessage(){
+  return `TEE Hub — Turkey / Eastern Europe Trip
+
+Open this link on your phone:
+${teePublicLink()}
+
+iPhone / iPad
+1. Open the link in Safari.
+2. Tap the Share button.
+3. Scroll down and tap Add to Home Screen.
+4. Name it TEE Hub.
+5. Tap Add.
+6. Open TEE Hub from the Home Screen.
+
+On a new device, use Restore Existing TEE with the authorized encrypted backup. Do not create a replacement vault.
+
+Tap Help inside TEE if you need installation, updating, or troubleshooting instructions.`;
+}
+function fillInstallShare(){
+  if(installShareText) installShareText.value=teeInstallMessage();
+}
+function updateNativeInstallUi(){
+  if(installNativeButton) installNativeButton.hidden=!teeDeferredInstallPrompt;
+  if(installTeeStatus){
+    if(teeIsStandalone()){
+      installTeeStatus.hidden=false;
+      installTeeStatus.textContent='TEE is already running from the Home Screen on this device. You can still copy these instructions to install TEE on another device.';
+    }else{
+      installTeeStatus.hidden=true;
+      installTeeStatus.textContent='';
+    }
+  }
+}
+function openInstallTee(){
+  fillInstallShare();
+  updateNativeInstallUi();
+  if(installTeeDialog?.showModal) installTeeDialog.showModal();
+  else installTeeDialog?.setAttribute('open','');
+}
+function closeInstallTee(){
+  if(installTeeDialog?.close) installTeeDialog.close();
+  else installTeeDialog?.removeAttribute('open');
+}
+function openHelpTee(){
+  if(helpTeeDialog?.showModal) helpTeeDialog.showModal();
+  else helpTeeDialog?.setAttribute('open','');
+}
+function closeHelpTee(){
+  if(helpTeeDialog?.close) helpTeeDialog.close();
+  else helpTeeDialog?.removeAttribute('open');
+}
+
+installTeeButton?.addEventListener('click',openInstallTee);
+installTeeClose?.addEventListener('click',closeInstallTee);
+installTeeDone?.addEventListener('click',closeInstallTee);
+installTeeDialog?.addEventListener('click',event=>{if(event.target===installTeeDialog) closeInstallTee();});
+
+copyInstallInstructions?.addEventListener('click',async()=>{
+  fillInstallShare();
+  try{
+    await navigator.clipboard.writeText(installShareText.value);
+    if(copyInstallStatus) copyInstallStatus.textContent='Instructions copied. Paste them into your text message.';
+  }catch{
+    installShareText?.focus();
+    installShareText?.select();
+    if(copyInstallStatus) copyInstallStatus.textContent='Select the instructions above and tap Copy.';
+  }
+});
+
+helpTeeButton?.addEventListener('click',openHelpTee);
+helpTeeClose?.addEventListener('click',closeHelpTee);
+helpTeeDone?.addEventListener('click',closeHelpTee);
+helpTeeDialog?.addEventListener('click',event=>{if(event.target===helpTeeDialog) closeHelpTee();});
+
+refreshTeeButton?.addEventListener('click',async()=>{
+  const original=refreshTeeButton.textContent;
+  refreshTeeButton.disabled=true;
+  refreshTeeButton.textContent='Updating…';
+  try{
+    if('caches' in window){
+      const names=await caches.keys();
+      await Promise.all(names.filter(name=>/tee/i.test(name)).map(name=>caches.delete(name)));
+    }
+    const regs=await navigator.serviceWorker?.getRegistrations?.() || [];
+    await Promise.all(regs.map(reg=>reg.update().catch(()=>{})));
+    window.location.reload();
+  }catch{
+    alert('Refresh / Update could not complete. Open Help for troubleshooting.');
+    refreshTeeButton.disabled=false;
+    refreshTeeButton.textContent=original;
+  }
+});
+
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();
+  teeDeferredInstallPrompt=event;
+  updateNativeInstallUi();
+});
+installNativeButton?.addEventListener('click',async()=>{
+  if(!teeDeferredInstallPrompt)return;
+  teeDeferredInstallPrompt.prompt();
+  try{await teeDeferredInstallPrompt.userChoice;}catch{}
+  teeDeferredInstallPrompt=null;
+  updateNativeInstallUi();
+});
+window.addEventListener('appinstalled',()=>{
+  teeDeferredInstallPrompt=null;
+  updateNativeInstallUi();
+});
+updateNativeInstallUi();
+
 const hubVaultPanel=document.getElementById('hubVaultPanel');
 const hubVaultClose=document.getElementById('hubVaultClose');
 const hubVaultFrame=document.getElementById('hubVaultFrame');

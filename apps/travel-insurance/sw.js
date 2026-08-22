@@ -1,4 +1,4 @@
-const CACHE = 'tee-insurance-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-insurance-v3-3-98-blueshield-plan-g-extra';
 const CACHE_PREFIX = 'tee-insurance-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
 

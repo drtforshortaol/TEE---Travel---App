@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.3.86",
-  "channel": "install-refresh-help",
-  "publishedAt": "2026-08-16T23:20:00-07:00",
-  "notes": "Adds Hub Install, Refresh / Update, and Help controls. Install provides ready-to-text instructions using the fixed public GitHub Pages URL. Utility behavior is isolated in hub-utility-v386.js and hub-utility-v386.css; core Hub and Vault logic remain unchanged.",
-  "name": "TEE v3.3.86 — Install Refresh Help"
+  "version": "3.4.00",
+  "channel": "problem-solver-public-deploy",
+  "publishedAt": "2026-08-21T17:42:00-07:00",
+  "notes": "Publishes the v3.4.00 public-safe travel app update: Quick Reference cleanup, confirmed international phone plan, emergency and insurance reference, Problem Solver contact/recovery workflows, luggage protocol, and transportation receipt register. Encrypted Vault records and private identifiers remain local/private; pending wallet, credit-card, luggage-profile, and complete receipt inventory tasks remain unfinished.",
+  "name": "TEE v3.4.00 — Problem Solver & Recovery Center"
 }

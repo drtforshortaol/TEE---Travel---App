@@ -95,3 +95,12 @@
 
 /* TEE v3.3.70 — obvious traveler Secure Vault access */
 .traveler-vault-shortcut{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#eef5f7;border:1px solid #c6dce3;border-radius:14px;padding:12px 14px;margin:14px 0}.traveler-vault-shortcut span{display:grid;gap:3px}.traveler-vault-shortcut small{line-height:1.3;color:#53646a}.traveler-vault-shortcut a{flex:0 0 auto;display:inline-block;text-decoration:none;font-weight:850;background:#1f4d5d;color:#fff;border-radius:999px;padding:9px 12px}@media(max-width:650px){.traveler-vault-shortcut{align-items:stretch;flex-direction:column}.traveler-vault-shortcut a{text-align:center}}
+
+
+/* v3.4.00 Transportation Receipt Register */
+.receipt-status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:.75rem 0}
+.receipt-status-grid article{display:grid;gap:.28rem;padding:12px;border:1px solid #d9e2e7;border-radius:12px;background:#fbfcfd}
+.receipt-status-grid article span{font-size:.88rem}.receipt-status-grid article em{font-size:.8rem;color:#63717b}
+.receipt-register-actions{display:flex;flex-wrap:wrap;gap:8px}.receipt-register-actions a{display:inline-block;text-decoration:none;border:1px solid #b9c8d2;border-radius:999px;padding:8px 11px;font-weight:800;color:inherit;background:#fff}
+.receipt-private-note{font-size:.78rem;color:#697781;margin:.75rem 0 0}
+@media(max-width:760px){.receipt-status-grid{grid-template-columns:1fr}.receipt-register-actions{display:grid}.receipt-register-actions a{text-align:center}}

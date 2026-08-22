@@ -1,4 +1,4 @@
-const CACHE = 'tee-essentials-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-essentials-v3-4-00-problem-solver';
 const CACHE_PREFIX = 'tee-essentials-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
 
