@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.22",
-  "channel": "coherent-traveler-runtime-assembly",
-  "publishedAt": "2026-08-22T22:50:00-07:00",
-  "notes": "Replaces the fragile iPhone execution of eight runtime wrapper scripts with a coherent fetch/decode/assemble loader. TEE now downloads all eight same-origin runtime parts, decodes their generated string payloads without depending on Safari executing each wrapper, assembles them in order, and initializes Add Document only after the complete runtime is present. Vault behavior and private data are unchanged.",
-  "name": "TEE v3.4.22 — Coherent Traveler Runtime Assembly"
+  "version": "3.4.23",
+  "channel": "guided-chatgpt-browser-workflow",
+  "publishedAt": "2026-08-22T23:14:00-07:00",
+  "notes": "Makes the normal online document-reading workflow explicit for iPhone: Analyze with ChatGPT now copies the prepared TEE analysis request and opens ChatGPT directly. The in-app How do I do this instructions walk through attach same document → Paste → Send → Copy JSON → return to TEE → Paste Results → verify → Save to TEE Vault. Share-sheet availability is no longer required. Vault behavior and private data are unchanged.",
+  "name": "TEE v3.4.23 — Guided ChatGPT Browser Workflow"
 }
