@@ -14,7 +14,6 @@
   window.TEESourceDocumentManagerActive=true;
   let view="needs";
   let busy=false;
-  let lastRecords=[];
 
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const dateLabel=v=>{ if(!v)return "—"; const d=new Date(v); return Number.isNaN(d.getTime())?"—":d.toLocaleString(); };
@@ -46,7 +45,8 @@
     const privateItems=Number(r.privateItemCount||0);
     const total=publicItems+sharedItems+privateItems;
     if(total) return `${total} saved item${total===1?"":"s"}`;
-    return r.verifiedAt?"Saved information verified":"No saved details yet — verification cannot finish";
+    if(r.verifiedAt) return "Saved information verified";
+    return "No saved details yet — verification cannot finish";
   }
   function sourceStatus(r){
     if(r.sourceAccessLocked){
@@ -65,88 +65,6 @@
     return "Saved";
   }
 
-  function librarySearchMatches(r){
-    const q=String(document.getElementById("searchInput")?.value||"").trim().toLowerCase();
-    const category=String(document.getElementById("categoryFilter")?.value||"").trim();
-    if(category && category!==r.category) return false;
-    if(!q) return true;
-    return [r.title,r.category,r.sourceName,r.originalReference,destinationLabel(r.category),processingStatus(r)].join(" ").toLowerCase().includes(q);
-  }
-
-  function resetLibraryCounts(mount){
-    mount.querySelectorAll("details.category").forEach(details=>{
-      const body=details.querySelector(":scope > .category-body");
-      const count=body?.querySelectorAll(".doc-card:not([data-tee-runtime-source='1'])").length||0;
-      const spans=details.querySelectorAll(":scope > summary > span");
-      if(spans[1]) spans[1].textContent=`${count} file${count===1?"":"s"}`;
-    });
-  }
-
-  function openRuntimeSource(r){
-    const manager=document.getElementById("teeSourceDocumentManager");
-    if(!manager) return;
-    const nav=window.TEETravelerSourceNavV3426||window.TEETravelerSourceNavV3424||window.TEETravelerSourceNavV3423;
-    if(nav?.showOnly) nav.showOnly(manager,"Source Document Manager: retained original and processing history.");
-    else { manager.hidden=false; manager.scrollIntoView({behavior:"smooth",block:"start"}); }
-    const tab=r.lifecycleStatus==="archived"?document.getElementById("sourceManagerArchived"):document.getElementById("sourceManagerAll");
-    tab?.click();
-    setTimeout(()=>{
-      const card=[...manager.querySelectorAll(".source-manager-card[data-document-id]")].find(x=>x.dataset.documentId===String(r.documentId));
-      if(card){ card.scrollIntoView({behavior:"smooth",block:"center"}); card.classList.add("source-manager-focus"); setTimeout(()=>card.classList.remove("source-manager-focus"),1800); }
-    },80);
-  }
-
-  function syncRuntimeSourcesToLibrary(records=lastRecords){
-    lastRecords=Array.isArray(records)?records:lastRecords;
-    const mount=document.getElementById("docMount");
-    if(!mount) return;
-
-    mount.querySelectorAll("[data-tee-runtime-source='1']").forEach(el=>el.remove());
-    mount.querySelectorAll("details[data-tee-runtime-category='1']").forEach(details=>details.remove());
-    resetLibraryCounts(mount);
-
-    const visible=lastRecords.filter(r=>librarySearchMatches(r));
-    const groups={};
-    visible.forEach(r=>(groups[r.category||"Structured Documents"]||=[]).push(r));
-
-    Object.entries(groups).forEach(([category,recordsInCategory])=>{
-      let details=[...mount.querySelectorAll("details.category")].find(d=>String(d.querySelector(":scope > summary > span")?.textContent||"").trim()===category);
-      if(!details){
-        details=document.createElement("details");
-        details.className="category";
-        details.dataset.teeRuntimeCategory="1";
-        const summary=document.createElement("summary");
-        summary.innerHTML=`<span>${esc(category)}</span><span>0 files</span>`;
-        const body=document.createElement("div"); body.className="category-body";
-        details.append(summary,body); mount.appendChild(details);
-      }
-      const body=details.querySelector(":scope > .category-body");
-      recordsInCategory.forEach(r=>{
-        const article=document.createElement("article");
-        const status=String(r.originalClassification||"reference");
-        article.className=`doc-card source-${status}`;
-        article.dataset.teeRuntimeSource="1";
-        article.dataset.documentId=String(r.documentId||"");
-        article.dataset.sourceTitle=String(r.title||"");
-        const sourceName=r.sourceName||r.originalReference||"Original source";
-        const typeLabel=r.sourceType?String(r.sourceType).split("/").pop().toUpperCase():"LOCAL";
-        const archived=r.lifecycleStatus==="archived";
-        article.innerHTML=`
-          <div class="source-doc-title-row"><h3>${esc(r.title)}</h3><span class="source-status-badge ${esc(status)}">${esc(classLabel(r.originalClassification,r.targetProfile))}</span></div>
-          <div class="meta"><span class="chip">${esc(processingStatus(r))}</span><span class="chip">${archived?"Archived":"Active"}</span><span class="chip">${esc(typeLabel)}</span></div>
-          <p>${esc(sourceName)} → ${esc(r.title)} → ${esc(destinationLabel(r.category))}</p>
-          <div class="meta"><span class="chip">#source</span><span class="chip">#structured</span><span class="chip">#local</span></div>
-          <strong class="source-private-note">LOCAL RETAINED SOURCE · linked to this TEE structured record. The protected original remains local and is not packaged in the GitHub-safe app.</strong>
-          <div class="source-manager-actions"><button type="button" class="secondary" data-runtime-open>Open in Source Document Manager</button></div>`;
-        article.querySelector("[data-runtime-open]")?.addEventListener("click",()=>openRuntimeSource(r));
-        body?.appendChild(article);
-      });
-      const count=body?.querySelectorAll(".doc-card").length||0;
-      const spans=details.querySelectorAll(":scope > summary > span");
-      if(spans[1]) spans[1].textContent=`${count} file${count===1?"":"s"}`;
-    });
-  }
-
   async function act(fn){
     if(busy)return; busy=true;
     try{ await fn(); await render(); }
@@ -160,8 +78,6 @@
     buttonState();
     let records=[];
     try{ records=await a.sourceManagerRecords(); }catch(err){ ui.summary.textContent=err?.message||String(err); return; }
-    lastRecords=records;
-    syncRuntimeSourcesToLibrary(records);
     const counts={needs:records.filter(r=>r.needsAttention&&r.lifecycleStatus!=="archived").length,structured:records.filter(r=>!r.needsAttention&&r.lifecycleStatus==="processed").length,archived:records.filter(r=>r.lifecycleStatus==="archived").length,all:records.length};
     if(ui.needs) ui.needs.textContent=`Needs Attention (${counts.needs})`;
     if(ui.structured) ui.structured.textContent=`Saved Documents (${counts.structured})`;
@@ -236,11 +152,7 @@
   ui.structured?.addEventListener("click",()=>setView("structured"));
   ui.archived?.addEventListener("click",()=>setView("archived"));
   ui.all?.addEventListener("click",()=>setView("all"));
-  document.getElementById("searchInput")?.addEventListener("input",()=>setTimeout(()=>syncRuntimeSourcesToLibrary(),0));
-  document.getElementById("categoryFilter")?.addEventListener("change",()=>setTimeout(()=>syncRuntimeSourcesToLibrary(),0));
-  document.getElementById("docMount")?.addEventListener("click",()=>setTimeout(()=>syncRuntimeSourcesToLibrary(),0));
   window.addEventListener("tee-vault-state-changed",render);
   window.addEventListener("tee-structured-documents-changed",render);
-  window.addEventListener("tee-source-library-refresh",()=>syncRuntimeSourcesToLibrary());
   render();
 })();
