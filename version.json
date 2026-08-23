@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.20",
-  "channel": "iphone-runtime-loader-hardening",
-  "publishedAt": "2026-08-22T22:30:00-07:00",
-  "notes": "Hardens Source Documents Add Document loading on iPhone by loading traveler runtime chunks sequentially with no eval, cache-busting every part, waiting for runtime initialization, and exposing technical detail if loading still fails. Vault behavior and private data are unchanged.",
-  "name": "TEE v3.4.20 — iPhone Runtime Loader Hardening"
+  "version": "3.4.21",
+  "channel": "iphone-runtime-parser-fix",
+  "publishedAt": "2026-08-22T22:42:00-07:00",
+  "notes": "Fixes the iPhone Source Documents Add Document failure caused by parsing runtime chunk wrapper text as JSON. Runtime parts now load as normal scripts, assemble in order, and initialize without JSON.parse. Vault behavior and private data are unchanged.",
+  "name": "TEE v3.4.21 — iPhone Runtime Parser Fix"
 }
