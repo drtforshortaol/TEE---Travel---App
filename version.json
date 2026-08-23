@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.21",
-  "channel": "iphone-runtime-parser-fix",
-  "publishedAt": "2026-08-22T22:42:00-07:00",
-  "notes": "Fixes the iPhone Source Documents Add Document failure caused by parsing runtime chunk wrapper text as JSON. Runtime parts now load as normal scripts, assemble in order, and initialize without JSON.parse. Vault behavior and private data are unchanged.",
-  "name": "TEE v3.4.21 — iPhone Runtime Parser Fix"
+  "version": "3.4.22",
+  "channel": "coherent-traveler-runtime-assembly",
+  "publishedAt": "2026-08-22T22:50:00-07:00",
+  "notes": "Replaces the fragile iPhone execution of eight runtime wrapper scripts with a coherent fetch/decode/assemble loader. TEE now downloads all eight same-origin runtime parts, decodes their generated string payloads without depending on Safari executing each wrapper, assembles them in order, and initializes Add Document only after the complete runtime is present. Vault behavior and private data are unchanged.",
+  "name": "TEE v3.4.22 — Coherent Traveler Runtime Assembly"
 }
