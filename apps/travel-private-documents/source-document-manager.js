@@ -64,6 +64,24 @@
     if(r.needsAttention) return "Needs Attention";
     return "Saved";
   }
+  function publishLibraryRecords(records){
+    window.TEELocalSourceInventoryV3426=(records||[]).map(r=>({
+      documentId:r.documentId,
+      title:r.title||"Saved document",
+      category:r.category||"Other",
+      originalClassification:r.originalClassification||"private",
+      targetProfile:r.targetProfile||r.requiredProfile||null,
+      sourceName:r.sourceName||r.originalReference||"Retained local source",
+      sourceEmbedded:!!r.sourceEmbedded,
+      sourceReferenced:!!r.sourceReferenced,
+      lifecycleStatus:r.lifecycleStatus||"processed",
+      verifiedAt:r.verifiedAt||null,
+      needsAttention:!!r.needsAttention,
+      createdAt:r.createdAt||null,
+      lastModifiedAt:r.lastModifiedAt||null
+    }));
+    window.dispatchEvent(new CustomEvent("tee-local-source-inventory-changed",{detail:{records:window.TEELocalSourceInventoryV3426}}));
+  }
 
   async function act(fn){
     if(busy)return; busy=true;
@@ -78,6 +96,7 @@
     buttonState();
     let records=[];
     try{ records=await a.sourceManagerRecords(); }catch(err){ ui.summary.textContent=err?.message||String(err); return; }
+    publishLibraryRecords(records);
     const counts={needs:records.filter(r=>r.needsAttention&&r.lifecycleStatus!=="archived").length,structured:records.filter(r=>!r.needsAttention&&r.lifecycleStatus==="processed").length,archived:records.filter(r=>r.lifecycleStatus==="archived").length,all:records.length};
     if(ui.needs) ui.needs.textContent=`Needs Attention (${counts.needs})`;
     if(ui.structured) ui.structured.textContent=`Saved Documents (${counts.structured})`;
