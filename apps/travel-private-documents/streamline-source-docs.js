@@ -12,13 +12,13 @@
   const home=document.getElementById('streamlinedSourceHome');
   const status=document.getElementById('streamlinedSourceStatus');
   const buildLabel=document.querySelector('header.hero .subtitle strong');
-  if(buildLabel)buildLabel.textContent='TEE v3.4.23';
+  if(buildLabel)buildLabel.textContent='TEE v3.4.24';
   const workflowParagraph=document.querySelector('#streamlinedSourceHome .streamlined-source-head p');
   if(workflowParagraph)workflowParagraph.innerHTML='Use one simple workflow: <strong>Add → Review → Save → Verify → Done.</strong> TEE proposes privacy; change it only when the suggestion is wrong.';
 
   if(!maintenanceMode && requestedView!=='vault'){
     const guard=document.createElement('style');
-    guard.id='teeTravelerLegacyIntakeGuardV3423';
+    guard.id='teeTravelerLegacyIntakeGuardV3424';
     guard.textContent='body.source-streamlined-mode #smartDocumentIntake > :not(#teeTravelerSimpleAddV3404){display:none!important} body.source-streamlined-mode #smartDocumentIntake[hidden]{display:none!important}';
     document.head.appendChild(guard);
   }
@@ -39,22 +39,23 @@
   function showManager(view){const section=document.getElementById('teeSourceDocumentManager');showOnly(section,view==='structured'?'Saved Documents: tap Review & Verify to compare the original and saved information together.':'Needs Attention: finish the items that still require work.');setTimeout(()=>{const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';document.getElementById(id)?.click();},50);}
   function showLibrary(){const section=document.getElementById('sourceInventoryWorkspace');showOnly(section,'Document Library: supporting originals and source history.');const toggle=document.getElementById('sourceInventoryToggle');if(toggle&&toggle.getAttribute('aria-expanded')!=='true')toggle.click();}
 
-  window.TEETravelerSourceNavV3423={showOnly,showAdd,showManager,showLibrary,normalTargets};
-  window.TEETravelerSourceNavV3421=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3419=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3418=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3417=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3423;
-  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3423;
+  window.TEETravelerSourceNavV3424={showOnly,showAdd,showManager,showLibrary,normalTargets};
+  window.TEETravelerSourceNavV3423=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3421=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3419=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3418=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3417=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3424;
+  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3424;
 
   function enforceSimpleTravelerIntake(){
     if(maintenanceMode||requestedView==='vault')return;
@@ -96,15 +97,15 @@
   const intakeRoot=document.getElementById('smartDocumentIntake');
   if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
-  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.23';mrz.dataset.teePassportMrz='3.4.23';
+  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.24';mrz.dataset.teePassportMrz='3.4.24';
   const loadUx=()=>{
-    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.23"]'))return;
-    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.23';ux.dataset.teeTravelerSourceUx='3.4.23';
+    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.24"]'))return;
+    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.24';ux.dataset.teeTravelerSourceUx='3.4.24';
     ux.addEventListener('load',()=>{setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,180);if(requestedView==='add')setTimeout(showAdd,0);});
     document.head.appendChild(ux);
   };
 
-  const guide=document.createElement('script');guide.src='chatgpt-guidance-v3423.js?v=3.4.23';guide.dataset.teeChatgptGuidance='3.4.23';document.head.appendChild(guide);
+  const guide=document.createElement('script');guide.src='chatgpt-guidance-v3423.js?v=3.4.24';guide.dataset.teeChatgptGuidance='3.4.24';document.head.appendChild(guide);
   loadUx();
   document.head.appendChild(mrz);
 })();
