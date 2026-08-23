@@ -2,7 +2,7 @@
   "app": "TEE",
   "version": "3.4.19",
   "channel": "iphone-add-document-launch-fix",
-  "publishedAt": "2026-08-22T22:14:00-07:00",
-  "notes": "Fixes Source Documents Add Document on iPhone by loading the simple traveler intake immediately instead of waiting for OCR, and adds tap-safe delegated navigation. Vault behavior and private data are unchanged.",
+  "publishedAt": "2026-08-22T22:23:00-07:00",
+  "notes": "Fixes Source Documents Add Document on iPhone by loading the simple traveler intake immediately, cache-busting all traveler runtime chunks to v3.4.19, and showing a red Retry Add Document control if the runtime cannot load. Legacy Smart Document Intake remains hidden in normal traveler mode. Vault behavior and private data are unchanged.",
   "name": "TEE v3.4.19 — iPhone Add Document Launch Fix"
 }
