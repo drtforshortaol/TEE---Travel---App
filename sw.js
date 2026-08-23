@@ -1,4 +1,4 @@
-const CACHE = 'tee-v3-4-01-source-workflow';
+const CACHE = 'tee-v3-4-15-share-document-chatgpt-handoff';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   './traveler-help.css',
   './traveler-help.js',
   './app.js',
+  './version-banner.js',
   './vault-session.js',
   './hub-v369.js',
   './hub-registry.js',
@@ -86,10 +87,26 @@ const ASSETS = [
   './apps/travel-private-documents/protected-migration.js',
   './apps/travel-private-documents/source-authority.js',
   './apps/travel-private-documents/secure-vault.js',
+  './apps/travel-private-documents/sync-foundation-v3404.js',
   './apps/travel-private-documents/structured-documents.js',
+  './apps/travel-private-documents/source-document-manager.js',
+  './apps/travel-private-documents/help.js',
   './apps/travel-private-documents/smart-intake.js',
   './apps/travel-private-documents/streamline-source-docs.js',
-  './apps/travel-private-documents/traveler-source-flow-v3401.js',
+  './apps/travel-private-documents/mrz-ocr-v3412.js',
+  './apps/travel-private-documents/mrz-ocr-v3412.part01.js',
+  './apps/travel-private-documents/mrz-ocr-v3412.part02.js',
+  './apps/travel-private-documents/mrz-ocr-v3412.part03.js',
+  './apps/travel-private-documents/mrz-ocr-v3412.part04.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part01.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part02.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part03.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part04.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part05.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part06.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part07.js',
+  './apps/travel-private-documents/traveler-source-flow-v3415.part08.js',
   './apps/travel-private-documents/vault-return.js',
   './apps/travel-private-documents/manifest.json',
   './apps/tee-maintenance/index.html',
@@ -161,7 +178,7 @@ self.addEventListener('message', event => {
       const results = await cacheAssetList(cache);
       const failed = results.filter(r=>!r.ok);
       const keys = await cache.keys();
-      reply({type:'TEE_PREPARE_RESULT', version:'3.4.01', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
+      reply({type:'TEE_PREPARE_RESULT', version:'3.4.15', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
     })());
   }
   if (msg.type === 'TEE_OFFLINE_STATUS') {
@@ -172,11 +189,11 @@ self.addEventListener('message', event => {
         const hit = await cache.match(asset);
         if (!hit) failed.push(asset);
       }
-      reply({type:'TEE_STATUS_RESULT', version:'3.4.01', cache:CACHE, expected:ASSETS.length, missing:failed});
+      reply({type:'TEE_STATUS_RESULT', version:'3.4.15', cache:CACHE, expected:ASSETS.length, missing:failed});
     })());
   }
   if (msg.type === 'TEE_VERSION_STATUS') {
-    reply({type:'TEE_VERSION_RESULT', version:'3.4.01', cache:CACHE});
+    reply({type:'TEE_VERSION_RESULT', version:'3.4.15', cache:CACHE});
   }
   if (msg.type === 'TEE_CLEAR_APP_CACHE') {
     event.waitUntil((async()=>{
