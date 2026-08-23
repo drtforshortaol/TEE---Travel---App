@@ -49,7 +49,7 @@
   }
   function showManager(view){
     const section=document.getElementById('teeSourceDocumentManager');
-    showOnly(section,view==='structured'?'Saved Documents: verify information, original document, and edit only if needed.':'Needs Attention: finish the items that still require work.');
+    showOnly(section,view==='structured'?'Saved Documents: tap Review & Verify to compare the original and saved information together.':'Needs Attention: finish the items that still require work.');
     setTimeout(()=>{
       const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';
       document.getElementById(id)?.click();
@@ -62,7 +62,16 @@
     if(toggle && toggle.getAttribute('aria-expanded')!=='true')toggle.click();
   }
 
-  window.TEETravelerSourceNavV3401={showOnly,showAdd,showManager,showLibrary,normalTargets};
+  // Expose only the traveler-facing navigation helpers needed by the v3.4.01 guidance layer.
+  window.TEETravelerSourceNavV3414={showOnly,showAdd,showManager,showLibrary,normalTargets};
+  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3414;
+  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3414;
+  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3412;
+  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3411;
+  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3411;
+  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3411;
+  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3411;
+  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3411;
 
   if(maintenanceMode){
     document.body.classList.add('source-maintenance-mode');
@@ -72,6 +81,8 @@
     return;
   }
 
+  // Traveler-facing Secure Vault entry. There is one normal entry point:
+  // the Secure Vault button at the top of the Hub.
   if(requestedView==='vault'){
     document.body.classList.add('source-streamlined-mode','source-vault-view');
     if(home)home.hidden=true;
@@ -164,8 +175,22 @@
 
   if(requestedView==='library')setTimeout(showLibrary,80);
 
-  const ux=document.createElement('script');
-  ux.src='traveler-source-flow-v3401.js?v=3.4.01';
-  ux.dataset.teeTravelerSourceUx='3.4.01';
-  document.head.appendChild(ux);
+  // Local passport MRZ recognition is bundled with TEE; it does not send document images to an OCR service.
+  const mrz=document.createElement('script');
+  mrz.src='mrz-ocr-v3412.js?v=3.4.15';
+  mrz.dataset.teePassportMrz='3.4.15';
+  mrz.addEventListener('load',()=>{
+    const ux=document.createElement('script');
+    ux.src='traveler-source-flow-v3415.js?v=3.4.15';
+    ux.dataset.teeTravelerSourceUx='3.4.15';
+    document.head.appendChild(ux);
+  });
+  mrz.addEventListener('error',()=>{
+    // The traveler workflow still loads; passport fields can be entered manually if the local scanner fails to load.
+    const ux=document.createElement('script');
+    ux.src='traveler-source-flow-v3415.js?v=3.4.15';
+    ux.dataset.teeTravelerSourceUx='3.4.15';
+    document.head.appendChild(ux);
+  });
+  document.head.appendChild(mrz);
 })();
