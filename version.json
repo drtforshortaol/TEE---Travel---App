@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.15",
-  "channel": "chatgpt-share-document-handoff",
-  "publishedAt": "2026-08-22T21:00:00-07:00",
-  "notes": "Adds an iPhone-friendly ChatGPT handoff that shares the selected source document through the device Share sheet while copying the prepared TEE analysis request. ChatGPT results return through Copy and TEE Paste Results. Local OCR/MRZ remains available as an offline fallback. Private documents are shared only after the user explicitly taps Analyze with ChatGPT.",
-  "name": "TEE v3.4.15 — Share Document to ChatGPT"
+  "version": "3.4.16",
+  "channel": "traveler-source-documents-cleanup",
+  "publishedAt": "2026-08-22T21:44:00-07:00",
+  "notes": "Hides the legacy Smart Document Intake interface from normal traveler mode so Source Documents shows only the simple Add → Review → Save → Verify workflow. The legacy intake remains available through Maintenance/advanced controls. ChatGPT document sharing and Paste Results remain unchanged from v3.4.15.",
+  "name": "TEE v3.4.16 — Traveler Source Documents Cleanup"
 }
