@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const stem="traveler-source-flow-v3415", count=15;
+  const stem="traveler-source-flow-v3415", count=8;
   window.__TEE_PARTS__=window.__TEE_PARTS__||{}; window.__TEE_PARTS__[stem]=[];
   let i=1;
   function next(){
