@@ -2,17 +2,17 @@
 (function(){
   const stem="traveler-source-flow-v3415";
   const count=8;
-  const build="3.4.22";
+  const build="3.4.23";
   const buildLabel=document.querySelector('header.hero .subtitle strong');
-  if(buildLabel)buildLabel.textContent='TEE v3.4.22';
+  if(buildLabel)buildLabel.textContent='TEE v3.4.23';
 
   function statusNode(){return document.getElementById('streamlinedSourceStatus');}
   function esc(value){return String(value||'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));}
   function showRetry(message){
     const status=statusNode();
     if(!status)return;
-    status.innerHTML='<div style="border:3px solid #b42318;background:#fff1f0;color:#7a271a;border-radius:14px;padding:14px;font-weight:700">🔴 CANNOT CONTINUE — Add Document did not load.<br><span style="font-weight:600">Next step: tap Retry Add Document.</span><br><button id="teeRetryAddDocumentV3422" type="button" style="margin-top:10px;padding:10px 14px;font-weight:700">Retry Add Document</button><details style="margin-top:10px;font-weight:500"><summary>Technical detail</summary><div style="margin-top:6px;overflow-wrap:anywhere">'+esc(message||'Unknown loader error')+'</div></details></div>';
-    document.getElementById('teeRetryAddDocumentV3422')?.addEventListener('click',()=>boot(),{once:true});
+    status.innerHTML='<div style="border:3px solid #b42318;background:#fff1f0;color:#7a271a;border-radius:14px;padding:14px;font-weight:700">🔴 CANNOT CONTINUE — Add Document did not load.<br><span style="font-weight:600">Next step: tap Retry Add Document.</span><br><button id="teeRetryAddDocumentV3423" type="button" style="margin-top:10px;padding:10px 14px;font-weight:700">Retry Add Document</button><details style="margin-top:10px;font-weight:500"><summary>Technical detail</summary><div style="margin-top:6px;overflow-wrap:anywhere">'+esc(message||'Unknown loader error')+'</div></details></div>';
+    document.getElementById('teeRetryAddDocumentV3423')?.addEventListener('click',()=>boot(),{once:true});
     console.error('TEE traveler loader:',message);
   }
 
@@ -44,11 +44,9 @@
         if(!/^[0-9a-fA-F]{2}$/.test(hex))throw new Error('Invalid hex escape in runtime chunk.');
         out+=String.fromCharCode(parseInt(hex,16));i+=2;
       }else if(e==='\n'){
-        // JavaScript line continuation.
       }else if(e==='\r'){
         if(literal[i+1]==='\n')i++;
       }else{
-        // Preserve unknown escapes the way a normal JS string would for these generated chunks.
         out+=e;
       }
     }
