@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.01",
-  "channel": "source-documents-workflow-cleanup",
-  "publishedAt": "2026-08-22T12:25:00-07:00",
-  "notes": "Streamlines traveler Source Documents and Vault use with an Add → Review → Save → Verify workflow, exact visible button names in instructions, green/yellow/red next-step announcements, a new-record path that does not reuse another traveler’s structured data, simpler Saved Documents labels, and a visible structured-result/original-document review path. Encrypted Vault records and private identifiers remain local/private.",
-  "name": "TEE v3.4.01 — Source Documents & Vault Workflow Cleanup"
+  "version": "3.4.15",
+  "channel": "chatgpt-share-document-handoff",
+  "publishedAt": "2026-08-22T21:00:00-07:00",
+  "notes": "Adds an iPhone-friendly ChatGPT handoff that shares the selected source document through the device Share sheet while copying the prepared TEE analysis request. ChatGPT results return through Copy and TEE Paste Results. Local OCR/MRZ remains available as an offline fallback. Private documents are shared only after the user explicitly taps Analyze with ChatGPT.",
+  "name": "TEE v3.4.15 — Share Document to ChatGPT"
 }
