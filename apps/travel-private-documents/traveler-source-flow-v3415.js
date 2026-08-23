@@ -2,18 +2,57 @@
 (function(){
   const stem="traveler-source-flow-v3415";
   const count=8;
-  const build="3.4.23";
+  const build="3.4.25";
   const buildLabel=document.querySelector('header.hero .subtitle strong');
-  if(buildLabel)buildLabel.textContent='TEE v3.4.23';
+  if(buildLabel)buildLabel.textContent='TEE v3.4.25';
 
   function statusNode(){return document.getElementById('streamlinedSourceStatus');}
-  function esc(value){return String(value||'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));}
+  function esc(value){return String(value||'').replace(/[&<>\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]));}
   function showRetry(message){
     const status=statusNode();
     if(!status)return;
-    status.innerHTML='<div style="border:3px solid #b42318;background:#fff1f0;color:#7a271a;border-radius:14px;padding:14px;font-weight:700">🔴 CANNOT CONTINUE — Add Document did not load.<br><span style="font-weight:600">Next step: tap Retry Add Document.</span><br><button id="teeRetryAddDocumentV3423" type="button" style="margin-top:10px;padding:10px 14px;font-weight:700">Retry Add Document</button><details style="margin-top:10px;font-weight:500"><summary>Technical detail</summary><div style="margin-top:6px;overflow-wrap:anywhere">'+esc(message||'Unknown loader error')+'</div></details></div>';
-    document.getElementById('teeRetryAddDocumentV3423')?.addEventListener('click',()=>boot(),{once:true});
+    status.innerHTML='<div style="border:3px solid #b42318;background:#fff1f0;color:#7a271a;border-radius:14px;padding:14px;font-weight:700">🔴 CANNOT CONTINUE — Add Document did not load.<br><span style="font-weight:600">Next step: tap Retry Add Document.</span><br><button id="teeRetryAddDocumentV3425" type="button" style="margin-top:10px;padding:10px 14px;font-weight:700">Retry Add Document</button><details style="margin-top:10px;font-weight:500"><summary>Technical detail</summary><div style="margin-top:6px;overflow-wrap:anywhere">'+esc(message||'Unknown loader error')+'</div></details></div>';
+    document.getElementById('teeRetryAddDocumentV3425')?.addEventListener('click',()=>boot(),{once:true});
     console.error('TEE traveler loader:',message);
+  }
+
+  function ensureVaultAuthorizationBridge(){
+    const base=window.TEEStructuredDocumentVault;
+    if(!base)throw new Error('Secure Vault bridge is unavailable.');
+    if(typeof base.authorizeWithPassphrase==='function')return;
+    if(typeof unlockVault!=='function')throw new Error('Vault unlock engine is unavailable.');
+
+    const authorizeWithPassphrase=async(expectedProfile,passphrase)=>{
+      const secret=String(passphrase||'');
+      if(!secret)throw new Error('Enter the selected couple passphrase.');
+
+      if(base.getState?.()==='unlocked'){
+        const active=base.getActiveProfileId?.()||null;
+        if(!expectedProfile || active===expectedProfile){
+          return {profileId:active,profileLabel:base.getActiveProfileLabel?.()||active};
+        }
+        if(typeof lockSecureVault==='function')lockSecureVault('Switching Vault authorization.');
+        else if(typeof lockVault==='function')lockVault({reason:'switch-profile'});
+      }
+
+      const success=await unlockVault(secret);
+      if(!success)throw new Error('The passphrase is incorrect or the encrypted Vault could not be opened.');
+
+      const active=base.getActiveProfileId?.()||null;
+      if(expectedProfile && active!==expectedProfile){
+        if(typeof lockSecureVault==='function')lockSecureVault('Vault authorization did not match the selected destination.');
+        else if(typeof lockVault==='function')lockVault({reason:'profile-mismatch'});
+        throw new Error(`That passphrase opened ${base.getActiveProfileLabel?.()||active||'another Vault'}, not the selected destination.`);
+      }
+
+      try{if(typeof publishAuthorizedSession==='function')publishAuthorizedSession();}catch{}
+      try{if(typeof updateSecureVaultUi==='function')updateSecureVaultUi();}catch{}
+      try{if(typeof startAutoLock==='function'&&typeof lockSecureVault==='function')startAutoLock(()=>lockSecureVault('The vault locked automatically.'));}catch{}
+      window.dispatchEvent(new CustomEvent('tee-vault-state-changed'));
+      return {profileId:active,profileLabel:base.getActiveProfileLabel?.()||active};
+    };
+
+    window.TEEStructuredDocumentVault=Object.freeze({...base,authorizeWithPassphrase});
   }
 
   function decodeQuotedString(literal){
@@ -79,6 +118,7 @@
 
   async function boot(){
     try{
+      ensureVaultAuthorizationBridge();
       const chunks=[];
       for(let i=1;i<=count;i++)chunks.push(await fetchChunk(i));
       if(chunks.length!==count)throw new Error('Traveler runtime assembled '+chunks.length+' of '+count+' required parts.');
