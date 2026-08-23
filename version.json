@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.24",
-  "channel": "reliable-chatgpt-result-paste",
-  "publishedAt": "2026-08-23T00:21:00-07:00",
-  "notes": "Makes ChatGPT result return reliable on iPhone. Paste Results now accepts only a valid tee-chatgpt-extract-v1 JSON result from the clipboard. If iOS blocks clipboard reading or the clipboard still contains the analysis request, TEE opens Manual Paste with an empty box and explicit tap-inside → Paste → Apply Manual Result instructions instead of applying the wrong text. ChatGPT guidance now includes first-time login and exact Copy steps. Vault behavior and private data are unchanged.",
-  "name": "TEE v3.4.24 — Reliable ChatGPT Result Paste"
+  "version": "3.4.25",
+  "channel": "source-document-vault-authorization-fix",
+  "publishedAt": "2026-08-23T00:37:00-07:00",
+  "notes": "Restores the missing Source Documents authorization bridge used by the simple traveler workflow. Authorize Couple A/B now opens the selected local encrypted Vault with that couple's passphrase, verifies that the active profile matches the selected private destination, and refuses a mismatched profile. No private records, passphrases, or source documents are added to GitHub.",
+  "name": "TEE v3.4.25 — Source Document Vault Authorization Fix"
 }
