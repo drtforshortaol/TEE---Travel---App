@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.16",
-  "channel": "traveler-source-documents-cleanup",
-  "publishedAt": "2026-08-22T21:44:00-07:00",
-  "notes": "Hides the legacy Smart Document Intake interface from normal traveler mode so Source Documents shows only the simple Add → Review → Save → Verify workflow. The legacy intake remains available through Maintenance/advanced controls. ChatGPT document sharing and Paste Results remain unchanged from v3.4.15.",
-  "name": "TEE v3.4.16 — Traveler Source Documents Cleanup"
+  "version": "3.4.17",
+  "channel": "traveler-intake-race-fix",
+  "publishedAt": "2026-08-22T21:56:00-07:00",
+  "notes": "Prevents the legacy Smart Document Intake from flashing or remaining visible in normal traveler mode while the simplified Add Document workflow loads. Maintenance mode still exposes the advanced intake tools. Source Documents remains Add → Review → Save → Verify.",
+  "name": "TEE v3.4.17 — Traveler Intake Race Fix"
 }
