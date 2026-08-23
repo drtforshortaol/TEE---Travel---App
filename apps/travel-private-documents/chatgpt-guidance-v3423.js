@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD='3.4.24';
+  const BUILD='3.4.27';
   const CHAT_URL='https://chatgpt.com/';
 
   function fieldKeys(type){
@@ -14,9 +14,7 @@
     return ['Important note'];
   }
 
-  function normalizeName(value){
-    return String(value||'').trim().replace(/\s+/g,' ');
-  }
+  function normalizeName(value){return String(value||'').trim().replace(/\s+/g,' ');}
 
   function promptText(){
     const type=document.getElementById('teeV3404Type')?.value||'Other';
@@ -24,23 +22,21 @@
     const files=Array.from(document.getElementById('teeV3404File')?.files||[]).map(f=>f.name);
     const fields=fieldKeys(type);
     const schemaFields=fields.map(k=>`"${k}":""`).join(',');
-    return `Analyze the attached travel document for TEE. Return ONLY valid JSON, no markdown or explanation.\n\nSchema: {"schema":"tee-chatgpt-extract-v1","documentType":"${type}","traveler":"${owner}","fields":{${schemaFields}}}\n\nRules:\n- Read the attached source carefully, including every image/page.\n- Preserve exact operational values; do not guess.\n- If uncertain, use an empty string.\n- For dates, prefer YYYY-MM-DD when clear.\n- For passport/identity documents, copy the holder name exactly as printed and verify passport number, birth date, expiration date, and nationality against the document.\n- Do not include source image bytes.\n- Return only the JSON object.\n\nSource file(s): ${files.join(', ')||'selected document'}`;
+    return `TEE EXTRACTION REQUEST — MACHINE-READABLE RESPONSE REQUIRED.\n\nAnalyze ALL attached source images/pages as ONE ${type} document for traveler ${owner}.\n\nRETURN EXACTLY ONE JSON OBJECT AND NOTHING ELSE. Do not use markdown fences. Do not add an introduction, bullets, explanation, commentary, or text before/after the JSON.\n\nRequired schema: {"schema":"tee-chatgpt-extract-v1","documentType":"${type}","traveler":"${owner}","fields":{${schemaFields}}}\n\nRules:\n- Read every attached image/page before answering.\n- Preserve exact operational values from the document; do not guess.\n- If uncertain or not present, use an empty string.\n- For dates, use YYYY-MM-DD when clear.\n- For identity documents, copy the holder name exactly as printed.\n- Do not include source image bytes.\n- Your entire response must parse with JSON.parse().\n- First character of your response must be { and last character must be }.\n\nSource file(s): ${files.join(', ')||'selected document'}`;
   }
 
-  function stripFences(raw){
-    return String(raw||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
+  function stripFences(raw){return String(raw||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();}
+  function parseTEEJson(raw){
+    const cleaned=stripFences(raw);
+    const data=JSON.parse(cleaned);
+    if(!(data&&data.schema==='tee-chatgpt-extract-v1'&&data.fields&&typeof data.fields==='object'))throw new Error('Not a TEE JSON result.');
+    return {cleaned,data};
   }
-
-  function validTEEJson(raw){
-    try{
-      const data=JSON.parse(stripFences(raw));
-      return !!(data && data.schema==='tee-chatgpt-extract-v1' && data.fields && typeof data.fields==='object');
-    }catch{return false;}
-  }
+  function validTEEJson(raw){try{parseTEEJson(raw);return true;}catch{return false;}}
+  function looksLikeRequest(raw){const s=String(raw||'');return /TEE EXTRACTION REQUEST|Analyze the attached travel document|Required schema:|Source file\(s\):/i.test(s);}
 
   function setChatStatus(kind,title,message){
-    const el=document.getElementById('teeV3415ChatStatus');
-    if(!el)return;
+    const el=document.getElementById('teeV3415ChatStatus');if(!el)return;
     el.className=`tee-v3409-ocr-status ${kind}`;
     const icon=kind==='green'?'🟢':kind==='red'?'🔴':'🟡';
     el.textContent=`${icon} ${title}${message?` — ${message}`:''}`;
@@ -50,86 +46,89 @@
     const manual=document.getElementById('teeV3415ManualPaste');
     const box=document.getElementById('teeV3415ChatResult');
     if(manual)manual.open=true;
-    if(box){
-      box.value='';
-      box.placeholder='Tap here, choose Paste, then tap Apply Manual Result.';
-      setTimeout(()=>{box.scrollIntoView({behavior:'smooth',block:'center'});box.focus();},40);
-    }
-    setChatStatus('yellow','Paste the JSON manually',reason||'Tap inside the empty box, choose Paste, then tap Apply Manual Result.');
+    if(box){box.value='';box.placeholder='Paste ONLY the JSON result from ChatGPT here.';setTimeout(()=>{box.scrollIntoView({behavior:'smooth',block:'center'});box.focus();},40);}
+    setChatStatus('yellow','JSON result needed',reason||'Copy the JSON response from ChatGPT, paste it into the empty box, then tap Apply Manual Result.');
   }
 
   function installPasteButton(){
     const oldButton=document.getElementById('teeV3415PasteResults');
-    if(!oldButton || oldButton.dataset.teeV3424==='1')return;
-    const button=oldButton.cloneNode(true);
-    button.dataset.teeV3424='1';
-    button.textContent='Paste Results';
-    oldButton.replaceWith(button);
+    if(!oldButton||oldButton.dataset.teeV3427==='1')return;
+    const button=oldButton.cloneNode(true);button.dataset.teeV3427='1';button.textContent='Paste Results';oldButton.replaceWith(button);
     button.addEventListener('click',async()=>{
-      const box=document.getElementById('teeV3415ChatResult');
-      const apply=document.getElementById('teeV3415ApplyManual');
+      const box=document.getElementById('teeV3415ChatResult');const apply=document.getElementById('teeV3415ApplyManual');
       try{
         const text=await navigator.clipboard.readText();
         if(validTEEJson(text)){
           if(box)box.value=stripFences(text);
-          setChatStatus('green','ChatGPT result received','TEE recognized the copied JSON and is applying the proposed fields. Compare every value with the original.');
-          apply?.click();
-          return;
+          setChatStatus('green','ChatGPT JSON received','TEE recognized the result. Compare every proposed value with the original before saving.');
+          apply?.click();return;
         }
-        openManualPaste('TEE did not find a valid copied TEE JSON result. Tap inside the empty box, choose Paste, then tap Apply Manual Result.');
-      }catch{
-        openManualPaste('iPhone did not allow automatic clipboard reading. Tap inside the empty box, choose Paste, then tap Apply Manual Result.');
-      }
+        if(looksLikeRequest(text)){
+          openManualPaste('The clipboard still contains the TEE analysis request, not ChatGPT’s JSON result. Return to ChatGPT and tap Copy under the JSON response.');return;
+        }
+        openManualPaste('The clipboard does not contain valid TEE JSON. Return to ChatGPT, copy the JSON response, then come back and tap Paste Results.');
+      }catch{openManualPaste('iPhone did not allow automatic clipboard reading. Paste ONLY the copied JSON result into the empty box.');}
     });
   }
 
-  function install(){
-    const panel=document.getElementById('teeV3415ChatPanel');
-    if(!panel)return false;
-    if(panel.dataset.teeV3424!=='1'){
-      panel.dataset.teeV3424='1';
-
-      const intro=panel.querySelector('h4 + p');
-      if(intro)intro.innerHTML='TEE copies the prepared analysis request, then opens <strong>ChatGPT</strong>. In ChatGPT, attach the same document, paste the request, send it, then copy the JSON result and return to TEE.';
-
-      const help=panel.querySelector('details.tee-v3404-help');
-      if(help){
-        help.open=true;
-        help.innerHTML='<summary>How do I do this?</summary><ol><li>Tap <strong>Analyze with ChatGPT</strong>.</li><li>TEE copies the analysis request and opens ChatGPT.</li><li><strong>First time only:</strong> if ChatGPT shows <strong>Log in</strong>, log in.</li><li>In ChatGPT, attach the <strong>same document</strong> you selected in TEE.</li><li>Tap the ChatGPT message box, then tap <strong>Paste</strong>.</li><li>Send the message.</li><li>Wait for ChatGPT to return the JSON result.</li><li>Tap the <strong>Copy</strong> icon directly under the JSON result.</li><li>Return to TEE.</li><li>Tap <strong>Paste Results</strong>.</li><li>If TEE opens <strong>Manual Paste</strong>, tap inside the empty box, choose <strong>Paste</strong>, then tap <strong>Apply Manual Result</strong>.</li><li>Compare every filled field with the original document.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>If ChatGPT does not open automatically:</strong> open ChatGPT manually, attach the same document, paste the copied request, and continue with Step 6.</p><p><strong>Next step:</strong> tap <strong>Analyze with ChatGPT</strong>.</p>';
+  function installManualGuard(){
+    const apply=document.getElementById('teeV3415ApplyManual');const box=document.getElementById('teeV3415ChatResult');
+    if(!apply||!box||apply.dataset.teeV3427==='1')return;
+    const replacement=apply.cloneNode(true);replacement.dataset.teeV3427='1';apply.replaceWith(replacement);
+    replacement.addEventListener('click',()=>{
+      const raw=box.value||'';
+      if(!validTEEJson(raw)){
+        box.value='';
+        setChatStatus('red','Cannot apply result',looksLikeRequest(raw)?'That was the analysis request, not the JSON answer. Copy the JSON result from ChatGPT.':'TEE accepts only a valid tee-chatgpt-extract-v1 JSON result.');
+        return;
       }
+      const original=document.getElementById('teeV3415ApplyManualOriginal');
+      if(original)original.click();
+      else window.dispatchEvent(new CustomEvent('tee-chatgpt-valid-json',{detail:{json:stripFences(raw)}}));
+    });
+  }
 
-      const oldButton=document.getElementById('teeV3415OpenChat');
-      if(oldButton){
-        const button=oldButton.cloneNode(true);
-        button.textContent='Analyze with ChatGPT';
-        oldButton.replaceWith(button);
-        button.addEventListener('click',()=>{
-          const prompt=promptText();
-          try{
-            const write=navigator.clipboard?.writeText?.(prompt);
-            if(write?.catch)write.catch(()=>{});
-          }catch{}
-          setChatStatus('green','Analysis request copied','ChatGPT is opening. Attach the same document, paste the request, send it, then tap Copy on the JSON result. Return to TEE and tap Paste Results.');
-          const opened=window.open(CHAT_URL,'_blank','noopener');
-          if(!opened){
-            setChatStatus('yellow','Open ChatGPT manually','The analysis request is copied. Open ChatGPT, attach the same document, paste the request, send it, then copy the JSON result and return to tap Paste Results.');
-          }
-        });
-      }
+  async function shareToChatGPT(){
+    const prompt=promptText();
+    const input=document.getElementById('teeV3404File');
+    const files=Array.from(input?.files||[]);
+    try{await navigator.clipboard?.writeText?.(prompt);}catch{}
+
+    if(files.length&&navigator.share){
+      const shareData={title:'TEE Document Analysis',text:prompt,files};
+      try{
+        if(!navigator.canShare||navigator.canShare(shareData)){
+          setChatStatus('green','Share to ChatGPT','Choose ChatGPT in the Share sheet. TEE is sharing the source image(s) AND the exact JSON extraction request together.');
+          await navigator.share(shareData);
+          setChatStatus('yellow','Waiting for JSON result','In ChatGPT, send the shared request if needed. When the JSON response appears, tap Copy, return to TEE, then tap Paste Results.');
+          return;
+        }
+      }catch(err){if(err?.name==='AbortError'){setChatStatus('yellow','Share cancelled','Tap Analyze with ChatGPT when ready.');return;}}
     }
 
+    setChatStatus('yellow','Fallback handoff','TEE copied the exact JSON request. ChatGPT is opening; attach the same source image(s), paste the request, and send it.');
+    const opened=window.open(CHAT_URL,'_blank','noopener');
+    if(!opened)setChatStatus('yellow','Open ChatGPT manually','The exact JSON request is copied. Open ChatGPT, attach the same source document(s), paste, and send.');
+  }
+
+  function install(){
+    const panel=document.getElementById('teeV3415ChatPanel');if(!panel)return false;
+    if(panel.dataset.teeV3427!=='1'){
+      panel.dataset.teeV3427='1';
+      const intro=panel.querySelector('h4 + p');
+      if(intro)intro.innerHTML='TEE sends the selected source image(s) and a strict machine-readable extraction request to <strong>ChatGPT</strong>. ChatGPT should return JSON only. Copy that JSON result, return to TEE, then tap <strong>Paste Results</strong>.';
+      const help=panel.querySelector('details.tee-v3404-help');
+      if(help){help.open=true;help.innerHTML='<summary>How do I do this?</summary><ol><li>Tap <strong>Analyze with ChatGPT</strong>.</li><li>In the Share sheet, choose <strong>ChatGPT</strong>.</li><li>TEE shares the selected source image(s) and the strict JSON extraction request together.</li><li>If ChatGPT shows the request ready to send, send it.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Tap <strong>Copy</strong> under that JSON response.</li><li>Return to TEE.</li><li>Tap <strong>Paste Results</strong>.</li><li>TEE will reject prose, the analysis request itself, or malformed JSON.</li><li>Compare every filled field with every original image/page.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>Fallback:</strong> if the Share sheet cannot send the request text with the images, TEE also copies the request to the clipboard. Open ChatGPT, attach the same source image(s), paste the request, and send it.</p>';
+      }
+      const oldButton=document.getElementById('teeV3415OpenChat');
+      if(oldButton){const button=oldButton.cloneNode(true);button.textContent='Analyze with ChatGPT';oldButton.replaceWith(button);button.addEventListener('click',shareToChatGPT);}
+    }
     installPasteButton();
-    setChatStatus(navigator.onLine===false?'yellow':'green',navigator.onLine===false?'OFFLINE — Local scan available':'READY — ChatGPT analysis available',navigator.onLine===false?'Use the Offline option below.':'Tap Analyze with ChatGPT. TEE will copy the analysis request and open ChatGPT.');
+    setChatStatus(navigator.onLine===false?'yellow':'green',navigator.onLine===false?'OFFLINE — Local scan available':'READY — ChatGPT analysis available',navigator.onLine===false?'Use the Offline option below.':'Tap Analyze with ChatGPT. TEE will share the selected source image(s) plus a strict JSON-only extraction request.');
     return true;
   }
 
   document.addEventListener('tee-runtime-ready',()=>{install();setTimeout(install,120);});
-  if(!install()){
-    const observer=new MutationObserver(()=>{if(install())observer.disconnect();});
-    observer.observe(document.documentElement,{childList:true,subtree:true});
-    setTimeout(()=>observer.disconnect(),15000);
-  }
-
-  const buildLabel=document.querySelector('header.hero .subtitle strong');
-  if(buildLabel)buildLabel.textContent=`TEE v${BUILD}`;
+  if(!install()){const observer=new MutationObserver(()=>{if(install())observer.disconnect();});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),15000);}
+  const buildLabel=document.querySelector('header.hero .subtitle strong');if(buildLabel)buildLabel.textContent=`TEE v${BUILD}`;
 })();
