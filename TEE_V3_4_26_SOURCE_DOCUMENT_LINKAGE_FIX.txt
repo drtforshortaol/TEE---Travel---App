@@ -1,0 +1,20 @@
+TEE v3.4.26 — Source Document linkage correction
+
+Baseline: v3.4.25
+
+Purpose
+- Preserve the v3.4.25 traveler workflow.
+- Correct Source Document Manager saved-information summaries.
+- Make retained local Structured Document sources visible in Document Library without duplicating the underlying document.
+
+Acceptance checks
+1. Source Documents header reports TEE v3.4.26.
+2. Existing Michael Gates passport remains one existing verified/archived record; no duplicate is created.
+3. Source Document Manager no longer reports “No saved details yet” for a verified document that has retained structured information.
+4. Document Library includes retained local Structured Document sources in addition to the legacy packaged-source inventory.
+5. Identity count includes both the legacy Glenn/Virginia passport source and Michael’s retained local passport source when Michael’s record exists locally.
+6. Selecting the local Library entry navigates to the existing Source Document Manager record rather than starting Add Document.
+
+Privacy
+- No passport numbers, birth dates, images, passphrases, or other protected traveler data are written into the public repository by this change.
+- The public app contains only the code required to discover locally retained protected records at runtime.
