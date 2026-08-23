@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.25",
-  "channel": "source-document-vault-authorization-fix",
-  "publishedAt": "2026-08-23T00:37:00-07:00",
-  "notes": "Restores the missing Source Documents authorization bridge used by the simple traveler workflow. Authorize Couple A/B now opens the selected local encrypted Vault with that couple's passphrase, verifies that the active profile matches the selected private destination, and refuses a mismatched profile. No private records, passphrases, or source documents are added to GitHub.",
-  "name": "TEE v3.4.25 — Source Document Vault Authorization Fix"
+  "version": "3.4.26",
+  "channel": "source-document-review-engine-fix",
+  "publishedAt": "2026-08-23T00:48:00-07:00",
+  "notes": "Adds the missing saved-document review bridge required by the simple Source Documents workflow. Review & Verify can now reload the retained original and saved fields from the correct public/shared/private layers, preserve the destination couple metadata, edit saved passport fields without losing the protected original, and mark a complete document verified and archived. Existing protected records and passphrases remain local/private.",
+  "name": "TEE v3.4.26 — Source Document Review Engine Fix"
 }
