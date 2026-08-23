@@ -37,7 +37,7 @@
     setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,120);setTimeout(enforceSimpleTravelerIntake,350);
   }
   function showManager(view){const section=document.getElementById('teeSourceDocumentManager');showOnly(section,view==='structured'?'Saved Documents: tap Review & Verify to compare the original and saved information together.':'Needs Attention: finish the items that still require work.');setTimeout(()=>{const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';document.getElementById(id)?.click();},50);}
-  function showLibrary(){const section=document.getElementById('sourceInventoryWorkspace');showOnly(section,'Document Library: supporting originals and source history.');const toggle=document.getElementById('sourceInventoryToggle');if(toggle&&toggle.getAttribute('aria-expanded')!=='true')toggle.click();}
+  function showLibrary(){const section=document.getElementById('sourceInventoryWorkspace');showOnly(section,'Document Library: supporting originals and source history.');const toggle=document.getElementById('sourceInventoryToggle');if(toggle&&toggle.getAttribute('aria-expanded')!=='true')toggle.click();setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),80);}
 
   window.TEETravelerSourceNavV3426={showOnly,showAdd,showManager,showLibrary,normalTargets};
   window.TEETravelerSourceNavV3424=window.TEETravelerSourceNavV3426;
@@ -98,6 +98,7 @@
   const intakeRoot=document.getElementById('smartDocumentIntake');
   if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
+  const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.26';localLibrary.dataset.teeLocalSourceLibrary='3.4.26';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
   const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.26';mrz.dataset.teePassportMrz='3.4.26';
   const loadUx=()=>{
     if(document.querySelector('script[data-tee-traveler-source-ux="3.4.26"]'))return;
