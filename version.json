@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.23",
-  "channel": "guided-chatgpt-browser-workflow",
-  "publishedAt": "2026-08-22T23:14:00-07:00",
-  "notes": "Makes the normal online document-reading workflow explicit for iPhone: Analyze with ChatGPT now copies the prepared TEE analysis request and opens ChatGPT directly. The in-app How do I do this instructions walk through attach same document → Paste → Send → Copy JSON → return to TEE → Paste Results → verify → Save to TEE Vault. Share-sheet availability is no longer required. Vault behavior and private data are unchanged.",
-  "name": "TEE v3.4.23 — Guided ChatGPT Browser Workflow"
+  "version": "3.4.24",
+  "channel": "reliable-chatgpt-result-paste",
+  "publishedAt": "2026-08-23T00:21:00-07:00",
+  "notes": "Makes ChatGPT result return reliable on iPhone. Paste Results now accepts only a valid tee-chatgpt-extract-v1 JSON result from the clipboard. If iOS blocks clipboard reading or the clipboard still contains the analysis request, TEE opens Manual Paste with an empty box and explicit tap-inside → Paste → Apply Manual Result instructions instead of applying the wrong text. ChatGPT guidance now includes first-time login and exact Copy steps. Vault behavior and private data are unchanged.",
+  "name": "TEE v3.4.24 — Reliable ChatGPT Result Paste"
 }
