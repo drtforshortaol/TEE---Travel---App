@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.18",
-  "channel": "source-documents-wording-cleanup",
-  "publishedAt": "2026-08-22T22:02:00-07:00",
-  "notes": "Aligns the traveler-facing Source Documents workflow wording to the exact simplified sequence Add → Review → Save → Verify → Done. No workflow or Vault behavior changes.",
-  "name": "TEE v3.4.18 — Source Documents Wording Cleanup"
+  "version": "3.4.19",
+  "channel": "iphone-add-document-launch-fix",
+  "publishedAt": "2026-08-22T22:14:00-07:00",
+  "notes": "Fixes Source Documents Add Document on iPhone by loading the simple traveler intake immediately instead of waiting for OCR, and adds tap-safe delegated navigation. Vault behavior and private data are unchanged.",
+  "name": "TEE v3.4.19 — iPhone Add Document Launch Fix"
 }
