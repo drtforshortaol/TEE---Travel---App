@@ -12,12 +12,14 @@
   const home=document.getElementById('streamlinedSourceHome');
   const status=document.getElementById('streamlinedSourceStatus');
   const buildLabel=document.querySelector('header.hero .subtitle strong');
-  if(buildLabel)buildLabel.textContent='TEE v3.4.17';
+  if(buildLabel)buildLabel.textContent='TEE v3.4.18';
+  const workflowParagraph=document.querySelector('#streamlinedSourceHome .streamlined-source-head p');
+  if(workflowParagraph)workflowParagraph.innerHTML='Use one simple workflow: <strong>Add → Review → Save → Verify → Done.</strong> TEE proposes privacy; change it only when the suggestion is wrong.';
 
   /* Traveler-mode guard: the legacy Smart Document Intake must never flash or remain visible. */
   if(!maintenanceMode && requestedView!=='vault'){
     const guard=document.createElement('style');
-    guard.id='teeTravelerLegacyIntakeGuardV3417';
+    guard.id='teeTravelerLegacyIntakeGuardV3418';
     guard.textContent='body.source-streamlined-mode #smartDocumentIntake > :not(#teeTravelerSimpleAddV3404){display:none!important} body.source-streamlined-mode #smartDocumentIntake[hidden]{display:none!important}';
     document.head.appendChild(guard);
   }
@@ -38,18 +40,19 @@
   function showManager(view){const section=document.getElementById('teeSourceDocumentManager');showOnly(section,view==='structured'?'Saved Documents: tap Review & Verify to compare the original and saved information together.':'Needs Attention: finish the items that still require work.');setTimeout(()=>{const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';document.getElementById(id)?.click();},50);}
   function showLibrary(){const section=document.getElementById('sourceInventoryWorkspace');showOnly(section,'Document Library: supporting originals and source history.');const toggle=document.getElementById('sourceInventoryToggle');if(toggle&&toggle.getAttribute('aria-expanded')!=='true')toggle.click();}
 
-  window.TEETravelerSourceNavV3417={showOnly,showAdd,showManager,showLibrary,normalTargets};
-  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3417;
-  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3417;
+  window.TEETravelerSourceNavV3418={showOnly,showAdd,showManager,showLibrary,normalTargets};
+  window.TEETravelerSourceNavV3417=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3418;
+  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3418;
 
   function enforceSimpleTravelerIntake(){
     if(maintenanceMode||requestedView==='vault')return;
@@ -82,7 +85,7 @@
   const intakeRoot=document.getElementById('smartDocumentIntake');
   if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
-  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.17';mrz.dataset.teePassportMrz='3.4.17';
-  const loadUx=()=>{if(document.querySelector('script[data-tee-traveler-source-ux="3.4.17"]'))return;const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.17';ux.dataset.teeTravelerSourceUx='3.4.17';ux.addEventListener('load',()=>{setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,180);});document.head.appendChild(ux);};
+  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.18';mrz.dataset.teePassportMrz='3.4.18';
+  const loadUx=()=>{if(document.querySelector('script[data-tee-traveler-source-ux="3.4.18"]'))return;const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.18';ux.dataset.teeTravelerSourceUx='3.4.18';ux.addEventListener('load',()=>{setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,180);});document.head.appendChild(ux);};
   mrz.addEventListener('load',loadUx);mrz.addEventListener('error',loadUx);document.head.appendChild(mrz);
 })();
