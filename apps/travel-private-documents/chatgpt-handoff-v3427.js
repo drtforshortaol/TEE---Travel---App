@@ -7,82 +7,42 @@
 
   function owner(){return String(document.getElementById('teeV3404Owner')?.value||'').trim().replace(/\s+/g,' ');}
   function type(){return document.getElementById('teeV3404Type')?.value||'Other';}
-  function isWindows(){
-    const ua=String(navigator.userAgent||'');
-    const platform=String(navigator.platform||'');
-    const uaPlatform=String(navigator.userAgentData?.platform||'');
-    return /Windows/i.test(ua)||/^Win/i.test(platform)||/Windows/i.test(uaPlatform);
-  }
-  function isAppleMobile(){
-    if(isWindows())return false;
-    const ua=String(navigator.userAgent||'');
-    return /iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  }
-  function fieldKeys(t){
-    if(t==='Passport')return ['Name','Passport number','Expiration date','Date of birth','Nationality'];
-    if(t==='Global Entry')return ['Name','PASSID','Expiration date'];
-    if(t==='Insurance')return ['Covered traveler','Member ID','Plan / policy number','Important note'];
-    if(t==='Flight')return ['Travelers','Airline','Confirmation / PNR','Flight / date'];
-    if(t==='Rail')return ['Travelers','Rail provider','Reservation / pass reference','Travel date'];
-    if(t==='Hotel')return ['Travelers','Hotel','Confirmation number','Stay dates'];
-    if(t==='Receipt')return ['Merchant / provider','Amount','Date','Purpose / note'];
-    return ['Important note'];
-  }
-  function requestText(){
-    const t=type(),o=owner(),files=Array.from(document.getElementById('teeV3404File')?.files||[]).map(f=>f.name);
-    const fields=fieldKeys(t).map(k=>`"${k}":""`).join(',');
-    return `TEE EXTRACTION REQUEST — JSON ONLY\n\nAnalyze ALL attached images/pages together as ONE ${t} document for ${o}.\n\nRETURN EXACTLY ONE VALID JSON OBJECT. NO prose. NO bullets. NO markdown fences. NO explanation before or after JSON.\n\nRequired schema: {"schema":"tee-chatgpt-extract-v1","documentType":"${t}","traveler":"${o}","fields":{${fields}}}\n\nRules:\n- Read every attached image/page before answering.\n- Preserve exact values; do not guess.\n- If uncertain or absent, use an empty string.\n- Dates: YYYY-MM-DD when clear.\n- Identity documents: copy the holder name exactly as printed.\n- Do not include image bytes.\n- Entire response must parse with JSON.parse().\n- First character must be { and last character must be }.\n\nSource file(s): ${files.join(', ')||'selected document'}`;
-  }
+  function isWindows(){const ua=String(navigator.userAgent||''),platform=String(navigator.platform||''),uaPlatform=String(navigator.userAgentData?.platform||'');return /Windows/i.test(ua)||/^Win/i.test(platform)||/Windows/i.test(uaPlatform);}
+  function isAppleMobile(){if(isWindows())return false;const ua=String(navigator.userAgent||'');return /iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+  function fieldKeys(t){if(t==='Passport')return ['Name','Passport number','Expiration date','Date of birth','Nationality'];if(t==='Global Entry')return ['Name','PASSID','Expiration date'];if(t==='Insurance')return ['Covered traveler','Member ID','Plan / policy number','Important note'];if(t==='Flight')return ['Travelers','Airline','Confirmation / PNR','Flight / date'];if(t==='Rail')return ['Travelers','Rail provider','Reservation / pass reference','Travel date'];if(t==='Hotel')return ['Travelers','Hotel','Confirmation number','Stay dates'];if(t==='Receipt')return ['Merchant / provider','Amount','Date','Purpose / note'];return ['Important note'];}
+  function requestText(){const t=type(),o=owner(),files=Array.from(document.getElementById('teeV3404File')?.files||[]).map(f=>f.name);const fields=fieldKeys(t).map(k=>`\"${k}\":\"\"`).join(',');return `TEE EXTRACTION REQUEST — JSON ONLY\n\nAnalyze ALL attached images/pages together as ONE ${t} document for ${o}.\n\nRETURN EXACTLY ONE VALID JSON OBJECT. NO prose. NO bullets. NO markdown fences. NO explanation before or after JSON.\n\nRequired schema: {\"schema\":\"tee-chatgpt-extract-v1\",\"documentType\":\"${t}\",\"traveler\":\"${o}\",\"fields\":{${fields}}}\n\nRules:\n- Read every attached image/page before answering.\n- Preserve exact values; do not guess.\n- If uncertain or absent, use an empty string.\n- Dates: YYYY-MM-DD when clear.\n- Identity documents: copy the holder name exactly as printed.\n- Do not include image bytes.\n- Entire response must parse with JSON.parse().\n- First character must be { and last character must be }.\n\nSource file(s): ${files.join(', ')||'selected document'}`;}
   function strip(raw){return String(raw||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();}
-  function valid(raw){try{const d=JSON.parse(strip(raw));return !!(d&&d.schema==='tee-chatgpt-extract-v1'&&d.fields&&typeof d.fields==='object');}catch{return false;}}
+  function parse(raw){const d=JSON.parse(strip(raw));if(!(d&&d.schema==='tee-chatgpt-extract-v1'&&d.fields&&typeof d.fields==='object'))throw new Error('Not TEE JSON');return d;}
+  function valid(raw){try{parse(raw);return true;}catch{return false;}}
   function requestLike(raw){return /TEE EXTRACTION REQUEST|Analyze the attached travel document|Required schema:|Source file\(s\):/i.test(String(raw||''));}
   function status(kind,title,msg){const el=document.getElementById('teeV3415ChatStatus');if(!el)return;el.className=`tee-v3409-ocr-status ${kind}`;el.textContent=`${kind==='green'?'🟢':kind==='red'?'🔴':'🟡'} ${title}${msg?` — ${msg}`:''}`;}
-  function emptyManual(msg,kind='yellow'){
-    const details=document.getElementById('teeV3415ManualPaste'),box=document.getElementById('teeV3415ChatResult');
-    if(details)details.open=true;if(box){box.value='';box.placeholder='Paste ONLY ChatGPT’s tee-chatgpt-extract-v1 JSON result here.';box.scrollIntoView({behavior:'smooth',block:'center'});}
-    status(kind,kind==='red'?'Cannot apply result':'JSON result needed',msg);
+  function emptyManual(msg,kind='yellow'){const details=document.getElementById('teeV3415ManualPaste'),box=document.getElementById('teeV3415ChatResult');if(details)details.open=true;if(box){box.value='';box.placeholder='Paste ONLY ChatGPT’s tee-chatgpt-extract-v1 JSON result here.';box.scrollIntoView({behavior:'smooth',block:'center'});}status(kind,kind==='red'?'Cannot apply result':'JSON result needed',msg);}
+  function applyValidated(raw){
+    let data;try{data=parse(raw);}catch{return 0;}
+    let applied=0;
+    document.querySelectorAll('#teeV3404Details input[data-field-label], input[data-field-label]').forEach(input=>{
+      const key=input.dataset.fieldLabel;
+      const value=String(data.fields[key]??'').trim();
+      if(value){input.value=value;input.classList.add('tee-v3409-ocr-proposed');input.dataset.chatProposed='1';input.dispatchEvent(new Event('input',{bubbles:true}));applied++;}
+    });
+    if(applied)status('green',`${applied} field${applied===1?'':'s'} proposed by ChatGPT`,'Compare every value with the original. Correct anything wrong before saving.');
+    else status('yellow','No usable fields were returned','The JSON was valid, but none of its field names matched this document type.');
+    return applied;
   }
 
   document.addEventListener('click',async e=>{
     const target=e.target instanceof Element?e.target:null;if(!target)return;
     const analyze=target.closest('#teeV3415OpenChat');
-    if(analyze){
-      e.preventDefault();e.stopImmediatePropagation();
-      const prompt=requestText(),input=document.getElementById('teeV3404File'),files=Array.from(input?.files||[]);
-      let copied=false;
-      try{await navigator.clipboard?.writeText?.(prompt);copied=true;}catch{}
-
-      if(!isAppleMobile()){
-        status('yellow','PC handoff',copied?'Analysis request copied. ChatGPT is opening. Attach the same source document, paste the request, send it, then copy the JSON result.':'ChatGPT is opening. Use Copy Analysis Request, attach the same source document, paste the request, and send it.');
-        const opened=window.open('https://chatgpt.com/','_blank','noopener');
-        if(!opened)status('yellow','Open ChatGPT manually',copied?'The analysis request is copied. Open ChatGPT, attach the same source document, paste, and send.':'Open ChatGPT manually, then use Copy Analysis Request before attaching the document.');
-        return;
-      }
-
-      const share={title:'TEE Document Analysis',text:prompt,files};
-      if(files.length&&navigator.share&&(!navigator.canShare||navigator.canShare(share))){
-        try{status('green','Share to ChatGPT','Choose ChatGPT. TEE is sharing the source image(s) and the JSON-only request together.');await navigator.share(share);status('yellow','Waiting for JSON result','In ChatGPT, send if needed. Copy the JSON response, return to TEE, then tap Paste Results.');return;}catch(err){if(err?.name==='AbortError'){status('yellow','Share cancelled','Tap Analyze with ChatGPT when ready.');return;}}
-      }
-      status('yellow','Fallback handoff','The JSON-only request is copied. Open ChatGPT, attach the same source image(s), paste the request, and send it.');
-      window.open('https://chatgpt.com/','_blank','noopener');return;
+    if(analyze){e.preventDefault();e.stopImmediatePropagation();const prompt=requestText(),input=document.getElementById('teeV3404File'),files=Array.from(input?.files||[]);let copied=false;try{await navigator.clipboard?.writeText?.(prompt);copied=true;}catch{}
+      if(!isAppleMobile()){status('yellow','PC handoff',copied?'Analysis request copied. ChatGPT is opening. Attach the same source document, paste the request, send it, then copy the JSON result.':'ChatGPT is opening. Use Copy Analysis Request, attach the same source document, paste the request, and send it.');const opened=window.open('https://chatgpt.com/','_blank','noopener');if(!opened)status('yellow','Open ChatGPT manually',copied?'The analysis request is copied. Open ChatGPT, attach the same source document, paste, and send.':'Open ChatGPT manually, then use Copy Analysis Request before attaching the document.');return;}
+      const share={title:'TEE Document Analysis',text:prompt,files};if(files.length&&navigator.share&&(!navigator.canShare||navigator.canShare(share))){try{status('green','Share to ChatGPT','Choose ChatGPT. TEE is sharing the source image(s) and the JSON-only request together.');await navigator.share(share);status('yellow','Waiting for JSON result','In ChatGPT, send if needed. Copy the JSON response, return to TEE, then tap Paste Results.');return;}catch(err){if(err?.name==='AbortError'){status('yellow','Share cancelled','Tap Analyze with ChatGPT when ready.');return;}}}
+      status('yellow','Fallback handoff','The JSON-only request is copied. Open ChatGPT, attach the same source image(s), paste the request, and send it.');window.open('https://chatgpt.com/','_blank','noopener');return;
     }
 
     const paste=target.closest('#teeV3415PasteResults');
-    if(paste){
-      e.preventDefault();e.stopImmediatePropagation();
-      try{
-        const text=await navigator.clipboard.readText();
-        if(!valid(text)){emptyManual(requestLike(text)?'The clipboard still contains the analysis request, not ChatGPT’s JSON result. Return to ChatGPT and tap Copy under the JSON response.':'The clipboard does not contain valid TEE JSON. Copy the JSON response from ChatGPT first.','red');return;}
-        const box=document.getElementById('teeV3415ChatResult');if(box)box.value=strip(text);
-        status('green','ChatGPT JSON received','TEE recognized the JSON. Applying proposed fields now; compare every value with the original.');
-        document.getElementById('teeV3415ApplyManual')?.click();
-      }catch{emptyManual('Automatic clipboard reading was blocked. Paste ONLY the copied JSON response into the empty box.');}
-      return;
-    }
+    if(paste){e.preventDefault();e.stopImmediatePropagation();try{const text=await navigator.clipboard.readText();if(!valid(text)){emptyManual(requestLike(text)?'The clipboard still contains the analysis request, not ChatGPT’s JSON result. Return to ChatGPT and tap Copy under the JSON response.':'The clipboard does not contain valid TEE JSON. Copy the JSON response from ChatGPT first.','red');return;}const box=document.getElementById('teeV3415ChatResult');if(box)box.value=strip(text);applyValidated(text);}catch{emptyManual('Automatic clipboard reading was blocked. Paste ONLY the copied JSON response into the empty box.');}return;}
 
     const apply=target.closest('#teeV3415ApplyManual');
-    if(apply){
-      const box=document.getElementById('teeV3415ChatResult');if(box&&!valid(box.value)){e.preventDefault();e.stopImmediatePropagation();emptyManual(requestLike(box.value)?'That is the analysis request, not the JSON answer. Copy the JSON response from ChatGPT.':'TEE accepts only valid tee-chatgpt-extract-v1 JSON.','red');}
-    }
+    if(apply){e.preventDefault();e.stopImmediatePropagation();const box=document.getElementById('teeV3415ChatResult');const raw=box?.value||'';if(!valid(raw)){emptyManual(requestLike(raw)?'That is the analysis request, not the JSON answer. Copy the JSON response from ChatGPT.':'TEE accepts only valid tee-chatgpt-extract-v1 JSON.','red');return;}applyValidated(raw);}
   },true);
 })();
