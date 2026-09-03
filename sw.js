@@ -1,4 +1,4 @@
-const CACHE = 'tee-v3-4-27-chatgpt-handoff-review';
+const CACHE = 'tee-v3-4-29-recovery';
 const ASSETS = [
   './',
   './index.html',
@@ -94,7 +94,8 @@ const ASSETS = [
   './apps/travel-private-documents/help.js',
   './apps/travel-private-documents/smart-intake.js',
   './apps/travel-private-documents/streamline-source-docs.js',
-  './apps/travel-private-documents/chatgpt-guidance-v3423.js',
+  './apps/travel-private-documents/chatgpt-handoff-v3427.js',
+  './apps/travel-private-documents/local-source-library-v3426.js',
   './apps/travel-private-documents/mrz-ocr-v3412.js',
   './apps/travel-private-documents/mrz-ocr-v3412.part01.js',
   './apps/travel-private-documents/mrz-ocr-v3412.part02.js',
@@ -180,7 +181,7 @@ self.addEventListener('message', event => {
       const results = await cacheAssetList(cache);
       const failed = results.filter(r=>!r.ok);
       const keys = await cache.keys();
-      reply({type:'TEE_PREPARE_RESULT', version:'3.4.27', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
+      reply({type:'TEE_PREPARE_RESULT', version:'3.4.29', cache:CACHE, expected:ASSETS.length, cached:keys.length, failed});
     })());
   }
   if (msg.type === 'TEE_OFFLINE_STATUS') {
@@ -191,11 +192,11 @@ self.addEventListener('message', event => {
         const hit = await cache.match(asset);
         if (!hit) failed.push(asset);
       }
-      reply({type:'TEE_STATUS_RESULT', version:'3.4.27', cache:CACHE, expected:ASSETS.length, missing:failed});
+      reply({type:'TEE_STATUS_RESULT', version:'3.4.29', cache:CACHE, expected:ASSETS.length, missing:failed});
     })());
   }
   if (msg.type === 'TEE_VERSION_STATUS') {
-    reply({type:'TEE_VERSION_RESULT', version:'3.4.27', cache:CACHE});
+    reply({type:'TEE_VERSION_RESULT', version:'3.4.29', cache:CACHE});
   }
   if (msg.type === 'TEE_CLEAR_APP_CACHE') {
     event.waitUntil((async()=>{
