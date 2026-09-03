@@ -11,6 +11,23 @@
   const writeStore=records=>{localStorage.setItem(STORAGE_KEY,JSON.stringify(records));window.dispatchEvent(new CustomEvent('tee-structured-documents-changed'));};
   const findField=(fields,label)=>{const key=String(label||'').trim().toLowerCase();return (fields||[]).find(f=>String(f?.label||'').trim().toLowerCase()===key);};
   const passportRequired=['Name','Passport number','Expiration date','Date of birth','Nationality'];
+  const globalEntryRequired=['Name','PASSID','Expiration date'];
+
+  function requiredFieldsForDocument(doc){
+    const title=String(doc?.title||'').trim();
+    if(/^passport\b/i.test(title))return passportRequired;
+    if(/^global entry\b/i.test(title))return globalEntryRequired;
+    return [];
+  }
+
+  function sourceIsEmbedded(sourceFile){
+    if(!sourceFile)return false;
+    if(String(sourceFile.dataUrl||'').trim())return true;
+    if(sourceFile.kind==='tee-source-bundle-v1'&&Array.isArray(sourceFile.files)){
+      return sourceFile.files.length>0&&sourceFile.files.every(file=>String(file?.dataUrl||'').trim());
+    }
+    return false;
+  }
 
   async function loadProtected(documentId){
     if(!vaultOpen())return {overlays:[],shared:{fields:[],images:[]},priv:{fields:[],images:[]}};
@@ -41,6 +58,7 @@
     if(!doc)throw new Error('Saved document could not be found.');
     const protection=await loadProtected(documentId);
     const currentProfile=activeProfile();
+    const requiredFields=requiredFieldsForDocument(doc);
 
     if(doc.originalClassification==='private'&&!doc.targetProfile&&vaultOpen()&&protection.priv?.sourceFile){
       persistMetadata(documentId,{targetProfile:currentProfile||null});
@@ -54,7 +72,7 @@
       return {
         documentId:doc.documentId,title:doc.title||'Document',category:doc.category||'',originalClassification:doc.originalClassification||'private',
         targetProfile:doc.targetProfile||null,requiredProfile,lifecycleStatus:doc.lifecycleStatus||'review',verifiedAt:doc.verifiedAt||null,
-        locked:true,fields:[],images:[],sourceFile:null,sourceEmbedded:false,completeness:{complete:false,missing:passportRequired.slice()}
+        locked:true,fields:[],images:[],sourceFile:null,sourceEmbedded:false,completeness:{complete:false,missing:requiredFields.slice()}
       };
     }
 
@@ -63,14 +81,13 @@
     const fields=[...(doc.publicFields||[]),...(shared.fields||[]),...(priv.fields||[])];
     const images=[...(doc.publicImages||[]),...(shared.images||[]),...(priv.images||[])];
     const sourceFile=doc.originalClassification==='public'?doc.publicOriginalFile:doc.originalClassification==='shared'?shared.sourceFile:priv.sourceFile;
-    const isPassport=/^passport\b/i.test(doc.title||'')||String(doc.category||'').toLowerCase()==='identity';
-    const missing=isPassport?passportRequired.filter(label=>!String(findField(fields,label)?.value||'').trim()):[];
+    const missing=requiredFields.filter(label=>!String(findField(fields,label)?.value||'').trim());
 
     return {
       documentId:doc.documentId,title:doc.title||'Document',category:doc.category||'',originalClassification:doc.originalClassification||'private',
       targetProfile:doc.targetProfile||null,requiredProfile,lifecycleStatus:doc.lifecycleStatus||'review',verifiedAt:doc.verifiedAt||null,
-      locked:false,fields,images,sourceFile,sourceEmbedded:!!sourceFile?.dataUrl,
-      completeness:{complete:isPassport?missing.length===0:true,missing}
+      locked:false,fields,images,sourceFile,sourceEmbedded:sourceIsEmbedded(sourceFile),
+      completeness:{complete:missing.length===0,missing}
     };
   }
 
