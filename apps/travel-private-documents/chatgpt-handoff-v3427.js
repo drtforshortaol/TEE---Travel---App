@@ -7,6 +7,17 @@
 
   function owner(){return String(document.getElementById('teeV3404Owner')?.value||'').trim().replace(/\s+/g,' ');}
   function type(){return document.getElementById('teeV3404Type')?.value||'Other';}
+  function isWindows(){
+    const ua=String(navigator.userAgent||'');
+    const platform=String(navigator.platform||'');
+    const uaPlatform=String(navigator.userAgentData?.platform||'');
+    return /Windows/i.test(ua)||/^Win/i.test(platform)||/Windows/i.test(uaPlatform);
+  }
+  function isAppleMobile(){
+    if(isWindows())return false;
+    const ua=String(navigator.userAgent||'');
+    return /iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  }
   function fieldKeys(t){
     if(t==='Passport')return ['Name','Passport number','Expiration date','Date of birth','Nationality'];
     if(t==='Global Entry')return ['Name','PASSID','Expiration date'];
@@ -38,7 +49,16 @@
     if(analyze){
       e.preventDefault();e.stopImmediatePropagation();
       const prompt=requestText(),input=document.getElementById('teeV3404File'),files=Array.from(input?.files||[]);
-      try{await navigator.clipboard?.writeText?.(prompt);}catch{}
+      let copied=false;
+      try{await navigator.clipboard?.writeText?.(prompt);copied=true;}catch{}
+
+      if(!isAppleMobile()){
+        status('yellow','PC handoff',copied?'Analysis request copied. ChatGPT is opening. Attach the same source document, paste the request, send it, then copy the JSON result.':'ChatGPT is opening. Use Copy Analysis Request, attach the same source document, paste the request, and send it.');
+        const opened=window.open('https://chatgpt.com/','_blank','noopener');
+        if(!opened)status('yellow','Open ChatGPT manually',copied?'The analysis request is copied. Open ChatGPT, attach the same source document, paste, and send.':'Open ChatGPT manually, then use Copy Analysis Request before attaching the document.');
+        return;
+      }
+
       const share={title:'TEE Document Analysis',text:prompt,files};
       if(files.length&&navigator.share&&(!navigator.canShare||navigator.canShare(share))){
         try{status('green','Share to ChatGPT','Choose ChatGPT. TEE is sharing the source image(s) and the JSON-only request together.');await navigator.share(share);status('yellow','Waiting for JSON result','In ChatGPT, send if needed. Copy the JSON response, return to TEE, then tap Paste Results.');return;}catch(err){if(err?.name==='AbortError'){status('yellow','Share cancelled','Tap Analyze with ChatGPT when ready.');return;}}
@@ -56,7 +76,7 @@
         const box=document.getElementById('teeV3415ChatResult');if(box)box.value=strip(text);
         status('green','ChatGPT JSON received','TEE recognized the JSON. Applying proposed fields now; compare every value with the original.');
         document.getElementById('teeV3415ApplyManual')?.click();
-      }catch{emptyManual('iPhone did not allow clipboard reading. Paste ONLY the copied JSON response into the empty box.');}
+      }catch{emptyManual('Automatic clipboard reading was blocked. Paste ONLY the copied JSON response into the empty box.');}
       return;
     }
 
