@@ -4,6 +4,7 @@
   const summary=document.getElementById('auditSummary');
   const results=document.getElementById('auditResults');
   const refresh=document.getElementById('refreshAudit');
+  const demo=document.getElementById('demoAudit');
   const selfCheck=document.getElementById('auditSelfCheck');
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const normalize=v=>String(v||'').trim().toLowerCase().replace(/\s+(?:copy|duplicate)\s*\d*$/,'').replace(/\s+\(\d+\)$/,'').replace(/\s+/g,' ');
@@ -39,6 +40,19 @@
     if(selfCheck){selfCheck.textContent=pass?'Audit engine self-check passed':'Audit engine self-check failed';selfCheck.className=`badge ${pass?'ok':'error'}`;}
     return pass;
   }
+  function renderGroup(group,{demoMode=false}={}){
+    const section=document.createElement('section');section.className='group';
+    const title=group[0]?.title||'Related documents';const category=group[0]?.category||'Other';const verdict=classify(group);
+    const badgeClass=verdict.level==='exact'||verdict.level==='repeat'?'warn':verdict.level==='version'?'ok':'warn';
+    section.innerHTML=`<h2>${esc(title)}</h2><div class="meta"><span class="badge ${badgeClass}">${esc(verdict.label)}</span> · ${esc(category)}</div><p><strong>Why:</strong> ${esc(verdict.explain)}</p>${demoMode?'<p class="demo-note">Sample records only — no TEE data was used or changed.</p>':''}`;
+    group.slice().sort((a,b)=>String(b.lastModifiedAt||b.createdAt||'').localeCompare(String(a.lastModifiedAt||a.createdAt||''))).forEach((d,index)=>{
+      const row=document.createElement('div');row.className='record';
+      const source=sourceRef(d)||'No source reference';
+      row.innerHTML=`<div><div class="label">${index===0?'Newest / most recently changed':'Related record'}</div><div class="value">${esc(d.title||'Untitled')}</div><div>${esc(source)}</div></div><div><div class="label">Status</div><div class="value">${esc(statusLabel(d))}</div><div>${esc(d.documentId||'')}</div></div><div><div class="label">Last changed</div><div class="value">${esc(dateLabel(d.lastModifiedAt||d.createdAt))}</div><div>Created ${esc(dateLabel(d.createdAt))}</div></div>`;
+      section.appendChild(row);
+    });
+    results.appendChild(section);
+  }
   function render(){
     runSelfCheck();
     const records=read();
@@ -50,20 +64,30 @@
       : `<strong>No likely duplicate groups detected.</strong><br>${records.length} indexed record${records.length===1?'':'s'} checked. Nothing has been changed.`;
     if(!related.length){results.innerHTML='<section class="empty"><span class="badge ok">No duplicate groups</span><p>TEE did not find two records with the same normalized document title and category.</p></section>';return;}
     results.replaceChildren();
-    related.forEach(group=>{
-      const section=document.createElement('section');section.className='group';
-      const title=group[0]?.title||'Related documents';const category=group[0]?.category||'Other';const verdict=classify(group);
-      const badgeClass=verdict.level==='exact'||verdict.level==='repeat'?'warn':verdict.level==='version'?'ok':'warn';
-      section.innerHTML=`<h2>${esc(title)}</h2><div class="meta"><span class="badge ${badgeClass}">${esc(verdict.label)}</span> · ${esc(category)}</div><p><strong>Why:</strong> ${esc(verdict.explain)}</p>`;
-      group.slice().sort((a,b)=>String(b.lastModifiedAt||b.createdAt||'').localeCompare(String(a.lastModifiedAt||a.createdAt||''))).forEach((d,index)=>{
-        const row=document.createElement('div');row.className='record';
-        const source=sourceRef(d)||'No source reference';
-        row.innerHTML=`<div><div class="label">${index===0?'Newest / most recently changed':'Related record'}</div><div class="value">${esc(d.title||'Untitled')}</div><div>${esc(source)}</div></div><div><div class="label">Status</div><div class="value">${esc(statusLabel(d))}</div><div>${esc(d.documentId||'')}</div></div><div><div class="label">Last changed</div><div class="value">${esc(dateLabel(d.lastModifiedAt||d.createdAt))}</div><div>Created ${esc(dateLabel(d.createdAt))}</div></div>`;
-        section.appendChild(row);
-      });
-      results.appendChild(section);
-    });
+    related.forEach(group=>renderGroup(group));
+  }
+  function renderDemo(){
+    runSelfCheck();
+    const base={category:'Identity',lifecycleStatus:'archived',verifiedAt:'2026-09-01T18:00:00Z'};
+    const sampleGroups=[
+      [
+        {...base,title:'Passport — Sample Exact',documentId:'demo-exact-1',originalReference:'passport.jpg',createdAt:'2026-09-01T18:00:00Z',lastModifiedAt:'2026-09-01T18:05:00Z'},
+        {...base,title:'Passport — Sample Exact',documentId:'demo-exact-2',originalReference:'passport.jpg',createdAt:'2026-09-01T18:01:00Z',lastModifiedAt:'2026-09-01T18:06:00Z'}
+      ],
+      [
+        {...base,title:'Global Entry — Sample Repeat',documentId:'demo-repeat-1',originalReference:'',createdAt:'2026-09-01T19:00:00Z',lastModifiedAt:'2026-09-01T19:03:00Z'},
+        {...base,title:'Global Entry — Sample Repeat',documentId:'demo-repeat-2',originalReference:'',createdAt:'2026-09-01T19:06:00Z',lastModifiedAt:'2026-09-01T19:08:00Z'}
+      ],
+      [
+        {...base,title:'Passport — Sample Version',documentId:'demo-version-1',originalReference:'passport-2024.jpg',createdAt:'2026-08-01T18:00:00Z',lastModifiedAt:'2026-08-01T18:05:00Z'},
+        {...base,title:'Passport — Sample Version',documentId:'demo-version-2',originalReference:'passport-2034.jpg',createdAt:'2026-09-01T20:00:00Z',lastModifiedAt:'2026-09-01T20:05:00Z'}
+      ]
+    ];
+    summary.innerHTML='<strong>Sample classification demo.</strong><br>These are synthetic records only. Your real TEE records are untouched. Use Refresh Audit to return to your real data.';
+    results.replaceChildren();
+    sampleGroups.forEach(group=>renderGroup(group,{demoMode:true}));
   }
   refresh?.addEventListener('click',render);
+  demo?.addEventListener('click',renderDemo);
   render();
 })();
