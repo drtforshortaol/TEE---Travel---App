@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.26",
-  "channel": "source-document-review-engine-fix",
-  "publishedAt": "2026-08-23T00:48:00-07:00",
-  "notes": "Adds the missing saved-document review bridge required by the simple Source Documents workflow. Review & Verify can now reload the retained original and saved fields from the correct public/shared/private layers, preserve the destination couple metadata, edit saved passport fields without losing the protected original, and mark a complete document verified and archived. Existing protected records and passphrases remain local/private.",
-  "name": "TEE v3.4.26 — Source Document Review Engine Fix"
+  "version": "3.4.27",
+  "channel": "chatgpt-handoff-review",
+  "publishedAt": "2026-09-02T20:21:00-07:00",
+  "notes": "Release candidate for the Source Documents ChatGPT handoff. On Windows/desktop, TEE skips the unsupported Share target path, copies the strict extraction request, and opens ChatGPT directly. On iPhone/iPad, the native Share flow remains available. Paste Results and Manual Paste reject the analysis request itself, prose, malformed JSON, or non-TEE JSON before fields can be applied. The verified v3.4.26 Add → Review → Save → Verify workflow and local Vault protections are preserved.",
+  "name": "TEE v3.4.27 — ChatGPT Handoff Review"
 }
