@@ -26,10 +26,10 @@
     const sameBytes=bytes.length===group.length&&new Set(bytes).size===1;
     const created=group.map(d=>timeValue(d?.createdAt)).filter(Boolean).sort((a,b)=>a-b);
     const closeTiming=created.length===group.length&&created.length>1&&(created[created.length-1]-created[0])<=10*60*1000;
-    if(sameRef && (sameBytes || bytes.length===0)) return {level:'exact',label:'Exact duplicate candidate',explain:'Same normalized title/category and the same retained source reference. Review before keeping more than one copy.'};
-    if(sameRef || closeTiming) return {level:'repeat',label:'Likely repeated import',explain:sameRef?'Same document identity and source reference, but the available index is not strong enough to call it exact.':'Same document identity and records were created within 10 minutes of each other.'};
-    if(allHaveRef && uniqueRefs.size>1) return {level:'version',label:'Possible newer version',explain:'Same normalized title/category but different source references. This may be a legitimate replacement or updated document rather than a duplicate.'};
-    return {level:'review',label:'Related records — review',explain:'Same normalized title/category, but the index does not contain enough source evidence to classify the relationship more precisely.'};
+    if(sameRef && (sameBytes || bytes.length===0)) return {level:'exact',label:'Exact duplicate candidate',explain:'Same normalized title/category and the same retained source reference.',recommend:'Review the two records side by side before keeping both. Do not remove either one unless you confirm they represent the same source and the same saved information.'};
+    if(sameRef || closeTiming) return {level:'repeat',label:'Likely repeated import',explain:sameRef?'Same document identity and source reference, but the available index is not strong enough to call it exact.':'Same document identity and records were created within 10 minutes of each other.',recommend:'Review the newer and older records together. Keep both until you confirm the repeated import adds no unique information or source history.'};
+    if(allHaveRef && uniqueRefs.size>1) return {level:'version',label:'Possible newer version',explain:'Same normalized title/category but different source references. This may be a legitimate replacement or updated document rather than a duplicate.',recommend:'Treat this as legitimate history unless review proves otherwise. Prefer the newer record for current use, but keep the older version when it documents a prior valid source.'};
+    return {level:'review',label:'Related records — review',explain:'Same normalized title/category, but the index does not contain enough source evidence to classify the relationship more precisely.',recommend:'Compare the records manually. The audit does not have enough evidence to recommend treating either record as redundant.'};
   }
   function runSelfCheck(){
     const base={title:'Passport — Test Traveler',category:'Identity',createdAt:'2026-09-02T20:00:00Z'};
@@ -44,7 +44,7 @@
     const section=document.createElement('section');section.className='group';
     const title=group[0]?.title||'Related documents';const category=group[0]?.category||'Other';const verdict=classify(group);
     const badgeClass=verdict.level==='exact'||verdict.level==='repeat'?'warn':verdict.level==='version'?'ok':'warn';
-    section.innerHTML=`<h2>${esc(title)}</h2><div class="meta"><span class="badge ${badgeClass}">${esc(verdict.label)}</span> · ${esc(category)}</div><p><strong>Why:</strong> ${esc(verdict.explain)}</p>${demoMode?'<p class="demo-note">Sample records only — no TEE data was used or changed.</p>':''}`;
+    section.innerHTML=`<h2>${esc(title)}</h2><div class="meta"><span class="badge ${badgeClass}">${esc(verdict.label)}</span> · ${esc(category)}</div><p><strong>Why:</strong> ${esc(verdict.explain)}</p><p><strong>Recommended review:</strong> ${esc(verdict.recommend)}</p>${demoMode?'<p class="demo-note">Sample records only — no TEE data was used or changed.</p>':''}`;
     group.slice().sort((a,b)=>String(b.lastModifiedAt||b.createdAt||'').localeCompare(String(a.lastModifiedAt||a.createdAt||''))).forEach((d,index)=>{
       const row=document.createElement('div');row.className='record';
       const source=sourceRef(d)||'No source reference';
