@@ -1,8 +1,8 @@
 {
   "app": "TEE",
   "version": "3.4.29",
-  "channel": "recovery",
+  "channel": "stable",
   "publishedAt": "2026-09-02T22:05:00-07:00",
-  "notes": "Recovery build focused only on Source Documents stability. Removes the v3.4.28 related-record decorator from runtime and keeps the ChatGPT handoff observer-free so opening Needs Attention or Saved Documents cannot trigger a DOM feedback loop. No document data migrations, merges, or deletions are performed.",
-  "name": "TEE v3.4.29 — Source Documents Recovery"
+  "notes": "Stable Source Documents recovery release. Verified on Windows that Source Documents, Needs Attention, and Saved Documents open without the previous Page Unresponsive loop. Removes the v3.4.28 related-record experiment from runtime, keeps the ChatGPT handoff observer-free, and uses a fresh service-worker cache so mixed v3.4.27/v3.4.28 scripts are not reused. No document data migrations, merges, or deletions are performed.",
+  "name": "TEE v3.4.29 — Stable Source Documents Recovery"
 }
