@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.28",
-  "channel": "review",
-  "publishedAt": "2026-09-02T21:42:00-07:00",
-  "notes": "Review candidate built directly on the verified v3.4.27 stable Source Documents manager and library. Adds only an isolated related-record decorator: it flags same-title/same-destination record groups, adds a related-record count in the library, and reports when no duplicate groups are detected. It does not replace manager rendering, mutate records, merge records, delete records, or change verification/storage logic. Also makes the ChatGPT build-label observer idempotent to avoid unnecessary DOM rewrites.",
-  "name": "TEE v3.4.28 — Related Records Review"
+  "version": "3.4.29",
+  "channel": "recovery",
+  "publishedAt": "2026-09-02T22:05:00-07:00",
+  "notes": "Recovery build focused only on Source Documents stability. Removes the v3.4.28 related-record decorator from runtime and keeps the ChatGPT handoff observer-free so opening Needs Attention or Saved Documents cannot trigger a DOM feedback loop. No document data migrations, merges, or deletions are performed.",
+  "name": "TEE v3.4.29 — Source Documents Recovery"
 }
