@@ -1,0 +1,24 @@
+TEE v3.4.27 — ChatGPT Handoff Review
+
+Purpose
+- Preserve the verified v3.4.26 Source Documents workflow while making the ChatGPT document-reading handoff clearer and safer across PC and iPhone/iPad.
+
+PC / Windows
+- Analyze with ChatGPT is labeled Open ChatGPT + Copy Request.
+- TEE skips the Windows Share sheet because ChatGPT is not normally available there as a share target.
+- TEE copies the strict machine-readable extraction request and opens ChatGPT directly.
+- The traveler attaches the same source document in ChatGPT, pastes the request, sends it, copies the JSON result, returns to TEE, and taps Paste Results.
+
+Apple mobile
+- iPhone/iPad keep the native Share workflow when file sharing is supported.
+- The selected source image(s) and strict extraction request are shared together when the device permits it.
+
+Result safety
+- Paste Results accepts only valid tee-chatgpt-extract-v1 JSON.
+- The analysis request itself, prose, malformed JSON, and non-TEE JSON are rejected.
+- Manual Paste uses the same strict validation before any proposed fields can be applied.
+- ChatGPT values remain suggestions until the traveler compares them with the retained original.
+
+Preserved workflow
+- Add → Review → destination authorization → ChatGPT/OCR assistance → Save → Review & Verify → Mark Verified & Finish.
+- Existing encrypted Vault records, passphrases, retained originals, verification state, and archive behavior are unchanged.
