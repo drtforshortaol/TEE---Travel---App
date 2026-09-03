@@ -1,8 +1,8 @@
 {
   "app": "TEE",
   "version": "3.4.27",
-  "channel": "chatgpt-handoff-review",
-  "publishedAt": "2026-09-02T20:21:00-07:00",
-  "notes": "Release candidate for the Source Documents ChatGPT handoff. On Windows/desktop, TEE skips the unsupported Share target path, copies the strict extraction request, and opens ChatGPT directly. On iPhone/iPad, the native Share flow remains available. Paste Results and Manual Paste reject the analysis request itself, prose, malformed JSON, or non-TEE JSON before fields can be applied. The verified v3.4.26 Add → Review → Save → Verify workflow and local Vault protections are preserved.",
-  "name": "TEE v3.4.27 — ChatGPT Handoff Review"
+  "channel": "stable",
+  "publishedAt": "2026-09-02T21:30:00-07:00",
+  "notes": "Stable Source Documents release. Verified end-to-end on Windows with a passport and a two-image Global Entry document: Add, destination authorization, ChatGPT extraction, guarded JSON paste/manual paste, field application, Save, side-by-side original verification, Mark Verified & Finish, archive, and retained-source Document Library display. Windows uses Open ChatGPT + Copy Request without the unsupported Share sheet; iPhone/iPad retain the native Share workflow. Multi-image originals are recognized as embedded review sources, and Global Entry completeness uses Name, PASSID, and Expiration date rather than passport-only requirements. ChatGPT handoff guidance and event handling are consolidated into one authoritative runtime path.",
+  "name": "TEE v3.4.27 — Stable Source Documents Workflow"
 }
