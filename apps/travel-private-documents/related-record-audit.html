@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Related Record Audit · TEE</title>
+  <meta name="theme-color" content="#1f3f5b">
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#102f38;background:#f4f7f7}body{margin:0}header{background:linear-gradient(120deg,#214b65,#2f756f);color:white;padding:28px 24px}header h1{margin:8px 0;font-size:clamp(2rem,5vw,3.3rem)}header p{margin:6px 0;max-width:850px}.pill{display:inline-block;background:white;color:#173e56;border-radius:999px;padding:8px 14px;font-weight:800;letter-spacing:.06em}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.actions a,.actions button{font:inherit;font-weight:750;border:1px solid #c9d5d8;border-radius:12px;background:white;color:#173e56;padding:11px 15px;text-decoration:none;cursor:pointer}main{max-width:1050px;margin:auto;padding:24px}.notice,.summary,.group,.empty{background:white;border:1px solid #d3dfe0;border-radius:18px;padding:18px 20px;margin-bottom:18px}.notice{border-left:6px solid #2d7d64;background:#f1fbf6}.summary strong{font-size:1.15rem}.group h2{margin:0 0 6px}.group .meta{color:#5f6f72;margin-bottom:14px}.record{display:grid;grid-template-columns:1.3fr .8fr .8fr;gap:12px;border-top:1px solid #dde6e7;padding:13px 0}.record:first-of-type{border-top:0}.label{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#66777b}.value{font-weight:700}.badge{display:inline-block;border-radius:999px;padding:5px 9px;background:#edf3f3;font-weight:700;font-size:.86rem}.warn{background:#fff5d7;color:#6b4b00}.ok{background:#e9f8ef;color:#17613d}@media(max-width:720px){.record{grid-template-columns:1fr}.actions{align-items:stretch}.actions a,.actions button{width:100%;text-align:center}}</style>
+</head>
+<body>
+<header>
+  <span class="pill">TEE READ-ONLY AUDIT</span>
+  <h1>Related Record Audit</h1>
+  <p>Find documents that may be older copies, repeat imports, or later versions of the same source. This page reads the local structured-document index only.</p>
+  <div class="actions"><a href="index.html">Back to Source Documents</a><button id="refreshAudit" type="button">Refresh Audit</button></div>
+</header>
+<main>
+  <section class="notice"><strong>Safe by design.</strong> This audit cannot edit, merge, archive, restore, or delete anything. It does not open protected vault fields. Review-only means review-only.</section>
+  <section id="auditSummary" class="summary" aria-live="polite">Checking local TEE records…</section>
+  <div id="auditResults"></div>
+</main>
+<script src="related-record-audit.js"></script>
+</body>
+</html>
