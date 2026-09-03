@@ -15,6 +15,10 @@
   }
 
   function normalizeName(value){return String(value||'').trim().replace(/\s+/g,' ');}
+  function isAppleMobile(){
+    const ua=navigator.userAgent||'';
+    return /iPhone|iPad|iPod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  }
 
   function promptText(){
     const type=document.getElementById('teeV3404Type')?.value||'Other';
@@ -67,7 +71,7 @@
           openManualPaste('The clipboard still contains the TEE analysis request, not ChatGPT’s JSON result. Return to ChatGPT and tap Copy under the JSON response.');return;
         }
         openManualPaste('The clipboard does not contain valid TEE JSON. Return to ChatGPT, copy the JSON response, then come back and tap Paste Results.');
-      }catch{openManualPaste('iPhone did not allow automatic clipboard reading. Paste ONLY the copied JSON result into the empty box.');}
+      }catch{openManualPaste('Automatic clipboard reading was blocked. Paste ONLY the copied JSON result into the empty box.');}
     });
   }
 
@@ -88,12 +92,26 @@
     });
   }
 
+  async function copyRequestAndOpenChatGPT(){
+    const prompt=promptText();
+    let copied=false;
+    try{await navigator.clipboard?.writeText?.(prompt);copied=true;}catch{}
+    setChatStatus('yellow','PC handoff',copied?'Analysis request copied. ChatGPT is opening. Attach the same source document, paste the request, send it, then copy the JSON result.':'ChatGPT is opening. Use Copy Analysis Request, attach the same source document, paste the request, and send it.');
+    const opened=window.open(CHAT_URL,'_blank','noopener');
+    if(!opened)setChatStatus('yellow','Open ChatGPT manually',copied?'The analysis request is copied. Open ChatGPT, attach the same source document, paste, and send.':'Open ChatGPT manually, then use Copy Analysis Request before attaching the document.');
+  }
+
   async function shareToChatGPT(){
     const prompt=promptText();
     const input=document.getElementById('teeV3404File');
     const files=Array.from(input?.files||[]);
-    try{await navigator.clipboard?.writeText?.(prompt);}catch{}
 
+    if(!isAppleMobile()){
+      await copyRequestAndOpenChatGPT();
+      return;
+    }
+
+    try{await navigator.clipboard?.writeText?.(prompt);}catch{}
     if(files.length&&navigator.share){
       const shareData={title:'TEE Document Analysis',text:prompt,files};
       try{
@@ -113,18 +131,26 @@
 
   function install(){
     const panel=document.getElementById('teeV3415ChatPanel');if(!panel)return false;
+    const mobile=isAppleMobile();
     if(panel.dataset.teeV3427!=='1'){
       panel.dataset.teeV3427='1';
       const intro=panel.querySelector('h4 + p');
-      if(intro)intro.innerHTML='TEE sends the selected source image(s) and a strict machine-readable extraction request to <strong>ChatGPT</strong>. ChatGPT should return JSON only. Copy that JSON result, return to TEE, then tap <strong>Paste Results</strong>.';
+      if(intro)intro.innerHTML=mobile
+        ?'TEE sends the selected source image(s) and a strict machine-readable extraction request to <strong>ChatGPT</strong>. ChatGPT should return JSON only. Copy that JSON result, return to TEE, then tap <strong>Paste Results</strong>.'
+        :'On this computer, TEE copies a strict machine-readable extraction request and opens <strong>ChatGPT</strong>. Attach the same source document in ChatGPT, paste the request, and send it. Then copy the JSON result, return to TEE, and tap <strong>Paste Results</strong>.';
       const help=panel.querySelector('details.tee-v3404-help');
-      if(help){help.open=true;help.innerHTML='<summary>How do I do this?</summary><ol><li>Tap <strong>Analyze with ChatGPT</strong>.</li><li>In the Share sheet, choose <strong>ChatGPT</strong>.</li><li>TEE shares the selected source image(s) and the strict JSON extraction request together.</li><li>If ChatGPT shows the request ready to send, send it.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Tap <strong>Copy</strong> under that JSON response.</li><li>Return to TEE.</li><li>Tap <strong>Paste Results</strong>.</li><li>TEE will reject prose, the analysis request itself, or malformed JSON.</li><li>Compare every filled field with every original image/page.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>Fallback:</strong> if the Share sheet cannot send the request text with the images, TEE also copies the request to the clipboard. Open ChatGPT, attach the same source image(s), paste the request, and send it.</p>';
+      if(help){
+        help.open=true;
+        help.innerHTML=mobile
+          ?'<summary>How do I do this?</summary><ol><li>Tap <strong>Analyze with ChatGPT</strong>.</li><li>In the Share sheet, choose <strong>ChatGPT</strong>.</li><li>TEE shares the selected source image(s) and the strict JSON extraction request together.</li><li>If ChatGPT shows the request ready to send, send it.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Tap <strong>Copy</strong> under that JSON response.</li><li>Return to TEE.</li><li>Tap <strong>Paste Results</strong>.</li><li>TEE will reject prose, the analysis request itself, or malformed JSON.</li><li>Compare every filled field with every original image/page.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>Fallback:</strong> if the Share sheet cannot send the request text with the images, TEE also copies the request to the clipboard. Open ChatGPT, attach the same source image(s), paste the request, and send it.</p>'
+          :'<summary>How do I do this on this computer?</summary><ol><li>Click <strong>Open ChatGPT + Copy Request</strong>.</li><li>TEE copies the strict JSON extraction request and opens ChatGPT in a new tab/window.</li><li>In ChatGPT, attach the <strong>same source document</strong> selected in TEE.</li><li>Paste the copied request into the ChatGPT message box.</li><li>Send it.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Click <strong>Copy</strong> under that JSON response.</li><li>Return to TEE.</li><li>Click <strong>Paste Results</strong>.</li><li>TEE will reject prose, the analysis request itself, or malformed JSON.</li><li>Compare every filled field with the original document.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>Why no Windows Share sheet?</strong> ChatGPT is not normally available as a Windows Share target, so TEE uses the more reliable copy-and-open workflow on computers.</p>';
       }
       const oldButton=document.getElementById('teeV3415OpenChat');
-      if(oldButton){const button=oldButton.cloneNode(true);button.textContent='Analyze with ChatGPT';oldButton.replaceWith(button);button.addEventListener('click',shareToChatGPT);}
+      if(oldButton){const button=oldButton.cloneNode(true);button.textContent=mobile?'Analyze with ChatGPT':'Open ChatGPT + Copy Request';oldButton.replaceWith(button);button.addEventListener('click',shareToChatGPT);}
     }
     installPasteButton();
-    setChatStatus(navigator.onLine===false?'yellow':'green',navigator.onLine===false?'OFFLINE — Local scan available':'READY — ChatGPT analysis available',navigator.onLine===false?'Use the Offline option below.':'Tap Analyze with ChatGPT. TEE will share the selected source image(s) plus a strict JSON-only extraction request.');
+    installManualGuard();
+    setChatStatus(navigator.onLine===false?'yellow':'green',navigator.onLine===false?'OFFLINE — Local scan available':'READY — ChatGPT analysis available',navigator.onLine===false?'Use the Offline option below.':mobile?'Tap Analyze with ChatGPT. TEE will share the selected source image(s) plus a strict JSON-only extraction request.':'Click Open ChatGPT + Copy Request. Then attach the same source document in ChatGPT, paste the request, and send it.');
     return true;
   }
 
