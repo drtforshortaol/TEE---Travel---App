@@ -1,0 +1,12 @@
+TEE v3.4.29 Recovery
+
+Purpose: restore Source Documents stability after v3.4.28 testing exposed a DOM observer loop.
+
+Recovery scope only:
+- Start from v3.4.27 stable snapshot.
+- Remove the broad ChatGPT-panel MutationObserver that could feed back on manager DOM changes.
+- Keep the verified Windows/iPhone ChatGPT handoff and guarded JSON application behavior.
+- Do not load or include the v3.4.28 related-record decorator.
+- Use a new v3.4.29 service-worker cache so older mixed cached scripts are replaced.
+
+No document data migrations or deletions are performed.
