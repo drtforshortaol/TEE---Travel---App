@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.27",
-  "channel": "stable",
-  "publishedAt": "2026-09-02T21:30:00-07:00",
-  "notes": "Stable Source Documents release. Verified end-to-end on Windows with a passport and a two-image Global Entry document: Add, destination authorization, ChatGPT extraction, guarded JSON paste/manual paste, field application, Save, side-by-side original verification, Mark Verified & Finish, archive, and retained-source Document Library display. Windows uses Open ChatGPT + Copy Request without the unsupported Share sheet; iPhone/iPad retain the native Share workflow. Multi-image originals are recognized as embedded review sources, and Global Entry completeness uses Name, PASSID, and Expiration date rather than passport-only requirements. ChatGPT handoff guidance and event handling are consolidated into one authoritative runtime path.",
-  "name": "TEE v3.4.27 — Stable Source Documents Workflow"
+  "version": "3.4.28",
+  "channel": "review",
+  "publishedAt": "2026-09-02T21:42:00-07:00",
+  "notes": "Review candidate built directly on the verified v3.4.27 stable Source Documents manager and library. Adds only an isolated related-record decorator: it flags same-title/same-destination record groups, adds a related-record count in the library, and reports when no duplicate groups are detected. It does not replace manager rendering, mutate records, merge records, delete records, or change verification/storage logic. Also makes the ChatGPT build-label observer idempotent to avoid unnecessary DOM rewrites.",
+  "name": "TEE v3.4.28 — Related Records Review"
 }
