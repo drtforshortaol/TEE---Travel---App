@@ -4,6 +4,7 @@
   const summary=document.getElementById('auditSummary');
   const results=document.getElementById('auditResults');
   const refresh=document.getElementById('refreshAudit');
+  const selfCheck=document.getElementById('auditSelfCheck');
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const normalize=v=>String(v||'').trim().toLowerCase().replace(/\s+(?:copy|duplicate)\s*\d*$/,'').replace(/\s+\(\d+\)$/,'').replace(/\s+/g,' ');
   const normalizeSource=v=>String(v||'').trim().toLowerCase().replace(/^.*[\\/]/,'').replace(/\s+/g,' ');
@@ -29,7 +30,17 @@
     if(allHaveRef && uniqueRefs.size>1) return {level:'version',label:'Possible newer version',explain:'Same normalized title/category but different source references. This may be a legitimate replacement or updated document rather than a duplicate.'};
     return {level:'review',label:'Related records — review',explain:'Same normalized title/category, but the index does not contain enough source evidence to classify the relationship more precisely.'};
   }
+  function runSelfCheck(){
+    const base={title:'Passport — Test Traveler',category:'Identity',createdAt:'2026-09-02T20:00:00Z'};
+    const exact=classify([{...base,originalReference:'passport.jpg'},{...base,originalReference:'passport.jpg'}]).level==='exact';
+    const repeat=classify([{...base,originalReference:'',createdAt:'2026-09-02T20:00:00Z'},{...base,originalReference:'',createdAt:'2026-09-02T20:05:00Z'}]).level==='repeat';
+    const version=classify([{...base,originalReference:'passport-old.jpg'},{...base,originalReference:'passport-new.jpg',createdAt:'2026-09-05T20:00:00Z'}]).level==='version';
+    const pass=exact&&repeat&&version;
+    if(selfCheck){selfCheck.textContent=pass?'Audit engine self-check passed':'Audit engine self-check failed';selfCheck.className=`badge ${pass?'ok':'error'}`;}
+    return pass;
+  }
   function render(){
+    runSelfCheck();
     const records=read();
     const related=groups(records);
     const relatedCount=related.reduce((n,g)=>n+g.length,0);
