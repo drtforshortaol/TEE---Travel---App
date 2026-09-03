@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD='3.4.28';
+  const BUILD='3.4.29';
   const CHAT_URL='https://chatgpt.com/';
 
   function setBuild(){const el=document.querySelector('header.hero .subtitle strong');const text=`TEE v${BUILD}`;if(el&&el.textContent!==text)el.textContent=text;}
@@ -23,15 +23,15 @@
     setBuild();
     const panel=document.getElementById('teeV3415ChatPanel');if(!panel)return false;
     const mobile=isAppleMobile();
-    if(panel.dataset.teeChatgptOwner!=='v3428')panel.dataset.teeChatgptOwner='v3428';
+    if(panel.dataset.teeChatgptOwner!=='v3429')panel.dataset.teeChatgptOwner='v3429';
     const intro=panel.querySelector('h4 + p');
     const introHtml=mobile
       ?'TEE sends the selected source image(s) and a strict machine-readable extraction request to <strong>ChatGPT</strong>. ChatGPT should return JSON only. Copy that JSON result, return to TEE, then tap <strong>Paste Results</strong>.'
       :'On this computer, TEE copies a strict machine-readable extraction request and opens <strong>ChatGPT</strong>. Attach the same source document in ChatGPT, paste the request, and send it. Then copy the JSON result, return to TEE, and click <strong>Paste Results</strong>.';
     setHtmlIfChanged(intro,introHtml);
     const help=panel.querySelector('details.tee-v3404-help');
-    if(help&&help.dataset.teeChatgptOwner!=='v3428'){
-      help.dataset.teeChatgptOwner='v3428';help.open=true;
+    if(help&&help.dataset.teeChatgptOwner!=='v3429'){
+      help.dataset.teeChatgptOwner='v3429';help.open=true;
       const helpHtml=mobile
         ?'<summary>How do I do this?</summary><ol><li>Tap <strong>Analyze with ChatGPT</strong>.</li><li>In the Share sheet, choose <strong>ChatGPT</strong>.</li><li>TEE shares the selected source image(s) and the strict JSON extraction request together.</li><li>Send the request if ChatGPT shows it ready to send.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Tap <strong>Copy</strong> under that JSON response.</li><li>Return to TEE and tap <strong>Paste Results</strong>.</li><li>TEE rejects prose, the analysis request itself, malformed JSON, or non-TEE JSON.</li><li>Compare every filled field with every original image/page.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol>'
         :'<summary>How do I do this on this computer?</summary><ol><li>Click <strong>Open ChatGPT + Copy Request</strong>.</li><li>TEE copies the strict JSON extraction request and opens ChatGPT in a new tab/window.</li><li>In ChatGPT, attach the <strong>same source document</strong> selected in TEE.</li><li>Paste the copied request and send it.</li><li>Wait for a response that is <strong>JSON only</strong>.</li><li>Click <strong>Copy</strong> under that JSON response.</li><li>Return to TEE and click <strong>Paste Results</strong>.</li><li>TEE rejects prose, the analysis request itself, malformed JSON, or non-TEE JSON.</li><li>Compare every filled field with the original document.</li><li>If correct, continue with <strong>Save to TEE Vault</strong>.</li></ol><p><strong>Why no Windows Share sheet?</strong> ChatGPT is not normally available as a Windows Share target, so TEE uses the more reliable copy-and-open workflow on computers.</p>';
@@ -61,8 +61,4 @@
 
   document.addEventListener('tee-runtime-ready',()=>{configurePanel();setTimeout(configurePanel,120);});
   configurePanel();
-
-  if(!document.querySelector('script[data-tee-related-records="3.4.28"]')){
-    const related=document.createElement('script');related.src='related-records-v3428.js?v=3.4.28';related.dataset.teeRelatedRecords='3.4.28';document.head.appendChild(related);
-  }
 })();
