@@ -96,7 +96,7 @@
 
   const intakeObserver=new MutationObserver(()=>enforceSimpleTravelerIntake());const intakeRoot=document.getElementById('smartDocumentIntake');if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
-  const hotfix=document.createElement('script');hotfix.src='chatgpt-handoff-v3427.js?v=3.4.27';hotfix.dataset.teeChatgptHandoff='3.4.27';hotfix.addEventListener('load',setBuild);document.head.appendChild(hotfix);
+  const handoff=document.createElement('script');handoff.src='chatgpt-handoff-v3427.js?v=3.4.27';handoff.dataset.teeChatgptHandoff='3.4.27';handoff.addEventListener('load',setBuild);document.head.appendChild(handoff);
   const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.27';localLibrary.dataset.teeLocalSourceLibrary='3.4.27';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
   const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.27';mrz.dataset.teePassportMrz='3.4.27';
   const loadUx=()=>{
@@ -106,7 +106,6 @@
     document.head.appendChild(ux);
   };
 
-  const guide=document.createElement('script');guide.src='chatgpt-guidance-v3423.js?v=3.4.27';guide.dataset.teeChatgptGuidance='3.4.27';guide.addEventListener('load',setBuild);document.head.appendChild(guide);
   const reviewBridge=document.createElement('script');reviewBridge.src='structured-documents-review-v3426.js?v=3.4.27';reviewBridge.dataset.teeStructuredReview='3.4.27';reviewBridge.addEventListener('load',loadUx);reviewBridge.addEventListener('error',loadUx);document.head.appendChild(reviewBridge);
   document.head.appendChild(mrz);
   setTimeout(setBuild,500);
