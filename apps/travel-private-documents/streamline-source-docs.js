@@ -15,6 +15,14 @@
   const buildLabel=document.querySelector('header.hero .subtitle strong');
   const setBuild=()=>{if(buildLabel&&buildLabel.textContent!==`TEE v${BUILD}`)buildLabel.textContent=`TEE v${BUILD}`;};
   setBuild();
+
+  // iOS Files can report JSON backups with a generic UTI/MIME type. Restricting
+  // the hidden file input with accept=... can therefore gray out a valid TEE
+  // vault backup. Leave selection unrestricted here and let TEE's existing
+  // backup validation reject anything that is not a valid encrypted backup.
+  const secureImportFile=document.getElementById('secureImportFile');
+  if(secureImportFile){secureImportFile.removeAttribute('accept');secureImportFile.dataset.teeIosBackupPickerFix='1';}
+
   const workflowParagraph=document.querySelector('#streamlinedSourceHome .streamlined-source-head p');
   if(workflowParagraph)workflowParagraph.innerHTML='Use one simple workflow: <strong>Add → Review → Save → Verify → Done.</strong> TEE proposes privacy; change it only when the suggestion is wrong.';
 
