@@ -7,6 +7,9 @@
   const STRUCTURED_KEY="teeStructuredDocumentsPublicV1";
   const $=id=>document.getElementById(id);
   const localSummary=$("localSummary"), sourceList=$("sourceList"), status=$("status"), validationResult=$("validationResult");
+  const previewRestoreBtn=$("previewRestore"), importSourcesBtn=$("importSources"), restorePlan=$("restorePlan");
+  let validatedPayload=null;
+  let currentPlan=null;
 
   if(Number(sessionStorage.getItem(MAINT_AUTH_KEY)||0)<=Date.now()){
     location.replace("index.html");
@@ -32,6 +35,21 @@
       });
     }finally{db.close();}
   }
+  async function writeRecords(records){
+    if(!records.length)return 0;
+    const db=await openDb();
+    try{
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction(STORE_NAME,"readwrite");
+        const store=tx.objectStore(STORE_NAME);
+        records.forEach(record=>store.add(record));
+        tx.oncomplete=()=>resolve();
+        tx.onerror=()=>reject(tx.error||new Error("Protected-source restore failed."));
+        tx.onabort=()=>reject(tx.error||new Error("Protected-source restore was aborted."));
+      });
+      return records.length;
+    }finally{db.close();}
+  }
   function structuredDocs(){
     try{const rows=JSON.parse(localStorage.getItem(STRUCTURED_KEY)||"[]");return Array.isArray(rows)?rows:[];}catch{return [];}
   }
@@ -47,6 +65,18 @@
   function refsFor(row){
     const id=String(row?.sourceId||"");
     return structuredDocs().filter(doc=>String(doc?.sourceLocalId||doc?.protectedSourceId||"")===id);
+  }
+  function stableRecordSignature(row){
+    return JSON.stringify({
+      sourceId:row?.sourceId||null,
+      originalClass:row?.originalClass||null,
+      name:row?.name||null,
+      type:row?.type||null,
+      bytes:Number(row?.bytes)||0,
+      addedAt:row?.addedAt||null,
+      encrypted:row?.encrypted||null,
+      storedAt:row?.storedAt||null
+    });
   }
   async function refresh(){
     try{
@@ -89,18 +119,78 @@
     return payload.records;
   }
   async function validateFile(file){
+    validatedPayload=null;currentPlan=null;previewRestoreBtn.disabled=true;importSourcesBtn.disabled=true;restorePlan.textContent="Validate a backup file first.";
     try{
       validationResult.textContent="Validating backup file…";
       const text=await file.text();
       const payload=JSON.parse(text);
       const records=validatePayload(payload);
       const bytes=records.reduce((sum,row)=>sum+(Number(row.bytes)||0),0);
-      validationResult.textContent=`VALID TEE PROTECTED-SOURCE BACKUP\nRecords: ${records.length}\nOriginal source size represented: ${bytesLabel(bytes)}\nExported: ${payload.exportedAt||"not recorded"}\n\nValidation only. Nothing was imported or changed.`;
+      validatedPayload=payload;
+      previewRestoreBtn.disabled=false;
+      validationResult.textContent=`VALID TEE PROTECTED-SOURCE BACKUP\nRecords: ${records.length}\nOriginal source size represented: ${bytesLabel(bytes)}\nExported: ${payload.exportedAt||"not recorded"}\n\nValidation passed. Nothing has been imported or changed.`;
     }catch(err){validationResult.textContent=`INVALID BACKUP\n${err?.message||String(err)}\n\nNothing was imported or changed.`;}
+  }
+  async function buildRestorePlan(){
+    if(!validatedPayload)throw new Error("Validate a backup file first.");
+    const existing=await readAll();
+    const existingById=new Map(existing.map(row=>[String(row.sourceId||""),row]));
+    const incoming=validatedPayload.records;
+    const add=[],identical=[],conflicts=[];
+    for(const row of incoming){
+      const current=existingById.get(String(row.sourceId));
+      if(!current){add.push(row);continue;}
+      if(stableRecordSignature(current)===stableRecordSignature(row))identical.push(row);
+      else conflicts.push({incoming:row,current});
+    }
+    return {add,identical,conflicts,total:incoming.length};
+  }
+  function renderPlan(plan){
+    const lines=[
+      "PROTECTED-SOURCE RESTORE PLAN",
+      `Backup records: ${plan.total}`,
+      `New encrypted sources to add: ${plan.add.length}`,
+      `Already present / identical: ${plan.identical.length}`,
+      `Conflicts: ${plan.conflicts.length}`,
+      ""
+    ];
+    if(plan.conflicts.length){
+      lines.push("RESTORE BLOCKED — a same-ID record differs from the backup.","TEE will not overwrite an existing encrypted source. Resolve the conflict before importing.");
+    }else if(plan.add.length){
+      lines.push("SAFE TO IMPORT — only missing encrypted source records will be added.","No PDF will be decrypted during import. Existing records will not be overwritten.");
+    }else{
+      lines.push("NOTHING TO IMPORT — every backup record is already present and identical.");
+    }
+    restorePlan.textContent=lines.join("\n");
+  }
+  async function previewRestore(){
+    try{
+      currentPlan=await buildRestorePlan();
+      renderPlan(currentPlan);
+      importSourcesBtn.disabled=!!currentPlan.conflicts.length||!currentPlan.add.length;
+      status.textContent=currentPlan.conflicts.length?"Restore preview found a conflict. Import is blocked.":currentPlan.add.length?"Restore preview passed. Review the plan, then import if correct.":"Restore preview passed. Nothing needs to be imported.";
+    }catch(err){restorePlan.textContent=`RESTORE PREVIEW FAILED\n${err?.message||String(err)}`;importSourcesBtn.disabled=true;}
+  }
+  async function importSources(){
+    try{
+      if(!currentPlan)throw new Error("Preview the restore first.");
+      if(currentPlan.conflicts.length)throw new Error("Import is blocked because the restore plan contains conflicts.");
+      if(!currentPlan.add.length){status.textContent="Nothing to import.";return;}
+      importSourcesBtn.disabled=true;
+      status.textContent="Importing missing encrypted source records…";
+      const count=await writeRecords(currentPlan.add);
+      status.textContent=`Restore complete. ${count} encrypted source record${count===1?"":"s"} added. No PDF was decrypted and no existing record was overwritten.`;
+      await refresh();
+      currentPlan=await buildRestorePlan();
+      renderPlan(currentPlan);
+      importSourcesBtn.disabled=true;
+    }catch(err){status.textContent=`Restore failed safely: ${err?.message||String(err)}`;}
   }
 
   $("refreshSources")?.addEventListener("click",refresh);
   $("exportSources")?.addEventListener("click",exportBackup);
   $("backupFile")?.addEventListener("change",e=>{const file=e.target.files?.[0];if(file)validateFile(file);});
+  previewRestoreBtn?.addEventListener("click",previewRestore);
+  importSourcesBtn?.addEventListener("click",importSources);
   refresh();
 })();
