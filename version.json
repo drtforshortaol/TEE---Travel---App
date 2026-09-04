@@ -1,8 +1,8 @@
 {
   "app": "TEE",
   "version": "3.4.33",
-  "channel": "review",
-  "publishedAt": "2026-09-03T23:18:00-07:00",
-  "notes": "Review candidate adding a Maintenance-only supplemental backup tool for encrypted large protected originals created by v3.4.32. The tool reads the already-encrypted IndexedDB source store, reports local protected-source count, exports encrypted records without decrypting them, and validates an exported backup file without importing or changing anything. Source Documents runtime and Part 1 itinerary data are unchanged.",
-  "name": "TEE v3.4.33 — Protected Source Backup Review"
+  "channel": "stable",
+  "publishedAt": "2026-09-04T07:13:00-07:00",
+  "notes": "Stable protected-source backup release. Maintenance can inspect the encrypted large-original store, export protected-source records without decrypting them, and validate the exported JSON without importing or changing TEE. Verified on Windows with the official 18-page Part 1 itinerary: 1 encrypted protected source found, export succeeded, and the exported file validated with Records: 1 and no changes made. v3.4.32 secure large-original storage and v3.4.30 Part 1 itinerary corrections remain intact.",
+  "name": "TEE v3.4.33 — Stable Protected Source Backup"
 }
