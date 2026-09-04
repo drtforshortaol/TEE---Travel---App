@@ -1,8 +1,8 @@
 {
   "app": "TEE",
   "version": "3.4.32",
-  "channel": "review",
-  "publishedAt": "2026-09-03T22:44:00-07:00",
-  "notes": "Review candidate fixing large protected source saves. Large Shared/Private originals such as the 18-page official itinerary are encrypted with the currently authorized TEE zone key and stored separately in local IndexedDB, while the vault record keeps only the protected local-source reference and verified fields. Small documents remain on the existing inline vault path. v3.4.30 Part 1 itinerary corrections remain intact.",
-  "name": "TEE v3.4.32 — Secure Large Original Storage Review"
+  "channel": "stable",
+  "publishedAt": "2026-09-03T22:49:00-07:00",
+  "notes": "Stable secure large-original storage release. Large Shared/Private originals such as the 18-page official itinerary are encrypted with the authorized TEE zone key and stored separately in local IndexedDB, while the vault record keeps the protected local-source reference and verified fields. Verified on Windows: save succeeds, Review & Verify decrypts and displays the full 18-page PDF, and the saved Shared itinerary summary appears beside it. Small documents remain on the existing inline vault path. v3.4.30 Part 1 itinerary corrections remain intact.",
+  "name": "TEE v3.4.32 — Stable Secure Large Original Storage"
 }
