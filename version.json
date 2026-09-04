@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.44",
+  "version": "3.4.45",
   "channel": "review",
-  "publishedAt": "2026-09-04T14:58:00-07:00",
-  "notes": "Removes the remaining stale offline-cache reference to apps/travel-private-documents/vault-return.js, which no longer exists. This was the last known missing asset in iPhone offline preparation. Keeps the current iPhone navigation, restore, and PDF-preview fixes.",
-  "name": "TEE v3.4.44 — Offline Cache Remaining Asset Fix"
+  "publishedAt": "2026-09-04T16:41:00-07:00",
+  "notes": "Begins the travel-day usability pass. Daily Operations now has a sticky iPhone-first quick-access bar for Today/Tomorrow, Adaptive Checklist, Documents, Trip Days, and the Hub. The new quick-access styling is included in the offline cache so the controls remain available in Airplane Mode.",
+  "name": "TEE v3.4.45 — Travel-Day Quick Access"
 }
