@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD="3.4.39";
+  const BUILD="3.4.40";
   const STRUCTURED_KEY="teeStructuredDocumentsPublicV1";
   const INTEGRITY_ID="teeSourceBackupIntegrityV3439";
 
@@ -111,4 +111,13 @@
   document.addEventListener("tee-structured-documents-changed",()=>setTimeout(runAndShow,60));
   window.TEEBackupIntegrityV3439=Object.freeze({build:BUILD,inspect,runAndShow});
   setTimeout(runAndShow,250);
+})();
+
+(function loadDuplicateGuardV3440(){
+  if(window.TEEDuplicateRecordGuardV3440Loaded) return;
+  window.TEEDuplicateRecordGuardV3440Loaded=true;
+  const script=document.createElement("script");
+  script.src="duplicate-record-guard-v3440.js?v=3440";
+  script.async=false;
+  document.head.appendChild(script);
 })();
