@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.34",
-  "channel": "stable",
-  "publishedAt": "2026-09-04T07:24:00-07:00",
-  "notes": "Stable protected-source restore release. Maintenance validates encrypted large-source backups, previews a restore plan, adds only missing encrypted records, skips identical records, and blocks same-ID conflicts rather than overwriting. Verified on Windows with the official itinerary backup: 1 backup record, 0 new, 1 identical, 0 conflicts, with import correctly disabled. No PDF is decrypted during preview or import.",
-  "name": "TEE v3.4.34 — Stable Protected Source Restore"
+  "version": "3.4.35",
+  "channel": "review",
+  "publishedAt": "2026-09-04T07:32:00-07:00",
+  "notes": "Review candidate extending protected-source backup/restore to include matching Source Documents index records alongside encrypted large originals. Older v3.4.34 source-only backups remain valid but are identified as incomplete for reconstructing document entries. Restore adds only missing encrypted sources and missing index records, skips identical records, and blocks any same-ID conflict without overwrite. Shared/private saved information still belongs in the encrypted vault backup.",
+  "name": "TEE v3.4.35 — Protected Source + Index Recovery Review"
 }
