@@ -14,6 +14,7 @@
     const keyFor=r=>[norm(r.title),norm(r.category),norm(r.originalReference||r.sourceName)].join("||");
     const savedCount=r=>Number(r.publicItemCount||0)+Number(r.sharedItemCount||0)+Number(r.privateItemCount||0);
     const vaultOpen=()=>window.TEEStructuredDocumentVault?.getState?.()==="unlocked";
+    const sameMoment=(a,b)=>String(a||"")===String(b||"");
 
     function classify(records){
       const groups=new Map();
@@ -25,17 +26,24 @@
 
       for(const members of groups.values()){
         if(members.length<2) continue;
+
+        // A previously verified archived record is authoritative even when the
+        // protected item counts are hidden because this page is not carrying
+        // the decryption session. This is the important v3.4.40 repair.
         const authorities=members
-          .filter(r=>r.lifecycleStatus==="archived" && savedCount(r)>0)
+          .filter(r=>r.lifecycleStatus==="archived" && (!!r.verifiedAt || savedCount(r)>0))
           .sort((a,b)=>String(b.lastModifiedAt||b.archivedAt||"").localeCompare(String(a.lastModifiedAt||a.archivedAt||"")));
         if(authorities.length!==1) continue;
+
         const authority=authorities[0];
         authority.duplicateRole="authoritative";
         authority.relatedDuplicateCount=members.length-1;
+
         for(const r of members){
           if(r.documentId===authority.documentId) continue;
-          const noSaved=savedCount(r)===0;
-          const safe=r.lifecycleStatus!=="archived" && !!r.needsAttention && noSaved && !!r.sourceReferenced;
+          const publicEmpty=savedCount(r)===0;
+          const untouched=sameMoment(r.createdAt,r.lastModifiedAt);
+          const safe=r.lifecycleStatus!=="archived" && !!r.needsAttention && !r.verifiedAt && publicEmpty && untouched && !!r.sourceReferenced;
           r.duplicateRole=safe?"safe-incomplete-duplicate":"related-duplicate";
           r.authoritativeDocumentId=authority.documentId;
         }
@@ -49,22 +57,34 @@
     }
 
     async function retireDuplicateById(documentId){
-      if(!vaultOpen()) throw new Error("Unlock the Secure Vault before removing a protected duplicate.");
       const records=classify(await base.sourceManagerRecords());
       const target=records.find(r=>r.documentId===documentId);
       if(!target || target.duplicateRole!=="safe-incomplete-duplicate" || !target.authoritativeDocumentId){
         throw new Error("TEE did not confirm this record as a safe incomplete duplicate. Nothing was removed.");
       }
+
       const raw=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
       const doc=Array.isArray(raw)?raw.find(x=>x.documentId===documentId):null;
       if(!doc) throw new Error("Duplicate record was not found in local storage.");
-      try{ await window.TEEStructuredDocumentVault?.deleteOverlays?.(documentId); }catch(err){
-        throw new Error(`TEE could not remove the duplicate's protected overlay: ${err?.message||err}`);
+
+      const rawPublicCount=(Array.isArray(doc.publicFields)?doc.publicFields.length:0)+(Array.isArray(doc.publicImages)?doc.publicImages.length:0);
+      const untouched=sameMoment(doc.createdAt,doc.lastModifiedAt);
+      if(rawPublicCount!==0 || doc.verifiedAt || !untouched || doc.lifecycleStatus==="archived"){
+        throw new Error("TEE found activity on this record, so it will not remove it automatically.");
       }
+
+      // If this page happens to have an unlocked document vault, also clean any
+      // empty protected overlay. If not, remove only the incomplete public index
+      // record. The retained source and authoritative archived record are never touched.
+      if(vaultOpen()){
+        try{ await window.TEEStructuredDocumentVault?.deleteOverlays?.(documentId); }
+        catch(err){ throw new Error(`TEE could not remove the duplicate's protected overlay: ${err?.message||err}`); }
+      }
+
       const next=raw.filter(x=>x.documentId!==documentId);
       localStorage.setItem(STORAGE_KEY,JSON.stringify(next));
       window.dispatchEvent(new CustomEvent("tee-structured-documents-changed"));
-      return {removed:documentId,authority:target.authoritativeDocumentId};
+      return {removed:documentId,authority:target.authoritativeDocumentId,overlayCleanup:vaultOpen()?"done":"not-needed-for-index-cleanup"};
     }
 
     window.TEEStructuredDocumentsAPI=Object.freeze({...base,sourceManagerRecords,retireDuplicateById});
@@ -96,7 +116,7 @@
             btn.dataset.teeDuplicateAction="remove";
             btn.textContent="Remove Duplicate";
             btn.addEventListener("click",async()=>{
-              const ok=window.confirm(`Remove this incomplete duplicate?\n\n${r.title}\n\nTEE has identified a separate archived authoritative record with saved information for the same retained source. This duplicate has no saved details. The authoritative record will not be changed.`);
+              const ok=window.confirm(`Remove this incomplete duplicate?\n\n${r.title}\n\nTEE found a separate verified archived authoritative record for the same retained source. This duplicate has never been verified or edited. The authoritative record and retained original will not be changed.`);
               if(!ok) return;
               btn.disabled=true;
               try{ await retireDuplicateById(r.documentId); }
