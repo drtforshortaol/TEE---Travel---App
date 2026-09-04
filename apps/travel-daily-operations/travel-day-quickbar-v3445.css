@@ -1,0 +1,17 @@
+/* TEE v3.4.45 — iPhone-first travel-day quick access */
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+.travel-day-quickbar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:#d7ddd8;border-bottom:1px solid #c3cbc5;box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.travel-day-quickbar a{min-width:0;padding:.62rem .42rem;background:#fff;color:#263d36;text-decoration:none;text-align:center;line-height:1.08}
+.travel-day-quickbar strong{display:block;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.travel-day-quickbar span{display:block;margin-top:.2rem;color:#66736d;font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.travel-day-quickbar a:active,.travel-day-quickbar a:focus{background:#edf3ef;outline:none}
+#trip-day-context,#adaptive-checklist,#daily-context{scroll-margin-top:92px}
+@media(max-width:620px){
+  .hero{padding-bottom:.8rem}
+  .hero .lead{margin-bottom:0;font-size:.92rem}
+  .travel-day-quickbar{grid-template-columns:repeat(5,minmax(62px,1fr));overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .travel-day-quickbar a{padding:.62rem .3rem}
+  .travel-day-quickbar strong{font-size:.76rem}
+  .travel-day-quickbar span{font-size:.61rem}
+  main{padding-top:.7rem}
+}
