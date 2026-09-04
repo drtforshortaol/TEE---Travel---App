@@ -15,6 +15,15 @@
     <h1>Daily Operations</h1>
     <p class="lead">Your complete operational picture for Today and preparation picture for Tomorrow. When the Vault is authorized, relevant secure details appear here in context.</p>
   </header>
+
+  <nav class="travel-day-quickbar" aria-label="Travel day quick access">
+    <a href="#trip-day-context"><strong>Today / Tomorrow</strong><span>Current plan</span></a>
+    <a href="#adaptive-checklist"><strong>Checklist</strong><span>Things to do</span></a>
+    <a href="../travel-private-documents/index.html"><strong>Documents</strong><span>Vault & sources</span></a>
+    <a href="#daily-context"><strong>Trip Days</strong><span>Full itinerary</span></a>
+    <a href="../../index.html"><strong>Hub</strong><span>All TEE apps</span></a>
+  </nav>
+
   <main>
     <details class="top-dropdown day-test-panel" aria-labelledby="testDayTitle">
       <summary>
@@ -35,7 +44,7 @@
       </div>
     </details>
 
-    <section class="focus-strip" aria-label="Today and Tomorrow">
+    <section id="trip-day-context" class="focus-strip" aria-label="Today and Tomorrow">
       <article class="focus-card today-focus">
         <span class="focus-label">TODAY</span>
         <strong id="todaySummary">—</strong>
@@ -48,7 +57,7 @@
 
     <section id="dailyVaultStatus" class="daily-vault-status" aria-live="polite"></section>
 
-    <details class="top-dropdown quick-panel adaptive-panel">
+    <details id="adaptive-checklist" class="top-dropdown quick-panel adaptive-panel">
       <summary>
         <span><span class="section-kicker">LIVING LIST</span><strong>Adaptive Checklist</strong></span>
         <span class="top-dropdown-state">Open</span>
@@ -60,7 +69,7 @@
       </div>
     </details>
 
-    <section class="country-plan" aria-labelledby="countryPlanTitle">
+    <section id="daily-context" class="country-plan" aria-labelledby="countryPlanTitle">
       <div class="section-head">
         <div><span class="section-kicker">DAILY CONTEXT</span><h2 id="countryPlanTitle">Trip days by country</h2><p>Today and Tomorrow are highlighted. Open only the topic you need; other countries and dates stay collapsed.</p></div>
       </div>
