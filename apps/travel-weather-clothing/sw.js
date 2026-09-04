@@ -1,6 +1,6 @@
-const CACHE = 'tee-weather-clothing-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-weather-clothing-v3-4-30-official-part1';
 const CACHE_PREFIX = 'tee-weather-clothing-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../assets/icon.svg'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-weather-v3430.js','./manifest.json','../../assets/icon.svg'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
