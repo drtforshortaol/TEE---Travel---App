@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.31",
+  "version": "3.4.32",
   "channel": "review",
-  "publishedAt": "2026-09-03T22:34:00-07:00",
-  "notes": "Review candidate for official itinerary source retention. Keeps the v3.4.30 Part 1 operational baseline, adds Itinerary as a simple Source Documents type, updates Smart Intake to recognize Itinerary explicitly, and keeps the full official PDF local/private rather than publishing protected booking details to GitHub.",
-  "name": "TEE v3.4.31 — Official Itinerary Source Retention Review"
+  "publishedAt": "2026-09-03T22:44:00-07:00",
+  "notes": "Review candidate fixing large protected source saves. Large Shared/Private originals such as the 18-page official itinerary are encrypted with the currently authorized TEE zone key and stored separately in local IndexedDB, while the vault record keeps only the protected local-source reference and verified fields. Small documents remain on the existing inline vault path. v3.4.30 Part 1 itinerary corrections remain intact.",
+  "name": "TEE v3.4.32 — Secure Large Original Storage Review"
 }
