@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.38",
+  "version": "3.4.39",
   "channel": "review",
-  "publishedAt": "2026-09-04T08:24:00-07:00",
-  "notes": "Review candidate completing restored itinerary Saved Information recovery. When a restored document's encrypted vault overlay cannot be rejoined by document ID or protected-source ID, Review & Verify now also uses TEE's existing 30-minute authorized vault session, which exposes only decrypted structured-document text fields temporarily while the vault is open. Protected images, raw payloads, and originals remain encrypted at rest. The restored 18-page PDF recovery remains unchanged.",
-  "name": "TEE v3.4.38 — Authorized Session Recovery Review"
+  "publishedAt": "2026-09-04T08:40:00-07:00",
+  "notes": "Adds a protected Source Documents backup-integrity gate. Before an encrypted vault export, TEE now checks the currently authorized protected Source Document overlays, verifies large-source linkage, and specifically flags itinerary records that have an encrypted original but no protected saved details. A passing check forces the active vault data to persist before export. A failing check blocks export rather than creating a backup that appears complete but cannot restore Saved Information.",
+  "name": "TEE v3.4.39 — Source Documents Backup Integrity Review"
 }
