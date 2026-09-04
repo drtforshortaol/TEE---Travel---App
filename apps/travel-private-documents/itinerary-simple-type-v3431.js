@@ -62,6 +62,14 @@
     const rows=Array.isArray(overlays)?overlays:[];
     const exact=rows.filter(row=>String(row?.documentId||'')===String(doc?.documentId||''));
     if(exact.length)return exact;
+
+    const sourceId=String(doc?.sourceLocalId||doc?.protectedSourceId||'').trim();
+    if(sourceId){
+      const bySource=rows.filter(row=>String(row?.payload?.sourceFile?.sourceId||'').trim()===sourceId);
+      const sourceDocIds=new Set(bySource.map(row=>String(row?.documentId||'')));
+      if(bySource.length&&sourceDocIds.size<=1)return bySource;
+    }
+
     const title=String(doc?.title||'').trim().toLowerCase();
     const category=String(doc?.category||'').trim().toLowerCase();
     const ref=String(doc?.originalReference||'').trim().toLowerCase();
@@ -87,7 +95,7 @@
 
   function installRestoreLinkageBridge(){
     const api=window.TEEStructuredDocumentsAPI;
-    if(!api?.getReviewDataById||api.__teeRestoreLinkageV3436)return false;
+    if(!api?.getReviewDataById||api.__teeRestoreLinkageV3437)return false;
     const originalGet=api.getReviewDataById.bind(api);
     const patched=async documentId=>{
       const review=await originalGet(documentId);
@@ -121,7 +129,7 @@
       const sourceEmbedded=!!(sourceFile&&String(sourceFile.dataUrl||'').trim());
       return {...review,fields,images,sourceFile,sourceEmbedded};
     };
-    window.TEEStructuredDocumentsAPI=Object.freeze({...api,getReviewDataById:patched,__teeRestoreLinkageV3436:true});
+    window.TEEStructuredDocumentsAPI=Object.freeze({...api,getReviewDataById:patched,__teeRestoreLinkageV3437:true});
     return true;
   }
   function scheduleRestoreBridge(){
