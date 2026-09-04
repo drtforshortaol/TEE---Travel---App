@@ -1,5 +1,5 @@
-const VERSION = '3.4.44';
-const CACHE = 'tee-v3-4-44-ios-offline-shell';
+const VERSION = '3.4.45';
+const CACHE = 'tee-v3-4-45-travel-day-quick-access';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
@@ -10,7 +10,7 @@ const ASSETS = [
   './apps/travel-money-tipping/index.html','./apps/travel-money-tipping/styles.css','./apps/travel-money-tipping/app.js','./apps/travel-money-tipping/manifest.json',
   './apps/travel-maps-movement/index.html','./apps/travel-maps-movement/styles.css','./apps/travel-maps-movement/app.js','./apps/travel-maps-movement/manifest.json',
   './apps/travel-essentials/index.html','./apps/travel-essentials/styles.css','./apps/travel-essentials/app.js','./apps/travel-essentials/manifest.json',
-  './apps/travel-daily-operations/index.html','./apps/travel-daily-operations/styles.css','./apps/travel-daily-operations/app.js','./apps/travel-daily-operations/official-part1-corrections.js','./apps/travel-daily-operations/manifest.json',
+  './apps/travel-daily-operations/index.html','./apps/travel-daily-operations/styles.css','./apps/travel-daily-operations/travel-day-quickbar-v3445.css','./apps/travel-daily-operations/app.js','./apps/travel-daily-operations/official-part1-corrections.js','./apps/travel-daily-operations/manifest.json',
   './apps/travel-local-knowledge/index.html','./apps/travel-local-knowledge/styles.css','./apps/travel-local-knowledge/app.js','./apps/travel-local-knowledge/manifest.json',
   './apps/travel-language/index.html','./apps/travel-language/styles.css','./apps/travel-language/app.js','./apps/travel-language/manifest.json',
   './apps/travel-costs/index.html','./apps/travel-costs/styles.css','./apps/travel-costs/app.js','./apps/travel-costs/manifest.json',
