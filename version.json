@@ -1,8 +1,8 @@
 {
   "app": "TEE",
   "version": "3.4.34",
-  "channel": "review",
-  "publishedAt": "2026-09-04T07:18:00-07:00",
-  "notes": "Review candidate adding staged restore for encrypted large protected originals. Maintenance validates the protected-source backup, previews a restore plan, adds only missing encrypted records, skips identical records, and blocks any same-ID conflict rather than overwriting. No PDF is decrypted during preview or import. v3.4.33 backup/export remains intact; Source Documents runtime and itinerary data are unchanged.",
-  "name": "TEE v3.4.34 — Protected Source Restore Review"
+  "channel": "stable",
+  "publishedAt": "2026-09-04T07:24:00-07:00",
+  "notes": "Stable protected-source restore release. Maintenance validates encrypted large-source backups, previews a restore plan, adds only missing encrypted records, skips identical records, and blocks same-ID conflicts rather than overwriting. Verified on Windows with the official itinerary backup: 1 backup record, 0 new, 1 identical, 0 conflicts, with import correctly disabled. No PDF is decrypted during preview or import.",
+  "name": "TEE v3.4.34 — Stable Protected Source Restore"
 }
