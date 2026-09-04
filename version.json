@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.43",
+  "version": "3.4.44",
   "channel": "review",
-  "publishedAt": "2026-09-04T14:45:00-07:00",
-  "notes": "Fixes the final iPhone offline preparation failure by removing a stale Source Documents script reference that no longer exists. Offline preparation should now complete with zero failed assets while keeping the current 3.4.42 navigation and iPhone PDF fixes.",
-  "name": "TEE v3.4.43 — Offline Cache Final Asset Fix"
+  "publishedAt": "2026-09-04T14:58:00-07:00",
+  "notes": "Removes the remaining stale offline-cache reference to apps/travel-private-documents/vault-return.js, which no longer exists. This was the last known missing asset in iPhone offline preparation. Keeps the current iPhone navigation, restore, and PDF-preview fixes.",
+  "name": "TEE v3.4.44 — Offline Cache Remaining Asset Fix"
 }
