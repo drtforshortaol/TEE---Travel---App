@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD='3.4.39';
+  const BUILD='3.4.40';
   const params=new URLSearchParams(location.search);
   const maintenanceRequested=params.get('teeMode')==='maintenance';
   const maintUntil=Number(sessionStorage.getItem('teeMaintenanceAuthorizedUntilV1')||0);
@@ -99,19 +99,20 @@
 
   const intakeObserver=new MutationObserver(()=>enforceSimpleTravelerIntake());const intakeRoot=document.getElementById('smartDocumentIntake');if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
-  const handoff=document.createElement('script');handoff.src='chatgpt-handoff-v3427.js?v=3.4.39';handoff.dataset.teeChatgptHandoff='3.4.39';handoff.addEventListener('load',setBuild);document.head.appendChild(handoff);
-  const itineraryType=document.createElement('script');itineraryType.src='itinerary-simple-type-v3431.js?v=3.4.39';itineraryType.dataset.teeItinerarySimpleType='3.4.39';document.head.appendChild(itineraryType);
-  const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.39';localLibrary.dataset.teeLocalSourceLibrary='3.4.39';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
-  const integrity=document.createElement('script');integrity.src='backup-integrity-v3439.js?v=3.4.39';integrity.dataset.teeBackupIntegrity='3.4.39';document.head.appendChild(integrity);
-  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.39';mrz.dataset.teePassportMrz='3.4.39';
+  const handoff=document.createElement('script');handoff.src='chatgpt-handoff-v3427.js?v=3.4.40';handoff.dataset.teeChatgptHandoff='3.4.40';handoff.addEventListener('load',setBuild);document.head.appendChild(handoff);
+  const itineraryType=document.createElement('script');itineraryType.src='itinerary-simple-type-v3431.js?v=3.4.40';itineraryType.dataset.teeItinerarySimpleType='3.4.40';document.head.appendChild(itineraryType);
+  const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.40';localLibrary.dataset.teeLocalSourceLibrary='3.4.40';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
+  const integrity=document.createElement('script');integrity.src='backup-integrity-v3439.js?v=3.4.40';integrity.dataset.teeBackupIntegrity='3.4.40';document.head.appendChild(integrity);
+  const duplicateGuard=document.createElement('script');duplicateGuard.src='duplicate-record-guard-v3440.js?v=3.4.40';duplicateGuard.dataset.teeDuplicateGuard='3.4.40';document.head.appendChild(duplicateGuard);
+  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.40';mrz.dataset.teePassportMrz='3.4.40';
   const loadUx=()=>{
-    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.39"]'))return;
-    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.39';ux.dataset.teeTravelerSourceUx='3.4.39';
+    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.40"]'))return;
+    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.40';ux.dataset.teeTravelerSourceUx='3.4.40';
     ux.addEventListener('load',()=>{setBuild();setTimeout(setBuild,200);setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,180);if(requestedView==='add')setTimeout(showAdd,0);});
     document.head.appendChild(ux);
   };
 
-  const reviewBridge=document.createElement('script');reviewBridge.src='structured-documents-review-v3426.js?v=3.4.39';reviewBridge.dataset.teeStructuredReview='3.4.39';reviewBridge.addEventListener('load',loadUx);reviewBridge.addEventListener('error',loadUx);document.head.appendChild(reviewBridge);
+  const reviewBridge=document.createElement('script');reviewBridge.src='structured-documents-review-v3426.js?v=3.4.40';reviewBridge.dataset.teeStructuredReview='3.4.40';reviewBridge.addEventListener('load',loadUx);reviewBridge.addEventListener('error',loadUx);document.head.appendChild(reviewBridge);
   document.head.appendChild(mrz);
   setTimeout(setBuild,500);
 })();
