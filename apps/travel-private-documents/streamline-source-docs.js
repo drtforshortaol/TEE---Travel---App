@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD='3.4.31';
+  const BUILD='3.4.32';
   const params=new URLSearchParams(location.search);
   const maintenanceRequested=params.get('teeMode')==='maintenance';
   const maintUntil=Number(sessionStorage.getItem('teeMaintenanceAuthorizedUntilV1')||0);
@@ -40,27 +40,28 @@
   function showManager(view){const section=document.getElementById('teeSourceDocumentManager');showOnly(section,view==='structured'?'Saved Documents: tap Review & Verify to compare the original and saved information together.':'Needs Attention: finish the items that still require work.');setTimeout(()=>{const id=view==='structured'?'sourceManagerStructured':'sourceManagerNeeds';document.getElementById(id)?.click();},50);}
   function showLibrary(){const section=document.getElementById('sourceInventoryWorkspace');showOnly(section,'Document Library: supporting originals and source history.');const toggle=document.getElementById('sourceInventoryToggle');if(toggle&&toggle.getAttribute('aria-expanded')!=='true')toggle.click();setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),80);}
 
-  window.TEETravelerSourceNavV3431={showOnly,showAdd,showManager,showLibrary,normalTargets};
-  window.TEETravelerSourceNavV3429=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3427=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3426=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3424=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3423=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3421=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3419=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3418=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3417=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3431;
-  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3431;
+  window.TEETravelerSourceNavV3432={showOnly,showAdd,showManager,showLibrary,normalTargets};
+  window.TEETravelerSourceNavV3431=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3429=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3427=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3426=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3424=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3423=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3421=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3419=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3418=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3417=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3416=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3415=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3414=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3412=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3411=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3410=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3409=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3408=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3407=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3406=window.TEETravelerSourceNavV3432;
+  window.TEETravelerSourceNavV3404=window.TEETravelerSourceNavV3432;
 
   function enforceSimpleTravelerIntake(){
     if(maintenanceMode||requestedView==='vault')return;
@@ -98,18 +99,18 @@
 
   const intakeObserver=new MutationObserver(()=>enforceSimpleTravelerIntake());const intakeRoot=document.getElementById('smartDocumentIntake');if(intakeRoot)intakeObserver.observe(intakeRoot,{childList:true,subtree:true});
 
-  const handoff=document.createElement('script');handoff.src='chatgpt-handoff-v3427.js?v=3.4.31';handoff.dataset.teeChatgptHandoff='3.4.31';handoff.addEventListener('load',setBuild);document.head.appendChild(handoff);
-  const itineraryType=document.createElement('script');itineraryType.src='itinerary-simple-type-v3431.js?v=3.4.31';itineraryType.dataset.teeItinerarySimpleType='3.4.31';document.head.appendChild(itineraryType);
-  const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.31';localLibrary.dataset.teeLocalSourceLibrary='3.4.31';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
-  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.31';mrz.dataset.teePassportMrz='3.4.31';
+  const handoff=document.createElement('script');handoff.src='chatgpt-handoff-v3427.js?v=3.4.32';handoff.dataset.teeChatgptHandoff='3.4.32';handoff.addEventListener('load',setBuild);document.head.appendChild(handoff);
+  const itineraryType=document.createElement('script');itineraryType.src='itinerary-simple-type-v3431.js?v=3.4.32';itineraryType.dataset.teeItinerarySimpleType='3.4.32';document.head.appendChild(itineraryType);
+  const localLibrary=document.createElement('script');localLibrary.src='local-source-library-v3426.js?v=3.4.32';localLibrary.dataset.teeLocalSourceLibrary='3.4.32';localLibrary.addEventListener('load',()=>setTimeout(()=>window.TEERenderLocalSourceLibraryV3426?.(),0));document.head.appendChild(localLibrary);
+  const mrz=document.createElement('script');mrz.src='mrz-ocr-v3412.js?v=3.4.32';mrz.dataset.teePassportMrz='3.4.32';
   const loadUx=()=>{
-    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.31"]'))return;
-    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.31';ux.dataset.teeTravelerSourceUx='3.4.31';
+    if(document.querySelector('script[data-tee-traveler-source-ux="3.4.32"]'))return;
+    const ux=document.createElement('script');ux.src='traveler-source-flow-v3415.js?v=3.4.32';ux.dataset.teeTravelerSourceUx='3.4.32';
     ux.addEventListener('load',()=>{setBuild();setTimeout(setBuild,200);setTimeout(enforceSimpleTravelerIntake,0);setTimeout(enforceSimpleTravelerIntake,180);if(requestedView==='add')setTimeout(showAdd,0);});
     document.head.appendChild(ux);
   };
 
-  const reviewBridge=document.createElement('script');reviewBridge.src='structured-documents-review-v3426.js?v=3.4.31';reviewBridge.dataset.teeStructuredReview='3.4.31';reviewBridge.addEventListener('load',loadUx);reviewBridge.addEventListener('error',loadUx);document.head.appendChild(reviewBridge);
+  const reviewBridge=document.createElement('script');reviewBridge.src='structured-documents-review-v3426.js?v=3.4.32';reviewBridge.dataset.teeStructuredReview='3.4.32';reviewBridge.addEventListener('load',loadUx);reviewBridge.addEventListener('error',loadUx);document.head.appendChild(reviewBridge);
   document.head.appendChild(mrz);
   setTimeout(setBuild,500);
 })();
