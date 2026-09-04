@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.36",
+  "version": "3.4.37",
   "channel": "review",
-  "publishedAt": "2026-09-04T08:10:00-07:00",
-  "notes": "Review candidate fixing clean-device recovery linkage for restored itinerary records. Review & Verify now falls back to the restored protected-source ID for encrypted large originals and can reconnect a uniquely matching Shared/Private structured-document overlay by title/category or original reference when document IDs do not line up after restore. This builds on v3.4.35 protected-source + index recovery.",
-  "name": "TEE v3.4.36 — Restored Document Linkage Review"
+  "publishedAt": "2026-09-04T08:18:00-07:00",
+  "notes": "Review candidate completing clean-device itinerary recovery. The restored protected PDF was already recoverable in v3.4.36; v3.4.37 adds a stronger Shared/Private saved-information fallback keyed first by the restored protected source ID, then by unique document title/category/original-reference matching. Traveler-source script cache keys were also bumped so Refresh / Update loads the new recovery bridge instead of a previously cached copy.",
+  "name": "TEE v3.4.37 — Saved Information Recovery Review"
 }
