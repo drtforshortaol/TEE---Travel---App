@@ -26,10 +26,6 @@
 
       for(const members of groups.values()){
         if(members.length<2) continue;
-
-        // A previously verified archived record is authoritative even when the
-        // protected item counts are hidden because this page is not carrying
-        // the decryption session. This is the important v3.4.40 repair.
         const authorities=members
           .filter(r=>r.lifecycleStatus==="archived" && (!!r.verifiedAt || savedCount(r)>0))
           .sort((a,b)=>String(b.lastModifiedAt||b.archivedAt||"").localeCompare(String(a.lastModifiedAt||a.archivedAt||"")));
@@ -73,9 +69,6 @@
         throw new Error("TEE found activity on this record, so it will not remove it automatically.");
       }
 
-      // If this page happens to have an unlocked document vault, also clean any
-      // empty protected overlay. If not, remove only the incomplete public index
-      // record. The retained source and authoritative archived record are never touched.
       if(vaultOpen()){
         try{ await window.TEEStructuredDocumentVault?.deleteOverlays?.(documentId); }
         catch(err){ throw new Error(`TEE could not remove the duplicate's protected overlay: ${err?.message||err}`); }
@@ -90,11 +83,13 @@
     window.TEEStructuredDocumentsAPI=Object.freeze({...base,sourceManagerRecords,retireDuplicateById});
 
     let decorating=false;
+    let observer=null;
     async function decorate(){
       if(decorating) return;
       const list=document.getElementById("sourceManagerList");
       if(!list) return;
       decorating=true;
+      observer?.disconnect();
       try{
         const records=await sourceManagerRecords();
         const byId=new Map(records.map(r=>[r.documentId,r]));
@@ -125,13 +120,20 @@
             actions.appendChild(btn);
           }
         });
-      } finally { decorating=false; }
+      } finally {
+        decorating=false;
+        if(observer && document.getElementById("sourceManagerList")===list){
+          observer.observe(list,{childList:true,subtree:true});
+        }
+      }
     }
 
     function attachDecorator(){
       const list=document.getElementById("sourceManagerList");
       if(!list){ setTimeout(attachDecorator,150); return; }
-      const observer=new MutationObserver(()=>queueMicrotask(decorate));
+      observer=new MutationObserver(()=>{
+        if(!decorating) queueMicrotask(decorate);
+      });
       observer.observe(list,{childList:true,subtree:true});
       window.addEventListener("tee-structured-documents-changed",()=>queueMicrotask(decorate));
       queueMicrotask(decorate);
