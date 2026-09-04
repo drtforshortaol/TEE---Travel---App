@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.37",
+  "version": "3.4.38",
   "channel": "review",
-  "publishedAt": "2026-09-04T08:18:00-07:00",
-  "notes": "Review candidate completing clean-device itinerary recovery. The restored protected PDF was already recoverable in v3.4.36; v3.4.37 adds a stronger Shared/Private saved-information fallback keyed first by the restored protected source ID, then by unique document title/category/original-reference matching. Traveler-source script cache keys were also bumped so Refresh / Update loads the new recovery bridge instead of a previously cached copy.",
-  "name": "TEE v3.4.37 — Saved Information Recovery Review"
+  "publishedAt": "2026-09-04T08:24:00-07:00",
+  "notes": "Review candidate completing restored itinerary Saved Information recovery. When a restored document's encrypted vault overlay cannot be rejoined by document ID or protected-source ID, Review & Verify now also uses TEE's existing 30-minute authorized vault session, which exposes only decrypted structured-document text fields temporarily while the vault is open. Protected images, raw payloads, and originals remain encrypted at rest. The restored 18-page PDF recovery remains unchanged.",
+  "name": "TEE v3.4.38 — Authorized Session Recovery Review"
 }
