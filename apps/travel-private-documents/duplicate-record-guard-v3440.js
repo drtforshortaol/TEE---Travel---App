@@ -130,3 +130,49 @@
 
   start();
 })();
+
+// iPhone/iPad full-PDF preview compatibility patch.
+// The traveler review UI stores retained PDFs as large data URLs. Desktop browsers can
+// open those directly in a new tab, but iOS Safari/PWA can ignore a very large data-URL
+// link. Convert it to a Blob URL on the user's tap and navigate to the native PDF viewer.
+(function(){
+  function isPdfPreviewLink(anchor){
+    if(!(anchor instanceof HTMLAnchorElement))return false;
+    return String(anchor.textContent||"").trim().toLowerCase()==="open pdf preview";
+  }
+
+  function dataUrlToBlobUrl(dataUrl){
+    const match=String(dataUrl||"").match(/^data:([^;,]+)?(;base64)?,(.*)$/s);
+    if(!match)throw new Error("TEE could not read the retained PDF data.");
+    const mime=match[1]||"application/pdf";
+    const payload=match[3]||"";
+    let bytes;
+    if(match[2]){
+      const binary=atob(payload);
+      bytes=new Uint8Array(binary.length);
+      for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    }else{
+      bytes=new TextEncoder().encode(decodeURIComponent(payload));
+    }
+    return URL.createObjectURL(new Blob([bytes],{type:mime}));
+  }
+
+  document.addEventListener("click",event=>{
+    const target=event.target instanceof Element?event.target:null;
+    const anchor=target?.closest("a");
+    if(!isPdfPreviewLink(anchor))return;
+    const href=anchor.getAttribute("href")||"";
+    if(!href.startsWith("data:application/pdf"))return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    try{
+      const blobUrl=dataUrlToBlobUrl(href);
+      window.location.assign(blobUrl);
+      setTimeout(()=>URL.revokeObjectURL(blobUrl),120000);
+    }catch(error){
+      console.error("TEE PDF preview:",error);
+      window.alert("TEE could not open the full PDF on this device. Return to TEE, tap Refresh / Update, and try again.");
+    }
+  },true);
+})();
