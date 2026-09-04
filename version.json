@@ -3,6 +3,6 @@
   "version": "3.4.30",
   "channel": "stable",
   "publishedAt": "2026-09-03T22:22:00-07:00",
-  "notes": "Stable official Part 1 itinerary baseline. Uses the Enchanting Travels Sept. 15-30 Turkey/Croatia/Slovenia itinerary as authoritative for Part 1 only, preserves Austria/Switzerland Part 2 unchanged, corrects the Hub start date to Sept. 15, aligns Master Itinerary and Transportation public-safe structure, and corrects Daily Operations so Sept. 19 is balloon + Cappadocia Highlights and Sept. 20 is the Whirling Dervish Ceremony. Verified visually on Windows. No protected booking data is added to GitHub.",
+  "notes": "Stable official Part 1 itinerary baseline. Uses the Enchanting Travels Sept. 15-30 Turkey/Croatia/Slovenia itinerary as authoritative for Part 1 only, preserves Austria/Switzerland Part 2 unchanged, corrects the Hub start date to Sept. 15, aligns Master Itinerary and Transportation public-safe structure, corrects Daily Operations so Sept. 19 is balloon + Cappadocia Highlights and Sept. 20 is the Whirling Dervish Ceremony, and corrects the Pula weather/day-trip date to Sept. 26. Verified visually on Windows. No protected booking data is added to GitHub.",
   "name": "TEE v3.4.30 — Stable Official Part 1 Itinerary Baseline"
 }
