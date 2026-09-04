@@ -1,6 +1,10 @@
 "use strict";
 (function(){
   const STORAGE_KEY='teeStructuredDocumentsPublicV1';
+  const LARGE_SOURCE_DB='teeProtectedLargeSourcesV1';
+  const LARGE_SOURCE_STORE='sources';
+  const LARGE_SOURCE_KIND='tee-encrypted-large-source-v1';
+  const LARGE_SOURCE_THRESHOLD=700*1024;
   const base=window.TEEStructuredDocumentsAPI;
   if(!base)return;
 
@@ -29,6 +33,115 @@
     return false;
   }
 
+  function isLargeSourceMarker(sourceFile){
+    return sourceFile?.kind===LARGE_SOURCE_KIND&&String(sourceFile?.sourceId||'').trim();
+  }
+
+  function shouldExternalizeSource(source,originalClass,input){
+    if(!source?.dataUrl||originalClass==='public')return false;
+    const bytes=Number(source.bytes||0);
+    const isItinerary=String(input?.category||'').toLowerCase()==='itinerary'||/^itinerary\b/i.test(String(input?.title||''));
+    return isItinerary||bytes>=LARGE_SOURCE_THRESHOLD||String(source.dataUrl).length>=LARGE_SOURCE_THRESHOLD*1.35;
+  }
+
+  function openLargeSourceDb(){
+    return new Promise((resolve,reject)=>{
+      if(!globalThis.indexedDB){reject(new Error('IndexedDB is unavailable in this browser.'));return;}
+      const req=indexedDB.open(LARGE_SOURCE_DB,1);
+      req.onupgradeneeded=()=>{
+        const db=req.result;
+        if(!db.objectStoreNames.contains(LARGE_SOURCE_STORE))db.createObjectStore(LARGE_SOURCE_STORE,{keyPath:'sourceId'});
+      };
+      req.onsuccess=()=>resolve(req.result);
+      req.onerror=()=>reject(req.error||new Error('Local protected-source storage could not be opened.'));
+    });
+  }
+
+  async function idbPut(record){
+    const db=await openLargeSourceDb();
+    try{
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction(LARGE_SOURCE_STORE,'readwrite');
+        tx.objectStore(LARGE_SOURCE_STORE).put(record);
+        tx.oncomplete=()=>resolve();
+        tx.onerror=()=>reject(tx.error||new Error('Protected original could not be stored locally.'));
+        tx.onabort=()=>reject(tx.error||new Error('Protected original storage was aborted.'));
+      });
+    }finally{db.close();}
+  }
+
+  async function idbGet(sourceId){
+    const db=await openLargeSourceDb();
+    try{
+      return await new Promise((resolve,reject)=>{
+        const tx=db.transaction(LARGE_SOURCE_STORE,'readonly');
+        const req=tx.objectStore(LARGE_SOURCE_STORE).get(sourceId);
+        req.onsuccess=()=>resolve(req.result||null);
+        req.onerror=()=>reject(req.error||new Error('Protected original could not be read.'));
+      });
+    }finally{db.close();}
+  }
+
+  async function idbDelete(sourceId){
+    if(!sourceId)return;
+    const db=await openLargeSourceDb();
+    try{
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction(LARGE_SOURCE_STORE,'readwrite');
+        tx.objectStore(LARGE_SOURCE_STORE).delete(sourceId);
+        tx.oncomplete=()=>resolve();
+        tx.onerror=()=>reject(tx.error||new Error('Protected original cleanup failed.'));
+      });
+    }finally{db.close();}
+  }
+
+  function activeKeyFor(originalClass){
+    if(!vaultOpen())throw new Error('Authorize the Vault before opening a protected original.');
+    if(typeof getActiveZoneKeys!=='function')throw new Error('TEE encryption keys are unavailable. Reload TEE and authorize the Vault again.');
+    const keys=getActiveZoneKeys();
+    const key=originalClass==='shared'?keys?.shared:keys?.private;
+    if(!key)throw new Error(`The ${originalClass==='shared'?'Shared':'Private'} encryption key is unavailable.`);
+    return key;
+  }
+
+  async function storeLargeProtectedSource(source,originalClass){
+    if(typeof encryptData!=='function')throw new Error('TEE encryption engine is unavailable.');
+    const sourceId=globalThis.crypto?.randomUUID?.()||`src-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const encrypted=await encryptData(source,activeKeyFor(originalClass));
+    await idbPut({
+      sourceId,
+      originalClass,
+      name:source.name||'Protected original',
+      type:source.type||'application/octet-stream',
+      bytes:Number(source.bytes||0),
+      addedAt:source.addedAt||new Date().toISOString(),
+      encrypted,
+      storedAt:new Date().toISOString()
+    });
+    return {
+      kind:LARGE_SOURCE_KIND,
+      sourceId,
+      name:source.name||'Protected original',
+      type:source.type||'application/octet-stream',
+      bytes:Number(source.bytes||0),
+      addedAt:source.addedAt||new Date().toISOString(),
+      encryptedLocal:true
+    };
+  }
+
+  async function loadLargeProtectedSource(marker,originalClass){
+    if(!isLargeSourceMarker(marker))return marker||null;
+    if(typeof decryptData!=='function')throw new Error('TEE decryption engine is unavailable.');
+    const stored=await idbGet(marker.sourceId);
+    if(!stored?.encrypted)throw new Error('The encrypted local original is missing from this browser. Restore or reattach the original before verification.');
+    try{
+      const source=await decryptData(stored.encrypted,activeKeyFor(originalClass));
+      return source&&typeof source==='object'?source:null;
+    }catch{
+      throw new Error('TEE could not decrypt the retained original with the currently authorized Vault.');
+    }
+  }
+
   async function loadProtected(documentId){
     if(!vaultOpen())return {overlays:[],shared:{fields:[],images:[]},priv:{fields:[],images:[]}};
     const overlays=await vault().listOverlays?.(documentId)||[];
@@ -47,10 +160,31 @@
   }
 
   async function commitSmartIntake(input){
-    const id=await base.commitSmartIntake(input);
-    const now=new Date().toISOString();
-    persistMetadata(id,{targetProfile:input?.targetProfile||null,lifecycleStatus:'review',verifiedAt:null,lastModifiedAt:now,archivedAt:null});
-    return id;
+    const originalClass=['public','shared','private'].includes(input?.originalClassification)?input.originalClassification:'private';
+    let marker=null;
+    let nextInput=input;
+    if(shouldExternalizeSource(input?.sourceFile,originalClass,input)){
+      marker=await storeLargeProtectedSource(input.sourceFile,originalClass);
+      nextInput={...input,sourceFile:marker};
+    }
+    try{
+      const id=await base.commitSmartIntake(nextInput);
+      const now=new Date().toISOString();
+      persistMetadata(id,{
+        targetProfile:input?.targetProfile||null,
+        lifecycleStatus:'review',
+        verifiedAt:null,
+        lastModifiedAt:now,
+        archivedAt:null,
+        sourceStorage:marker?'encrypted-large-local':'vault-inline',
+        sourceLocalId:marker?.sourceId||null,
+        sourceBytes:Number(input?.sourceFile?.bytes||0)
+      });
+      return id;
+    }catch(err){
+      if(marker?.sourceId){try{await idbDelete(marker.sourceId);}catch{}}
+      throw err;
+    }
   }
 
   async function getReviewDataById(documentId){
@@ -80,13 +214,16 @@
     const priv=protection.priv||{};
     const fields=[...(doc.publicFields||[]),...(shared.fields||[]),...(priv.fields||[])];
     const images=[...(doc.publicImages||[]),...(shared.images||[]),...(priv.images||[])];
-    const sourceFile=doc.originalClassification==='public'?doc.publicOriginalFile:doc.originalClassification==='shared'?shared.sourceFile:priv.sourceFile;
+    const sourceMarker=doc.originalClassification==='public'?doc.publicOriginalFile:doc.originalClassification==='shared'?shared.sourceFile:priv.sourceFile;
+    let sourceFile=sourceMarker;
+    if(isLargeSourceMarker(sourceMarker))sourceFile=await loadLargeProtectedSource(sourceMarker,doc.originalClassification);
     const missing=requiredFields.filter(label=>!String(findField(fields,label)?.value||'').trim());
 
     return {
       documentId:doc.documentId,title:doc.title||'Document',category:doc.category||'',originalClassification:doc.originalClassification||'private',
       targetProfile:doc.targetProfile||null,requiredProfile,lifecycleStatus:doc.lifecycleStatus||'review',verifiedAt:doc.verifiedAt||null,
       locked:false,fields,images,sourceFile,sourceEmbedded:sourceIsEmbedded(sourceFile),
+      sourceStorage:doc.sourceStorage||'vault-inline',sourceLocalId:doc.sourceLocalId||null,
       completeness:{complete:missing.length===0,missing}
     };
   }
@@ -148,8 +285,24 @@
       const doc=docs.find(x=>x.documentId===row.documentId)||{};
       const verifiedAt=doc.verifiedAt||null;
       const lifecycleStatus=doc.lifecycleStatus||row.lifecycleStatus;
-      return {...row,targetProfile:doc.targetProfile||null,verifiedAt,lifecycleStatus,needsAttention:lifecycleStatus!=='archived'&&!verifiedAt};
+      const protectedLarge=doc.sourceStorage==='encrypted-large-local'&&!!doc.sourceLocalId;
+      return {
+        ...row,
+        targetProfile:doc.targetProfile||null,
+        verifiedAt,
+        lifecycleStatus,
+        sourceEmbedded:row.sourceEmbedded||protectedLarge,
+        sourceBytes:row.sourceBytes||doc.sourceBytes||0,
+        needsAttention:lifecycleStatus!=='archived'&&!verifiedAt
+      };
     });
+  }
+
+  async function deleteById(documentId){
+    const doc=readStore().find(x=>x.documentId===documentId);
+    const sourceLocalId=doc?.sourceLocalId||null;
+    await base.deleteById?.(documentId);
+    if(sourceLocalId){try{await idbDelete(sourceLocalId);}catch{}}
   }
 
   window.TEEStructuredDocumentsAPI=Object.freeze({
@@ -158,6 +311,7 @@
     getReviewDataById,
     updateReviewFieldsById,
     verifyAndFinishById,
-    sourceManagerRecords
+    sourceManagerRecords,
+    deleteById
   });
 })();
