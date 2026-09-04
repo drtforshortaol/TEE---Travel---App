@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.42",
+  "version": "3.4.43",
   "channel": "review",
-  "publishedAt": "2026-09-04T14:32:00-07:00",
-  "notes": "Repairs iPhone offline use. The service worker now caches the current TEE app shell, including the latest Source Documents backup, duplicate-guard and PDF-preview scripts, and resolves cached navigation pages even when TEE URLs contain query parameters. Offline preparation now validates the current 3.4.42 cache set.",
-  "name": "TEE v3.4.42 — iPhone Offline Shell Repair"
+  "publishedAt": "2026-09-04T14:45:00-07:00",
+  "notes": "Fixes the final iPhone offline preparation failure by removing a stale Source Documents script reference that no longer exists. Offline preparation should now complete with zero failed assets while keeping the current 3.4.42 navigation and iPhone PDF fixes.",
+  "name": "TEE v3.4.43 — Offline Cache Final Asset Fix"
 }
