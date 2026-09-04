@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.40",
+  "version": "3.4.42",
   "channel": "review",
-  "publishedAt": "2026-09-04T09:31:00-07:00",
-  "notes": "Adds safe duplicate handling for Source Documents. When multiple records point to the same retained source, TEE identifies a single archived record with saved information as authoritative and marks incomplete no-details records as removable duplicates. Duplicate removal is allowed only while the vault is unlocked and only after TEE re-validates that the candidate has no saved details and a separate authoritative record exists. The authoritative record and its protected source are not changed.",
-  "name": "TEE v3.4.40 — Source Document Duplicate Guard Review"
+  "publishedAt": "2026-09-04T14:32:00-07:00",
+  "notes": "Repairs iPhone offline use. The service worker now caches the current TEE app shell, including the latest Source Documents backup, duplicate-guard and PDF-preview scripts, and resolves cached navigation pages even when TEE URLs contain query parameters. Offline preparation now validates the current 3.4.42 cache set.",
+  "name": "TEE v3.4.42 — iPhone Offline Shell Repair"
 }
