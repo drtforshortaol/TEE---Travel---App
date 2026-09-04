@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.39",
+  "version": "3.4.40",
   "channel": "review",
-  "publishedAt": "2026-09-04T08:40:00-07:00",
-  "notes": "Adds a protected Source Documents backup-integrity gate. Before an encrypted vault export, TEE now checks the currently authorized protected Source Document overlays, verifies large-source linkage, and specifically flags itinerary records that have an encrypted original but no protected saved details. A passing check forces the active vault data to persist before export. A failing check blocks export rather than creating a backup that appears complete but cannot restore Saved Information.",
-  "name": "TEE v3.4.39 — Source Documents Backup Integrity Review"
+  "publishedAt": "2026-09-04T09:31:00-07:00",
+  "notes": "Adds safe duplicate handling for Source Documents. When multiple records point to the same retained source, TEE identifies a single archived record with saved information as authoritative and marks incomplete no-details records as removable duplicates. Duplicate removal is allowed only while the vault is unlocked and only after TEE re-validates that the candidate has no saved details and a separate authoritative record exists. The authoritative record and its protected source are not changed.",
+  "name": "TEE v3.4.40 — Source Document Duplicate Guard Review"
 }
