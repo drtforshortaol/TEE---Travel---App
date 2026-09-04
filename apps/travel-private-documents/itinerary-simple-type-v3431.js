@@ -20,6 +20,7 @@
   }
 
   const STRUCTURED_KEY='teeStructuredDocumentsPublicV1';
+  const AUTHORIZED_SESSION_KEY='teeAuthorizedVaultSessionV1';
   const LARGE_SOURCE_DB='teeProtectedLargeSourcesV1';
   const LARGE_SOURCE_STORE='sources';
   const LARGE_SOURCE_KIND='tee-encrypted-large-source-v1';
@@ -82,6 +83,23 @@
     const docIds=new Set(candidates.map(row=>String(row?.documentId||'')));
     return docIds.size<=1?candidates:[];
   }
+  function authorizedSessionMatches(doc){
+    let session=null;
+    try{session=JSON.parse(sessionStorage.getItem(AUTHORIZED_SESSION_KEY)||'null');}catch{}
+    if(!session||Number(session.expiresAt||0)<=Date.now())return [];
+    const rows=(Array.isArray(session.records)?session.records:[]).filter(row=>row?.type==='structuredDocument');
+    const exact=rows.filter(row=>String(row?.documentId||'')===String(doc?.documentId||''));
+    if(exact.length)return exact;
+    const title=String(doc?.title||'').trim().toLowerCase();
+    const category=String(doc?.category||'').trim().toLowerCase();
+    const candidates=rows.filter(row=>{
+      const sameTitle=title&&String(row?.title||'').trim().toLowerCase()===title;
+      const sameCategory=!category||String(row?.category||'').trim().toLowerCase()===category;
+      return sameTitle&&sameCategory;
+    });
+    const docIds=new Set(candidates.map(row=>String(row?.documentId||'')));
+    return docIds.size<=1?candidates:[];
+  }
   function mergeFields(primary=[],extra=[]){
     const out=[...(Array.isArray(primary)?primary:[])];
     const seen=new Set(out.map(f=>String(f?.label||'').trim().toLowerCase()));
@@ -95,7 +113,7 @@
 
   function installRestoreLinkageBridge(){
     const api=window.TEEStructuredDocumentsAPI;
-    if(!api?.getReviewDataById||api.__teeRestoreLinkageV3437)return false;
+    if(!api?.getReviewDataById||api.__teeRestoreLinkageV3438)return false;
     const originalGet=api.getReviewDataById.bind(api);
     const patched=async documentId=>{
       const review=await originalGet(documentId);
@@ -120,6 +138,13 @@
         }
       }catch{}
 
+      try{
+        const sessionMatches=authorizedSessionMatches(doc);
+        const layer=doc.originalClassification==='private'?'private':'shared';
+        const preferredSession=sessionMatches.find(row=>row?.accessScope===layer)||sessionMatches[0]||null;
+        if(preferredSession)fields=mergeFields(fields,preferredSession.fields||[]);
+      }catch{}
+
       const restoredSourceId=String(doc.sourceLocalId||doc.protectedSourceId||sourceFile?.sourceId||'').trim();
       if((!sourceFile||sourceFile?.kind===LARGE_SOURCE_KIND)&&restoredSourceId){
         const restored=await loadRestoredLargeSource(restoredSourceId,doc.originalClassification||review?.originalClassification||'shared');
@@ -129,7 +154,7 @@
       const sourceEmbedded=!!(sourceFile&&String(sourceFile.dataUrl||'').trim());
       return {...review,fields,images,sourceFile,sourceEmbedded};
     };
-    window.TEEStructuredDocumentsAPI=Object.freeze({...api,getReviewDataById:patched,__teeRestoreLinkageV3437:true});
+    window.TEEStructuredDocumentsAPI=Object.freeze({...api,getReviewDataById:patched,__teeRestoreLinkageV3438:true});
     return true;
   }
   function scheduleRestoreBridge(){
