@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.78",
+  "version": "3.4.79",
   "channel": "review",
-  "publishedAt": "2026-09-05T16:45:00-07:00",
-  "notes": "Controlled Vault authorization refactor. The encrypted Vault and passphrases are unchanged. One central 30-minute session manager now receives one full same-origin postMessage payload from the Vault. Legacy BroadcastChannel, window.name, iframe polling, direct iframe sessionStorage copying, and emergency-contact deep-link/search plumbing are retired. Quick Reference relies on protected-context to place authorized Shared/Private records directly in their appropriate cards. Adaptive Checklist and trip data are unchanged.",
-  "name": "TEE v3.4.78 — Clean Vault Authorization Refactor"
+  "publishedAt": "2026-09-05T17:05:00-07:00",
+  "notes": "Simplifies Quick Reference Vault entry. Unlock now uses one compact passphrase dialog instead of exposing Source Documents, Hub, or internal navigation inside the overlay. The embedded Vault frame is visually reduced to the existing Secure Vault sign-in only, and the dialog closes automatically as soon as the 30-minute authorization session opens. Protected emergency contacts continue to render together in Quick Reference. Encrypted Vault records, passphrases, Adaptive Checklist, and trip data are unchanged.",
+  "name": "TEE v3.4.79 — Simple Vault Unlock"
 }
