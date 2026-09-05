@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.75",
+  "version": "3.4.76",
   "channel": "review",
-  "publishedAt": "2026-09-05T16:20:00-07:00",
-  "notes": "Uses a same-origin Vault frame bridge instead of relying on summary-only postMessage data. After a successful unlock inside the Hub or Quick Reference, TEE copies the full temporary 30-minute authorized session directly from the embedded Vault frame into the current top-level tab session, then protected records can render without another search. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.75 — Vault Frame Session Copy"
+  "publishedAt": "2026-09-05T16:35:00-07:00",
+  "notes": "Quick Reference now reads the complete temporary authorized session directly from its same-origin Secure Vault iframe after unlock, instead of relying on the summary-only unlock message. The inline Vault should close automatically once the session is detected, the page banner should switch to Secure Vault open, and authorized Shared/Private records can render immediately. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.76 — Inline Vault Session Read"
 }
