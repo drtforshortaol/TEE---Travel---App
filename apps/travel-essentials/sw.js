@@ -1,6 +1,6 @@
-const CACHE = 'tee-essentials-v3-4-74-inline-vault-unlock';
+const CACHE = 'tee-essentials-v3-4-75-frame-session-copy';
 const CACHE_PREFIX = 'tee-essentials-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js','../../vault-frame-bridge.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
