@@ -1,5 +1,5 @@
-const VERSION = '3.4.54';
-const CACHE = 'tee-v3-4-54-checklist-quick-access';
+const VERSION = '3.4.55';
+const CACHE = 'tee-v3-4-55-checklist-remove-country-dates';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
