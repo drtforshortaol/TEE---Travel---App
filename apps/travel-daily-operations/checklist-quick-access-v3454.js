@@ -10,15 +10,15 @@
   const style=document.createElement('style');
   style.textContent=`
     #customTaskMount .custom-task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
-    #customTaskMount .custom-task button{min-height:38px;padding:7px 11px;border-radius:10px;font-weight:800;white-space:nowrap}
+    #customTaskMount .custom-task button{min-width:42px;min-height:42px;padding:6px;border-radius:10px;font-size:1.15rem;font-weight:800;white-space:nowrap;line-height:1}
   `;
   document.head.appendChild(style);
 
-  function makeRemoveObvious(){
+  function makeDeleteObvious(){
     mount?.querySelectorAll('.custom-task button').forEach(button=>{
-      if(button.textContent!=='Remove')button.textContent='Remove';
-      if(button.getAttribute('aria-label')!=='Remove checklist item')button.setAttribute('aria-label','Remove checklist item');
-      if(button.title!=='Remove this checklist item')button.title='Remove this checklist item';
+      if(button.textContent!=='🗑️')button.textContent='🗑️';
+      if(button.getAttribute('aria-label')!=='Delete checklist item')button.setAttribute('aria-label','Delete checklist item');
+      if(button.title!=='Delete this checklist item')button.title='Delete this checklist item';
     });
   }
   function setState(){
@@ -31,7 +31,7 @@
   function openChecklist(focus=true){
     panel.open=true;
     setState();
-    makeRemoveObvious();
+    makeDeleteObvious();
     position();
     if(focus)setTimeout(()=>input?.focus({preventScroll:true}),350);
   }
@@ -41,13 +41,13 @@
     openChecklist(true);
   });
 
-  panel.addEventListener('toggle',()=>{setState();makeRemoveObvious();});
+  panel.addEventListener('toggle',()=>{setState();makeDeleteObvious();});
 
   if(add){
     add.addEventListener('click',()=>{
       panel.open=true;
       setState();
-      setTimeout(()=>{makeRemoveObvious();input?.focus({preventScroll:true});},0);
+      setTimeout(()=>{makeDeleteObvious();input?.focus({preventScroll:true});},0);
     });
   }
 
@@ -61,10 +61,10 @@
   }
 
   if(mount){
-    const observer=new MutationObserver(()=>makeRemoveObvious());
+    const observer=new MutationObserver(()=>makeDeleteObvious());
     observer.observe(mount,{childList:true,subtree:true});
   }
 
   setState();
-  makeRemoveObvious();
+  makeDeleteObvious();
 })();
