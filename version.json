@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.50",
+  "version": "3.4.51",
   "channel": "review",
-  "publishedAt": "2026-09-04T17:58:00-07:00",
-  "notes": "Fixes Tomorrow persistence in Daily Operations. Tomorrow keeps an explicit TOMORROW label when collapsed, is no longer closed when Day After Tomorrow opens, and its day-card summary now has an iPhone-safe explicit toggle so it can always be reopened after being collapsed. Keeps the Oct 6 chronology fix and Day After Tomorrow positioning.",
-  "name": "TEE v3.4.50 — Tomorrow Persistence & Reopen Fix"
+  "publishedAt": "2026-09-04T18:03:00-07:00",
+  "notes": "Turns the Daily Operations Documents quickbar button into a Today-specific document view. It now opens a local travel-day panel showing the protected records mapped to the current Today date, adds identity/entry records when that day requires them, and keeps a secondary link to the full Source Documents library. The new quick view is included in the offline cache.",
+  "name": "TEE v3.4.51 — Today Documents Quick View"
 }
