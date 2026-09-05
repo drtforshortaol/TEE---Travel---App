@@ -29,8 +29,6 @@
   }
 
   // v3.4.46 — Tomorrow reopen guard.
-  // The quickbar must always be able to reopen Tomorrow after the traveler manually collapses it.
-  // Run after the page's own jump handler so this only reinforces the requested navigation action.
   document.addEventListener('click',event=>{
     const link=event.target.closest?.('[data-tee-jump="tomorrow"]');
     if(!link)return;
@@ -49,4 +47,28 @@
       }catch{}
     },0);
   });
+
+  // v3.4.49 — Keep Oct 6 in chronological order.
+  // Oct 6 returns through Istanbul after Switzerland, so move that rendered day
+  // immediately before Oct 7 instead of leaving it back in the earlier Türkiye group.
+  function fixOct6Order(){
+    const oct6Index=DAYS.findIndex(d=>d.date==='Oct 6, 2026');
+    const oct7Index=DAYS.findIndex(d=>d.date==='Oct 7, 2026');
+    if(oct6Index<0||oct7Index<0)return;
+    const oct6=document.querySelector(`.trip-day-dropdown[data-day-index="${oct6Index}"]`);
+    const oct7=document.querySelector(`.trip-day-dropdown[data-day-index="${oct7Index}"]`);
+    if(!oct6||!oct7)return;
+    const returnDays=oct7.parentElement;
+    if(!returnDays)return;
+    if(oct6.parentElement!==returnDays || oct6.nextElementSibling!==oct7){
+      returnDays.insertBefore(oct6,oct7);
+    }
+  }
+
+  const mount=document.getElementById('countryMount');
+  if(mount){
+    fixOct6Order();
+    const observer=new MutationObserver(()=>fixOct6Order());
+    observer.observe(mount,{childList:true,subtree:true});
+  }
 })();
