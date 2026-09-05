@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.45",
+  "version": "3.4.46",
   "channel": "review",
-  "publishedAt": "2026-09-04T16:41:00-07:00",
-  "notes": "Begins the travel-day usability pass. Daily Operations now has a sticky iPhone-first quick-access bar for Today/Tomorrow, Adaptive Checklist, Documents, Trip Days, and the Hub. The new quick-access styling is included in the offline cache so the controls remain available in Airplane Mode.",
-  "name": "TEE v3.4.45 — Travel-Day Quick Access"
+  "publishedAt": "2026-09-04T16:50:00-07:00",
+  "notes": "Daily Operations quick links now land on distinct content areas: Today opens the full Today operational panel, Tomorrow opens the full Tomorrow preparation panel, and Full Itinerary begins at the day after Tomorrow rather than returning to the same nearby page area.",
+  "name": "TEE v3.4.46 — Distinct Daily Jump Targets"
 }
