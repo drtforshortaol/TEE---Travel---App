@@ -1,5 +1,5 @@
-const VERSION = '3.4.46';
-const CACHE = 'tee-v3-4-46-distinct-daily-jumps';
+const VERSION = '3.4.47';
+const CACHE = 'tee-v3-4-47-distinct-daily-landing-positions';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
