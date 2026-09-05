@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.59",
+  "version": "3.4.60",
   "channel": "review",
-  "publishedAt": "2026-09-04T20:02:00-07:00",
-  "notes": "Keeps the Source Documents header version synchronized with the app-level version. Source Documents now uses the current version.json value when available, with v3.4.59 as the offline fallback, so the visible build label will no longer remain stuck on an older internal Source Documents build. Offline cache version bumped accordingly.",
-  "name": "TEE v3.4.59 — Source Documents Version Sync"
+  "publishedAt": "2026-09-05T11:38:00-07:00",
+  "notes": "Loads the current working Part 2 Austria/Switzerland public itinerary and transportation context using the newest collected information. Older proposed Part 2 routing is no longer treated as authoritative. Exact bookings, confirmations, seats, traveler records and other protected details remain in Secure Vault / Source Documents and are not embedded in public GitHub source.",
+  "name": "TEE v3.4.60 — Part 2 Working Context"
 }
