@@ -46,15 +46,14 @@
 
   window.addEventListener("message", event => {
     if(event.origin !== location.origin) return;
-    const message = event.data || {};
-    if(message.type === LOCK_MESSAGE){
+    if(event.data?.type === LOCK_MESSAGE){
       try{
         if(typeof lockSecureVault === "function") lockSecureVault("Vault locked from TEE.");
       }catch{}
     }
   });
 
-  // If the Vault page/frame was already unlocked before this script initialized,
-  // publish its current temporary session once.
+  // Covers a bridge injected just after the Vault finished unlocking.
+  queueMicrotask(sendOpen);
   window.addEventListener("pageshow", sendOpen);
 })();
