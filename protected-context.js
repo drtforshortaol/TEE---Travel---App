@@ -30,14 +30,15 @@
   };
 
   const CARD_SELECTORS = [
-    ".timeline-card", ".transport-card", ".hotel-card", ".day-card", ".operation-card",
-    ".destination-card", ".essential-card", ".protocol-card", ".insurance-card", ".record-card",
+    ".timeline-card", ".transport-card", ".hotel-card", ".trip-day-dropdown", ".day-card", ".operation-card",
+    ".destination-card", ".essential-card", ".insurance-card", ".record-card",
     "article[data-date]", "article[data-city]", "article"
   ];
 
   const scriptUrl = document.currentScript?.src || location.href;
   const vaultSessionUrl = new URL("./vault-session.js", scriptUrl).href;
   const vaultUrl = new URL("./apps/travel-private-documents/index.html", scriptUrl).href;
+  let rendering = false;
 
   function appId(){
     const m = location.pathname.match(/\/apps\/([^/]+)\//);
@@ -107,13 +108,9 @@
     return result;
   }
 
-  function labelForField(field){
-    return field.label || field.key || "Detail";
-  }
-
   function renderRecord(record){
     const rows = (record.fields || []).filter(f => String(f.value ?? "").trim() !== "").map(field =>
-      `<div class="tee-protected-row"><span>${escapeHtml(labelForField(field))}</span><strong>${escapeHtml(field.value)}</strong></div>`
+      `<div class="tee-protected-row"><span>${escapeHtml(field.label || field.key || "Detail")}</span><strong>${escapeHtml(field.value)}</strong></div>`
     ).join("");
     return `<section class="tee-protected-record" data-record-id="${escapeHtml(record.recordId)}">
       <div class="tee-protected-record-head"><strong>${escapeHtml(record.typeLabel || record.type || "Protected record")}</strong><span>${escapeHtml(record.accessScope || "protected")}</span></div>
@@ -160,45 +157,51 @@
   }
 
   function render(){
-    clearInjected(); style();
-    const session = window.TEEVaultSession?.get?.() || null;
-    addStateBar(session);
-    if(!session) return;
+    if(rendering) return;
+    rendering = true;
+    try{
+      clearInjected(); style();
+      const session = window.TEEVaultSession?.get?.() || null;
+      addStateBar(session);
+      if(!session) return;
 
-    const allowed = new Set(APP_RULES[appId()] || []);
-    if(!allowed.size) return;
-    const records = (session.records || []).filter(r => allowed.has(r.type));
-    if(!records.length) return;
+      const allowed = new Set(APP_RULES[appId()] || []);
+      if(!allowed.size) return;
+      const records = (session.records || []).filter(r => allowed.has(r.type));
+      if(!records.length) return;
 
-    const cards = allCards();
-    const matched = new Set();
-    records.forEach(record => {
-      let best = null, bestScore = 0;
-      cards.forEach(card => {
-        const score = scoreCard(record, card);
-        if(score > bestScore){ bestScore = score; best = card; }
-      });
-      const threshold = ["passport","globalEntry","visa","travelInsurance","medical","emergencyContact","railPass","creditCard"].includes(record.type) ? 3 : 5;
-      if(best && bestScore >= threshold){
-        let panel = best.querySelector(":scope > .tee-protected-panel");
-        if(!panel){
-          panel = document.createElement("section");
-          panel.className = "tee-protected-panel";
-          panel.innerHTML = `<h3>🔓 Protected details</h3><p class="tee-protected-note">Visible only while the Secure Vault authorization is open.</p><div class="tee-protected-records"></div>`;
-          best.appendChild(panel);
+      const cards = allCards();
+      const matched = new Set();
+      records.forEach(record => {
+        let best = null, bestScore = 0;
+        cards.forEach(card => {
+          const score = scoreCard(record, card);
+          if(score > bestScore){ bestScore = score; best = card; }
+        });
+        const threshold = ["passport","globalEntry","visa","travelInsurance","medical","emergencyContact","railPass","creditCard"].includes(record.type) ? 3 : 5;
+        if(best && bestScore >= threshold){
+          let panel = best.querySelector(":scope > .tee-protected-panel");
+          if(!panel){
+            panel = document.createElement("section");
+            panel.className = "tee-protected-panel";
+            panel.innerHTML = `<h3>🔓 Protected details</h3><p class="tee-protected-note">Visible only while the Secure Vault authorization is open.</p><div class="tee-protected-records"></div>`;
+            best.appendChild(panel);
+          }
+          panel.querySelector(".tee-protected-records").insertAdjacentHTML("beforeend", renderRecord(record));
+          matched.add(record.recordId);
         }
-        panel.querySelector(".tee-protected-records").insertAdjacentHTML("beforeend", renderRecord(record));
-        matched.add(record.recordId);
-      }
-    });
+      });
 
-    const remaining = records.filter(r => !matched.has(r.recordId));
-    if(remaining.length){
-      const host = document.querySelector("main") || document.body;
-      const panel = document.createElement("section");
-      panel.className = "tee-protected-panel tee-protected-unmatched";
-      panel.innerHTML = `<h3>🔓 Other protected details for this section</h3><p class="tee-protected-note">These authorized records belong to this app but could not be matched safely to a single visible card.</p><div class="tee-protected-records">${remaining.map(renderRecord).join("")}</div>`;
-      host.appendChild(panel);
+      const remaining = records.filter(r => !matched.has(r.recordId));
+      if(remaining.length){
+        const host = document.querySelector("main") || document.body;
+        const panel = document.createElement("section");
+        panel.className = "tee-protected-panel tee-protected-unmatched";
+        panel.innerHTML = `<h3>🔓 Other protected details for this section</h3><p class="tee-protected-note">These authorized records belong to this app but could not be matched safely to a single visible card.</p><div class="tee-protected-records">${remaining.map(renderRecord).join("")}</div>`;
+        host.appendChild(panel);
+      }
+    } finally {
+      rendering = false;
     }
   }
 
@@ -213,14 +216,20 @@
 
   const rerenderSoon = (() => {
     let timer = null;
-    return () => { clearTimeout(timer); timer = setTimeout(render, 120); };
+    return () => { clearTimeout(timer); timer = setTimeout(render, 180); };
   })();
 
   window.addEventListener("tee-vault-session-changed", rerenderSoon);
   window.addEventListener("pageshow", rerenderSoon);
   document.addEventListener("visibilitychange", () => { if(!document.hidden) rerenderSoon(); });
   const observer = new MutationObserver(mutations => {
-    if(mutations.some(m => [...m.addedNodes].some(n => n.nodeType === 1 && !n.classList?.contains("tee-protected-panel") && !n.classList?.contains("tee-vault-state")))) rerenderSoon();
+    if(rendering) return;
+    const externalChange = mutations.some(m => [...m.addedNodes].some(n => {
+      if(n.nodeType !== 1) return false;
+      const el = n;
+      return !el.matches?.(".tee-protected-panel,.tee-vault-state,.tee-protected-panel *") && !el.closest?.(".tee-protected-panel,.tee-vault-state");
+    }));
+    if(externalChange) rerenderSoon();
   });
   window.addEventListener("DOMContentLoaded", () => {
     ensureSessionApi();
