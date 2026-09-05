@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.55",
+  "version": "3.4.56",
   "channel": "review",
-  "publishedAt": "2026-09-04T19:02:00-07:00",
-  "notes": "Adds a clear Remove control to each custom Adaptive Checklist item and corrects the country-button date labels to reflect the dates actually shown inside each country section. This fixes the Türkiye button so it no longer stretches its displayed date range through the later Oct 6 return-positioning day, while Oct 6 remains correctly ordered with Oct 7.",
-  "name": "TEE v3.4.55 — Checklist Remove & Correct Country Dates"
+  "publishedAt": "2026-09-04T19:06:00-07:00",
+  "notes": "Fixes the Daily Operations freeze introduced by the checklist Remove-label helper. The MutationObserver was retriggering itself while rewriting the same button text, which could lock the page and make every control appear frozen. The helper now updates only when values actually differ. Country-date corrections and checklist Remove controls are preserved.",
+  "name": "TEE v3.4.56 — Daily Operations Freeze Fix"
 }
