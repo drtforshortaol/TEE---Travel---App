@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.63",
+  "version": "3.4.64",
   "channel": "review",
-  "publishedAt": "2026-09-05T13:32:00-07:00",
-  "notes": "Performs a second vault-placement sweep. Protected Emergency Contact, identity, insurance/medical, lodging, transportation and related records now prefer the exact on-screen card that references the Vault, including Quick Reference emergency-contact groups such as Emilio/Robert when an authorized matching record exists. Locked behavior and Adaptive Checklist storage are unchanged; protected values remain encrypted locally and are never embedded in public GitHub source.",
-  "name": "TEE v3.4.63 — Vault Placement Sweep"
+  "publishedAt": "2026-09-05T13:48:00-07:00",
+  "notes": "Adds direct Unlock/View buttons beside Emilio and Robert in Quick Reference, changes their placeholder wording to protected Shared details, and explains that Vault authorization is tab-specific so a Vault opened in another tab can still appear locked here. The buttons force same-tab Vault navigation with return context. Adaptive Checklist storage and protected data handling are unchanged.",
+  "name": "TEE v3.4.64 — Emergency Contact Vault Access"
 }
