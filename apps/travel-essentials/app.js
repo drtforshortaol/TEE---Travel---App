@@ -1,7 +1,7 @@
 "use strict";
 
-// TEE v3.4.76 — Quick Reference reads the full authorized Vault session directly
-// from the same-origin inline Vault frame after unlock.
+// TEE v3.4.77 — Quick Reference pulls the live authorized payload directly
+// from the same-origin Secure Vault frame after unlock.
 
 const TEE_AUTHORIZED_SESSION_KEY = 'teeAuthorizedVaultSessionV1';
 let inlineVaultPollTimer = null;
@@ -110,7 +110,7 @@ function handleEmergencyContactClick(event){
   let attempts=0;
   const timer=setInterval(()=>{
     attempts++;
-    if(focusProtectedContact(contact) || attempts>=10) clearInterval(timer);
+    if(focusProtectedContact(contact) || attempts>=20) clearInterval(timer);
   },150);
 }
 
@@ -153,8 +153,14 @@ function pullSessionFromInlineVault(){
   const frame=document.querySelector('#teeInlineVaultOverlay iframe');
   if(!frame?.contentWindow) return false;
   try{
-    // Same-origin frame: read the exact temporary authorized session created
-    // by Secure Vault. This avoids relying on summary-only postMessage events.
+    // Primary path: call the live Secure Vault payload builder directly in the
+    // same-origin frame. This avoids sessionStorage partition/copy problems.
+    if(typeof frame.contentWindow.currentAuthorizedSessionPayload==='function'){
+      const payload=frame.contentWindow.currentAuthorizedSessionPayload();
+      if(payload && acceptVaultPayload(payload)) return true;
+    }
+
+    // Fallback for older Vault builds.
     const raw=frame.contentWindow.sessionStorage.getItem(TEE_AUTHORIZED_SESSION_KEY);
     if(!raw) return false;
     const payload=JSON.parse(raw);
@@ -192,10 +198,7 @@ function openInlineVault(){
   frame.src='../travel-private-documents/index.html?teeView=vault&teeEnter=1';
   frame.title='Secure Vault';
   Object.assign(frame.style,{border:'0',width:'100%',flex:'1',background:'#fff'});
-  frame.addEventListener('load',()=>{
-    // A previously authorized Vault can already be open when the frame loads.
-    setTimeout(pullSessionFromInlineVault,100);
-  });
+  frame.addEventListener('load',()=>setTimeout(pullSessionFromInlineVault,100));
   shell.append(bar,frame);
   overlay.appendChild(shell);
   document.body.appendChild(overlay);
@@ -218,8 +221,6 @@ window.addEventListener('message',event=>{
     return;
   }
   if(event.data?.type==='TEE_VAULT_SESSION_OPEN'){
-    // Older/current Vault builds send only a summary here. Pull the complete
-    // session directly from the same-origin inline frame instead.
     if(event.data?.payload?.version===2 && Array.isArray(event.data.payload.records)){
       acceptVaultPayload(event.data.payload);
     }else{
