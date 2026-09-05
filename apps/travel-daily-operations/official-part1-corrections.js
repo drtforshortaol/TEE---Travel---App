@@ -21,14 +21,11 @@
     reminders:['Keep daytime flexible','Review tomorrow move to Zagreb','Pack most luggage before the evening ceremony','Confirm airport transfer timing in Secure Vault']
   });
 
-  // Refresh the current Today/Tomorrow rendering after mutating the in-memory day data.
-  // Reuses the app's existing event path rather than replacing its renderer.
   const select=document.getElementById('previewDateSelect');
   if(select){
     try{ select.dispatchEvent(new Event('change',{bubbles:true})); }catch{}
   }
 
-  // v3.4.46 — Tomorrow reopen guard.
   document.addEventListener('click',event=>{
     const link=event.target.closest?.('[data-tee-jump="tomorrow"]');
     if(!link)return;
@@ -48,9 +45,6 @@
     },0);
   });
 
-  // v3.4.49 — Keep Oct 6 in chronological order.
-  // Oct 6 returns through Istanbul after Switzerland, so move that rendered day
-  // immediately before Oct 7 instead of leaving it back in the earlier Türkiye group.
   function fixOct6Order(){
     const oct6Index=DAYS.findIndex(d=>d.date==='Oct 6, 2026');
     const oct7Index=DAYS.findIndex(d=>d.date==='Oct 7, 2026');
@@ -84,8 +78,6 @@
     return parts.join(' · ');
   }
 
-  // v3.4.55 — Country buttons must describe the dates actually visible inside them.
-  // This is important for Türkiye because Oct 6 is intentionally moved beside Oct 7.
   function fixCountryDateLabels(){
     document.querySelectorAll('.country-dropdown').forEach(wrap=>{
       const small=wrap.querySelector(':scope > summary small');
@@ -108,7 +100,6 @@
     observer.observe(mount,{childList:true,subtree:true});
   }
 
-  // v3.4.53 — Today Documents now groups only the records useful for the selected travel day.
   if(!document.querySelector('script[data-tee-today-documents]')){
     const script=document.createElement('script');
     script.src='today-documents-v3451.js?v=3.4.53';
@@ -116,11 +107,11 @@
     document.head.appendChild(script);
   }
 
-  // v3.4.55 — Checklist direct access plus an obvious Remove control for each custom item.
+  // v3.4.56 — checklist helper without a self-triggering MutationObserver loop.
   if(!document.querySelector('script[data-tee-checklist-quick-access]')){
     const script=document.createElement('script');
-    script.src='checklist-quick-access-v3454.js?v=3.4.55';
-    script.dataset.teeChecklistQuickAccess='3.4.55';
+    script.src='checklist-quick-access-v3454.js?v=3.4.56';
+    script.dataset.teeChecklistQuickAccess='3.4.56';
     document.head.appendChild(script);
   }
 })();
