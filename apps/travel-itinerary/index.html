@@ -26,8 +26,6 @@
       <strong>Private working itinerary.</strong> This app summarizes the master schedule and planned routing. Confirmation numbers, passport details, and other sensitive document images should stay in the Essentials/Transportation apps, not on this general itinerary screen.
     </section>
 
-
-
     <section class="mission-control" aria-label="Trip timeline mission control">
       <div class="mission-head">
         <div>
@@ -41,21 +39,9 @@
         </div>
       </div>
       <div class="mission-grid">
-        <article>
-          <span class="label">Master sequence</span>
-          <strong>11 itinerary stops</strong>
-          <p>Agency trip, independent rail extension, and return positioning kept in one master timeline.</p>
-        </article>
-        <article>
-          <span class="label">Move-day focus</span>
-          <strong>Transport + hotel link</strong>
-          <p>Each stop should be checked against Transportation, Hotels, Daily Operations, and Private Documents before travel day.</p>
-        </article>
-        <article>
-          <span class="label">Private working copy</span>
-          <strong>Update as details change</strong>
-          <p>This app stays editable as final tour times, tickets, restaurants, and daily plans become current.</p>
-        </article>
+        <article><span class="label">Master sequence</span><strong>11 itinerary stops</strong><p>Agency trip, independent rail extension, and return positioning kept in one master timeline.</p></article>
+        <article><span class="label">Move-day focus</span><strong>Transport + hotel link</strong><p>Each stop should be checked against Transportation, Hotels, Daily Operations, and Private Documents before travel day.</p></article>
+        <article><span class="label">Private working copy</span><strong>Update as details change</strong><p>This app stays editable as final tour times, tickets, restaurants, and daily plans become current.</p></article>
       </div>
     </section>
 
@@ -75,38 +61,9 @@
     <section class="itinerary-protocols destination-section" aria-label="Master itinerary protocols">
       <h2>Master Itinerary Protocols</h2>
       <div class="protocol-grid">
-        <article class="protocol-card destination-section">
-          <h3>Night Before Each Stop</h3>
-          <ul>
-            <li>Open Daily Operations and confirm the next-day plan.</li>
-            <li>Open Transportation for departure time, buffer, ticket/pass, and baggage notes.</li>
-            <li>Open Hotels for check-in, address, luggage storage, and problem plan.</li>
-            <li>Open Private Documents only when exact confirmation numbers or private references are needed.</li>
-          </ul>
-        
-        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
-      </article>
-        <article class="protocol-card destination-section">
-          <h3>Travel Day Flags</h3>
-          <ul>
-            <li>Use the Move / Transition Days filter first.</li>
-            <li>Confirm transfer sequence: hotel → station/airport → next city → hotel.</li>
-            <li>Keep language, money/tipping, weather, and packing available for the destination country.</li>
-          </ul>
-        
-        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
-      </article>
-        <article class="protocol-card destination-section">
-          <h3>What Matters Today?</h3>
-          <ul>
-            <li>Current city and sleeping location.</li>
-            <li>Next movement and timing buffer.</li>
-            <li>Tickets/reservations that must be ready.</li>
-            <li>Weather/clothing and end-of-day repack needs.</li>
-          </ul>
-        
-        <div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div>
-      </article>
+        <article class="protocol-card destination-section"><h3>Night Before Each Stop</h3><ul><li>Open Daily Operations and confirm the next-day plan.</li><li>Open Transportation for departure time, buffer, ticket/pass, and baggage notes.</li><li>Open Hotels for check-in, address, luggage storage, and problem plan.</li><li>Open Private Documents only when exact confirmation numbers or private references are needed.</li></ul><div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div></article>
+        <article class="protocol-card destination-section"><h3>Travel Day Flags</h3><ul><li>Use the Move / Transition Days filter first.</li><li>Confirm transfer sequence: hotel → station/airport → next city → hotel.</li><li>Keep language, money/tipping, weather, and packing available for the destination country.</li></ul><div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div></article>
+        <article class="protocol-card destination-section"><h3>What Matters Today?</h3><ul><li>Current city and sleeping location.</li><li>Next movement and timing buffer.</li><li>Tickets/reservations that must be ready.</li><li>Weather/clothing and end-of-day repack needs.</li></ul><div class="collapse-section-row"><button type="button" class="collapse-destination-btn">Collapse This Section</button></div></article>
       </div>
     </section>
 
@@ -122,10 +79,7 @@
       <select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option></select>
     </section>
 
-    <section class="quick-jump" aria-label="Quick jump">
-      <h2>Quick Jump</h2>
-      <div id="jumpMount" class="jump-row"></div>
-    </section>
+    <section class="quick-jump" aria-label="Quick jump"><h2>Quick Jump</h2><div id="jumpMount" class="jump-row"></div></section>
 
     <section class="view-toggle" aria-label="View controls">
       <button class="toggle active" data-view="cards" type="button">Card View</button>
@@ -134,35 +88,15 @@
     </section>
 
     <section id="cardsView" class="timeline" aria-label="Itinerary cards"></section>
+    <section id="tableView" class="table-wrap hidden" aria-label="Itinerary table"><table><thead><tr><th>Date</th><th>Location</th><th>Hotel</th><th>Transportation</th><th>Activities / Notes</th></tr></thead><tbody id="tableBody"></tbody></table></section>
+    <section id="agencyView" class="agency hidden" aria-label="Agency locked itinerary reference"><h2>Agency Itinerary Reference</h2><p>This section mirrors the organized-tour portion of the trip and should remain relatively locked. Use the Personal Master Itinerary cards for working notes and future edits.</p><div id="agencyMount"></div></section>
 
-    <section id="tableView" class="table-wrap hidden" aria-label="Itinerary table">
-      <table>
-        <thead><tr><th>Date</th><th>Location</th><th>Hotel</th><th>Transportation</th><th>Activities / Notes</th></tr></thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </section>
-
-    <section id="agencyView" class="agency hidden" aria-label="Agency locked itinerary reference">
-      <h2>Agency Itinerary Reference</h2>
-      <p>This section mirrors the organized-tour portion of the trip and should remain relatively locked. Use the Personal Master Itinerary cards for working notes and future edits.</p>
-      <div id="agencyMount"></div>
-    </section>
-
-    <section class="source-notes">
-      <details>
-        <summary>Source Notes</summary>
-        <ul>
-          <li>Core itinerary, activities, transfers, inclusions: Trip planning.pdf.</li>
-          <li>Flight/train timing and rail pass notes: Airport and train stuff.pdf.</li>
-          <li>Lodging details and extended trip hotels: Hotel.pdf and Miscellaneous.pdf.</li>
-          <li>Weather and packing integration will be handled in the Weather + Clothing and Packing apps.</li>
-        </ul>
-      </details>
-    </section>
+    <section class="source-notes"><details><summary>Source Notes</summary><ul><li>Core itinerary, activities, transfers, inclusions: Trip planning.pdf.</li><li>Flight/train timing and rail pass notes: Airport and train stuff.pdf.</li><li>Lodging details and extended trip hotels: Hotel.pdf and Miscellaneous.pdf.</li><li>Weather and packing integration will be handled in the Weather + Clothing and Packing apps.</li></ul></details></section>
   </main>
 
   <footer>Travel Operations Hub · Master Itinerary App v1.1 · Private build only</footer>
   <script src="app.js"></script>
+  <script src="../../protected-context.js"></script>
   <script src="../../traveler-help.js"></script>
 </body>
 </html>
