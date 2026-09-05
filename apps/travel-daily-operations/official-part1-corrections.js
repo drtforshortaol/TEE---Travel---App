@@ -27,4 +27,26 @@
   if(select){
     try{ select.dispatchEvent(new Event('change',{bubbles:true})); }catch{}
   }
+
+  // v3.4.46 — Tomorrow reopen guard.
+  // The quickbar must always be able to reopen Tomorrow after the traveler manually collapses it.
+  // Run after the page's own jump handler so this only reinforces the requested navigation action.
+  document.addEventListener('click',event=>{
+    const link=event.target.closest?.('[data-tee-jump="tomorrow"]');
+    if(!link)return;
+    setTimeout(()=>{
+      try{
+        const targetIndex=Math.min(activeIndex+1,DAYS.length-1);
+        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`);
+        if(!target)return;
+        target.hidden=false;
+        delete target.dataset.teeItineraryHidden;
+        const country=target.closest('.country-dropdown');
+        if(country)country.open=true;
+        target.open=true;
+        const status=target.querySelector('.day-status');
+        if(status)status.textContent='COLLAPSE';
+      }catch{}
+    },0);
+  });
 })();
