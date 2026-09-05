@@ -79,4 +79,12 @@
     script.dataset.teeTodayDocuments='3.4.53';
     document.head.appendChild(script);
   }
+
+  // v3.4.54 — make Checklist a direct, open-and-focus travel-day action on iPhone.
+  if(!document.querySelector('script[data-tee-checklist-quick-access]')){
+    const script=document.createElement('script');
+    script.src='checklist-quick-access-v3454.js?v=3.4.54';
+    script.dataset.teeChecklistQuickAccess='3.4.54';
+    document.head.appendChild(script);
+  }
 })();
