@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.71",
+  "version": "3.4.72",
   "channel": "review",
-  "publishedAt": "2026-09-05T15:30:00-07:00",
-  "notes": "Fixes Vault authorization being lost when navigating from the Hub to Quick Reference in the same browser tab. The 30-minute authorized session is now also carried in volatile window.name tab memory, while BroadcastChannel remains available for other open TEE tabs. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.71 — Same-Tab Vault Continuity"
+  "publishedAt": "2026-09-05T15:40:00-07:00",
+  "notes": "Fixes the remaining Vault continuity failure by bridging the actual sessionStorage authorization write performed by Secure Vault into volatile same-tab window.name memory and BroadcastChannel. This works whether Vault is opened full-page or inside the Hub iframe. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.72 — Vault Authorization Bridge Fix"
 }
