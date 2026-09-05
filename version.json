@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.72",
+  "version": "3.4.73",
   "channel": "review",
-  "publishedAt": "2026-09-05T15:40:00-07:00",
-  "notes": "Fixes the remaining Vault continuity failure by bridging the actual sessionStorage authorization write performed by Secure Vault into volatile same-tab window.name memory and BroadcastChannel. This works whether Vault is opened full-page or inside the Hub iframe. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.72 — Vault Authorization Bridge Fix"
+  "publishedAt": "2026-09-05T15:52:00-07:00",
+  "notes": "Fixes the actual Hub-to-app Vault handoff. Secure Vault now copies the temporary 30-minute authorized session into the top-level TEE browsing context before the embedded Vault closes, and sends the full same-origin session payload to the parent. Quick Reference and other supported apps can then reuse the open authorization without another passphrase or manual Vault search. No decrypted Vault data is written to localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.73 — Vault Parent Bridge"
 }
