@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.70",
+  "version": "3.4.71",
   "channel": "review",
-  "publishedAt": "2026-09-05T15:22:00-07:00",
-  "notes": "Fixes the remaining Vault-open mismatch between the Hub and Quick Reference. The Secure Vault page now actively broadcasts the already-authorized 30-minute session to other open TEE tabs after unlock, so supported apps can recognize the open Vault and reveal authorized Shared/Private records without another search. No decrypted session is written to localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.70 — Vault Session Broadcast Bridge"
+  "publishedAt": "2026-09-05T15:30:00-07:00",
+  "notes": "Fixes Vault authorization being lost when navigating from the Hub to Quick Reference in the same browser tab. The 30-minute authorized session is now also carried in volatile window.name tab memory, while BroadcastChannel remains available for other open TEE tabs. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.71 — Same-Tab Vault Continuity"
 }
