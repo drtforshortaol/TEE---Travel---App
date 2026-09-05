@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>TEE Safe Refresh</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f6f8f8;color:#123f46;margin:0;padding:32px}
+    main{max-width:680px;margin:8vh auto;background:#fff;border:1px solid #cbd8da;border-radius:18px;padding:28px;box-shadow:0 8px 28px rgba(0,0,0,.08)}
+    h1{margin-top:0}.status{padding:14px;border-radius:12px;background:#edf7f3;font-weight:700}
+    small{color:#5a6e72}
+  </style>
+</head>
+<body>
+<main>
+  <h1>TEE Safe Refresh</h1>
+  <p class="status" id="status">Refreshing TEE files…</p>
+  <p><small>This removes only TEE offline caches and service-worker registrations. It does not intentionally clear localStorage, IndexedDB, encrypted Vault records, passphrases, checklist items, or other saved TEE data.</small></p>
+</main>
+<script>
+(async()=>{
+  const status=document.getElementById('status');
+  try{
+    if('caches' in window){
+      const names=await caches.keys();
+      await Promise.all(names.filter(name=>/tee/i.test(name)).map(name=>caches.delete(name)));
+    }
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(reg=>reg.unregister().catch(()=>false)));
+    }
+    status.textContent='Refresh complete. Reopening the newest TEE…';
+    const target=new URL('./index.html',location.href);
+    target.searchParams.set('teeRefresh',Date.now().toString());
+    setTimeout(()=>location.replace(target.href),350);
+  }catch(error){
+    status.textContent='Automatic refresh could not finish. Close this tab and reopen TEE, then try Refresh / Update again.';
+  }
+})();
+</script>
+</body>
+</html>
