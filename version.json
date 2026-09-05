@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.73",
+  "version": "3.4.74",
   "channel": "review",
-  "publishedAt": "2026-09-05T15:52:00-07:00",
-  "notes": "Fixes the actual Hub-to-app Vault handoff. Secure Vault now copies the temporary 30-minute authorized session into the top-level TEE browsing context before the embedded Vault closes, and sends the full same-origin session payload to the parent. Quick Reference and other supported apps can then reuse the open authorization without another passphrase or manual Vault search. No decrypted Vault data is written to localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.73 — Vault Parent Bridge"
+  "publishedAt": "2026-09-05T16:05:00-07:00",
+  "notes": "Stops relying on the fragile Hub-to-Quick-Reference Vault handoff. When Quick Reference is locked, its Unlock Vault control now opens the existing Secure Vault inside the current page. After the authorized passphrase succeeds, the protected session is accepted in the same page, the unlock panel closes, and Shared/Private authorized records render immediately. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.74 — Inline Vault Unlock"
 }
