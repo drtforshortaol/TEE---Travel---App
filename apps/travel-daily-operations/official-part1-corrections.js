@@ -71,4 +71,12 @@
     const observer=new MutationObserver(()=>fixOct6Order());
     observer.observe(mount,{childList:true,subtree:true});
   }
+
+  // v3.4.51 — turn the quickbar Documents button into a Today-specific document view.
+  if(!document.querySelector('script[data-tee-today-documents]')){
+    const script=document.createElement('script');
+    script.src='today-documents-v3451.js?v=3.4.51';
+    script.dataset.teeTodayDocuments='3.4.51';
+    document.head.appendChild(script);
+  }
 })();
