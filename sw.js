@@ -1,11 +1,11 @@
-const VERSION = '3.4.52';
-const CACHE = 'tee-v3-4-52-vault-unlock-deep-link';
+const VERSION = '3.4.53';
+const CACHE = 'tee-v3-4-53-today-documents-filtering';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
   './apps/travel-hotels/index.html','./apps/travel-hotels/styles.css','./apps/travel-hotels/app.js','./apps/travel-hotels/manifest.json',
   './apps/travel-transportation/index.html','./apps/travel-transportation/styles.css','./apps/travel-transportation/app.js','./apps/travel-transportation/manifest.json',
-  './apps/travel-weather-clothing/index.html','./apps/travel-weather-clothing/styles.css','./apps/travel-weather-clothing/app.js','./apps/travel-weather-clothing/official-part1-weather-v3430.js','./apps/travel-weather-clothing/manifest.json',
+  './apps/travel-weather-clothing/index.html','./apps/travel-weather-clothing/styles.css','./apps/travel-weather-clothing/official-part1-weather-v3430.js','./apps/travel-weather-clothing/app.js','./apps/travel-weather-clothing/manifest.json',
   './apps/travel-packing/index.html','./apps/travel-packing/styles.css','./apps/travel-packing/app.js','./apps/travel-packing/manifest.json',
   './apps/travel-money-tipping/index.html','./apps/travel-money-tipping/styles.css','./apps/travel-money-tipping/app.js','./apps/travel-money-tipping/manifest.json',
   './apps/travel-maps-movement/index.html','./apps/travel-maps-movement/styles.css','./apps/travel-maps-movement/app.js','./apps/travel-maps-movement/manifest.json',
