@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.62",
+  "version": "3.4.63",
   "channel": "review",
-  "publishedAt": "2026-09-05T13:05:00-07:00",
-  "notes": "Adds vault-aware protected-detail rendering so authorized Secure Vault records appear in context inside Itinerary, Transportation, Hotels, Daily Operations, Insurance, and Maps & Routes, then disappear immediately when the Vault session is locked or expires. Protected values remain encrypted in the local Vault and are not embedded in public GitHub source. Part 2 working context remains in place and Adaptive Checklist storage is unchanged.",
-  "name": "TEE v3.4.62 — Vault Context Integration"
+  "publishedAt": "2026-09-05T13:32:00-07:00",
+  "notes": "Performs a second vault-placement sweep. Protected Emergency Contact, identity, insurance/medical, lodging, transportation and related records now prefer the exact on-screen card that references the Vault, including Quick Reference emergency-contact groups such as Emilio/Robert when an authorized matching record exists. Locked behavior and Adaptive Checklist storage are unchanged; protected values remain encrypted locally and are never embedded in public GitHub source.",
+  "name": "TEE v3.4.63 — Vault Placement Sweep"
 }
