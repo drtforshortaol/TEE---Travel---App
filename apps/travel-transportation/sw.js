@@ -1,4 +1,4 @@
-const CACHE = 'tee-transportation-v3-4-00-receipts';
+const CACHE = 'tee-transportation-v3-4-60-part2-context';
 const CACHE_PREFIX = 'tee-transportation-';
 const ASSETS = ['./index.html','./styles.css','./app.js','./manifest.json','../../assets/icon.svg'];
 
