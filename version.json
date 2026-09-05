@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.67",
+  "version": "3.4.68",
   "channel": "review",
-  "publishedAt": "2026-09-05T14:16:00-07:00",
-  "notes": "Fixes a regression in Emergency Contact deep linking that could make Secure Vault unlock appear frozen. Removes the MutationObserver feedback loop and replaces it with short bounded polling only after page load or an explicit unlock attempt. Direct Emilio/Robert lookup remains, Adaptive Checklist storage is unchanged, and protected data handling is unchanged.",
-  "name": "TEE v3.4.67 — Vault Unlock Stability Fix"
+  "publishedAt": "2026-09-05T15:18:00-07:00",
+  "notes": "Restores Secure Vault unlock stability by removing the emergency-contact deep-link helper that interfered with passphrase unlock. Emergency-contact records and Adaptive Checklist data are unchanged. Direct-contact refinement will be reintroduced only after Vault unlock is stable.",
+  "name": "TEE v3.4.68 — Vault Unlock Rollback"
 }
