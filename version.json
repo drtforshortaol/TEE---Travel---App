@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.58",
+  "version": "3.4.59",
   "channel": "review",
-  "publishedAt": "2026-09-04T19:56:00-07:00",
-  "notes": "Clarifies Adaptive Checklist behavior. The checklist is one cumulative trip list shared across all travel days on this device. Items remain until checked or deleted; tapping the trash can permanently removes an item. Existing checklist storage and travel-day navigation are unchanged.",
-  "name": "TEE v3.4.58 — Cumulative Checklist Instructions"
+  "publishedAt": "2026-09-04T20:02:00-07:00",
+  "notes": "Keeps the Source Documents header version synchronized with the app-level version. Source Documents now uses the current version.json value when available, with v3.4.59 as the offline fallback, so the visible build label will no longer remain stuck on an older internal Source Documents build. Offline cache version bumped accordingly.",
+  "name": "TEE v3.4.59 — Source Documents Version Sync"
 }
