@@ -14,10 +14,6 @@
     .day-title-label.day-after{background:#8a642d;color:#fff}
     .day-status.day-after{min-width:72px;text-align:center}
     .country-dropdown.itinerary-current{scroll-margin-top:108px}
-    .trip-day-dropdown.tomorrow-jump-card{border-width:2px;border-color:#5b7f98;box-shadow:0 4px 16px rgba(49,95,125,.10)}
-    .trip-day-dropdown.tomorrow-jump-card>summary{background:#edf5fa !important}
-    .day-title-label.tomorrow-jump{background:#315f7d;color:#fff}
-    .day-status.tomorrow-jump{min-width:72px;text-align:center}
     .country-dropdown.tomorrow-current{scroll-margin-top:108px}
   </style>
 </head>
@@ -80,27 +76,49 @@
       function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
       function tomorrowPanel(){return document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus');}
 
+      function restoreCountryLabels(){
+        document.querySelectorAll('.country-dropdown').forEach(country=>{
+          const state=country.querySelector(':scope > summary .country-state');
+          if(!state)return;
+          const days=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];
+          const hasToday=days.some(el=>Number(el.dataset.dayIndex)===activeIndex);
+          const hasTomorrow=days.some(el=>Number(el.dataset.dayIndex)===Math.min(activeIndex+1,DAYS.length-1));
+          const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');
+          state.textContent=flags||'Expand';
+        });
+      }
+
       function resetItineraryPositioning(){
         document.getElementById(MARKER_ID)?.remove();
         document.querySelectorAll('.trip-day-dropdown[data-tee-itinerary-hidden="1"]').forEach(el=>{el.hidden=false;delete el.dataset.teeItineraryHidden;});
-        document.querySelectorAll('.trip-day-dropdown.day-after-card').forEach(el=>{el.classList.remove('day-after-card');el.querySelector('.day-title-label.day-after')?.remove();const status=el.querySelector('.day-status.day-after');if(status){status.className='day-state';status.textContent=el.open?'Collapse':'Expand';}});
-        document.querySelectorAll('.trip-day-dropdown.tomorrow-jump-card').forEach(el=>{el.classList.remove('tomorrow-jump-card');el.querySelector('.day-title-label.tomorrow-jump')?.remove();const status=el.querySelector('.day-status.tomorrow-jump');if(status){status.className='day-state';status.textContent=el.open?'Collapse':'Expand';}});
-        document.querySelectorAll('.country-dropdown.itinerary-current,.country-dropdown.tomorrow-current').forEach(country=>{country.classList.remove('itinerary-current','tomorrow-current');const state=country.querySelector(':scope > summary .country-state');if(state){const visible=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const hasToday=visible.some(el=>Number(el.dataset.dayIndex)===activeIndex);const hasTomorrow=visible.some(el=>Number(el.dataset.dayIndex)===Math.min(activeIndex+1,DAYS.length-1));const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');state.textContent=flags||'Expand';}});
+        document.querySelectorAll('.trip-day-dropdown.day-after-card').forEach(el=>{
+          el.classList.remove('day-after-card');
+          el.querySelector('.day-title-label.day-after')?.remove();
+          const status=el.querySelector('.day-status.day-after');
+          if(status){status.className='day-state';status.textContent=el.open?'Collapse':'Expand';}
+        });
+        document.querySelectorAll('.country-dropdown.itinerary-current,.country-dropdown.tomorrow-current').forEach(country=>country.classList.remove('itinerary-current','tomorrow-current'));
+        restoreCountryLabels();
       }
 
       function positionTomorrow(){
         resetItineraryPositioning();
         const targetIndex=Math.min(activeIndex+1,DAYS.length-1);
-        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(1);if(!target)return false;
-        const country=target.closest('.country-dropdown');if(!country)return false;
-        country.open=true;country.classList.add('tomorrow-current');
-        const countryState=country.querySelector(':scope > summary .country-state');if(countryState)countryState.textContent='TOMORROW';
-        target.hidden=false;target.open=true;target.classList.add('tomorrow-jump-card');
-        const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.tomorrow-jump')){const badge=document.createElement('span');badge.className='day-title-label tomorrow-jump';badge.textContent='TOMORROW';main.insertBefore(badge,main.firstChild);}
-        const oldState=target.querySelector('.day-state');if(oldState){oldState.className='day-status tomorrow-jump';oldState.textContent='COLLAPSE';}
-        const keepTomorrowLabel=()=>{const status=target.querySelector('.day-status.tomorrow-jump');if(status)status.textContent=target.open?'COLLAPSE':'OPEN';const badge=target.querySelector('.day-title-label.tomorrow-jump');if(badge)badge.textContent='TOMORROW';if(countryState)countryState.textContent='TOMORROW';};
-        target.addEventListener('toggle',keepTomorrowLabel);
-        requestAnimationFrame(()=>{const expanded=target.querySelector('.trip-day-body,.day-detail,.day-content')||target;const top=expanded.getBoundingClientRect().top+window.scrollY-96;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #315f7d'},{outline:'4px solid transparent'}],{duration:1100});});
+        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(1);
+        if(!target)return false;
+        const country=target.closest('.country-dropdown');
+        if(!country)return false;
+        country.open=true;
+        country.classList.add('tomorrow-current');
+        const countryState=country.querySelector(':scope > summary .country-state');
+        if(countryState)countryState.textContent='TOMORROW';
+        target.hidden=false;
+        target.open=true;
+        requestAnimationFrame(()=>{
+          const top=country.getBoundingClientRect().top+window.scrollY-96;
+          window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+          target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #7d7a2f'},{outline:'4px solid transparent'}],{duration:1100});
+        });
         return true;
       }
 
@@ -114,11 +132,33 @@
         target.hidden=false;delete target.dataset.teeItineraryHidden;target.classList.add('day-after-card');target.open=true;
         const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const badge=document.createElement('span');badge.className='day-title-label day-after';badge.textContent='DAY AFTER TOMORROW';main.insertBefore(badge,main.firstChild);}
         const oldState=target.querySelector('.day-state');if(oldState){oldState.className='day-status day-after';oldState.textContent='COLLAPSE';}
-        target.addEventListener('toggle',()=>{const status=target.querySelector('.day-status.day-after');if(status)status.textContent=target.open?'COLLAPSE':'OPEN';});
+        target.addEventListener('toggle',()=>{const status=target.querySelector('.day-status.day-after');if(status)status.textContent=target.open?'COLLAPSE':'OPEN';},{once:false});
         requestAnimationFrame(()=>{const top=country.getBoundingClientRect().top+window.scrollY-96;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #8a642d'},{outline:'4px solid transparent'}],{duration:1100});});return true;
       }
 
-      document.querySelectorAll('[data-tee-jump]').forEach(link=>{link.addEventListener('click',event=>{event.preventDefault();const action=link.dataset.teeJump;const today=todayPanel(),tomorrow=tomorrowPanel();if(action==='today'){resetItineraryPositioning();closePanel(tomorrow);if(today?.tagName==='DETAILS')today.open=true;land(today,'TODAY — START HERE','#2f6b57');return;}if(action==='tomorrow'){closePanel(today);if(tomorrow?.tagName==='DETAILS')tomorrow.open=true;positionTomorrow();return;}if(action==='itinerary'){closePanel(today);closePanel(tomorrow);positionDayAfterTomorrow();}});});
+      document.querySelectorAll('[data-tee-jump]').forEach(link=>{
+        link.addEventListener('click',event=>{
+          event.preventDefault();
+          const action=link.dataset.teeJump;
+          const today=todayPanel(),tomorrow=tomorrowPanel();
+          if(action==='today'){
+            resetItineraryPositioning();
+            closePanel(tomorrow);
+            if(today?.tagName==='DETAILS')today.open=true;
+            land(today,'TODAY — START HERE','#2f6b57');
+            return;
+          }
+          if(action==='tomorrow'){
+            closePanel(today);
+            positionTomorrow();
+            return;
+          }
+          if(action==='itinerary'){
+            closePanel(today);closePanel(tomorrow);
+            positionDayAfterTomorrow();
+          }
+        });
+      });
     })();
   </script>
 </body>
