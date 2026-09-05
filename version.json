@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.48",
+  "version": "3.4.49",
   "channel": "review",
-  "publishedAt": "2026-09-04T17:06:00-07:00",
-  "notes": "Adjusts Daily Operations Tomorrow navigation to land on the actual Tomorrow itinerary day card in its expanded view. The Tomorrow card now keeps an explicit TOMORROW label when collapsed, while the Full Itinerary day-after-Tomorrow landing remains unchanged.",
-  "name": "TEE v3.4.48 — Tomorrow Expanded Itinerary Position"
+  "publishedAt": "2026-09-04T17:54:00-07:00",
+  "notes": "Fixes Daily Operations chronology for Oct 6. The Zurich-to-Istanbul positioning day is now shown immediately before Oct 7 in the return-home section instead of being grouped back with the earlier Türkiye dates. Tomorrow and day-after-Tomorrow navigation behavior is unchanged.",
+  "name": "TEE v3.4.49 — Oct 6 Chronology Fix"
 }
