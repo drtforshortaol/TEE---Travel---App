@@ -8,6 +8,29 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="travel-day-quickbar-v3445.css" />
   <link rel="stylesheet" href="../../traveler-help.css" />
+  <style>
+    /* Full Itinerary landing: make Day After Tomorrow occupy the same
+       country-header + active-card position used by Today and Tomorrow. */
+    .trip-day-dropdown.day-after-card{
+      border-width:2px;
+      border-color:#b18b4a;
+      box-shadow:0 4px 16px rgba(138,100,45,.10);
+    }
+    .trip-day-dropdown.day-after-card>summary{
+      background:#fbf5e7 !important;
+    }
+    .day-title-label.day-after{
+      background:#8a642d;
+      color:#fff;
+    }
+    .day-status.day-after{
+      min-width:72px;
+      text-align:center;
+    }
+    .country-dropdown.itinerary-current{
+      scroll-margin-top:108px;
+    }
+  </style>
 </head>
 <body>
   <header class="hero">
@@ -129,18 +152,103 @@
       }
       function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
       function tomorrowPanel(){return document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus');}
+
+      function resetItineraryPositioning(){
+        document.getElementById(MARKER_ID)?.remove();
+        document.querySelectorAll('.trip-day-dropdown[data-tee-itinerary-hidden="1"]').forEach(el=>{
+          el.hidden=false;
+          delete el.dataset.teeItineraryHidden;
+        });
+        document.querySelectorAll('.trip-day-dropdown.day-after-card').forEach(el=>{
+          el.classList.remove('day-after-card');
+          const label=el.querySelector('.day-title-label.day-after');
+          label?.remove();
+          const status=el.querySelector('.day-status.day-after');
+          if(status){
+            status.className='day-state';
+            status.textContent=el.open?'Collapse':'Expand';
+          }
+        });
+        document.querySelectorAll('.country-dropdown.itinerary-current').forEach(country=>{
+          country.classList.remove('itinerary-current');
+          const state=country.querySelector(':scope > summary .country-state');
+          if(state){
+            const visible=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];
+            const hasToday=visible.some(el=>Number(el.dataset.dayIndex)===activeIndex);
+            const hasTomorrow=visible.some(el=>Number(el.dataset.dayIndex)===Math.min(activeIndex+1,DAYS.length-1));
+            const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');
+            state.textContent=flags||'Expand';
+          }
+        });
+      }
+
+      function positionDayAfterTomorrow(){
+        resetItineraryPositioning();
+        const targetIndex=Math.min(activeIndex+2,DAYS.length-1);
+        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(2);
+        if(!target)return false;
+        const country=target.closest('.country-dropdown');
+        if(!country)return false;
+
+        country.open=true;
+        country.classList.add('itinerary-current');
+        const countryState=country.querySelector(':scope > summary .country-state');
+        if(countryState)countryState.textContent='DAY AFTER TOMORROW';
+
+        const dayHost=country.querySelector(':scope > .country-days');
+        if(dayHost){
+          [...dayHost.querySelectorAll(':scope > .trip-day-dropdown')].forEach(el=>{
+            const idx=Number(el.dataset.dayIndex);
+            if(Number.isFinite(idx)&&idx<targetIndex){
+              el.hidden=true;
+              el.dataset.teeItineraryHidden='1';
+            }
+          });
+        }
+
+        target.hidden=false;
+        delete target.dataset.teeItineraryHidden;
+        target.classList.add('day-after-card');
+        target.open=true;
+        const main=target.querySelector('.day-summary-main');
+        if(main&&!main.querySelector('.day-title-label.day-after')){
+          const badge=document.createElement('span');
+          badge.className='day-title-label day-after';
+          badge.textContent='DAY AFTER TOMORROW';
+          main.insertBefore(badge,main.firstChild);
+        }
+        const oldState=target.querySelector('.day-state');
+        if(oldState){
+          oldState.className='day-status day-after';
+          oldState.textContent='COLLAPSE';
+        }
+        target.addEventListener('toggle',()=>{
+          const status=target.querySelector('.day-status.day-after');
+          if(status)status.textContent=target.open?'COLLAPSE':'OPEN';
+        },{once:false});
+
+        requestAnimationFrame(()=>{
+          const top=country.getBoundingClientRect().top+window.scrollY-96;
+          window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+          target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #8a642d'},{outline:'4px solid transparent'}],{duration:1100});
+        });
+        return true;
+      }
+
       document.querySelectorAll('[data-tee-jump]').forEach(link=>{
         link.addEventListener('click',event=>{
           event.preventDefault();
           const action=link.dataset.teeJump;
           const today=todayPanel(), tomorrow=tomorrowPanel();
           if(action==='today'){
+            resetItineraryPositioning();
             closePanel(tomorrow);
             if(today?.tagName==='DETAILS')today.open=true;
             land(today,'TODAY — START HERE','#2f6b57');
             return;
           }
           if(action==='tomorrow'){
+            resetItineraryPositioning();
             closePanel(today);
             if(tomorrow?.tagName==='DETAILS')tomorrow.open=true;
             land(tomorrow,'TOMORROW — PREPARE HERE','#315f7d');
@@ -148,9 +256,7 @@
           }
           if(action==='itinerary'){
             closePanel(today);closePanel(tomorrow);
-            const next=findDayInItinerary(2)||document.getElementById('daily-context');
-            if(next?.tagName==='DETAILS')next.open=true;
-            land(next,'FULL ITINERARY — DAY AFTER TOMORROW','#8a642d');
+            positionDayAfterTomorrow();
           }
         });
       });
