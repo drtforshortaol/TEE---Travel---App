@@ -1,6 +1,10 @@
 "use strict";
 
-// TEE v3.4.74 — Direct emergency-contact retrieval + in-place Vault unlock.
+// TEE v3.4.76 — Quick Reference reads the full authorized Vault session directly
+// from the same-origin inline Vault frame after unlock.
+
+const TEE_AUTHORIZED_SESSION_KEY = 'teeAuthorizedVaultSessionV1';
+let inlineVaultPollTimer = null;
 
 function openQuickReferenceSection(id, shouldScroll = true) {
   if (!id) return;
@@ -14,10 +18,11 @@ function openQuickReferenceSection(id, shouldScroll = true) {
 
 function getVaultSession(){
   try{
-    const raw=sessionStorage.getItem('teeAuthorizedVaultSessionV1');
+    const raw=sessionStorage.getItem(TEE_AUTHORIZED_SESSION_KEY);
     const session=JSON.parse(raw||'null');
     if(!session || Number(session.version)!==2) return null;
     if(!Number.isFinite(Number(session.expiresAt)) || Number(session.expiresAt)<=Date.now()) return null;
+    if(!Array.isArray(session.records)) return null;
     return session;
   }catch{return null;}
 }
@@ -118,8 +123,56 @@ function loadProtectedContext(){
   document.head.appendChild(script);
 }
 
+function stopInlineVaultPoll(){
+  if(inlineVaultPollTimer!==null){
+    clearInterval(inlineVaultPollTimer);
+    inlineVaultPollTimer=null;
+  }
+}
+
 function closeInlineVault(){
+  stopInlineVaultPoll();
   document.getElementById('teeInlineVaultOverlay')?.remove();
+}
+
+function acceptVaultPayload(payload){
+  try{
+    if(!payload || Number(payload.version)!==2) return false;
+    if(!Number.isFinite(Number(payload.expiresAt)) || Number(payload.expiresAt)<=Date.now()) return false;
+    if(!Array.isArray(payload.records)) return false;
+    sessionStorage.setItem(TEE_AUTHORIZED_SESSION_KEY,JSON.stringify(payload));
+    try{ window.TEEVaultSession?.accept?.(payload); }catch{}
+    window.dispatchEvent(new CustomEvent('tee-vault-session-changed',{detail:{reason:'inline-unlock',session:payload}}));
+    closeInlineVault();
+    updateEmergencyContactButtonStates();
+    return true;
+  }catch{return false;}
+}
+
+function pullSessionFromInlineVault(){
+  const frame=document.querySelector('#teeInlineVaultOverlay iframe');
+  if(!frame?.contentWindow) return false;
+  try{
+    // Same-origin frame: read the exact temporary authorized session created
+    // by Secure Vault. This avoids relying on summary-only postMessage events.
+    const raw=frame.contentWindow.sessionStorage.getItem(TEE_AUTHORIZED_SESSION_KEY);
+    if(!raw) return false;
+    const payload=JSON.parse(raw);
+    return acceptVaultPayload(payload);
+  }catch{
+    return false;
+  }
+}
+
+function startInlineVaultPoll(){
+  stopInlineVaultPoll();
+  inlineVaultPollTimer=setInterval(()=>{
+    if(!document.getElementById('teeInlineVaultOverlay')){
+      stopInlineVaultPoll();
+      return;
+    }
+    pullSessionFromInlineVault();
+  },250);
 }
 
 function openInlineVault(){
@@ -139,23 +192,15 @@ function openInlineVault(){
   frame.src='../travel-private-documents/index.html?teeView=vault&teeEnter=1';
   frame.title='Secure Vault';
   Object.assign(frame.style,{border:'0',width:'100%',flex:'1',background:'#fff'});
+  frame.addEventListener('load',()=>{
+    // A previously authorized Vault can already be open when the frame loads.
+    setTimeout(pullSessionFromInlineVault,100);
+  });
   shell.append(bar,frame);
   overlay.appendChild(shell);
   document.body.appendChild(overlay);
   bar.querySelector('[data-close-inline-vault]')?.addEventListener('click',closeInlineVault);
-}
-
-function acceptVaultPayload(payload){
-  try{
-    if(!payload || Number(payload.version)!==2) return false;
-    if(!Number.isFinite(Number(payload.expiresAt)) || Number(payload.expiresAt)<=Date.now()) return false;
-    sessionStorage.setItem('teeAuthorizedVaultSessionV1',JSON.stringify(payload));
-    try{ window.TEEVaultSession?.get?.(); }catch{}
-    window.dispatchEvent(new CustomEvent('tee-vault-session-changed',{detail:{reason:'inline-unlock',session:payload}}));
-    closeInlineVault();
-    updateEmergencyContactButtonStates();
-    return true;
-  }catch{return false;}
+  startInlineVaultPoll();
 }
 
 // When Quick Reference is locked, unlock in place instead of navigating away.
@@ -168,8 +213,18 @@ document.addEventListener('click',event=>{
 
 window.addEventListener('message',event=>{
   if(event.origin!==window.location.origin) return;
-  if(event.data?.type==='TEE_VAULT_SESSION_OPEN' && event.data?.payload){
-    acceptVaultPayload(event.data.payload);
+  if(event.data?.type==='TEE_VAULT_SESSION_PAYLOAD' && event.data?.session){
+    acceptVaultPayload(event.data.session);
+    return;
+  }
+  if(event.data?.type==='TEE_VAULT_SESSION_OPEN'){
+    // Older/current Vault builds send only a summary here. Pull the complete
+    // session directly from the same-origin inline frame instead.
+    if(event.data?.payload?.version===2 && Array.isArray(event.data.payload.records)){
+      acceptVaultPayload(event.data.payload);
+    }else{
+      pullSessionFromInlineVault();
+    }
   }
 });
 
