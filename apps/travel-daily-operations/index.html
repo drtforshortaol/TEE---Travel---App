@@ -13,7 +13,6 @@
     .trip-day-dropdown.day-after-card>summary{background:#fbf5e7 !important}
     .day-title-label.day-after{background:#8a642d;color:#fff}
     .day-status.day-after{min-width:72px;text-align:center}
-    .country-dropdown.itinerary-current{scroll-margin-top:108px}
     .country-dropdown.tomorrow-current{scroll-margin-top:108px}
   </style>
 </head>
@@ -41,32 +40,42 @@
   <script src="../../vault-session.js"></script><script src="app.js"></script><script src="official-part1-corrections.js"></script><script src="../../traveler-help.js"></script>
   <script>
   (()=>{
-    const MARKER_ID='tee-jump-landing-marker';
-    function closePanel(el){if(el?.tagName==='DETAILS')el.open=false;}
     function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
     function tomorrowPanel(){return document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus');}
+    function closePanel(el){if(el?.tagName==='DETAILS')el.open=false;}
     function findDay(offset){const idx=Math.min(activeIndex+offset,DAYS.length-1);return document.querySelector(`.trip-day-dropdown[data-day-index="${idx}"]`);}
-    function normalState(country){const state=country?.querySelector(':scope > summary .country-state');if(!state)return;const days=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const t=days.some(x=>+x.dataset.dayIndex===activeIndex),tm=days.some(x=>+x.dataset.dayIndex===Math.min(activeIndex+1,DAYS.length-1));state.textContent=t?'TODAY':tm?'TOMORROW':'Expand';}
-    function clearSpecial(){
-      document.getElementById(MARKER_ID)?.remove();
-      document.querySelectorAll('[data-tee-itinerary-hidden="1"]').forEach(x=>{x.hidden=false;delete x.dataset.teeItineraryHidden;});
-      document.querySelectorAll('.day-after-card').forEach(x=>{x.classList.remove('day-after-card');x.querySelector('.day-title-label.day-after')?.remove();const s=x.querySelector('.day-status.day-after');if(s){s.className='day-state';s.textContent=x.open?'Collapse':'Expand';}});
-      document.querySelectorAll('.country-dropdown').forEach(c=>{c.classList.remove('itinerary-current','tomorrow-current');normalState(c);});
+    function countryState(country,label){const state=country?.querySelector(':scope > summary .country-state');if(state)state.textContent=label;}
+    function normalCountryState(country){const days=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const hasToday=days.some(x=>+x.dataset.dayIndex===activeIndex);const hasTomorrow=days.some(x=>+x.dataset.dayIndex===Math.min(activeIndex+1,DAYS.length-1));countryState(country,hasToday?'TODAY':hasTomorrow?'TOMORROW':'Expand');}
+    function clearDayAfter(){document.querySelectorAll('.day-after-card').forEach(x=>{x.classList.remove('day-after-card');x.querySelector('.day-title-label.day-after')?.remove();const s=x.querySelector('.day-status.day-after');if(s){s.className='day-state';s.textContent=x.open?'Collapse':'Expand';}});}
+    function resetView(){clearDayAfter();document.querySelectorAll('.country-dropdown').forEach(c=>{c.classList.remove('tomorrow-current');normalCountryState(c);});}
+    function scrollTo(el){requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+scrollY-96),behavior:'smooth'}));}
+
+    function showTomorrow(){
+      resetView();const target=findDay(1);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
+      country.open=true;country.classList.add('tomorrow-current');countryState(country,'TOMORROW');target.hidden=false;target.open=true;scrollTo(country);
     }
-    function scrollCountry(country){requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,country.getBoundingClientRect().top+scrollY-96),behavior:'smooth'}));}
-    function positionTomorrow(){
-      clearSpecial();const target=findDay(1);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
-      country.classList.add('tomorrow-current');country.open=true;const state=country.querySelector(':scope > summary .country-state');if(state)state.textContent='TOMORROW';target.hidden=false;target.open=true;scrollCountry(country);
+
+    function showDayAfter(){
+      resetView();const tomorrow=findDay(1);const target=findDay(2);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
+      /* Keep Tomorrow as a real, visible, reopenable card. Only collapse it to make room. */
+      if(tomorrow){tomorrow.hidden=false;tomorrow.open=false;}
+      country.open=true;country.classList.add('tomorrow-current');countryState(country,'TOMORROW');
+      target.hidden=false;target.open=true;target.classList.add('day-after-card');
+      const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const b=document.createElement('span');b.className='day-title-label day-after';b.textContent='DAY AFTER TOMORROW';main.prepend(b);}
+      const s=target.querySelector('.day-state');if(s){s.className='day-status day-after';s.textContent='COLLAPSE';}
+      target.addEventListener('toggle',()=>{const ds=target.querySelector('.day-status.day-after');if(ds)ds.textContent=target.open?'COLLAPSE':'OPEN';});
+      scrollTo(target);
     }
-    function positionDayAfter(){
-      clearSpecial();const target=findDay(2);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
-      country.classList.add('itinerary-current');country.open=true;const state=country.querySelector(':scope > summary .country-state');if(state)state.textContent='DAY AFTER TOMORROW';
-      const host=country.querySelector(':scope > .country-days');if(host)[...host.querySelectorAll(':scope > .trip-day-dropdown')].forEach(x=>{if(+x.dataset.dayIndex<+target.dataset.dayIndex){x.hidden=true;x.dataset.teeItineraryHidden='1';}});
-      target.hidden=false;target.classList.add('day-after-card');target.open=true;const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const b=document.createElement('span');b.className='day-title-label day-after';b.textContent='DAY AFTER TOMORROW';main.prepend(b);}const ds=target.querySelector('.day-state');if(ds){ds.className='day-status day-after';ds.textContent='COLLAPSE';}target.addEventListener('toggle',()=>{const s=target.querySelector('.day-status.day-after');if(s)s.textContent=target.open?'COLLAPSE':'OPEN';});scrollCountry(country);
-    }
-    /* Country summary labels are intrinsic: Türkiye is TOMORROW even when collapsed. */
-    document.getElementById('countryMount')?.addEventListener('toggle',e=>{const country=e.target;if(!(country instanceof HTMLDetailsElement)||!country.classList.contains('country-dropdown'))return;if(country.classList.contains('itinerary-current'))return;normalState(country);},true);
-    document.querySelectorAll('[data-tee-jump]').forEach(link=>link.addEventListener('click',e=>{e.preventDefault();const a=link.dataset.teeJump;if(a==='today'){clearSpecial();closePanel(tomorrowPanel());const t=findDay(0);if(t){const c=t.closest('.country-dropdown');c.open=true;t.open=true;scrollCountry(c);}return;}if(a==='tomorrow'){positionTomorrow();return;}if(a==='itinerary'){closePanel(todayPanel());closePanel(tomorrowPanel());positionDayAfter();}}));
+
+    /* Never allow the Türkiye summary to inherit DAY AFTER TOMORROW. Its role is Tomorrow. */
+    document.getElementById('countryMount')?.addEventListener('toggle',e=>{const c=e.target;if(!(c instanceof HTMLDetailsElement)||!c.classList.contains('country-dropdown'))return;normalCountryState(c);},true);
+
+    document.querySelectorAll('[data-tee-jump]').forEach(link=>link.addEventListener('click',e=>{
+      e.preventDefault();const a=link.dataset.teeJump;
+      if(a==='today'){resetView();const t=findDay(0);if(t){const c=t.closest('.country-dropdown');c.open=true;t.open=true;scrollTo(c);}return;}
+      if(a==='tomorrow'){showTomorrow();return;}
+      if(a==='itinerary'){closePanel(todayPanel());closePanel(tomorrowPanel());showDayAfter();}
+    }));
   })();
   </script>
 </body>
