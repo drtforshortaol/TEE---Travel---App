@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.65",
+  "version": "3.4.66",
   "channel": "review",
-  "publishedAt": "2026-09-05T13:55:00-07:00",
-  "notes": "Simplifies Emergency Contact retrieval in Quick Reference. When the Secure Vault is already open in the current tab, the Emilio and Robert buttons now jump directly to that person's protected Shared record in place instead of reopening the Vault. When locked, the same buttons still open the Vault. Includes a brief retry for delayed protected-context rendering and falls back to the Vault only if the contact cannot be rendered locally. Adaptive Checklist and protected data storage are unchanged.",
-  "name": "TEE v3.4.65 — Direct Emergency Contact Retrieval"
+  "publishedAt": "2026-09-05T14:05:00-07:00",
+  "notes": "Fixes Emergency Contact deep links. Emilio and Robert buttons now pass the contact name into Secure Vault, and the Vault automatically filters to Emergency Contact, searches that person, scrolls to the matching record, and highlights it after unlock. Manual searching should no longer be required. Adaptive Checklist and protected data storage are unchanged.",
+  "name": "TEE v3.4.66 — Emergency Contact Deep Link Fix"
 }
