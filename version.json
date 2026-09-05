@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.60",
+  "version": "3.4.62",
   "channel": "review",
-  "publishedAt": "2026-09-05T11:38:00-07:00",
-  "notes": "Loads the current working Part 2 Austria/Switzerland public itinerary and transportation context using the newest collected information. Older proposed Part 2 routing is no longer treated as authoritative. Exact bookings, confirmations, seats, traveler records and other protected details remain in Secure Vault / Source Documents and are not embedded in public GitHub source.",
-  "name": "TEE v3.4.60 — Part 2 Working Context"
+  "publishedAt": "2026-09-05T13:05:00-07:00",
+  "notes": "Adds vault-aware protected-detail rendering so authorized Secure Vault records appear in context inside Itinerary, Transportation, Hotels, Daily Operations, Insurance, and Maps & Routes, then disappear immediately when the Vault session is locked or expires. Protected values remain encrypted in the local Vault and are not embedded in public GitHub source. Part 2 working context remains in place and Adaptive Checklist storage is unchanged.",
+  "name": "TEE v3.4.62 — Vault Context Integration"
 }
