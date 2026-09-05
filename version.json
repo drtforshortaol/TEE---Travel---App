@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.60",
+  "version": "3.4.61",
   "channel": "review",
   "publishedAt": "2026-09-05T11:38:00-07:00",
-  "notes": "Loads the current working Part 2 Austria/Switzerland public itinerary and transportation context using the newest collected information. Older proposed Part 2 routing is no longer treated as authoritative. Exact bookings, confirmations, seats, traveler records and other protected details remain in Secure Vault / Source Documents and are not embedded in public GitHub source.",
-  "name": "TEE v3.4.60 — Part 2 Working Context"
+  "notes": "Republishes the current Part 2 Austria/Switzerland working context after an accidental local deletion. Restores the same current route and conflict-resolution rules from v3.4.60, with older proposed Part 2 routing still treated as superseded. Protected booking, traveler, seat, confirmation and payment data remain in Secure Vault / Source Documents.",
+  "name": "TEE v3.4.61 — Part 2 Republish"
 }
