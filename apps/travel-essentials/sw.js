@@ -1,4 +1,4 @@
-const CACHE = 'tee-essentials-v3-4-71-same-tab-vault-continuity';
+const CACHE = 'tee-essentials-v3-4-72-vault-authorization-bridge';
 const CACHE_PREFIX = 'tee-essentials-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
