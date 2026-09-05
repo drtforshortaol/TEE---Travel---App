@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.52",
+  "version": "3.4.53",
   "channel": "review",
-  "publishedAt": "2026-09-04T18:08:00-07:00",
-  "notes": "Fixes the Today Documents locked-vault action. Open Secure Vault now uses the dedicated Secure Vault view so it lands directly on the passphrase entry screen instead of the general Source Documents home page. Offline cache version bumped accordingly.",
-  "name": "TEE v3.4.52 — Direct Vault Passphrase Entry"
+  "publishedAt": "2026-09-04T18:55:00-07:00",
+  "notes": "Improves Daily Operations Today Documents after Vault unlock. Relevant protected records are now grouped by Transportation, Lodging, Activities, Identity/Entry, Travel Support, and Additional Source Details. Identity and support records appear only when the selected travel day calls for them, while Open Secure Vault and Open Full Source Documents remain available.",
+  "name": "TEE v3.4.53 — Travel-Day Document Filtering"
 }
