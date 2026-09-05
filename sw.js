@@ -1,5 +1,5 @@
-const VERSION = '3.4.45';
-const CACHE = 'tee-v3-4-45-travel-day-quick-access';
+const VERSION = '3.4.46';
+const CACHE = 'tee-v3-4-46-distinct-daily-jumps';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
@@ -22,39 +22,8 @@ const ASSETS = [
 ];
 
 const OFFLINE_FALLBACK = './index.html';
-
-async function cacheAssetList(cache){
-  const results=[];
-  for(const asset of ASSETS){
-    try{
-      const request=new Request(asset,{cache:'reload'});
-      const response=await fetch(request);
-      if(!response.ok)throw new Error(`HTTP ${response.status}`);
-      await cache.put(request,response.clone());
-      results.push({asset,ok:true});
-    }catch(error){
-      results.push({asset,ok:false,error:String(error?.message||error)});
-    }
-  }
-  return results;
-}
-
-async function cachedResponseFor(request){
-  const cache=await caches.open(CACHE);
-  let hit=await cache.match(request,{ignoreSearch:true});
-  if(hit)return hit;
-  const url=new URL(request.url);
-  if(request.mode==='navigate'){
-    let path=url.pathname;
-    if(path.endsWith('/'))path+='index.html';
-    else if(!/\.[^/]+$/.test(path))path+='/index.html';
-    const canonical=new Request(url.origin+path);
-    hit=await cache.match(canonical,{ignoreSearch:true});
-    if(hit)return hit;
-  }
-  return null;
-}
-
+async function cacheAssetList(cache){const results=[];for(const asset of ASSETS){try{const request=new Request(asset,{cache:'reload'});const response=await fetch(request);if(!response.ok)throw new Error(`HTTP ${response.status}`);await cache.put(request,response.clone());results.push({asset,ok:true});}catch(error){results.push({asset,ok:false,error:String(error?.message||error)});}}return results;}
+async function cachedResponseFor(request){const cache=await caches.open(CACHE);let hit=await cache.match(request,{ignoreSearch:true});if(hit)return hit;const url=new URL(request.url);if(request.mode==='navigate'){let path=url.pathname;if(path.endsWith('/'))path+='index.html';else if(!/\.[^/]+$/.test(path))path+='/index.html';const canonical=new Request(url.origin+path);hit=await cache.match(canonical,{ignoreSearch:true});if(hit)return hit;}return null;}
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cacheAssetList(cache);await self.skipWaiting();})());});
 self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE&&k.startsWith('tee-')).map(k=>caches.delete(k)));await self.clients.claim();})());});
 self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(url.origin!==self.location.origin)return;event.respondWith((async()=>{try{const fresh=await fetch(req,{cache:'no-store'});if(fresh&&fresh.ok){const cache=await caches.open(CACHE);await cache.put(req,fresh.clone());}return fresh;}catch{const cached=await cachedResponseFor(req);if(cached)return cached;if(req.mode==='navigate')return (await caches.match(OFFLINE_FALLBACK,{ignoreSearch:true}))||Response.error();return Response.error();}})());});
