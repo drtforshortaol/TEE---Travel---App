@@ -42,3 +42,12 @@
   document.getElementById('teeHelpClose')?.addEventListener('click',()=>dialog.close());
   dialog?.addEventListener('click',e=>{ if(e.target===dialog) dialog.close(); });
 })();
+
+// Load the volatile Vault authorization bridge after the Secure Vault scripts.
+(() => {
+  if(document.querySelector('script[data-tee-vault-session-bridge]')) return;
+  const script = document.createElement('script');
+  script.src = './vault-session-bridge.js';
+  script.dataset.teeVaultSessionBridge = '1';
+  document.head.appendChild(script);
+})();
