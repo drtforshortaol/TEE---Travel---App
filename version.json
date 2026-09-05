@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.53",
+  "version": "3.4.54",
   "channel": "review",
-  "publishedAt": "2026-09-04T18:55:00-07:00",
-  "notes": "Improves Daily Operations Today Documents after Vault unlock. Relevant protected records are now grouped by Transportation, Lodging, Activities, Identity/Entry, Travel Support, and Additional Source Details. Identity and support records appear only when the selected travel day calls for them, while Open Secure Vault and Open Full Source Documents remain available.",
-  "name": "TEE v3.4.53 — Travel-Day Document Filtering"
+  "publishedAt": "2026-09-04T18:58:00-07:00",
+  "notes": "Improves Daily Operations Checklist usability on iPhone. Tapping Checklist now explicitly opens the Adaptive Checklist, positions it below the sticky quick bar, and focuses the add-item field. Pressing Enter in the field adds the task, and the input is ready for the next item. The new checklist helper is included in the offline cache.",
+  "name": "TEE v3.4.54 — Checklist Quick Access"
 }
