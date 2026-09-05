@@ -14,6 +14,9 @@
   `;
   document.head.appendChild(style);
 
+  const instructions=panel.querySelector('.top-dropdown-body > p');
+  if(instructions)instructions.textContent='This is one cumulative trip checklist. Add items as they come up, check them off when done, and tap the trash can to permanently remove items you no longer need. Items stay on this device until removed.';
+
   function makeDeleteObvious(){
     mount?.querySelectorAll('.custom-task button').forEach(button=>{
       if(button.textContent!=='🗑️')button.textContent='🗑️';
