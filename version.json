@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.64",
+  "version": "3.4.65",
   "channel": "review",
-  "publishedAt": "2026-09-05T13:48:00-07:00",
-  "notes": "Adds direct Unlock/View buttons beside Emilio and Robert in Quick Reference, changes their placeholder wording to protected Shared details, and explains that Vault authorization is tab-specific so a Vault opened in another tab can still appear locked here. The buttons force same-tab Vault navigation with return context. Adaptive Checklist storage and protected data handling are unchanged.",
-  "name": "TEE v3.4.64 — Emergency Contact Vault Access"
+  "publishedAt": "2026-09-05T13:55:00-07:00",
+  "notes": "Simplifies Emergency Contact retrieval in Quick Reference. When the Secure Vault is already open in the current tab, the Emilio and Robert buttons now jump directly to that person's protected Shared record in place instead of reopening the Vault. When locked, the same buttons still open the Vault. Includes a brief retry for delayed protected-context rendering and falls back to the Vault only if the contact cannot be rendered locally. Adaptive Checklist and protected data storage are unchanged.",
+  "name": "TEE v3.4.65 — Direct Emergency Contact Retrieval"
 }
