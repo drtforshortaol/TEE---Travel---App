@@ -1,4 +1,4 @@
-const CACHE = 'tee-itinerary-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-itinerary-v3-4-60-part2-context';
 const CACHE_PREFIX = 'tee-itinerary-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../assets/icon.svg'];
 
