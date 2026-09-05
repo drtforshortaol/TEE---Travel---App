@@ -9,27 +9,16 @@
   <link rel="stylesheet" href="travel-day-quickbar-v3445.css" />
   <link rel="stylesheet" href="../../traveler-help.css" />
   <style>
-    /* Full Itinerary landing: make Day After Tomorrow occupy the same
-       country-header + active-card position used by Today and Tomorrow. */
-    .trip-day-dropdown.day-after-card{
-      border-width:2px;
-      border-color:#b18b4a;
-      box-shadow:0 4px 16px rgba(138,100,45,.10);
-    }
-    .trip-day-dropdown.day-after-card>summary{
-      background:#fbf5e7 !important;
-    }
-    .day-title-label.day-after{
-      background:#8a642d;
-      color:#fff;
-    }
-    .day-status.day-after{
-      min-width:72px;
-      text-align:center;
-    }
-    .country-dropdown.itinerary-current{
-      scroll-margin-top:108px;
-    }
+    .trip-day-dropdown.day-after-card{border-width:2px;border-color:#b18b4a;box-shadow:0 4px 16px rgba(138,100,45,.10)}
+    .trip-day-dropdown.day-after-card>summary{background:#fbf5e7 !important}
+    .day-title-label.day-after{background:#8a642d;color:#fff}
+    .day-status.day-after{min-width:72px;text-align:center}
+    .country-dropdown.itinerary-current{scroll-margin-top:108px}
+    .trip-day-dropdown.tomorrow-jump-card{border-width:2px;border-color:#5b7f98;box-shadow:0 4px 16px rgba(49,95,125,.10)}
+    .trip-day-dropdown.tomorrow-jump-card>summary{background:#edf5fa !important}
+    .day-title-label.tomorrow-jump{background:#315f7d;color:#fff}
+    .day-status.tomorrow-jump{min-width:72px;text-align:center}
+    .country-dropdown.tomorrow-current{scroll-margin-top:108px}
   </style>
 </head>
 <body>
@@ -50,63 +39,30 @@
 
   <main>
     <details class="top-dropdown day-test-panel" aria-labelledby="testDayTitle">
-      <summary>
-        <span>
-          <span class="section-kicker">DATE / TEST CONTROL</span>
-          <strong id="testDayTitle">Change or test Today / Tomorrow</strong>
-        </span>
-        <span class="top-dropdown-state">Open</span>
-      </summary>
-      <div class="top-dropdown-body">
-        <p id="testModeExplanation">Loading current trip context…</p>
-        <div class="test-controls">
-          <label for="previewDateSelect">Preview / Test Today
-            <select id="previewDateSelect"></select>
-          </label>
-          <button id="useActualDateBtn" type="button">Use actual date</button>
-        </div>
-      </div>
+      <summary><span><span class="section-kicker">DATE / TEST CONTROL</span><strong id="testDayTitle">Change or test Today / Tomorrow</strong></span><span class="top-dropdown-state">Open</span></summary>
+      <div class="top-dropdown-body"><p id="testModeExplanation">Loading current trip context…</p><div class="test-controls"><label for="previewDateSelect">Preview / Test Today<select id="previewDateSelect"></select></label><button id="useActualDateBtn" type="button">Use actual date</button></div></div>
     </details>
 
     <section id="trip-day-context" class="focus-strip" aria-label="Today and Tomorrow">
-      <article id="today-focus" class="focus-card today-focus">
-        <span class="focus-label">TODAY</span>
-        <strong id="todaySummary">—</strong>
-      </article>
-      <article id="tomorrow-focus" class="focus-card tomorrow-focus">
-        <span class="focus-label">TOMORROW</span>
-        <strong id="tomorrowSummary">—</strong>
-      </article>
+      <article id="today-focus" class="focus-card today-focus"><span class="focus-label">TODAY</span><strong id="todaySummary">—</strong></article>
+      <article id="tomorrow-focus" class="focus-card tomorrow-focus"><span class="focus-label">TOMORROW</span><strong id="tomorrowSummary">—</strong></article>
     </section>
 
     <section id="dailyVaultStatus" class="daily-vault-status" aria-live="polite"></section>
 
     <details id="adaptive-checklist" class="top-dropdown quick-panel adaptive-panel">
-      <summary>
-        <span><span class="section-kicker">LIVING LIST</span><strong>Adaptive Checklist</strong></span>
-        <span class="top-dropdown-state">Open</span>
-      </summary>
-      <div class="top-dropdown-body">
-        <p>Add things that come up during the trip. Items stay on this device.</p>
-        <div class="add-row"><input id="newTaskInput" type="text" placeholder="Add: buy tickets, call hotel, grocery stop…" /><button id="addTaskBtn">Add</button></div>
-        <div id="customTaskMount" class="custom-tasks"></div>
-      </div>
+      <summary><span><span class="section-kicker">LIVING LIST</span><strong>Adaptive Checklist</strong></span><span class="top-dropdown-state">Open</span></summary>
+      <div class="top-dropdown-body"><p>Add things that come up during the trip. Items stay on this device.</p><div class="add-row"><input id="newTaskInput" type="text" placeholder="Add: buy tickets, call hotel, grocery stop…" /><button id="addTaskBtn">Add</button></div><div id="customTaskMount" class="custom-tasks"></div></div>
     </details>
 
     <section id="daily-context" class="country-plan" aria-labelledby="countryPlanTitle">
-      <div class="section-head">
-        <div><span class="section-kicker">DAILY CONTEXT</span><h2 id="countryPlanTitle">Trip days by country</h2><p>Today and Tomorrow are highlighted. Open only the topic you need; other countries and dates stay collapsed.</p></div>
-      </div>
+      <div class="section-head"><div><span class="section-kicker">DAILY CONTEXT</span><h2 id="countryPlanTitle">Trip days by country</h2><p>Today and Tomorrow are highlighted. Open only the topic you need; other countries and dates stay collapsed.</p></div></div>
       <div id="countryMount" class="country-mount"></div>
     </section>
 
     <details class="protocols">
       <summary><span><strong>Daily Operations Protocols</strong><small>General travel-day rhythm and how to use this app.</small></span><span>Expand</span></summary>
-      <div class="protocol-body">
-        <h3>Morning</h3><ul><li>Use the open Today card as the primary traveler screen.</li><li>Work down the numbered sections in order.</li><li>Add unexpected tasks to Adaptive Checklist.</li></ul>
-        <h3>Night before</h3><ul><li>Use the open Tomorrow card to stage luggage, clothing, documents, money, and timing.</li><li>Charge devices and prepare the day bag.</li><li>If Vault authorization is active, tomorrow’s relevant protected booking details are shown directly in the card.</li></ul>
-        <h3>Protected details</h3><p>When the Vault is locked, Shared/Private values are omitted. After authorization, relevant secure details appear directly inside Today and Tomorrow for the remainder of the authorized session. Reveal/Collapse remains available.</p>
-      </div>
+      <div class="protocol-body"><h3>Morning</h3><ul><li>Use the open Today card as the primary traveler screen.</li><li>Work down the numbered sections in order.</li><li>Add unexpected tasks to Adaptive Checklist.</li></ul><h3>Night before</h3><ul><li>Use the open Tomorrow card to stage luggage, clothing, documents, money, and timing.</li><li>Charge devices and prepare the day bag.</li><li>If Vault authorization is active, tomorrow’s relevant protected booking details are shown directly in the card.</li></ul><h3>Protected details</h3><p>When the Vault is locked, Shared/Private values are omitted. After authorization, relevant secure details appear directly inside Today and Tomorrow for the remainder of the authorized session. Reveal/Collapse remains available.</p></div>
     </details>
   </main>
   <script src="../../vault-session.js"></script>
@@ -118,148 +74,51 @@
       const MARKER_ID='tee-jump-landing-marker';
       function openParents(el){let p=el?.parentElement;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}}
       function closePanel(el){if(el?.tagName==='DETAILS')el.open=false;}
-      function markerBefore(el,label,tone){
-        document.getElementById(MARKER_ID)?.remove();
-        const m=document.createElement('div');
-        m.id=MARKER_ID;
-        m.textContent=label;
-        m.style.cssText=`margin:18px 0 10px;padding:14px 16px;border-radius:14px;font-weight:900;letter-spacing:.08em;font-size:.92rem;border:2px solid ${tone};background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.08);scroll-margin-top:108px;`;
-        el.parentNode.insertBefore(m,el);
-        return m;
-      }
-      function land(el,label,tone){
-        if(!el)return false;
-        openParents(el);
-        const marker=markerBefore(el,label,tone);
-        requestAnimationFrame(()=>{
-          const top=marker.getBoundingClientRect().top+window.scrollY-96;
-          window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
-        });
-        el.animate?.([{outline:'4px solid transparent'},{outline:`4px solid ${tone}`},{outline:'4px solid transparent'}],{duration:1100});
-        return true;
-      }
-      function findDayInItinerary(offset){
-        const mount=document.getElementById('countryMount');
-        if(!mount)return null;
-        let label='';
-        try{label=DAYS[Math.min(activeIndex+offset,DAYS.length-1)]?.date||'';}catch{}
-        if(label){
-          const candidates=[...mount.querySelectorAll('.day-card,[data-day-index],[data-date],article,details,summary,h2,h3,h4,strong')];
-          const found=candidates.find(el=>(el.textContent||'').includes(label));
-          if(found)return found.closest('.day-card,[data-day-index],[data-date],article,details')||found;
-        }
-        return mount;
-      }
+      function markerBefore(el,label,tone){document.getElementById(MARKER_ID)?.remove();const m=document.createElement('div');m.id=MARKER_ID;m.textContent=label;m.style.cssText=`margin:18px 0 10px;padding:14px 16px;border-radius:14px;font-weight:900;letter-spacing:.08em;font-size:.92rem;border:2px solid ${tone};background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.08);scroll-margin-top:108px;`;el.parentNode.insertBefore(m,el);return m;}
+      function land(el,label,tone){if(!el)return false;openParents(el);const marker=markerBefore(el,label,tone);requestAnimationFrame(()=>{const top=marker.getBoundingClientRect().top+window.scrollY-96;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});});el.animate?.([{outline:'4px solid transparent'},{outline:`4px solid ${tone}`},{outline:'4px solid transparent'}],{duration:1100});return true;}
+      function findDayInItinerary(offset){const mount=document.getElementById('countryMount');if(!mount)return null;let label='';try{label=DAYS[Math.min(activeIndex+offset,DAYS.length-1)]?.date||'';}catch{}if(label){const candidates=[...mount.querySelectorAll('.day-card,[data-day-index],[data-date],article,details,summary,h2,h3,h4,strong')];const found=candidates.find(el=>(el.textContent||'').includes(label));if(found)return found.closest('.day-card,[data-day-index],[data-date],article,details')||found;}return mount;}
       function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
       function tomorrowPanel(){return document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus');}
 
       function resetItineraryPositioning(){
         document.getElementById(MARKER_ID)?.remove();
-        document.querySelectorAll('.trip-day-dropdown[data-tee-itinerary-hidden="1"]').forEach(el=>{
-          el.hidden=false;
-          delete el.dataset.teeItineraryHidden;
-        });
-        document.querySelectorAll('.trip-day-dropdown.day-after-card').forEach(el=>{
-          el.classList.remove('day-after-card');
-          const label=el.querySelector('.day-title-label.day-after');
-          label?.remove();
-          const status=el.querySelector('.day-status.day-after');
-          if(status){
-            status.className='day-state';
-            status.textContent=el.open?'Collapse':'Expand';
-          }
-        });
-        document.querySelectorAll('.country-dropdown.itinerary-current').forEach(country=>{
-          country.classList.remove('itinerary-current');
-          const state=country.querySelector(':scope > summary .country-state');
-          if(state){
-            const visible=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];
-            const hasToday=visible.some(el=>Number(el.dataset.dayIndex)===activeIndex);
-            const hasTomorrow=visible.some(el=>Number(el.dataset.dayIndex)===Math.min(activeIndex+1,DAYS.length-1));
-            const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');
-            state.textContent=flags||'Expand';
-          }
-        });
+        document.querySelectorAll('.trip-day-dropdown[data-tee-itinerary-hidden="1"]').forEach(el=>{el.hidden=false;delete el.dataset.teeItineraryHidden;});
+        document.querySelectorAll('.trip-day-dropdown.day-after-card').forEach(el=>{el.classList.remove('day-after-card');el.querySelector('.day-title-label.day-after')?.remove();const status=el.querySelector('.day-status.day-after');if(status){status.className='day-state';status.textContent=el.open?'Collapse':'Expand';}});
+        document.querySelectorAll('.trip-day-dropdown.tomorrow-jump-card').forEach(el=>{el.classList.remove('tomorrow-jump-card');el.querySelector('.day-title-label.tomorrow-jump')?.remove();const status=el.querySelector('.day-status.tomorrow-jump');if(status){status.className='day-state';status.textContent=el.open?'Collapse':'Expand';}});
+        document.querySelectorAll('.country-dropdown.itinerary-current,.country-dropdown.tomorrow-current').forEach(country=>{country.classList.remove('itinerary-current','tomorrow-current');const state=country.querySelector(':scope > summary .country-state');if(state){const visible=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const hasToday=visible.some(el=>Number(el.dataset.dayIndex)===activeIndex);const hasTomorrow=visible.some(el=>Number(el.dataset.dayIndex)===Math.min(activeIndex+1,DAYS.length-1));const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');state.textContent=flags||'Expand';}});
+      }
+
+      function positionTomorrow(){
+        resetItineraryPositioning();
+        const targetIndex=Math.min(activeIndex+1,DAYS.length-1);
+        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(1);if(!target)return false;
+        const country=target.closest('.country-dropdown');if(!country)return false;
+        country.open=true;country.classList.add('tomorrow-current');
+        const countryState=country.querySelector(':scope > summary .country-state');if(countryState)countryState.textContent='TOMORROW';
+        target.hidden=false;target.open=true;target.classList.add('tomorrow-jump-card');
+        const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.tomorrow-jump')){const badge=document.createElement('span');badge.className='day-title-label tomorrow-jump';badge.textContent='TOMORROW';main.insertBefore(badge,main.firstChild);}
+        const oldState=target.querySelector('.day-state');if(oldState){oldState.className='day-status tomorrow-jump';oldState.textContent='COLLAPSE';}
+        const keepTomorrowLabel=()=>{const status=target.querySelector('.day-status.tomorrow-jump');if(status)status.textContent=target.open?'COLLAPSE':'OPEN';const badge=target.querySelector('.day-title-label.tomorrow-jump');if(badge)badge.textContent='TOMORROW';if(countryState)countryState.textContent='TOMORROW';};
+        target.addEventListener('toggle',keepTomorrowLabel);
+        requestAnimationFrame(()=>{const expanded=target.querySelector('.trip-day-body,.day-detail,.day-content')||target;const top=expanded.getBoundingClientRect().top+window.scrollY-96;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #315f7d'},{outline:'4px solid transparent'}],{duration:1100});});
+        return true;
       }
 
       function positionDayAfterTomorrow(){
         resetItineraryPositioning();
         const targetIndex=Math.min(activeIndex+2,DAYS.length-1);
-        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(2);
-        if(!target)return false;
-        const country=target.closest('.country-dropdown');
-        if(!country)return false;
-
-        country.open=true;
-        country.classList.add('itinerary-current');
-        const countryState=country.querySelector(':scope > summary .country-state');
-        if(countryState)countryState.textContent='DAY AFTER TOMORROW';
-
-        const dayHost=country.querySelector(':scope > .country-days');
-        if(dayHost){
-          [...dayHost.querySelectorAll(':scope > .trip-day-dropdown')].forEach(el=>{
-            const idx=Number(el.dataset.dayIndex);
-            if(Number.isFinite(idx)&&idx<targetIndex){
-              el.hidden=true;
-              el.dataset.teeItineraryHidden='1';
-            }
-          });
-        }
-
-        target.hidden=false;
-        delete target.dataset.teeItineraryHidden;
-        target.classList.add('day-after-card');
-        target.open=true;
-        const main=target.querySelector('.day-summary-main');
-        if(main&&!main.querySelector('.day-title-label.day-after')){
-          const badge=document.createElement('span');
-          badge.className='day-title-label day-after';
-          badge.textContent='DAY AFTER TOMORROW';
-          main.insertBefore(badge,main.firstChild);
-        }
-        const oldState=target.querySelector('.day-state');
-        if(oldState){
-          oldState.className='day-status day-after';
-          oldState.textContent='COLLAPSE';
-        }
-        target.addEventListener('toggle',()=>{
-          const status=target.querySelector('.day-status.day-after');
-          if(status)status.textContent=target.open?'COLLAPSE':'OPEN';
-        },{once:false});
-
-        requestAnimationFrame(()=>{
-          const top=country.getBoundingClientRect().top+window.scrollY-96;
-          window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
-          target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #8a642d'},{outline:'4px solid transparent'}],{duration:1100});
-        });
-        return true;
+        const target=document.querySelector(`.trip-day-dropdown[data-day-index="${targetIndex}"]`)||findDayInItinerary(2);if(!target)return false;
+        const country=target.closest('.country-dropdown');if(!country)return false;
+        country.open=true;country.classList.add('itinerary-current');const countryState=country.querySelector(':scope > summary .country-state');if(countryState)countryState.textContent='DAY AFTER TOMORROW';
+        const dayHost=country.querySelector(':scope > .country-days');if(dayHost){[...dayHost.querySelectorAll(':scope > .trip-day-dropdown')].forEach(el=>{const idx=Number(el.dataset.dayIndex);if(Number.isFinite(idx)&&idx<targetIndex){el.hidden=true;el.dataset.teeItineraryHidden='1';}});}
+        target.hidden=false;delete target.dataset.teeItineraryHidden;target.classList.add('day-after-card');target.open=true;
+        const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const badge=document.createElement('span');badge.className='day-title-label day-after';badge.textContent='DAY AFTER TOMORROW';main.insertBefore(badge,main.firstChild);}
+        const oldState=target.querySelector('.day-state');if(oldState){oldState.className='day-status day-after';oldState.textContent='COLLAPSE';}
+        target.addEventListener('toggle',()=>{const status=target.querySelector('.day-status.day-after');if(status)status.textContent=target.open?'COLLAPSE':'OPEN';});
+        requestAnimationFrame(()=>{const top=country.getBoundingClientRect().top+window.scrollY-96;window.scrollTo({top:Math.max(0,top),behavior:'smooth'});target.animate?.([{outline:'4px solid transparent'},{outline:'4px solid #8a642d'},{outline:'4px solid transparent'}],{duration:1100});});return true;
       }
 
-      document.querySelectorAll('[data-tee-jump]').forEach(link=>{
-        link.addEventListener('click',event=>{
-          event.preventDefault();
-          const action=link.dataset.teeJump;
-          const today=todayPanel(), tomorrow=tomorrowPanel();
-          if(action==='today'){
-            resetItineraryPositioning();
-            closePanel(tomorrow);
-            if(today?.tagName==='DETAILS')today.open=true;
-            land(today,'TODAY — START HERE','#2f6b57');
-            return;
-          }
-          if(action==='tomorrow'){
-            resetItineraryPositioning();
-            closePanel(today);
-            if(tomorrow?.tagName==='DETAILS')tomorrow.open=true;
-            land(tomorrow,'TOMORROW — PREPARE HERE','#315f7d');
-            return;
-          }
-          if(action==='itinerary'){
-            closePanel(today);closePanel(tomorrow);
-            positionDayAfterTomorrow();
-          }
-        });
-      });
+      document.querySelectorAll('[data-tee-jump]').forEach(link=>{link.addEventListener('click',event=>{event.preventDefault();const action=link.dataset.teeJump;const today=todayPanel(),tomorrow=tomorrowPanel();if(action==='today'){resetItineraryPositioning();closePanel(tomorrow);if(today?.tagName==='DETAILS')today.open=true;land(today,'TODAY — START HERE','#2f6b57');return;}if(action==='tomorrow'){closePanel(today);if(tomorrow?.tagName==='DETAILS')tomorrow.open=true;positionTomorrow();return;}if(action==='itinerary'){closePanel(today);closePanel(tomorrow);positionDayAfterTomorrow();}});});
     })();
   </script>
 </body>
