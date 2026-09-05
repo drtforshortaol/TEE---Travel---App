@@ -43,7 +43,7 @@
     let session=null;
     try{session=secureSession();}catch{}
     if(!session){
-      body.innerHTML=`<p class="today-documents-date"><strong>${esc(d.date)}</strong> · ${esc(d.city||'')}</p><div class="today-documents-empty"><strong>Secure Vault is locked.</strong><p>Unlock the Vault to show the documents and protected records relevant to this travel day.</p></div><div class="today-documents-actions"><a href="../travel-private-documents/index.html">Open Secure Vault / Source Documents</a></div>`;
+      body.innerHTML=`<p class="today-documents-date"><strong>${esc(d.date)}</strong> · ${esc(d.city||'')}</p><div class="today-documents-empty"><strong>Secure Vault is locked.</strong><p>Unlock the Vault to show the documents and protected records relevant to this travel day.</p></div><div class="today-documents-actions"><a href="../travel-private-documents/index.html?teeView=vault">Open Secure Vault</a></div>`;
       return;
     }
 
