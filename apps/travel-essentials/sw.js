@@ -1,4 +1,4 @@
-const CACHE = 'tee-essentials-v3-4-76-inline-vault-session-read';
+const CACHE = 'tee-essentials-v3-4-77-live-vault-payload';
 const CACHE_PREFIX = 'tee-essentials-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
