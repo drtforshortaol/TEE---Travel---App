@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.61",
+  "version": "3.4.62",
   "channel": "review",
-  "publishedAt": "2026-09-05T11:38:00-07:00",
-  "notes": "Republishes the current Part 2 Austria/Switzerland working context after an accidental local deletion. Restores the same current route and conflict-resolution rules from v3.4.60, with older proposed Part 2 routing still treated as superseded. Protected booking, traveler, seat, confirmation and payment data remain in Secure Vault / Source Documents.",
-  "name": "TEE v3.4.61 — Part 2 Republish"
+  "publishedAt": "2026-09-05T12:39:00-07:00",
+  "notes": "Adds a portable Adaptive Checklist transfer workflow so the iPhone and PC can be kept matched. Checklist items remain browser-local for offline reliability, but Daily Operations now provides Share / Copy Checklist and Import Checklist controls that safely merge items without deleting existing entries. The new transfer helper is included in the Daily Operations offline cache.",
+  "name": "TEE v3.4.62 — Portable Adaptive Checklist"
 }
