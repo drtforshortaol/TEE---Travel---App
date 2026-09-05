@@ -49,11 +49,6 @@
     const raw = sessionStorage.getItem(KEY);
     let value = parse(raw);
     if(!value && raw) sessionStorage.removeItem(KEY);
-
-    // window.name survives ordinary navigation in the same browser tab. It is
-    // volatile tab memory, not persistent storage. This lets Hub -> Quick
-    // Reference carry the 30-minute authorization without storing decrypted
-    // records in localStorage.
     if(!value){
       value = windowSession();
       if(value){
@@ -107,7 +102,7 @@
     const incoming = parse(candidate);
     if(!incoming) return false;
     const current = rawSession();
-    if(current && Number(current.expiresAt) >= Number(incoming.expiresAt)) return false;
+    if(current && Number(current.expiresAt) > Number(incoming.expiresAt)) return false;
     sessionStorage.setItem(KEY, JSON.stringify(incoming));
     rememberInTab(incoming);
     lastAnnouncedSignature = signature(incoming);
@@ -200,6 +195,20 @@
     }catch{ channel = null; }
   }
 
+  // Embedded Secure Vault can send the complete authorized session to the
+  // top-level TEE page. Only same-origin messages are accepted.
+  window.addEventListener("message", event => {
+    if(event.origin !== window.location.origin) return;
+    const message = event.data || {};
+    if(message.type === "TEE_VAULT_SESSION_PAYLOAD"){
+      acceptSyncedSession(message.session);
+      return;
+    }
+    if(message.type === "TEE_VAULT_SESSION_CLEARED"){
+      clear("vault-closed");
+    }
+  });
+
   window.TEEVaultSession = Object.freeze({
     key:KEY,
     eventName:EVENT,
@@ -209,7 +218,8 @@
     formatRemaining,
     describe,
     records,
-    clear
+    clear,
+    accept:acceptSyncedSession
   });
 
   schedule();
