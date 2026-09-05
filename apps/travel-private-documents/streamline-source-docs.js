@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  const BUILD='3.4.40';
+  let BUILD='3.4.59';
   const params=new URLSearchParams(location.search);
   const maintenanceRequested=params.get('teeMode')==='maintenance';
   const maintUntil=Number(sessionStorage.getItem('teeMaintenanceAuthorizedUntilV1')||0);
@@ -15,6 +15,9 @@
   const buildLabel=document.querySelector('header.hero .subtitle strong');
   const setBuild=()=>{if(buildLabel&&buildLabel.textContent!==`TEE v${BUILD}`)buildLabel.textContent=`TEE v${BUILD}`;};
   setBuild();
+  // Keep the visible Source Documents version synchronized with the app-level version.
+  // The local BUILD value is the offline fallback; version.json becomes authoritative when available.
+  fetch('../../version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{if(v?.version){BUILD=String(v.version);setBuild();}}).catch(()=>{});
 
   // iOS Files can report JSON backups with a generic UTI/MIME type. Restricting
   // the hidden file input with accept=... can therefore gray out a valid TEE
