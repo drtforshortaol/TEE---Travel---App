@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.47",
+  "version": "3.4.48",
   "channel": "review",
-  "publishedAt": "2026-09-04T16:57:00-07:00",
-  "notes": "Makes Daily Operations navigation more visually and spatially distinct. Today opens at the start of the Today operational panel, Tomorrow opens at the start of the Tomorrow preparation panel, and Full Itinerary opens at the day after Tomorrow. Each jump now adds a clear START HERE landing marker, collapses the competing day panel, and positions the selected section below the sticky quick bar.",
-  "name": "TEE v3.4.47 — Distinct Travel-Day Landing Positions"
+  "publishedAt": "2026-09-04T17:06:00-07:00",
+  "notes": "Adjusts Daily Operations Tomorrow navigation to land on the actual Tomorrow itinerary day card in its expanded view. The Tomorrow card now keeps an explicit TOMORROW label when collapsed, while the Full Itinerary day-after-Tomorrow landing remains unchanged.",
+  "name": "TEE v3.4.48 — Tomorrow Expanded Itinerary Position"
 }
