@@ -107,11 +107,11 @@
     document.head.appendChild(script);
   }
 
-  // v3.4.57 — checklist uses a trash-can delete control for custom items.
+  // v3.4.58 — checklist instructions clarify cumulative trip behavior and deletion.
   if(!document.querySelector('script[data-tee-checklist-quick-access]')){
     const script=document.createElement('script');
-    script.src='checklist-quick-access-v3454.js?v=3.4.57';
-    script.dataset.teeChecklistQuickAccess='3.4.57';
+    script.src='checklist-quick-access-v3454.js?v=3.4.58';
+    script.dataset.teeChecklistQuickAccess='3.4.58';
     document.head.appendChild(script);
   }
 })();
