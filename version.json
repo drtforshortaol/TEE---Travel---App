@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.77",
+  "version": "3.4.78",
   "channel": "review",
-  "publishedAt": "2026-09-05T16:28:00-07:00",
-  "notes": "Quick Reference now pulls the complete temporary authorized session directly from the live same-origin Secure Vault frame by calling the Vault's own session payload builder after unlock. This bypasses the unreliable summary/sessionStorage handoff that left the page banner locked. The inline Vault should close once authorization is detected, then protected Shared/Private records can render in place. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.77 — Live Vault Payload Bridge"
+  "publishedAt": "2026-09-05T16:45:00-07:00",
+  "notes": "Controlled Vault authorization refactor. The encrypted Vault and passphrases are unchanged. One central 30-minute session manager now receives one full same-origin postMessage payload from the Vault. Legacy BroadcastChannel, window.name, iframe polling, direct iframe sessionStorage copying, and emergency-contact deep-link/search plumbing are retired. Quick Reference relies on protected-context to place authorized Shared/Private records directly in their appropriate cards. Adaptive Checklist and trip data are unchanged.",
+  "name": "TEE v3.4.78 — Clean Vault Authorization Refactor"
 }
