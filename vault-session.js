@@ -5,6 +5,7 @@
   const REQUIRED_VERSION = 2;
   const EVENT = "tee-vault-session-changed";
   const CHANNEL_NAME = "tee-vault-session-sync-v1";
+  const WINDOW_NAME_PREFIX = "TEE_VAULT_SESSION_V2:";
   let expiryTimer = null;
   let channel = null;
   let lastAnnouncedSignature = "";
@@ -23,12 +24,43 @@
     }
   }
 
+  function windowSession(){
+    try{
+      if(!String(window.name || "").startsWith(WINDOW_NAME_PREFIX)) return null;
+      return parse(String(window.name).slice(WINDOW_NAME_PREFIX.length));
+    }catch{
+      return null;
+    }
+  }
+
+  function rememberInTab(session){
+    const valid = parse(session);
+    if(!valid) return;
+    try{ window.name = WINDOW_NAME_PREFIX + JSON.stringify(valid); }catch{}
+  }
+
+  function forgetFromTab(){
+    try{
+      if(String(window.name || "").startsWith(WINDOW_NAME_PREFIX)) window.name = "";
+    }catch{}
+  }
+
   function rawSession(){
     const raw = sessionStorage.getItem(KEY);
-    const value = parse(raw);
-    if(!value && raw){
-      sessionStorage.removeItem(KEY);
+    let value = parse(raw);
+    if(!value && raw) sessionStorage.removeItem(KEY);
+
+    // window.name survives ordinary navigation in the same browser tab. It is
+    // volatile tab memory, not persistent storage. This lets Hub -> Quick
+    // Reference carry the 30-minute authorization without storing decrypted
+    // records in localStorage.
+    if(!value){
+      value = windowSession();
+      if(value){
+        try{ sessionStorage.setItem(KEY, JSON.stringify(value)); }catch{}
+      }
     }
+    if(value) rememberInTab(value);
     return value;
   }
 
@@ -48,6 +80,7 @@
   function announce(session){
     const valid = parse(session);
     if(!valid) return;
+    rememberInTab(valid);
     const sig = signature(valid);
     if(sig === lastAnnouncedSignature) return;
     lastAnnouncedSignature = sig;
@@ -62,6 +95,7 @@
     const delay = Math.max(0, Number(session.expiresAt) - Date.now());
     expiryTimer = setTimeout(()=>{
       sessionStorage.removeItem(KEY);
+      forgetFromTab();
       expiryTimer = null;
       lastAnnouncedSignature = "";
       post({type:"clear", reason:"expired"});
@@ -75,6 +109,7 @@
     const current = rawSession();
     if(current && Number(current.expiresAt) >= Number(incoming.expiresAt)) return false;
     sessionStorage.setItem(KEY, JSON.stringify(incoming));
+    rememberInTab(incoming);
     lastAnnouncedSignature = signature(incoming);
     schedule();
     emit("synced");
@@ -99,6 +134,7 @@
 
   function clear(reason="manual"){
     sessionStorage.removeItem(KEY);
+    forgetFromTab();
     if(expiryTimer !== null) clearTimeout(expiryTimer);
     expiryTimer = null;
     lastAnnouncedSignature = "";
@@ -151,8 +187,9 @@
           return;
         }
         if(message.type === "clear"){
-          if(sessionStorage.getItem(KEY)){
+          if(sessionStorage.getItem(KEY) || windowSession()){
             sessionStorage.removeItem(KEY);
+            forgetFromTab();
             if(expiryTimer !== null) clearTimeout(expiryTimer);
             expiryTimer = null;
             lastAnnouncedSignature = "";
@@ -182,7 +219,7 @@
   window.addEventListener("pageshow", ()=>{
     schedule();
     const session = rawSession();
-    if(session) announce(session);
+    if(session){ announce(session); emit("pageshow"); }
     else post({type:"request"});
   });
   document.addEventListener("visibilitychange", ()=>{
@@ -191,7 +228,7 @@
       const current = rawSession();
       if(before && !current) emit("expired");
       schedule();
-      if(current) announce(current);
+      if(current){ announce(current); emit("visible"); }
       else post({type:"request"});
     }
   });
