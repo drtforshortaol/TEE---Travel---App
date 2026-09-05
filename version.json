@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.57",
+  "version": "3.4.58",
   "channel": "review",
-  "publishedAt": "2026-09-04T19:12:00-07:00",
-  "notes": "Changes Adaptive Checklist custom-item deletion to a clear trash-can control. Tapping the trash can permanently removes that custom checklist item from the device. Existing checklist storage, Today/Tomorrow navigation, country-date corrections, Documents, and offline behavior are unchanged.",
-  "name": "TEE v3.4.57 — Checklist Trash Delete"
+  "publishedAt": "2026-09-04T19:56:00-07:00",
+  "notes": "Clarifies Adaptive Checklist behavior. The checklist is one cumulative trip list shared across all travel days on this device. Items remain until checked or deleted; tapping the trash can permanently removes an item. Existing checklist storage and travel-day navigation are unchanged.",
+  "name": "TEE v3.4.58 — Cumulative Checklist Instructions"
 }
