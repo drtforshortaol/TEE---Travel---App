@@ -12,6 +12,7 @@
     .trip-day-dropdown.day-after-card{border-width:2px;border-color:#b18b4a;box-shadow:0 4px 16px rgba(138,100,45,.10)}
     .trip-day-dropdown.day-after-card>summary{background:#fbf5e7 !important}
     .day-title-label.day-after{background:#8a642d;color:#fff}
+    .day-title-label.tomorrow-nav{background:#667527;color:#fff}
     .day-status.day-after{min-width:72px;text-align:center}
     .country-dropdown.tomorrow-current{scroll-margin-top:108px}
   </style>
@@ -45,30 +46,48 @@
     function closePanel(el){if(el?.tagName==='DETAILS')el.open=false;}
     function findDay(offset){const idx=Math.min(activeIndex+offset,DAYS.length-1);return document.querySelector(`.trip-day-dropdown[data-day-index="${idx}"]`);}
     function countryState(country,label){const state=country?.querySelector(':scope > summary .country-state');if(state)state.textContent=label;}
-    function normalCountryState(country){const days=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const hasToday=days.some(x=>+x.dataset.dayIndex===activeIndex);const hasTomorrow=days.some(x=>+x.dataset.dayIndex===Math.min(activeIndex+1,DAYS.length-1));countryState(country,hasToday?'TODAY':hasTomorrow?'TOMORROW':'Expand');}
+    function normalCountryState(country){const days=[...country.querySelectorAll(':scope > .country-days > .trip-day-dropdown')];const hasToday=days.some(x=>+x.dataset.dayIndex===activeIndex);const hasTomorrow=days.some(x=>+x.dataset.dayIndex===Math.min(activeIndex+1,DAYS.length-1));const flags=[hasToday?'TODAY':'',hasTomorrow?'TOMORROW':''].filter(Boolean).join(' + ');countryState(country,flags||'Expand');}
+    function ensureTomorrowBadge(){
+      const target=findDay(1);if(!target)return null;
+      target.hidden=false;
+      const main=target.querySelector('.day-summary-main');
+      if(main&&!main.querySelector('.day-title-label.tomorrow-nav')){const b=document.createElement('span');b.className='day-title-label tomorrow-nav';b.textContent='TOMORROW';main.prepend(b);}
+      return target;
+    }
     function clearDayAfter(){document.querySelectorAll('.day-after-card').forEach(x=>{x.classList.remove('day-after-card');x.querySelector('.day-title-label.day-after')?.remove();const s=x.querySelector('.day-status.day-after');if(s){s.className='day-state';s.textContent=x.open?'Collapse':'Expand';}});}
-    function resetView(){clearDayAfter();document.querySelectorAll('.country-dropdown').forEach(c=>{c.classList.remove('tomorrow-current');normalCountryState(c);});}
+    function resetView(){clearDayAfter();document.querySelectorAll('.country-dropdown').forEach(c=>{c.classList.remove('tomorrow-current');normalCountryState(c);});ensureTomorrowBadge();}
     function scrollTo(el){requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+scrollY-96),behavior:'smooth'}));}
 
     function showTomorrow(){
-      resetView();const target=findDay(1);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
+      resetView();const target=ensureTomorrowBadge();if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
       country.open=true;country.classList.add('tomorrow-current');countryState(country,'TOMORROW');target.hidden=false;target.open=true;scrollTo(country);
     }
 
     function showDayAfter(){
-      resetView();const tomorrow=findDay(1);const target=findDay(2);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
-      /* Keep Tomorrow as a real, visible, reopenable card. Only collapse it to make room. */
-      if(tomorrow){tomorrow.hidden=false;tomorrow.open=false;}
-      country.open=true;country.classList.add('tomorrow-current');countryState(country,'TOMORROW');
-      target.hidden=false;target.open=true;target.classList.add('day-after-card');
+      resetView();const tomorrow=ensureTomorrowBadge();const target=findDay(2);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
+      /* Do not close Tomorrow. It remains visible and retains its current open/closed state. */
+      if(tomorrow){tomorrow.hidden=false;const tc=tomorrow.closest('.country-dropdown');if(tc)tc.open=true;}
+      country.open=true;target.hidden=false;target.open=true;target.classList.add('day-after-card');
       const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const b=document.createElement('span');b.className='day-title-label day-after';b.textContent='DAY AFTER TOMORROW';main.prepend(b);}
       const s=target.querySelector('.day-state');if(s){s.className='day-status day-after';s.textContent='COLLAPSE';}
+      if(tomorrow){const tc=tomorrow.closest('.country-dropdown');if(tc)countryState(tc,'TOMORROW');}
       target.addEventListener('toggle',()=>{const ds=target.querySelector('.day-status.day-after');if(ds)ds.textContent=target.open?'COLLAPSE':'OPEN';});
       scrollTo(target);
     }
 
-    /* Never allow the Türkiye summary to inherit DAY AFTER TOMORROW. Its role is Tomorrow. */
-    document.getElementById('countryMount')?.addEventListener('toggle',e=>{const c=e.target;if(!(c instanceof HTMLDetailsElement)||!c.classList.contains('country-dropdown'))return;normalCountryState(c);},true);
+    const mount=document.getElementById('countryMount');
+    mount?.addEventListener('toggle',e=>{const c=e.target;if(!(c instanceof HTMLDetailsElement)||!c.classList.contains('country-dropdown'))return;normalCountryState(c);const tomorrow=ensureTomorrowBadge();if(tomorrow&&tomorrow.closest('.country-dropdown')===c)countryState(c,'TOMORROW');},true);
+
+    /* iPhone-safe Tomorrow reopen: explicitly own the Tomorrow card summary toggle. */
+    mount?.addEventListener('click',e=>{
+      const summary=e.target.closest?.('.trip-day-dropdown > summary');if(!summary)return;
+      const card=summary.parentElement;const tomorrow=ensureTomorrowBadge();
+      if(!tomorrow||card!==tomorrow)return;
+      e.preventDefault();
+      tomorrow.hidden=false;tomorrow.open=!tomorrow.open;
+      const c=tomorrow.closest('.country-dropdown');if(c){c.open=true;countryState(c,'TOMORROW');}
+      const state=tomorrow.querySelector('.day-state');if(state)state.textContent=tomorrow.open?'Collapse':'Expand';
+    });
 
     document.querySelectorAll('[data-tee-jump]').forEach(link=>link.addEventListener('click',e=>{
       e.preventDefault();const a=link.dataset.teeJump;
@@ -76,6 +95,8 @@
       if(a==='tomorrow'){showTomorrow();return;}
       if(a==='itinerary'){closePanel(todayPanel());closePanel(tomorrowPanel());showDayAfter();}
     }));
+
+    requestAnimationFrame(()=>ensureTomorrowBadge());
   })();
   </script>
 </body>
