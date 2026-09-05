@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.66",
+  "version": "3.4.67",
   "channel": "review",
-  "publishedAt": "2026-09-05T14:05:00-07:00",
-  "notes": "Fixes Emergency Contact deep links. Emilio and Robert buttons now pass the contact name into Secure Vault, and the Vault automatically filters to Emergency Contact, searches that person, scrolls to the matching record, and highlights it after unlock. Manual searching should no longer be required. Adaptive Checklist and protected data storage are unchanged.",
-  "name": "TEE v3.4.66 — Emergency Contact Deep Link Fix"
+  "publishedAt": "2026-09-05T14:16:00-07:00",
+  "notes": "Fixes a regression in Emergency Contact deep linking that could make Secure Vault unlock appear frozen. Removes the MutationObserver feedback loop and replaces it with short bounded polling only after page load or an explicit unlock attempt. Direct Emilio/Robert lookup remains, Adaptive Checklist storage is unchanged, and protected data handling is unchanged.",
+  "name": "TEE v3.4.67 — Vault Unlock Stability Fix"
 }
