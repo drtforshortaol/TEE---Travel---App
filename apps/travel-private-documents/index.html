@@ -188,249 +188,201 @@
           <button id="secureSetupNextA" type="button">Continue to Couple B</button>
         </div>
         <div id="secureSetupStepB" hidden>
-          <p class="secure-form-note"><strong>Temporary access:</strong> set a temporary passphrase for Couple B. They can replace it with their own passphrase after unlocking; changing it does not re-encrypt the vault records.</p>
-          <label>Temporary Couple B passphrase<input id="secureCreatePassphraseB" type="password" autocomplete="new-password"></label>
-          <label>Confirm temporary Couple B passphrase<input id="secureConfirmPassphraseB" type="password" autocomplete="new-password"></label>
-          <div class="secure-backup-actions">
-            <button id="secureSetupBackB" type="button" class="secondary">Back</button>
-            <button id="secureSetupNextB" type="button">Review Setup</button>
-          </div>
+          <p class="secure-form-note">Couple B will receive access to the Shared zone and their private encrypted zone.</p>
+          <label>Couple B passphrase<input id="secureCreatePassphraseB" type="password" autocomplete="new-password"></label>
+          <label>Confirm Couple B passphrase<input id="secureConfirmPassphraseB" type="password" autocomplete="new-password"></label>
+          <div class="secure-dialog-actions"><button id="secureSetupBackB" type="button" class="secondary">Back</button><button id="secureSetupNextB" type="button">Continue to Review</button></div>
         </div>
         <div id="secureSetupStepReview" hidden>
-          <p class="secure-form-note"><strong>Step 3:</strong> TEE will create one Shared encrypted zone plus a separate private encrypted zone for each couple. Couple B's initial credential will be marked temporary until they change it.</p>
-          <div class="secure-backup-actions">
-            <button id="secureSetupBackReview" type="button" class="secondary">Back</button>
-            <button id="secureCreateButton" type="button">Create Protected Shared + Private Vault</button>
-          </div>
+          <p class="secure-form-note"><strong>Review:</strong> Couple A and Couple B will each have their own private encrypted zone, plus access to Shared records. If both passphrases are lost, the vault cannot be recovered.</p>
+          <div class="secure-dialog-actions"><button id="secureSetupBackReview" type="button" class="secondary">Back</button><button id="secureCreateButton" type="button">Create Encrypted Vault</button></div>
         </div>
       </div>
 
       <div id="secureUnlockFields" class="secure-vault-form" hidden>
-        <h3>Open encrypted vault</h3>
-        <label>Passphrase<input id="secureUnlockPassphrase" type="password" autocomplete="current-password"></label>
-        <button id="secureUnlockButton" type="button">Unlock and Decrypt</button>
+        <h3>Unlock vault</h3>
+        <p class="secure-form-note">Enter either Couple A or Couple B passphrase. The browser derives a key in memory and decrypts only the authorized private zone plus Shared records.</p>
+        <label>Vault passphrase<input id="secureUnlockPassphrase" type="password" autocomplete="current-password"></label>
+        <button id="secureUnlockButton" type="button">Unlock Vault</button>
       </div>
 
-      <div id="secureVaultContents" class="secure-vault-contents" hidden>
-        <section id="secureAccessArchitecture" class="secure-access-architecture" aria-live="polite">
+      <div id="secureVaultContents" hidden>
+        <div class="secure-vault-toolbar">
           <div>
-            <strong id="secureAccessStatus">Vault access</strong>
-            <p id="secureAccessDescription">Shared and private access status.</p>
+            <strong>Unlocked locally</strong>
+            <span>Records are decrypted in memory only.</span>
+          </div>
+          <button id="secureLockButton" type="button">Lock Vault</button>
+        </div>
+
+        <section id="secureAccessArchitecture" class="secure-access-architecture" aria-labelledby="secureAccessArchitectureTitle">
+          <div class="secure-access-head">
+            <div>
+              <h3 id="secureAccessArchitectureTitle">Two-Couple Access</h3>
+              <p id="secureAccessDescription">Checking vault architecture…</p>
+            </div>
+            <strong id="secureAccessStatus">Checking</strong>
           </div>
           <div id="secureLegacyUpgradeFields" class="secure-legacy-upgrade" hidden>
-            <p><strong>Existing legacy vault detected.</strong> Your current records are already open and will be preserved. The upgrade first saves an encrypted local safety snapshot, then moves all existing records into Couple A Private until you explicitly mark selected records Shared.</p>
-            <label>Temporary Couple B passphrase<input id="secureUpgradePassphraseB" type="password" autocomplete="new-password"></label>
-            <label>Confirm temporary Couple B passphrase<input id="secureUpgradeConfirmPassphraseB" type="password" autocomplete="new-password"></label>
-            <button id="secureUpgradeArchitectureButton" type="button">Upgrade to Shared + Private Vault</button>
-          </div>
-          <div id="securePassphraseManagement" class="secure-legacy-upgrade" hidden>
-            <p id="securePassphraseStatus"></p>
-            <button id="secureShowChangePassphrase" type="button" class="secondary">Change My Passphrase</button>
-            <div id="secureChangePassphraseFields" hidden>
-              <label>Current passphrase<input id="secureCurrentPassphrase" type="password" autocomplete="current-password"></label>
-              <label>New passphrase<input id="secureNewPassphrase" type="password" autocomplete="new-password"></label>
-              <label>Confirm new passphrase<input id="secureConfirmNewPassphrase" type="password" autocomplete="new-password"></label>
-              <div class="secure-backup-actions">
-                <button id="secureCancelPassphraseChange" type="button" class="secondary">Cancel</button>
-                <button id="secureSavePassphraseChange" type="button">Save New Passphrase</button>
-              </div>
-            </div>
+            <p><strong>Legacy vault detected.</strong> This older one-passphrase vault currently exposes all protected records to one passphrase. Add Couple B access now to split future private records correctly.</p>
+            <label>New Couple B passphrase<input id="secureUpgradePassphraseB" type="password" autocomplete="new-password"></label>
+            <label>Confirm Couple B passphrase<input id="secureUpgradeConfirmPassphraseB" type="password" autocomplete="new-password"></label>
+            <button id="secureUpgradeArchitectureButton" type="button">Upgrade to Two-Couple Vault</button>
           </div>
         </section>
-        <div class="secure-record-toolbar">
+
+        <section id="securePassphraseManagement" class="secure-passphrase-management" aria-labelledby="securePassphraseTitle">
+          <div class="secure-access-head">
+            <div>
+              <h3 id="securePassphraseTitle">Passphrase Management</h3>
+              <p id="securePassphraseStatus">Use this only if you need to rotate the active couple's passphrase.</p>
+            </div>
+            <button id="secureShowChangePassphrase" type="button" class="secondary">Change Active Passphrase</button>
+          </div>
+          <div id="secureChangePassphraseFields" class="secure-change-passphrase-fields" hidden>
+            <label>Current passphrase<input id="secureCurrentPassphrase" type="password" autocomplete="current-password"></label>
+            <label>New passphrase<input id="secureNewPassphrase" type="password" autocomplete="new-password"></label>
+            <label>Confirm new passphrase<input id="secureConfirmNewPassphrase" type="password" autocomplete="new-password"></label>
+            <div class="secure-dialog-actions"><button id="secureCancelPassphraseChange" type="button" class="secondary">Cancel</button><button id="secureSavePassphraseChange" type="button">Save New Passphrase</button></div>
+          </div>
+        </section>
+
+        <section id="secureVaultHealth" class="secure-vault-health" aria-labelledby="secureVaultHealthTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureVaultHealthTitle">Vault Health</h3>
+              <p>Live summary of record quality and backup readiness.</p>
+            </div>
+            <strong id="secureVaultHealthStatus">Checking</strong>
+          </div>
+          <div id="secureVaultHealthGrid" class="secure-vault-health-grid"></div>
+        </section>
+
+        <section id="secureVaultStatistics" class="secure-vault-statistics" aria-labelledby="secureVaultStatisticsTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureVaultStatisticsTitle">Vault Statistics</h3>
+              <p>Quick counts of records, favorites, tags and archived items.</p>
+            </div>
+            <strong id="secureVaultStatisticsSummary">Checking</strong>
+          </div>
+          <div id="secureVaultStatisticsGrid" class="secure-vault-statistics-grid"></div>
+        </section>
+
+        <section id="secureExpirationDashboard" class="secure-expiration-dashboard" aria-labelledby="secureExpirationTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureExpirationTitle">Expirations</h3>
+              <p>Show records with dated fields approaching expiration.</p>
+            </div>
+            <select id="secureExpirationWindow" aria-label="Expiration window"><option value="90">Next 90 days</option><option value="180">Next 180 days</option><option value="365">Next year</option><option value="all">All future expirations</option></select>
+          </div>
+          <p id="secureExpirationSummary" class="secure-search-summary"></p>
+          <div id="secureExpirationList" class="secure-expiration-list"></div>
+        </section>
+
+        <section id="secureActivityCenter" class="secure-activity-center" aria-labelledby="secureActivityTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureActivityTitle">Recent Activity</h3>
+              <p>Recent encrypted record changes in this active vault.</p>
+            </div>
+            <select id="secureActivityLimit" aria-label="Activity count"><option value="10">10 items</option><option value="25">25 items</option><option value="50">50 items</option></select>
+          </div>
+          <p id="secureActivitySummary" class="secure-search-summary"></p>
+          <div id="secureActivityList" class="secure-activity-list"></div>
+        </section>
+
+        <section id="secureFavorites" class="secure-favorites" aria-labelledby="secureFavoritesTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureFavoritesTitle">Favorites</h3>
+              <p>Keep the most important records one tap away.</p>
+            </div>
+          </div>
+          <p id="secureFavoritesSummary" class="secure-search-summary"></p>
+          <div id="secureFavoritesList" class="secure-favorites-list"></div>
+        </section>
+
+        <section id="secureTagExplorer" class="secure-tag-explorer" aria-labelledby="secureTagExplorerTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureTagExplorerTitle">Tags</h3>
+              <p>Filter records by one or more encrypted tags.</p>
+            </div>
+            <button id="secureClearTagsButton" type="button" class="secondary">Clear Tags</button>
+          </div>
+          <p id="secureTagSummary" class="secure-search-summary"></p>
+          <div id="secureTagList" class="secure-tag-list"></div>
+          <div id="secureSelectedTagList" class="secure-selected-tag-list"></div>
+        </section>
+
+        <section id="secureRecycleBin" class="secure-recycle-bin" aria-labelledby="secureRecycleBinTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureRecycleBinTitle">Recycle Bin</h3>
+              <p>Deleted records remain recoverable here for 30 days before permanent removal.</p>
+            </div>
+            <button id="secureEmptyRecycleBinButton" type="button" class="secondary">Empty Recycle Bin</button>
+          </div>
+          <p id="secureRecycleBinSummary" class="secure-search-summary"></p>
+          <div id="secureRecycleBinList" class="secure-recycle-bin-list"></div>
+        </section>
+
+        <section id="secureQuickActions" class="secure-quick-actions" aria-labelledby="secureQuickActionsTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureQuickActionsTitle">Quick Actions</h3>
+              <p>Jump to common secure-vault tasks.</p>
+            </div>
+          </div>
+          <div class="secure-quick-action-grid">
+            <button id="secureQuickNewRecord" type="button">＋ New Record</button>
+            <button id="secureQuickSearch" type="button" class="secondary">Search Records</button>
+            <button id="secureQuickFavorites" type="button" class="secondary">Favorites</button>
+            <button id="secureQuickExpirations" type="button" class="secondary">Expirations</button>
+            <button id="secureQuickRecycleBin" type="button" class="secondary">Recycle Bin</button>
+            <button id="secureQuickBackup" type="button" class="secondary">Backup</button>
+            <button id="secureQuickTeeImport" type="button" class="secondary">TEE Import</button>
+            <button id="secureQuickEmergency" type="button" class="secondary">Emergency Mode</button>
+          </div>
+        </section>
+
+        <section id="secureTeeImport" class="secure-tee-import" hidden aria-labelledby="secureTeeImportTitle">
+          <div class="secure-dashboard-head">
+            <div>
+              <h3 id="secureTeeImportTitle">TEE Import</h3>
+              <p>Review private/shared travel information already known to this build and selectively copy it into the encrypted vault.</p>
+            </div>
+            <button id="secureTeeImportClose" type="button" class="secondary">Close</button>
+          </div>
+          <p id="secureTeeImportSummary" class="secure-search-summary"></p>
+          <div class="secure-dialog-actions"><button id="secureTeeImportSelectReady" type="button" class="secondary">Select Ready</button><button id="secureTeeImportClear" type="button" class="secondary">Clear Selection</button><button id="secureTeeImportRun" type="button">Import Selected</button></div>
+          <div id="secureTeeImportList" class="secure-tee-import-list"></div>
+          <div id="secureTeeImportUnmapped" class="secure-tee-import-unmapped"></div>
+        </section>
+
+        <section id="secureEmergencyMode" class="secure-emergency-mode" hidden aria-labelledby="secureEmergencyTitle">
+          <div class="secure-dashboard-head"><div><h3 id="secureEmergencyTitle">Emergency Mode</h3><p>Condensed view of critical records for urgent travel situations.</p></div><div class="secure-dialog-actions"><button id="secureEmergencyExit" type="button" class="secondary">Exit Emergency Mode</button><button id="secureEmergencyLock" type="button">Lock Vault</button></div></div>
+          <p id="secureEmergencySummary" class="secure-search-summary"></p>
+          <div id="secureEmergencyList" class="secure-emergency-list"></div>
+        </section>
+
+        <section id="secureTripWorkspace" class="secure-trip-workspace" hidden aria-labelledby="secureTripWorkspaceTitle">
+          <div class="secure-dashboard-head"><div><h3 id="secureTripWorkspaceTitle">Trip Workspace</h3><p id="secureTripWorkspaceSummary"></p></div><div class="secure-dialog-actions"><button id="secureTripWorkspaceEmergency" type="button" class="secondary">Emergency Mode</button><button id="secureTripWorkspaceExit" type="button">Exit Workspace</button></div></div>
+          <label>Search this trip<input id="secureTripWorkspaceSearch" type="search" placeholder="Search trip records…" autocomplete="off"></label>
+          <div id="secureTripWorkspaceSections" class="secure-trip-workspace-sections"></div>
+        </section>
+
+        <div class="secure-record-controls">
           <label>Record type
             <select id="secureRecordType"></select>
           </label>
           <label>Template
-            <select id="secureRecordTemplate" aria-describedby="secureTemplateHelp"></select>
+            <select id="secureRecordTemplate"></select>
           </label>
-          <button id="secureAddRecordButton" type="button">Add Record</button>
-          <small id="secureTemplateHelp" class="secure-template-help">Templates prefill editable starter values. Choose Blank record for an empty form.</small>
-          <button id="secureLockButton" type="button">Lock Vault</button>
+          <button id="secureAddRecordButton" type="button">＋ Add Record</button>
         </div>
-
-        <nav id="secureQuickActions" class="secure-quick-actions" aria-label="Vault quick actions">
-          <button id="secureQuickNewRecord" type="button">＋ New Record</button>
-          <button id="secureQuickSearch" type="button" class="secondary">⌕ Search</button>
-          <button id="secureQuickFavorites" type="button" class="secondary">★ Favorites</button>
-          <button id="secureQuickExpirations" type="button" class="secondary">◷ Expirations</button>
-          <button id="secureQuickRecycleBin" type="button" class="secondary">♲ Recycle Bin</button>
-          <button id="secureQuickBackup" type="button" class="secondary">⇩ Backup Manager</button>
-          <button id="secureQuickTeeImport" type="button" class="secondary">⇪ TEE Import</button>
-          <button id="secureQuickEmergency" type="button" class="secure-emergency-launch">🚨 Emergency Mode</button>
-        </nav>
-
-
-        <section class="secure-tee-import" aria-labelledby="protectedMigrationTitle">
-  <div class="secure-tee-import-head"><div><h3 id="protectedMigrationTitle">Protected Data Migration</h3><p>Use a private TEE migration package kept off GitHub. It is decrypted locally, then imported into the encrypted vault. Migration files and codes are recovery/import material, not everyday-use files.</p></div></div>
-  <div class="secure-tee-import-actions"><input id="protectedMigrationFile" type="file" accept=".tee37,.tee38,.json,application/json"><input id="protectedMigrationCode" type="password" autocomplete="off" placeholder="Migration code — keep private"><button id="loadProtectedMigration" type="button">Load Protected Migration</button></div>
-  <p id="protectedMigrationMessage" class="secure-search-summary" aria-live="polite"></p>
-</section>
-
-        <section id="secureTeeImport" class="secure-tee-import" aria-labelledby="secureTeeImportTitle" hidden>
-          <div class="secure-tee-import-head">
-            <div>
-              <p class="secure-trip-workspace-kicker">Assignment 16B · review before encryption</p>
-              <h3 id="secureTeeImportTitle">TEE Import Wizard</h3>
-              <p>Candidate records are extracted only from the existing TEE travel project. Nothing is imported until you select it and confirm.</p>
-            </div>
-            <button id="secureTeeImportClose" type="button" class="secondary">Close</button>
-          </div>
-          <div id="secureTeeImportSummary" class="secure-tee-import-summary" aria-live="polite"></div>
-          <div class="secure-tee-import-actions">
-            <button id="secureTeeImportSelectReady" type="button" class="secondary">Select Ready Records</button>
-            <button id="secureTeeImportClear" type="button" class="secondary">Clear Selection</button>
-            <button id="secureTeeImportRun" type="button">Import Selected Records</button>
-          </div>
-          <div id="secureTeeImportList" class="secure-tee-import-list"></div>
-          <details class="secure-tee-import-unmapped">
-            <summary>TEE items found but not forced into the current schema</summary>
-            <div id="secureTeeImportUnmapped"></div>
-          </details>
-        </section>
-
-        <section id="secureEmergencyMode" class="secure-emergency-mode" aria-labelledby="secureEmergencyTitle" hidden>
-          <div class="secure-emergency-head">
-            <div>
-              <p class="secure-emergency-kicker">Read-only essential travel information</p>
-              <h3 id="secureEmergencyTitle">🚨 Emergency Mode</h3>
-              <p>Only emergency-relevant records are shown. Editing and deletion are disabled.</p>
-            </div>
-            <div class="secure-emergency-actions">
-              <button id="secureEmergencyExit" type="button" class="secondary">Exit Emergency Mode</button>
-              <button id="secureEmergencyLock" type="button">Lock Vault</button>
-            </div>
-          </div>
-          <div id="secureEmergencySummary" class="secure-emergency-summary" aria-live="polite"></div>
-          <div id="secureEmergencyList" class="secure-emergency-list"></div>
-        </section>
-
-        <section id="secureTripWorkspace" class="secure-trip-workspace" aria-labelledby="secureTripWorkspaceTitle" hidden>
-          <div class="secure-trip-workspace-head">
-            <div>
-              <p class="secure-trip-workspace-kicker">Trip-focused encrypted workspace</p>
-              <h3 id="secureTripWorkspaceTitle">Trip Workspace</h3>
-              <p id="secureTripWorkspaceSummary"></p>
-            </div>
-            <div class="secure-trip-workspace-actions">
-              <button id="secureTripWorkspaceEmergency" type="button" class="secure-emergency-launch">🚨 Emergency Mode</button>
-              <button id="secureTripWorkspaceExit" type="button" class="secondary">← Return to Vault</button>
-            </div>
-          </div>
-          <label class="secure-trip-workspace-search">Search this trip
-            <input id="secureTripWorkspaceSearch" type="search" placeholder="Search related trip records">
-          </label>
-          <div id="secureTripWorkspaceSections" class="secure-trip-workspace-sections"></div>
-        </section>
-
-        <section id="secureVaultHealth" class="secure-vault-health" aria-labelledby="secureVaultHealthTitle">
-          <div class="secure-health-head">
-            <div>
-              <h3 id="secureVaultHealthTitle">Vault Health</h3>
-              <p>Read-only status for this encrypted vault.</p>
-            </div>
-            <strong id="secureVaultHealthStatus" class="secure-health-status">Checking…</strong>
-          </div>
-          <div id="secureVaultHealthGrid" class="secure-health-grid"></div>
-        </section>
-
-        <section id="secureVaultStatistics" class="secure-vault-statistics" aria-labelledby="secureVaultStatisticsTitle">
-          <div class="secure-statistics-head">
-            <div>
-              <h3 id="secureVaultStatisticsTitle">Vault Statistics</h3>
-              <p>Read-only totals derived from the currently unlocked encrypted vault.</p>
-            </div>
-            <strong id="secureVaultStatisticsSummary" class="secure-statistics-summary"></strong>
-          </div>
-          <div id="secureVaultStatisticsGrid" class="secure-health-grid"></div>
-        </section>
-
-        <section id="secureActivityCenter" class="secure-activity-center" aria-labelledby="secureActivityTitle">
-          <div class="secure-activity-head">
-            <div>
-              <h3 id="secureActivityTitle">Activity Center</h3>
-              <p>A vault-wide timeline built from encrypted record history.</p>
-            </div>
-            <label>Show
-              <select id="secureActivityLimit">
-                <option value="none">None</option>
-                <option value="1" selected>Latest 1</option>
-                <option value="10">Latest 10</option>
-                <option value="25">Latest 25</option>
-                <option value="50">Latest 50</option>
-                <option value="all">All activity</option>
-              </select>
-            </label>
-          </div>
-          <div id="secureActivitySummary" class="secure-activity-summary" aria-live="polite"></div>
-          <div id="secureActivityList" class="secure-activity-list"></div>
-        </section>
-
-        <section id="secureRecycleBin" class="secure-recycle-bin" aria-labelledby="secureRecycleBinTitle">
-          <div class="secure-recycle-bin-head">
-            <div>
-              <h3 id="secureRecycleBinTitle">Recycle Bin</h3>
-              <p>Deleted records remain encrypted for 30 days unless restored or permanently deleted.</p>
-            </div>
-            <div class="secure-recycle-bin-actions">
-              <strong id="secureRecycleBinSummary"></strong>
-              <button id="secureEmptyRecycleBinButton" type="button" class="secondary">Empty Recycle Bin</button>
-            </div>
-          </div>
-          <div id="secureRecycleBinList" class="secure-recycle-bin-list"></div>
-        </section>
-
-        <section id="secureFavorites" class="secure-favorites" aria-labelledby="secureFavoritesTitle">
-          <div class="secure-favorites-head">
-            <div>
-              <h3 id="secureFavoritesTitle">Favorites</h3>
-              <p>Quick links to records you use most often. Favorite status stays inside the encrypted vault.</p>
-            </div>
-            <strong id="secureFavoritesSummary" class="secure-favorites-summary"></strong>
-          </div>
-          <div id="secureFavoritesList" class="secure-favorites-list"></div>
-        </section>
-
-
-        <section id="secureTagExplorer" class="secure-tag-explorer" aria-labelledby="secureTagExplorerTitle">
-          <div class="secure-tag-explorer-head">
-            <div>
-              <h3 id="secureTagExplorerTitle">Smart Tag Explorer</h3>
-              <p>Select one or more tags. Multiple selections show records containing every selected tag.</p>
-            </div>
-            <button id="secureClearTagsButton" type="button" class="secondary">Show All Records</button>
-          </div>
-          <div class="secure-tag-current-filter" aria-labelledby="secureTagCurrentTitle">
-            <strong id="secureTagCurrentTitle">Current Filter</strong>
-            <div id="secureSelectedTagList" class="secure-selected-tag-list"></div>
-          </div>
-          <div id="secureTagSummary" class="secure-tag-summary" aria-live="polite"></div>
-          <div id="secureTagList" class="secure-tag-list"></div>
-        </section>
-
-        <section id="secureExpirationDashboard" class="secure-expiration-dashboard" aria-labelledby="secureExpirationTitle">
-          <div class="secure-expiration-head">
-            <div>
-              <h3 id="secureExpirationTitle">Upcoming Expirations</h3>
-              <p>Dates are calculated only while the vault is unlocked.</p>
-            </div>
-            <label>Show
-              <select id="secureExpirationWindow">
-                <option value="30">Next 30 days</option>
-                <option value="90" selected>Next 90 days</option>
-                <option value="180">Next 6 months</option>
-                <option value="365">Next year</option>
-                <option value="all">All dated records</option>
-              </select>
-            </label>
-          </div>
-          <div id="secureExpirationSummary" class="secure-expiration-summary" aria-live="polite"></div>
-          <div id="secureExpirationList" class="secure-expiration-list"></div>
-        </section>
-
-        
-
-        
 
         <section id="secureVaultDashboard" class="secure-vault-dashboard" aria-labelledby="secureVaultDashboardTitle">
           <div class="secure-dashboard-head">
@@ -612,6 +564,7 @@
   <script src="protected-migration.js"></script>
   <script src="source-authority.js"></script>
   <script src="secure-vault.js"></script>
+  <script src="contact-deeplink.js"></script>
   <script src="structured-documents.js"></script>
   <script src="source-document-manager.js"></script>
   <script src="smart-intake.js"></script>
