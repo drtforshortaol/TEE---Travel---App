@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.65",
+  "version": "3.4.66",
   "channel": "review",
-  "publishedAt": "2026-09-05T13:55:00-07:00",
-  "notes": "Simplifies Emergency Contact retrieval in Quick Reference. When the Secure Vault is already open in the current tab, the Emilio and Robert buttons now jump directly to that person's protected Shared record in place instead of reopening the Vault. When locked, the same buttons still open the Vault. Includes a brief retry for delayed protected-context rendering and falls back to the Vault only if the contact cannot be rendered locally. Adaptive Checklist and protected data storage are unchanged.",
-  "name": "TEE v3.4.65 — Direct Emergency Contact Retrieval"
+  "publishedAt": "2026-09-05T15:18:00-07:00",
+  "notes": "Keeps the existing Secure Vault unlock flow stable while allowing the temporary 30-minute authorization session to synchronize across open TEE tabs using BroadcastChannel. Quick Reference and other supported apps can now recognize an already-open Vault without forcing another passphrase or manual search. No decrypted Vault data is persisted to localStorage; the synchronized session remains tab-memory/sessionStorage only. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.66 — Cross-Tab Vault Session"
 }
