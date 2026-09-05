@@ -1,4 +1,4 @@
-const CACHE = 'tee-essentials-v3-4-64-vault-contact-actions';
+const CACHE = 'tee-essentials-v3-4-65-direct-contact-retrieval';
 const CACHE_PREFIX = 'tee-essentials-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
