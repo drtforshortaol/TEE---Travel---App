@@ -92,14 +92,27 @@
   <script src="../../traveler-help.js"></script>
   <script>
     (()=>{
-      function openParents(el){
-        let p=el?.parentElement;
-        while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
+      const MARKER_ID='tee-jump-landing-marker';
+      function openParents(el){let p=el?.parentElement;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}}
+      function closePanel(el){if(el?.tagName==='DETAILS')el.open=false;}
+      function markerBefore(el,label,tone){
+        document.getElementById(MARKER_ID)?.remove();
+        const m=document.createElement('div');
+        m.id=MARKER_ID;
+        m.textContent=label;
+        m.style.cssText=`margin:18px 0 10px;padding:14px 16px;border-radius:14px;font-weight:900;letter-spacing:.08em;font-size:.92rem;border:2px solid ${tone};background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.08);scroll-margin-top:108px;`;
+        el.parentNode.insertBefore(m,el);
+        return m;
       }
-      function scrollTo(el){
+      function land(el,label,tone){
         if(!el)return false;
         openParents(el);
-        el.scrollIntoView({behavior:'smooth',block:'start'});
+        const marker=markerBefore(el,label,tone);
+        requestAnimationFrame(()=>{
+          const top=marker.getBoundingClientRect().top+window.scrollY-96;
+          window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+        });
+        el.animate?.([{outline:'4px solid transparent'},{outline:`4px solid ${tone}`},{outline:'4px solid transparent'}],{duration:1100});
         return true;
       }
       function findDayInItinerary(offset){
@@ -108,27 +121,36 @@
         let label='';
         try{label=DAYS[Math.min(activeIndex+offset,DAYS.length-1)]?.date||'';}catch{}
         if(label){
-          const candidates=[...mount.querySelectorAll('[data-day-index],[data-date],article,.day-card,details,summary,h2,h3,h4,strong')];
+          const candidates=[...mount.querySelectorAll('.day-card,[data-day-index],[data-date],article,details,summary,h2,h3,h4,strong')];
           const found=candidates.find(el=>(el.textContent||'').includes(label));
-          if(found)return found.closest('[data-day-index],[data-date],article,.day-card,details')||found;
+          if(found)return found.closest('.day-card,[data-day-index],[data-date],article,details')||found;
         }
-        const cards=[...mount.querySelectorAll('.day-card,article,[data-day-index],[data-date]')];
-        return cards[Math.min(offset,cards.length-1)]||mount;
+        return mount;
       }
+      function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
+      function tomorrowPanel(){return document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus');}
       document.querySelectorAll('[data-tee-jump]').forEach(link=>{
         link.addEventListener('click',event=>{
           event.preventDefault();
           const action=link.dataset.teeJump;
+          const today=todayPanel(), tomorrow=tomorrowPanel();
           if(action==='today'){
-            scrollTo(document.querySelector('.rolling-day-panel')||document.getElementById('today-focus'));
+            closePanel(tomorrow);
+            if(today?.tagName==='DETAILS')today.open=true;
+            land(today,'TODAY — START HERE','#2f6b57');
             return;
           }
           if(action==='tomorrow'){
-            scrollTo(document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus'));
+            closePanel(today);
+            if(tomorrow?.tagName==='DETAILS')tomorrow.open=true;
+            land(tomorrow,'TOMORROW — PREPARE HERE','#315f7d');
             return;
           }
           if(action==='itinerary'){
-            scrollTo(findDayInItinerary(2)||document.getElementById('daily-context'));
+            closePanel(today);closePanel(tomorrow);
+            const next=findDayInItinerary(2)||document.getElementById('daily-context');
+            if(next?.tagName==='DETAILS')next.open=true;
+            land(next,'FULL ITINERARY — DAY AFTER TOMORROW','#8a642d');
           }
         });
       });
