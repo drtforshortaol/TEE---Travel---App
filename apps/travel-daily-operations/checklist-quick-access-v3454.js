@@ -16,9 +16,9 @@
 
   function makeRemoveObvious(){
     mount?.querySelectorAll('.custom-task button').forEach(button=>{
-      button.textContent='Remove';
-      button.setAttribute('aria-label','Remove checklist item');
-      button.title='Remove this checklist item';
+      if(button.textContent!=='Remove')button.textContent='Remove';
+      if(button.getAttribute('aria-label')!=='Remove checklist item')button.setAttribute('aria-label','Remove checklist item');
+      if(button.title!=='Remove this checklist item')button.title='Remove this checklist item';
     });
   }
   function setState(){
@@ -61,7 +61,7 @@
   }
 
   if(mount){
-    const observer=new MutationObserver(makeRemoveObvious);
+    const observer=new MutationObserver(()=>makeRemoveObvious());
     observer.observe(mount,{childList:true,subtree:true});
   }
 
