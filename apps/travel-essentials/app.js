@@ -1,6 +1,6 @@
 "use strict";
 
-// TEE v3.4.65 — Direct emergency-contact retrieval when Vault is already open.
+// TEE v3.4.74 — Direct emergency-contact retrieval + in-place Vault unlock.
 
 function openQuickReferenceSection(id, shouldScroll = true) {
   if (!id) return;
@@ -87,7 +87,7 @@ function enhanceEmergencyContactCards(){
   if(section && !section.querySelector('.tee-vault-tab-note')){
     const note=document.createElement('p');
     note.className='emergency-source-note tee-vault-tab-note';
-    note.innerHTML='<strong>When the Vault is open in this tab,</strong> the Emilio and Robert buttons jump directly to that person’s protected details. If the Vault is locked, the same button opens the Vault first.';
+    note.innerHTML='<strong>Vault behavior:</strong> unlock once on this page and protected Shared details appear here immediately. No separate Vault search is required.';
     section.appendChild(note);
   }
   updateEmergencyContactButtonStates();
@@ -97,23 +97,15 @@ function handleEmergencyContactClick(event){
   const link=event.target.closest?.('[data-tee-contact-vault]');
   if(!link) return;
   const contact=link.dataset.teeContact||'';
-  if(!getVaultSession()) return; // normal navigation opens the Vault
+  if(!getVaultSession()) return;
 
   event.preventDefault();
   openQuickReferenceSection('identity-travelers',false);
-
-  // Protected-context rendering can finish just after page return, so retry briefly.
   if(focusProtectedContact(contact)) return;
   let attempts=0;
   const timer=setInterval(()=>{
     attempts++;
-    if(focusProtectedContact(contact) || attempts>=8){
-      clearInterval(timer);
-      if(attempts>=8 && !findProtectedContactRecord(contact)){
-        // If the record is authorized but not rendered here, fall back to the Vault deep link.
-        location.href=link.href;
-      }
-    }
+    if(focusProtectedContact(contact) || attempts>=10) clearInterval(timer);
   },150);
 }
 
@@ -125,6 +117,61 @@ function loadProtectedContext(){
   script.onload=()=>setTimeout(updateEmergencyContactButtonStates,0);
   document.head.appendChild(script);
 }
+
+function closeInlineVault(){
+  document.getElementById('teeInlineVaultOverlay')?.remove();
+}
+
+function openInlineVault(){
+  if(document.getElementById('teeInlineVaultOverlay')) return;
+  const overlay=document.createElement('div');
+  overlay.id='teeInlineVaultOverlay';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-label','Secure Vault unlock');
+  Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'5000',background:'rgba(0,0,0,.55)',display:'flex',flexDirection:'column',padding:'12px'});
+  const shell=document.createElement('div');
+  Object.assign(shell.style,{background:'#fff',borderRadius:'14px',overflow:'hidden',height:'100%',display:'flex',flexDirection:'column',boxShadow:'0 8px 30px rgba(0,0,0,.3)'});
+  const bar=document.createElement('div');
+  Object.assign(bar.style,{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'10px',padding:'10px 12px',background:'#123f46',color:'#fff',font:'700 16px system-ui'});
+  bar.innerHTML='<span>Unlock Secure Vault</span><button type="button" data-close-inline-vault style="border:0;border-radius:8px;padding:8px 12px;font-weight:800;cursor:pointer">Close</button>';
+  const frame=document.createElement('iframe');
+  frame.src='../travel-private-documents/index.html?teeView=vault&teeEnter=1';
+  frame.title='Secure Vault';
+  Object.assign(frame.style,{border:'0',width:'100%',flex:'1',background:'#fff'});
+  shell.append(bar,frame);
+  overlay.appendChild(shell);
+  document.body.appendChild(overlay);
+  bar.querySelector('[data-close-inline-vault]')?.addEventListener('click',closeInlineVault);
+}
+
+function acceptVaultPayload(payload){
+  try{
+    if(!payload || Number(payload.version)!==2) return false;
+    if(!Number.isFinite(Number(payload.expiresAt)) || Number(payload.expiresAt)<=Date.now()) return false;
+    sessionStorage.setItem('teeAuthorizedVaultSessionV1',JSON.stringify(payload));
+    try{ window.TEEVaultSession?.get?.(); }catch{}
+    window.dispatchEvent(new CustomEvent('tee-vault-session-changed',{detail:{reason:'inline-unlock',session:payload}}));
+    closeInlineVault();
+    updateEmergencyContactButtonStates();
+    return true;
+  }catch{return false;}
+}
+
+// When Quick Reference is locked, unlock in place instead of navigating away.
+document.addEventListener('click',event=>{
+  const unlock=event.target.closest?.('.tee-vault-state.locked a');
+  if(!unlock) return;
+  event.preventDefault();
+  openInlineVault();
+});
+
+window.addEventListener('message',event=>{
+  if(event.origin!==window.location.origin) return;
+  if(event.data?.type==='TEE_VAULT_SESSION_OPEN' && event.data?.payload){
+    acceptVaultPayload(event.data.payload);
+  }
+});
 
 document.querySelectorAll('[data-open-quick-reference]').forEach(link => {
   link.addEventListener('click', event => {
