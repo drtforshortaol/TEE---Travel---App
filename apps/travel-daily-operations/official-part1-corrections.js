@@ -65,10 +65,46 @@
     }
   }
 
+  function compactRange(indices){
+    if(!indices.length)return '';
+    const groups=[];let start=indices[0],prev=indices[0];
+    for(let i=1;i<indices.length;i++){
+      const idx=indices[i];
+      if(idx===prev+1){prev=idx;continue;}
+      groups.push([start,prev]);start=prev=idx;
+    }
+    groups.push([start,prev]);
+    const parts=groups.map(([a,b])=>{
+      const da=DAYS[a]?.date||'';const db=DAYS[b]?.date||'';
+      if(a===b)return da;
+      const ma=da.match(/^([A-Za-z]+) (\d+), (\d{4})$/);const mb=db.match(/^([A-Za-z]+) (\d+), (\d{4})$/);
+      if(ma&&mb&&ma[1]===mb[1]&&ma[3]===mb[3])return `${ma[1]} ${ma[2]}–${mb[2]}, ${ma[3]}`;
+      return `${da} → ${db}`;
+    });
+    return parts.join(' · ');
+  }
+
+  // v3.4.55 — Country buttons must describe the dates actually visible inside them.
+  // This is important for Türkiye because Oct 6 is intentionally moved beside Oct 7.
+  function fixCountryDateLabels(){
+    document.querySelectorAll('.country-dropdown').forEach(wrap=>{
+      const small=wrap.querySelector(':scope > summary small');
+      if(!small)return;
+      const indices=[...wrap.querySelectorAll(':scope > .country-days > .trip-day-dropdown[data-day-index]')]
+        .map(card=>Number(card.dataset.dayIndex)).filter(Number.isFinite);
+      const label=compactRange(indices);
+      if(label&&small.textContent!==label)small.textContent=label;
+    });
+  }
+
   const mount=document.getElementById('countryMount');
   if(mount){
-    fixOct6Order();
-    const observer=new MutationObserver(()=>fixOct6Order());
+    fixOct6Order();fixCountryDateLabels();
+    let queued=false;
+    const observer=new MutationObserver(()=>{
+      if(queued)return;queued=true;
+      requestAnimationFrame(()=>{queued=false;fixOct6Order();fixCountryDateLabels();});
+    });
     observer.observe(mount,{childList:true,subtree:true});
   }
 
@@ -80,11 +116,11 @@
     document.head.appendChild(script);
   }
 
-  // v3.4.54 — make Checklist a direct, open-and-focus travel-day action on iPhone.
+  // v3.4.55 — Checklist direct access plus an obvious Remove control for each custom item.
   if(!document.querySelector('script[data-tee-checklist-quick-access]')){
     const script=document.createElement('script');
-    script.src='checklist-quick-access-v3454.js?v=3.4.54';
-    script.dataset.teeChecklistQuickAccess='3.4.54';
+    script.src='checklist-quick-access-v3454.js?v=3.4.55';
+    script.dataset.teeChecklistQuickAccess='3.4.55';
     document.head.appendChild(script);
   }
 })();
