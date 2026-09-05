@@ -1,6 +1,6 @@
 "use strict";
 
-// TEE v3.3.90 — Quick Reference emergency actions + return-aware Vault navigation.
+// TEE v3.4.62 — Quick Reference emergency actions + return-aware Vault navigation + in-context protected details.
 
 function openQuickReferenceSection(id, shouldScroll = true) {
   if (!id) return;
@@ -24,6 +24,14 @@ function prepareVaultReturnLinks() {
   });
 }
 
+function loadProtectedContext(){
+  if(document.querySelector('script[data-tee-protected-context]')) return;
+  const script=document.createElement('script');
+  script.src='../../protected-context.js';
+  script.dataset.teeProtectedContext='1';
+  document.head.appendChild(script);
+}
+
 document.querySelectorAll('[data-open-quick-reference]').forEach(link => {
   link.addEventListener('click', event => {
     const id = link.dataset.openQuickReference;
@@ -35,6 +43,7 @@ document.querySelectorAll('[data-open-quick-reference]').forEach(link => {
 });
 
 prepareVaultReturnLinks();
+loadProtectedContext();
 
 if (location.hash) {
   const id = decodeURIComponent(location.hash.slice(1));
@@ -42,8 +51,6 @@ if (location.hash) {
 }
 
 window.addEventListener('pageshow', () => {
-  // Browser back from Secure Vault normally restores the exact scroll/open state.
-  // This is a fallback for browsers that reload the page instead of restoring it.
   if (location.hash) {
     const id = decodeURIComponent(location.hash.slice(1));
     openQuickReferenceSection(id, false);
