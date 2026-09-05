@@ -38,7 +38,7 @@
     <section id="daily-context" class="country-plan" aria-labelledby="countryPlanTitle"><div class="section-head"><div><span class="section-kicker">DAILY CONTEXT</span><h2 id="countryPlanTitle">Trip days by country</h2><p>Today and Tomorrow are highlighted. Open only the topic you need; other countries and dates stay collapsed.</p></div></div><div id="countryMount" class="country-mount"></div></section>
     <details class="protocols"><summary><span><strong>Daily Operations Protocols</strong><small>General travel-day rhythm and how to use this app.</small></span><span>Expand</span></summary><div class="protocol-body"><h3>Morning</h3><ul><li>Use the open Today card as the primary traveler screen.</li><li>Work down the numbered sections in order.</li><li>Add unexpected tasks to Adaptive Checklist.</li></ul><h3>Night before</h3><ul><li>Use the open Tomorrow card to stage luggage, clothing, documents, money, and timing.</li><li>Charge devices and prepare the day bag.</li><li>If Vault authorization is active, tomorrow’s relevant protected booking details are shown directly in the card.</li></ul><h3>Protected details</h3><p>When the Vault is locked, Shared/Private values are omitted. After authorization, relevant secure details appear directly inside Today and Tomorrow for the remainder of the authorized session. Reveal/Collapse remains available.</p></div></details>
   </main>
-  <script src="../../vault-session.js"></script><script src="app.js"></script><script src="official-part1-corrections.js"></script><script src="../../traveler-help.js"></script>
+  <script src="../../vault-session.js"></script><script src="app.js"></script><script src="official-part1-corrections.js"></script><script src="../../traveler-help.js"></script><script src="checklist-portable-v3462.js"></script>
   <script>
   (()=>{
     function todayPanel(){return document.querySelector('.rolling-day-panel')||document.getElementById('today-focus');}
@@ -65,7 +65,6 @@
 
     function showDayAfter(){
       resetView();const tomorrow=ensureTomorrowBadge();const target=findDay(2);if(!target)return;const country=target.closest('.country-dropdown');if(!country)return;
-      /* Do not close Tomorrow. It remains visible and retains its current open/closed state. */
       if(tomorrow){tomorrow.hidden=false;const tc=tomorrow.closest('.country-dropdown');if(tc)tc.open=true;}
       country.open=true;target.hidden=false;target.open=true;target.classList.add('day-after-card');
       const main=target.querySelector('.day-summary-main');if(main&&!main.querySelector('.day-title-label.day-after')){const b=document.createElement('span');b.className='day-title-label day-after';b.textContent='DAY AFTER TOMORROW';main.prepend(b);}
@@ -78,7 +77,6 @@
     const mount=document.getElementById('countryMount');
     mount?.addEventListener('toggle',e=>{const c=e.target;if(!(c instanceof HTMLDetailsElement)||!c.classList.contains('country-dropdown'))return;normalCountryState(c);const tomorrow=ensureTomorrowBadge();if(tomorrow&&tomorrow.closest('.country-dropdown')===c)countryState(c,'TOMORROW');},true);
 
-    /* iPhone-safe Tomorrow reopen: explicitly own the Tomorrow card summary toggle. */
     mount?.addEventListener('click',e=>{
       const summary=e.target.closest?.('.trip-day-dropdown > summary');if(!summary)return;
       const card=summary.parentElement;const tomorrow=ensureTomorrowBadge();
