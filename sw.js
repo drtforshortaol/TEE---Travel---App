@@ -1,5 +1,5 @@
-const VERSION = '3.4.63';
-const CACHE = 'tee-v3-4-63-vault-placement-sweep';
+const VERSION = '3.4.66';
+const CACHE = 'tee-v3-4-66-cross-tab-vault-session';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./protected-context.js','./app.js','./version-banner.js','./vault-session.js','./hub-v369.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
