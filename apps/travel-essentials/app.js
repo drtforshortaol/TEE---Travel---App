@@ -56,6 +56,38 @@ function startVaultOverlayWatch(){
   },200);
 }
 
+function cleanVaultFrame(frame){
+  try{
+    const doc = frame.contentDocument;
+    if(!doc) return false;
+    doc.documentElement.style.background = "#fff";
+    doc.body.style.margin = "0";
+    doc.body.style.background = "#fff";
+
+    doc.querySelector("header.hero")?.setAttribute("hidden","");
+    doc.querySelector("footer")?.setAttribute("hidden","");
+    doc.querySelectorAll("main > section").forEach(section=>{
+      if(section.id !== "secureVaultPanel") section.setAttribute("hidden","");
+    });
+
+    const panel = doc.getElementById("secureVaultPanel");
+    if(panel){
+      panel.hidden = false;
+      panel.style.margin = "0";
+      panel.style.border = "0";
+      panel.style.boxShadow = "none";
+      panel.style.borderRadius = "0";
+      panel.querySelectorAll('a[href*="../../index.html"],a[href*="teeReturn"],.top-actions,.secure-backup-tools').forEach(el=>el.setAttribute("hidden",""));
+    }
+
+    doc.querySelectorAll(".source-app-section-master").forEach(button=>button.setAttribute("hidden",""));
+    const unlock = doc.getElementById("secureUnlockFields");
+    if(unlock) unlock.hidden = false;
+    doc.getElementById("secureUnlockPassphrase")?.focus();
+    return Boolean(panel);
+  }catch{return false;}
+}
+
 function openVaultOverlay(vaultHref){
   if(teeVaultOverlay) return;
   const overlay = document.createElement("div");
@@ -66,7 +98,7 @@ function openVaultOverlay(vaultHref){
   Object.assign(overlay.style,{position:"fixed",inset:"0",zIndex:"5000",background:"rgba(0,0,0,.55)",padding:"12px",display:"flex",alignItems:"center",justifyContent:"center"});
 
   const shell = document.createElement("div");
-  Object.assign(shell.style,{width:"min(620px,100%)",maxHeight:"min(720px,92vh)",background:"#fff",borderRadius:"16px",overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:"0 18px 50px rgba(0,0,0,.35)"});
+  Object.assign(shell.style,{width:"min(620px,100%)",maxHeight:"min(690px,92vh)",background:"#fff",borderRadius:"16px",overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:"0 18px 50px rgba(0,0,0,.35)"});
   const bar = document.createElement("div");
   Object.assign(bar.style,{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"10px",padding:"12px 14px",background:"#123f46",color:"white",font:"700 17px system-ui"});
   bar.innerHTML = '<span>Unlock Secure Vault</span><button type="button" data-close-vault style="border:0;border-radius:9px;padding:8px 12px;font-weight:800;cursor:pointer">Cancel</button>';
@@ -84,8 +116,11 @@ function openVaultOverlay(vaultHref){
   url.searchParams.delete("teeVaultSection");
   frame.src = url.href;
   frame.title = "TEE Secure Vault sign-in";
-  Object.assign(frame.style,{border:"0",width:"100%",height:"430px",background:"white",display:"none"});
+  Object.assign(frame.style,{border:"0",width:"100%",height:"460px",background:"white",display:"none"});
   frame.addEventListener("load",()=>{
+    cleanVaultFrame(frame);
+    setTimeout(()=>cleanVaultFrame(frame),60);
+    setTimeout(()=>cleanVaultFrame(frame),180);
     loading.remove();
     frame.style.display = "block";
   });
