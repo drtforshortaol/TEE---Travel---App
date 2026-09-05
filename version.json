@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.76",
+  "version": "3.4.77",
   "channel": "review",
-  "publishedAt": "2026-09-05T16:35:00-07:00",
-  "notes": "Quick Reference now reads the complete temporary authorized session directly from its same-origin Secure Vault iframe after unlock, instead of relying on the summary-only unlock message. The inline Vault should close automatically once the session is detected, the page banner should switch to Secure Vault open, and authorized Shared/Private records can render immediately. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
-  "name": "TEE v3.4.76 — Inline Vault Session Read"
+  "publishedAt": "2026-09-05T16:28:00-07:00",
+  "notes": "Quick Reference now pulls the complete temporary authorized session directly from the live same-origin Secure Vault frame by calling the Vault's own session payload builder after unlock. This bypasses the unreliable summary/sessionStorage handoff that left the page banner locked. The inline Vault should close once authorization is detected, then protected Shared/Private records can render in place. No decrypted Vault data is written to persistent localStorage. Adaptive Checklist and encrypted Vault records are unchanged.",
+  "name": "TEE v3.4.77 — Live Vault Payload Bridge"
 }
