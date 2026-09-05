@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.56",
+  "version": "3.4.57",
   "channel": "review",
-  "publishedAt": "2026-09-04T19:06:00-07:00",
-  "notes": "Fixes the Daily Operations freeze introduced by the checklist Remove-label helper. The MutationObserver was retriggering itself while rewriting the same button text, which could lock the page and make every control appear frozen. The helper now updates only when values actually differ. Country-date corrections and checklist Remove controls are preserved.",
-  "name": "TEE v3.4.56 — Daily Operations Freeze Fix"
+  "publishedAt": "2026-09-04T19:12:00-07:00",
+  "notes": "Changes Adaptive Checklist custom-item deletion to a clear trash-can control. Tapping the trash can permanently removes that custom checklist item from the device. Existing checklist storage, Today/Tomorrow navigation, country-date corrections, Documents, and offline behavior are unchanged.",
+  "name": "TEE v3.4.57 — Checklist Trash Delete"
 }
