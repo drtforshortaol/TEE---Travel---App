@@ -18,9 +18,9 @@
   </header>
 
   <nav class="travel-day-quickbar" aria-label="Travel day quick access">
-    <a href="#today-focus"><strong>Today</strong><span>Today content</span></a>
-    <a href="#tomorrow-focus"><strong>Tomorrow</strong><span>Tomorrow content</span></a>
-    <a href="#daily-context"><strong>Full Itinerary</strong><span>All trip days</span></a>
+    <a href="#today-content" data-tee-jump="today"><strong>Today</strong><span>Today content</span></a>
+    <a href="#tomorrow-content" data-tee-jump="tomorrow"><strong>Tomorrow</strong><span>Tomorrow content</span></a>
+    <a href="#next-day-content" data-tee-jump="itinerary"><strong>Full Itinerary</strong><span>Starts after Tomorrow</span></a>
     <a href="#adaptive-checklist"><strong>Checklist</strong><span>Things to do</span></a>
     <a href="../travel-private-documents/index.html"><strong>Documents</strong><span>Vault & sources</span></a>
   </nav>
@@ -90,5 +90,49 @@
   <script src="app.js"></script>
   <script src="official-part1-corrections.js"></script>
   <script src="../../traveler-help.js"></script>
+  <script>
+    (()=>{
+      function openParents(el){
+        let p=el?.parentElement;
+        while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
+      }
+      function scrollTo(el){
+        if(!el)return false;
+        openParents(el);
+        el.scrollIntoView({behavior:'smooth',block:'start'});
+        return true;
+      }
+      function findDayInItinerary(offset){
+        const mount=document.getElementById('countryMount');
+        if(!mount)return null;
+        let label='';
+        try{label=DAYS[Math.min(activeIndex+offset,DAYS.length-1)]?.date||'';}catch{}
+        if(label){
+          const candidates=[...mount.querySelectorAll('[data-day-index],[data-date],article,.day-card,details,summary,h2,h3,h4,strong')];
+          const found=candidates.find(el=>(el.textContent||'').includes(label));
+          if(found)return found.closest('[data-day-index],[data-date],article,.day-card,details')||found;
+        }
+        const cards=[...mount.querySelectorAll('.day-card,article,[data-day-index],[data-date]')];
+        return cards[Math.min(offset,cards.length-1)]||mount;
+      }
+      document.querySelectorAll('[data-tee-jump]').forEach(link=>{
+        link.addEventListener('click',event=>{
+          event.preventDefault();
+          const action=link.dataset.teeJump;
+          if(action==='today'){
+            scrollTo(document.querySelector('.rolling-day-panel')||document.getElementById('today-focus'));
+            return;
+          }
+          if(action==='tomorrow'){
+            scrollTo(document.querySelector('.tomorrow-panel')||document.getElementById('tomorrow-focus'));
+            return;
+          }
+          if(action==='itinerary'){
+            scrollTo(findDayInItinerary(2)||document.getElementById('daily-context'));
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
