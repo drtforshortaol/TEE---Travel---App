@@ -195,8 +195,6 @@
     }catch{ channel = null; }
   }
 
-  // Embedded Secure Vault can send the complete authorized session to the
-  // top-level TEE page. Only same-origin messages are accepted.
   window.addEventListener("message", event => {
     if(event.origin !== window.location.origin) return;
     const message = event.data || {};
@@ -242,4 +240,18 @@
       else post({type:"request"});
     }
   });
+
+  // The Vault's normal postMessage intentionally carries only a summary. The
+  // frame bridge copies the FULL temporary session from the same-origin Vault
+  // iframe after a successful unlock so protected records can render in TEE.
+  try{
+    if(!document.querySelector('script[data-tee-vault-frame-bridge]')){
+      const current=document.currentScript?.src || location.href;
+      const bridge=document.createElement('script');
+      bridge.src=new URL('./vault-frame-bridge.js',current).href;
+      bridge.defer=true;
+      bridge.dataset.teeVaultFrameBridge='1';
+      document.head.appendChild(bridge);
+    }
+  }catch{}
 })();
