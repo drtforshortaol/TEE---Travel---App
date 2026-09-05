@@ -72,11 +72,11 @@
     observer.observe(mount,{childList:true,subtree:true});
   }
 
-  // v3.4.51 — turn the quickbar Documents button into a Today-specific document view.
+  // v3.4.53 — Today Documents now groups only the records useful for the selected travel day.
   if(!document.querySelector('script[data-tee-today-documents]')){
     const script=document.createElement('script');
-    script.src='today-documents-v3451.js?v=3.4.51';
-    script.dataset.teeTodayDocuments='3.4.51';
+    script.src='today-documents-v3451.js?v=3.4.53';
+    script.dataset.teeTodayDocuments='3.4.53';
     document.head.appendChild(script);
   }
 })();
