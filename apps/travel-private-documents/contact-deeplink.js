@@ -7,7 +7,9 @@
   if (!contact || type !== "emergencyContact") return;
 
   let completed = false;
-  let timer = null;
+  let pollTimer = null;
+  let pollCount = 0;
+  const MAX_POLLS = 40;
 
   function normalize(value){
     return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -15,10 +17,10 @@
 
   function vaultUnlocked(){
     try {
-      if (typeof getVaultState === "function" && getVaultState() === "unlocked") return true;
-    } catch {}
-    const status = document.getElementById("secureVaultStatus");
-    return /unlocked|open/i.test(status?.textContent || "");
+      return typeof getVaultState === "function" && getVaultState() === "unlocked";
+    } catch {
+      return false;
+    }
   }
 
   function focusContact(){
@@ -37,11 +39,11 @@
     run.click();
 
     const wanted = normalize(contact);
-    const cards = [...list.children];
-    const match = cards.find(card => normalize(card.innerText || card.textContent).includes(wanted));
+    const match = [...list.children].find(card => normalize(card.innerText || card.textContent).includes(wanted));
     if (!match) return false;
 
     completed = true;
+    if (pollTimer) clearTimeout(pollTimer);
     match.dataset.teeDirectContact = "1";
     match.scrollIntoView({behavior:"smooth", block:"center"});
     const previousOutline = match.style.outline;
@@ -58,23 +60,26 @@
     return true;
   }
 
-  function retry(){
-    if (completed) return;
+  function boundedPoll(){
+    if (completed || pollCount >= MAX_POLLS) return;
+    pollCount += 1;
     if (focusContact()) return;
-    clearTimeout(timer);
-    timer = setTimeout(retry, 250);
+    pollTimer = setTimeout(boundedPoll, 300);
   }
 
-  window.addEventListener("pageshow", retry);
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) retry(); });
-  document.addEventListener("click", event => {
-    if (event.target?.closest?.("#secureUnlockButton,#secureManagerUnlock")) setTimeout(retry, 350);
-  });
+  function startPoll(){
+    if (completed) return;
+    pollCount = 0;
+    if (pollTimer) clearTimeout(pollTimer);
+    pollTimer = setTimeout(boundedPoll, 250);
+  }
 
-  const observer = new MutationObserver(() => retry());
-  window.addEventListener("DOMContentLoaded", () => {
-    const panel = document.getElementById("secureVaultPanel") || document.body;
-    observer.observe(panel, {childList:true, subtree:true, attributes:true, attributeFilter:["hidden"]});
-    retry();
+  window.addEventListener("pageshow", startPoll, {once:true});
+  window.addEventListener("DOMContentLoaded", startPoll, {once:true});
+
+  document.addEventListener("click", event => {
+    if (event.target?.closest?.("#secureUnlockButton,#secureManagerUnlock")) {
+      setTimeout(startPoll, 700);
+    }
   });
 })();
