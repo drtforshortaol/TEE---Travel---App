@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.46",
+  "version": "3.4.47",
   "channel": "review",
-  "publishedAt": "2026-09-04T16:50:00-07:00",
-  "notes": "Daily Operations quick links now land on distinct content areas: Today opens the full Today operational panel, Tomorrow opens the full Tomorrow preparation panel, and Full Itinerary begins at the day after Tomorrow rather than returning to the same nearby page area.",
-  "name": "TEE v3.4.46 — Distinct Daily Jump Targets"
+  "publishedAt": "2026-09-04T16:57:00-07:00",
+  "notes": "Makes Daily Operations navigation more visually and spatially distinct. Today opens at the start of the Today operational panel, Tomorrow opens at the start of the Tomorrow preparation panel, and Full Itinerary opens at the day after Tomorrow. Each jump now adds a clear START HERE landing marker, collapses the competing day panel, and positions the selected section below the sticky quick bar.",
+  "name": "TEE v3.4.47 — Distinct Travel-Day Landing Positions"
 }
