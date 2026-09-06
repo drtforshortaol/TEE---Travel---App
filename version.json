@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.90",
+  "version": "3.4.91",
   "channel": "review",
-  "publishedAt": "2026-09-06T14:20:00-07:00",
-  "notes": "Adds encrypted Shared Records Sync for coordinating protected Shared travel records across traveler devices without replacing either couple's Private records. The Hub now exposes Sync Shared Records after Vault authorization and in the Vault tool directory. Sending creates an encrypted Shared-only package with a one-time sync code; receiving merges newer Shared records by recordId and preserves Private records. Intended first test: synchronize Emilio and Robert emergency-contact records to Virginia's iPhone, then repeat for the other couple after verification.",
-  "name": "TEE v3.4.90 — Shared Records Sync"
+  "publishedAt": "2026-09-06T14:32:00-07:00",
+  "notes": "Fixes Shared Records Sync blinking. Sync now opens in its own dedicated stationary Vault frame instead of forcing the Hub's main Vault frame to stay visible with a repeating timer. If the dedicated sync frame needs the Couple passphrase, enter it once there; after unlock the Shared Sync panel opens automatically. No Vault records or trip data were changed.",
+  "name": "TEE v3.4.91 — Shared Sync Stability"
 }
