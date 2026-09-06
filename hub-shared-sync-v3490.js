@@ -20,6 +20,17 @@
   let dialog=null;
   let frame=null;
 
+  function injectFieldGuide(){
+    try{
+      const doc=frame?.contentDocument;
+      if(!doc||doc.querySelector('script[data-tee-shared-sync-field-guide]'))return;
+      const script=doc.createElement('script');
+      script.src='shared-sync-field-guide-v3493.js?v=3.4.93';
+      script.dataset.teeSharedSyncFieldGuide='3.4.93';
+      doc.head.appendChild(script);
+    }catch{}
+  }
+
   function ensureDialog(){
     if(dialog)return;
     dialog=document.createElement('dialog');
@@ -34,6 +45,7 @@
     </div>`;
     document.body.appendChild(dialog);
     frame=dialog.querySelector('[data-sync-frame]');
+    frame.addEventListener('load',()=>{injectFieldGuide();setTimeout(injectFieldGuide,250);setTimeout(injectFieldGuide,800);});
     dialog.querySelector('[data-close]')?.addEventListener('click',close);
     dialog.addEventListener('click',event=>{if(event.target===dialog)close();});
   }
@@ -45,10 +57,11 @@
     }
     ensureDialog();
     if(!frame.getAttribute('src')){
-      frame.src='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1&teeSharedSync=1';
+      frame.src='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1&teeSharedSync=1&teeSyncBuild=3.4.93';
     }
     if(dialog.showModal&&!dialog.open)dialog.showModal();
     else dialog.setAttribute('open','');
+    setTimeout(injectFieldGuide,400);
   }
 
   function close(){
