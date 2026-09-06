@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.79",
+  "version": "3.4.80",
   "channel": "review",
-  "publishedAt": "2026-09-05T17:05:00-07:00",
-  "notes": "Simplifies Quick Reference Vault entry. Unlock now uses one compact passphrase dialog instead of exposing Source Documents, Hub, or internal navigation inside the overlay. The embedded Vault frame is visually reduced to the existing Secure Vault sign-in only, and the dialog closes automatically as soon as the 30-minute authorization session opens. Protected emergency contacts continue to render together in Quick Reference. Encrypted Vault records, passphrases, Adaptive Checklist, and trip data are unchanged.",
-  "name": "TEE v3.4.79 — Simple Vault Unlock"
+  "publishedAt": "2026-09-06T01:05:00-07:00",
+  "notes": "Adds an Open Vault Records button to the Hub while the 30-minute Vault session is active. It opens a read-only, searchable view of the records already authorized in the current TEE session, so iPhone users do not have to navigate through Safari, Source Documents, or Maintenance to confirm records such as Emilio and Robert. No Vault records, passphrases, Adaptive Checklist data, or trip information are changed.",
+  "name": "TEE v3.4.80 — Hub Vault Records"
 }
