@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.95",
+  "version": "3.4.96",
   "channel": "review",
-  "publishedAt": "2026-09-06T15:24:00-07:00",
-  "notes": "Shared Records Sync now reuses the Hub's existing authorized Vault session instead of opening a second Vault and asking for the couple passphrase again. Sending is created directly from the already-authorized Shared records in the Hub. Receiving reuses the already-unlocked Hub Vault for merge/persistence, so the normal field workflow should require one Vault unlock per device, not repeated passphrase entry. No Vault records or trip confirmations were changed.",
-  "name": "TEE v3.4.95 — Shared Sync One Unlock"
+  "publishedAt": "2026-09-06T15:42:00-07:00",
+  "notes": "Fixes the first Shared Sync test where four records moved but the two trip emergency contacts did not. Shared Sync now always includes emergencyContact records from Glenn's authorized master-phone session and marks those copies Shared in the encrypted sync package, while continuing to exclude other Couple-private records. The sync screen also reports how many emergency contacts are included before sending. No source Vault records are relabeled or altered on Glenn's phone by this export rule.",
+  "name": "TEE v3.4.96 — Emergency Contacts in Shared Sync"
 }
