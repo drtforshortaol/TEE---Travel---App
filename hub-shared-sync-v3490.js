@@ -3,10 +3,8 @@
   if(window.TEEHubSharedSyncV3490)return;
   const recordsButton=document.getElementById('hubVaultRecordsOpen');
   const sessionSummary=document.getElementById('hubVaultSessionSummary');
-  const vaultFrame=document.getElementById('hubVaultFrame');
-  const vaultPanel=document.getElementById('hubVaultPanel');
   const vaultToggle=document.getElementById('hubVaultToggle');
-  if(!sessionSummary||!vaultFrame)return;
+  if(!sessionSummary)return;
 
   let button=document.getElementById('hubSharedSyncOpen');
   if(!button){
@@ -19,61 +17,52 @@
     else sessionSummary.appendChild(button);
   }
 
-  let ready=false;
-  let attempts=0;
-  let timer=null;
-  let keepVisibleTimer=null;
-  function sendOpen(){try{vaultFrame.contentWindow?.postMessage({type:'TEE_OPEN_SHARED_SYNC'},location.origin);}catch{}}
-  function stop(){if(timer){clearInterval(timer);timer=null;}attempts=0;}
-  function stopKeepVisible(){if(keepVisibleTimer){clearInterval(keepVisibleTimer);keepVisibleTimer=null;}}
-  function keepVisible(){
-    stopKeepVisible();
-    keepVisibleTimer=setInterval(()=>{
-      if(vaultPanel)vaultPanel.hidden=false;
-      vaultFrame.hidden=false;
-      vaultToggle?.setAttribute('aria-expanded','true');
-    },200);
+  let dialog=null;
+  let frame=null;
+
+  function ensureDialog(){
+    if(dialog)return;
+    dialog=document.createElement('dialog');
+    dialog.id='hubSharedSyncDialogV3491';
+    dialog.style.cssText='width:min(96vw,900px);height:min(90vh,900px);padding:0;border:0;border-radius:18px;overflow:hidden;box-shadow:0 22px 70px rgba(0,0,0,.35);background:#fff';
+    dialog.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;min-height:0;background:#fff">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid #dbe4e7;background:#f7faf9">
+        <div><strong style="display:block">Sync Shared Records</strong><small style="color:#5a6b72">Shared records only. Private couple records stay untouched.</small></div>
+        <button type="button" data-close style="border:0;background:#e9eff1;border-radius:10px;padding:9px 12px;font-weight:800">× Close</button>
+      </div>
+      <iframe title="TEE Shared Records Sync" data-sync-frame style="flex:1;min-height:0;width:100%;border:0;background:#fff"></iframe>
+    </div>`;
+    document.body.appendChild(dialog);
+    frame=dialog.querySelector('[data-sync-frame]');
+    dialog.querySelector('[data-close]')?.addEventListener('click',close);
+    dialog.addEventListener('click',event=>{if(event.target===dialog)close();});
   }
-  function startSending(){
-    stop();sendOpen();
-    timer=setInterval(()=>{attempts++;sendOpen();if(ready||attempts>24)stop();},250);
-  }
+
   function open(){
     if(!window.TEEVaultSession?.isOpen?.()){
       vaultToggle?.click();
       return;
     }
-    if(!vaultFrame.getAttribute('src'))vaultFrame.src=vaultFrame.dataset.src;
-    if(vaultPanel)vaultPanel.hidden=false;
-    vaultToggle?.setAttribute('aria-expanded','true');
-    vaultFrame.hidden=false;
-    ready=false;
-    keepVisible();
-    startSending();
-    requestAnimationFrame(()=>vaultPanel?.scrollIntoView({behavior:'smooth',block:'start'}));
+    ensureDialog();
+    if(!frame.getAttribute('src')){
+      frame.src='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1&teeSharedSync=1';
+    }
+    if(dialog.showModal&&!dialog.open)dialog.showModal();
+    else dialog.setAttribute('open','');
   }
+
+  function close(){
+    if(!dialog)return;
+    if(dialog.close&&dialog.open)dialog.close();else dialog.removeAttribute('open');
+    if(frame){frame.src='about:blank';frame.removeAttribute('src');}
+  }
+
   button.addEventListener('click',open);
-  window.addEventListener('message',event=>{
-    if(event.origin!==location.origin)return;
-    if(event.data?.type==='TEE_SHARED_SYNC_READY'){
-      ready=true;
-      if(vaultPanel?.hidden===false)sendOpen();
-      stop();
-    }
-    if(event.data?.type==='TEE_SHARED_SYNC_OPENED')keepVisible();
-    if(event.data?.type==='TEE_SHARED_SYNC_CLOSED'){
-      stop();stopKeepVisible();
-      vaultFrame.hidden=true;
-      if(vaultPanel)vaultPanel.hidden=true;
-      vaultToggle?.setAttribute('aria-expanded','false');
-      requestAnimationFrame(()=>button?.scrollIntoView({behavior:'smooth',block:'center'}));
-    }
-  });
   window.addEventListener(window.TEEVaultSession?.eventName||'tee-vault-session-changed',()=>{
     const openSession=window.TEEVaultSession?.isOpen?.();
     button.hidden=!openSession;
-    if(!openSession){stop();stopKeepVisible();}
+    if(!openSession&&dialog?.open)close();
   });
   button.hidden=!window.TEEVaultSession?.isOpen?.();
-  window.TEEHubSharedSyncV3490=Object.freeze({open});
+  window.TEEHubSharedSyncV3490=Object.freeze({open,close});
 })();
