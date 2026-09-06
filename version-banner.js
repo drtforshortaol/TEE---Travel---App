@@ -11,7 +11,20 @@
     const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
     nodes.forEach(node=>{if(/TEE\s+v3\.\d+(?:\.\d+)?/i.test(node.nodeValue||''))node.nodeValue=node.nodeValue.replace(/TEE\s+v3\.\d+(?:\.\d+)?/ig,label);});
   }
+  function isHub(){
+    const p=location.pathname.replace(/\/+$/,'');
+    return /\/TEE---Travel---App(?:\/index\.html)?$/.test(p);
+  }
+  function loadHubCompletion(){
+    if(!isHub()||document.querySelector('script[data-tee-hub-completion]'))return;
+    const s=document.createElement('script');
+    const base=script?.src ? new URL('.',script.src) : new URL('.',location.href);
+    s.src=new URL('hub-completion-v3489.js',base).toString();
+    s.dataset.teeHubCompletion='1';
+    document.head.appendChild(s);
+  }
   paint(fallback);
+  loadHubCompletion();
   async function apply(){
     try{
       const base=script?.src ? new URL('.',script.src) : new URL('.',location.href);
