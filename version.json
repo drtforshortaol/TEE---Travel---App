@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.96",
+  "version": "3.4.97",
   "channel": "review",
-  "publishedAt": "2026-09-06T15:42:00-07:00",
-  "notes": "Fixes the first Shared Sync test where four records moved but the two trip emergency contacts did not. Shared Sync now always includes emergencyContact records from Glenn's authorized master-phone session and marks those copies Shared in the encrypted sync package, while continuing to exclude other Couple-private records. The sync screen also reports how many emergency contacts are included before sending. No source Vault records are relabeled or altered on Glenn's phone by this export rule.",
-  "name": "TEE v3.4.96 — Emergency Contacts in Shared Sync"
+  "publishedAt": "2026-09-06T15:58:00-07:00",
+  "notes": "Adds a local Shared Sync contact verifier to diagnose the receiving-phone discrepancy after the 56-record transfer. The verifier compares emergency contacts in the already-unlocked Vault with emergency contacts in the Hub authorization session and can refresh the authorized session from the Vault without changing Vault data. No traveler records or trip confirmations were altered.",
+  "name": "TEE v3.4.97 — Shared Contact Verifier"
 }
