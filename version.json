@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.93",
+  "version": "3.4.94",
   "channel": "review",
-  "publishedAt": "2026-09-06T14:18:00-07:00",
-  "notes": "Fixes Shared Sync field-guide visibility on iPhone. The dedicated Shared Sync frame now injects a cache-busted SEND/RECEIVE field guide so the instructions appear even when an older Shared Sync script was retained by the PWA. Glenn's iPhone remains the master Shared source. No Vault records or trip data were changed.",
-  "name": "TEE v3.4.93 — Shared Sync Guide Visibility"
+  "publishedAt": "2026-09-06T14:24:00-07:00",
+  "notes": "Moves the Shared Sync field instructions out of the inner Vault page and into the Hub's own Shared Sync dialog so they are visible on iPhone before the secure sync controls load. The guide clearly shows Glenn master iPhone SEND steps and receiving-phone RECEIVE steps. No Vault records or trip data were changed.",
+  "name": "TEE v3.4.94 — Shared Sync Guide in Hub"
 }
