@@ -13,10 +13,10 @@
   let codeInput=null;
   let importInput=null;
 
-  const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const isUnlocked=()=>typeof getVaultState==='function'&&getVaultState()==='unlocked';
   const activeData=()=>typeof getActiveVaultData==='function'?getActiveVaultData():null;
   const normalize=()=>typeof normalizeVaultData==='function'?normalizeVaultData(activeData()).data:activeData();
+  function notifyParent(type,detail={}){try{window.parent?.postMessage({type,...detail},location.origin);}catch{}}
 
   function sharedRecords(){
     if(!isUnlocked())return [];
@@ -104,9 +104,9 @@
       codeRow.hidden=false;
       setStatus(`Encrypted Shared Records file created with ${pkg.recordCount} record${pkg.recordCount===1?'':'s'}. Keep the sync code separate from the file.`,'success');
       const result=await shareOrDownload(lastFile);
-      if(result==='shared')setStatus(`Shared Records file sent/shared. Give the receiving traveler the sync code shown below.`,'success');
-      else if(result==='downloaded')setStatus(`Shared Records file downloaded. Send that file to the receiving phone and give them the sync code below.`,'success');
-      else setStatus(`Shared Records file is ready. Tap “Share file again” when ready.`,'info');
+      if(result==='shared')setStatus('Shared Records file sent/shared. Give the receiving traveler the sync code shown below.','success');
+      else if(result==='downloaded')setStatus('Shared Records file downloaded. Send that file to the receiving phone and give them the sync code below.','success');
+      else setStatus('Shared Records file is ready. Tap “Share file again” when ready.','info');
     }catch(error){setStatus(error?.message||'Unable to create Shared Records file.','error');}
   }
 
@@ -197,11 +197,16 @@
   function open(){
     ensureUi();
     updateCount();
-    if(!isUnlocked()){setStatus('Unlock the Secure Vault, then open Shared Records Sync again.','error');}
+    if(!isUnlocked())setStatus('Unlock the Secure Vault, then open Shared Records Sync again.','error');
     else setStatus('Ready. Choose whether this phone is sending or receiving Shared records.','info');
     if(dialog.showModal&&!dialog.open)dialog.showModal();else dialog.setAttribute('open','');
+    notifyParent('TEE_SHARED_SYNC_OPENED');
   }
-  function close(){if(!dialog)return;if(dialog.close&&dialog.open)dialog.close();else dialog.removeAttribute('open');}
+  function close(){
+    if(!dialog)return;
+    if(dialog.close&&dialog.open)dialog.close();else dialog.removeAttribute('open');
+    notifyParent('TEE_SHARED_SYNC_CLOSED');
+  }
 
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin)return;
@@ -209,7 +214,7 @@
   });
   document.addEventListener('tee-vault-state-changed',()=>{updateCount();if(isUnlocked()&&new URLSearchParams(location.search).get('teeSharedSync')==='1')setTimeout(open,50);});
   setTimeout(()=>{
-    try{window.parent?.postMessage({type:'TEE_SHARED_SYNC_READY'},location.origin);}catch{}
+    notifyParent('TEE_SHARED_SYNC_READY');
     if(new URLSearchParams(location.search).get('teeSharedSync')==='1'&&isUnlocked())open();
   },120);
 
