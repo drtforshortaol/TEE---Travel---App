@@ -68,19 +68,16 @@
       else setStatus('Shared file is ready. Tap Share file again when ready.');
     }catch(error){setStatus(error?.message||'Unable to create Shared Records file.','error');}
   }
-  function requestVaultImport(parsed,code){
-    return new Promise((resolve,reject)=>{
-      const requestId=`sync-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      const timeout=setTimeout(()=>{cleanup();reject(new Error('TEE could not reach the already-unlocked Vault. Close Sync, unlock once from the Hub, and try again.'));},10000);
-      function cleanup(){clearTimeout(timeout);window.removeEventListener('message',onMessage);}
-      function onMessage(event){
-        if(event.origin!==location.origin)return;const msg=event.data||{};
-        if(msg.type!=='TEE_SHARED_SYNC_IMPORT_RESULT'||msg.requestId!==requestId)return;
-        cleanup();if(msg.ok)resolve(msg.result||{});else reject(new Error(msg.error||'Shared Records import failed.'));
-      }
-      window.addEventListener('message',onMessage);
-      try{vaultFrame.contentWindow?.postMessage({type:'TEE_SHARED_SYNC_IMPORT_PACKAGE',requestId,parsed,code},location.origin);}catch(error){cleanup();reject(error);}
-    });
+  async function requestVaultImport(parsed,code){
+    const w=vaultFrame.contentWindow;
+    if(!w)throw new Error('TEE could not reach the active Vault.');
+    if(typeof w.getVaultState!=='function'||w.getVaultState()!=='unlocked')throw new Error('The Vault session inside TEE is no longer unlocked. Close Sync, unlock once from the Hub, and try again.');
+    if(typeof w.deriveEncryptionKey!=='function'||typeof w.base64ToBytes!=='function'||typeof w.decryptData!=='function'||!w.TEESharedSyncV3490?.mergeShared)throw new Error('Shared Sync is not ready in the active Vault. Close Sync, tap Refresh / Update, then try again.');
+    const key=await w.deriveEncryptionKey(normalizeCode(code),w.base64ToBytes(parsed.salt));
+    const payload=await w.decryptData(parsed.encrypted,key);
+    if(payload?.format!==FORMAT||Number(payload?.version)!==FORMAT_VERSION||!Array.isArray(payload?.records))throw new Error('The Shared Records package is invalid or the sync code is incorrect.');
+    if(payload.records.some(r=>r?.accessScope!=='shared'||r?.visibilityClass==='private'))throw new Error('The package contains a non-Shared record and was rejected.');
+    return w.TEESharedSyncV3490.mergeShared(payload);
   }
   async function receiveFile(file){
     try{
