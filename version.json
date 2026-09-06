@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.84",
+  "version": "3.4.85",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:40:00-07:00",
-  "notes": "Simplifies normal TEE use without changing trip content. The Hub now starts with three direct paths (Daily Operations, Quick Reference, Master Itinerary), shortens Vault wording, removes the explanatory philosophy block, keeps six core trip-use tools visible, tucks Language/Expenses/Photos under More traveler tools, shortens Preparation/Library labels, and leaves Maintenance clearly outside the normal travel path.",
-  "name": "TEE v3.4.84 — Simplified Hub"
+  "publishedAt": "2026-09-06T14:05:00-07:00",
+  "notes": "Adds a complete tool directory under Find any TEE tool. The directory is split into two clear lists: Non-Vault Tools (all normal apps and reference tools that can open without Vault authorization) and Vault Tools (unlock/lock, Vault Records, protected-record editing, Secure Records/Vault Manager, encrypted restore, and Maintenance). This change is navigation-only and does not alter trip data or Vault records.",
+  "name": "TEE v3.4.85 — Complete Tool Directory"
 }
