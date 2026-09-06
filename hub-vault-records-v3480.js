@@ -23,7 +23,7 @@
   };
   const OMIT=new Set(['id','history','deletedAt','archivedAt','createdAt','updatedAt','access','privacy','visibility','zone','ownerProfileId','ownerProfile','favorite','tags','relationships']);
 
-  function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+  function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]));}
   function human(key){return String(key||'').replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[_-]+/g,' ').replace(/^./,c=>c.toUpperCase());}
   function titleFor(record){
     return record.contactName||record.hotelName||record.airline||record.fullName||record.name||record.title||record.label||record.destination||record.typeLabel||record.type||'Protected record';
@@ -95,4 +95,70 @@
   window.addEventListener(window.TEEVaultSession?.eventName||'tee-vault-session-changed',()=>{
     if(!window.TEEVaultSession?.isOpen?.() && dialog.open)close();
   });
+})();
+
+// v3.4.85 — complete tool directory under "Find any TEE tool".
+(function(){
+  const finder=[...document.querySelectorAll('details.streamline-secondary-tools')].find(node=>node.querySelector('summary')?.textContent?.trim()==='Find any TEE tool');
+  if(!finder||finder.querySelector('[data-tee-complete-tool-lists]'))return;
+
+  const wrap=document.createElement('div');
+  wrap.dataset.teeCompleteToolLists='1';
+  wrap.style.marginTop='16px';
+
+  const nonVault=[
+    ['Daily Operations','apps/travel-daily-operations/index.html','Today, tomorrow, reminders and Adaptive Checklist.'],
+    ['Quick Reference','apps/travel-essentials/index.html','Emergency, contacts, identity, insurance and problem solving.'],
+    ['Master Itinerary','apps/travel-itinerary/index.html','Full trip schedule and destination sequence.'],
+    ['Transportation','apps/travel-transportation/index.html','Flights, trains, transfers, tickets, seats and baggage.'],
+    ['Hotels','apps/travel-hotels/index.html','Lodging, addresses, check-in and hotel notes.'],
+    ['Maps & Routes','apps/travel-maps-movement/index.html','Trip route, city movement and destination connections.'],
+    ['Weather + Clothing','apps/travel-weather-clothing/index.html','Weather guidance, layers and clothing planning.'],
+    ['Packing','apps/travel-packing/index.html','Packing lists, carry-on and trip gear.'],
+    ['Local Knowledge','apps/travel-local-knowledge/index.html','Etiquette, safety, dining, transportation culture and practical guidance.'],
+    ['Language','apps/travel-language/index.html','Travel phrases and country language help.'],
+    ['Money + Tipping','apps/travel-money-tipping/index.html','Currency, cash/card strategy and tipping guidance.'],
+    ['Expenses','apps/travel-costs/index.html','Record and review trip spending.'],
+    ['Insurance','apps/travel-insurance/index.html','Travel insurance reference and claim preparation.'],
+    ['Photos','apps/travel-photos/index.html','Photo reminders, shot ideas and archive support.'],
+    ['Source Documents','apps/travel-private-documents/index.html','Add, review and process incoming travel documents.'],
+    ['Document Library','apps/travel-private-documents/index.html?teeView=library','Original source documents and processing history.'],
+    ['Trip Archive','apps/travel-archive/index.html','Post-trip journal, reviews and lessons learned.']
+  ];
+
+  const makeLink=([name,url,description])=>`<a class="stream-app-card" href="${url}" style="margin:0"><span class="stream-card-copy"><strong>${name}</strong><small>${description}</small></span><span class="stream-card-arrow">›</span></a>`;
+
+  wrap.innerHTML=`
+    <section style="margin-top:14px">
+      <h3 style="margin:0 0 6px">1. Non-Vault Tools</h3>
+      <p style="margin:0 0 10px;color:#5c6c73">These tools open without unlocking the Vault. Protected fields inside supported tools remain hidden until authorized.</p>
+      <div class="stream-card-grid compact-grid">${nonVault.map(makeLink).join('')}</div>
+    </section>
+    <section style="margin-top:20px">
+      <h3 style="margin:0 0 6px">2. Vault Tools 🔒</h3>
+      <p style="margin:0 0 10px;color:#5c6c73">Use these for protected records, editing, backup/restore and advanced secure administration.</p>
+      <div class="stream-card-grid compact-grid" data-tee-vault-tools>
+        <button type="button" class="stream-app-card" data-vault-action="unlock" style="text-align:left"><span class="stream-card-copy"><strong>Secure Vault — Unlock / Lock</strong><small>Authorize protected details throughout TEE for 30 minutes.</small></span><span class="stream-card-arrow">›</span></button>
+        <button type="button" class="stream-app-card" data-vault-action="records" style="text-align:left"><span class="stream-card-copy"><strong>Vault Records</strong><small>Search all records authorized for the current session.</small></span><span class="stream-card-arrow">›</span></button>
+        <button type="button" class="stream-app-card" data-vault-action="records" style="text-align:left"><span class="stream-card-copy"><strong>Edit Protected Record</strong><small>Find a protected record, tap Edit, change it and save.</small></span><span class="stream-card-arrow">›</span></button>
+        <a class="stream-app-card" href="apps/travel-private-documents/index.html?teeView=vault&teeEnter=1" style="margin:0"><span class="stream-card-copy"><strong>Secure Records / Vault Manager</strong><small>Full encrypted-record and Vault management workspace.</small></span><span class="stream-card-arrow">›</span></a>
+        <a class="stream-app-card" href="apps/travel-private-documents/index.html?teeAction=restore&teeReturn=hub" style="margin:0"><span class="stream-card-copy"><strong>Encrypted Backup / Restore</strong><small>Restore the encrypted Vault on a new or replacement device.</small></span><span class="stream-card-arrow">›</span></a>
+        <a class="stream-app-card" href="apps/tee-maintenance/index.html" style="margin:0"><span class="stream-card-copy"><strong>Maintenance 🔒</strong><small>Advanced backup, repair, diagnostics and system administration.</small></span><span class="stream-card-arrow">›</span></a>
+      </div>
+    </section>`;
+
+  finder.appendChild(wrap);
+
+  wrap.querySelector('[data-vault-action="unlock"]')?.addEventListener('click',()=>{
+    finder.open=false;
+    document.getElementById('hubVaultToggle')?.click();
+  });
+  wrap.querySelectorAll('[data-vault-action="records"]').forEach(button=>button.addEventListener('click',()=>{
+    if(window.TEEVaultSession?.isOpen?.()){
+      document.getElementById('hubVaultRecordsOpen')?.click();
+    }else{
+      finder.open=false;
+      document.getElementById('hubVaultToggle')?.click();
+    }
+  }));
 })();
