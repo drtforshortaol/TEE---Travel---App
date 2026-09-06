@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.83",
+  "version": "3.4.84",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:15:00-07:00",
-  "notes": "Fixes iPhone editor blinking after passphrase entry. The protected-record editor now uses a dedicated stationary Vault iframe instead of moving the Hub Vault iframe between containers, which can trigger repeated reloads in iOS Safari. Editing remains one path: open authorized records, choose a record, tap Edit, confirm the Couple passphrase only if needed, edit, and save.",
-  "name": "TEE v3.4.83 — iPhone Vault Editor Stability"
+  "publishedAt": "2026-09-06T13:40:00-07:00",
+  "notes": "Simplifies normal TEE use without changing trip content. The Hub now starts with three direct paths (Daily Operations, Quick Reference, Master Itinerary), shortens Vault wording, removes the explanatory philosophy block, keeps six core trip-use tools visible, tucks Language/Expenses/Photos under More traveler tools, shortens Preparation/Library labels, and leaves Maintenance clearly outside the normal travel path.",
+  "name": "TEE v3.4.84 — Simplified Hub"
 }
