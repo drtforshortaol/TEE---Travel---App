@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.89",
+  "version": "3.4.90",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:55:00-07:00",
-  "notes": "Adds Finish TEE, a concise completion tracker separating information still to collect, information to verify, app work still to produce, and final pre-departure checks. The Hub also now surfaces a complete two-list tool directory (Non-Vault Tools and Vault Tools) and includes Finish TEE in Preparation. No Vault records or trip confirmations were changed.",
-  "name": "TEE v3.4.89 — Finish TEE Tracker"
+  "publishedAt": "2026-09-06T14:20:00-07:00",
+  "notes": "Adds encrypted Shared Records Sync for coordinating protected Shared travel records across traveler devices without replacing either couple's Private records. The Hub now exposes Sync Shared Records after Vault authorization and in the Vault tool directory. Sending creates an encrypted Shared-only package with a one-time sync code; receiving merges newer Shared records by recordId and preserves Private records. Intended first test: synchronize Emilio and Robert emergency-contact records to Virginia's iPhone, then repeat for the other couple after verification.",
+  "name": "TEE v3.4.90 — Shared Records Sync"
 }
