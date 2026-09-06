@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.81",
+  "version": "3.4.82",
   "channel": "review",
-  "publishedAt": "2026-09-06T11:50:00-07:00",
-  "notes": "Simplifies protected-record maintenance. The Hub Vault Records viewer now includes a direct Edit button on each authorized record. Editing reuses the already-unlocked Vault in place, opens the existing encrypted record form directly, and avoids Maintenance, Source Documents, and a second search. The goal is one unlock, one record, one edit path while preserving the existing encrypted save logic.",
-  "name": "TEE v3.4.81 — One-Tap Vault Edit"
+  "publishedAt": "2026-09-06T12:10:00-07:00",
+  "notes": "Fixes iPhone protected-record editing. Tapping Edit no longer fails when the live encrypted Vault iframe is not already loaded in memory. TEE now opens the encrypted editor automatically; if the encryption key was lost after an iPhone/PWA reload, the same edit panel asks for the Couple passphrase once and then opens the selected record automatically. No Maintenance, Source Documents, second search, or manual close/reopen sequence is required.",
+  "name": "TEE v3.4.82 — Resilient One-Tap Vault Edit"
 }
