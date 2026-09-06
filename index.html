@@ -8,6 +8,20 @@
   <meta name="theme-color" content="#1f3f5b" />
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* v3.4.84 simplification: keep the normal traveler path focused. */
+    #travelerGrid .stream-app-card:nth-child(n+7){display:none}
+    .hub-fast-start{margin:0 0 22px;padding:18px;border:1px solid #d9e2e5;border-radius:18px;background:#fff}
+    .hub-fast-start h2{margin:0 0 4px}
+    .hub-fast-start p{margin:0 0 14px;color:#51636b}
+    .hub-fast-start-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .hub-fast-start-grid a{display:block;text-decoration:none;color:inherit;border:1px solid #d5dfe2;border-radius:14px;padding:14px;background:#f9fbfa}
+    .hub-fast-start-grid strong,.hub-fast-start-grid small{display:block}
+    .hub-fast-start-grid small{margin-top:4px;color:#617177}
+    .hub-more-tools{margin-top:12px}
+    .hub-more-tools .stream-card-grid{margin-top:10px}
+    @media(max-width:720px){.hub-fast-start-grid{grid-template-columns:1fr}.hub-fast-start{padding:14px}}
+  </style>
 </head>
 <body class="streamlined-hub">
   <header class="hero streamline-hero">
@@ -16,14 +30,14 @@
       <div class="hub-utility-actions"><button id="installTeeButton" class="hub-utility-button" type="button">Install</button><button id="refreshTeeButton" class="hub-utility-button hub-utility-primary" type="button">Refresh / Update</button><button id="helpTeeButton" class="hub-utility-button" type="button">Help</button></div>
     </div>
     <h1>Turkey - Eastern Europe Trip</h1>
-    <p class="subtitle"><strong data-tee-version>TEE v3.4.15</strong> · Streamlined Hub Preview</p>
+    <p class="subtitle"><strong data-tee-version>TEE v3.4.84</strong> · Simplified Hub</p>
     <p class="subtitle">Sep 15 - Oct 7, 2026 · Turkey · Croatia · Slovenia · Austria · Switzerland</p>
   </header>
 
   <main class="streamline-main">
     <section class="hub-vault-entry" aria-label="Secure Vault">
       <button id="hubVaultToggle" type="button" class="hub-vault-entry-button" aria-expanded="false" aria-controls="hubVaultPanel">
-        <span class="hub-vault-entry-copy"><strong>Secure Vault 🔒</strong><small>Unlock or view protected traveler records without leaving the Hub.</small></span>
+        <span class="hub-vault-entry-copy"><strong>Secure Vault 🔒</strong><small>Unlock once for protected details throughout TEE.</small></span>
         <span id="hubVaultEntryAction" class="hub-vault-entry-action">Open Vault</span>
       </button>
       <div id="hubVaultPanel" class="hub-vault-panel" hidden>
@@ -34,9 +48,9 @@
         <div id="hubVaultSessionSummary" class="hub-vault-session-summary" hidden>
           <strong id="hubVaultSessionLabel">Vault Open</strong>
           <span id="hubVaultSessionCountdown">30:00 remaining</span>
-          <p>Protected information is authorized throughout TEE for this session. You do not need to return to the Vault to view it in supported apps.</p>
+          <p>Protected information is available throughout TEE for this session.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button id="hubVaultRecordsOpen" type="button" class="hub-primary-action">Open Vault Records</button>
+            <button id="hubVaultRecordsOpen" type="button" class="hub-primary-action">Vault Records</button>
             <button id="hubVaultLockNow" type="button" class="hub-vault-lock-now">Lock Now</button>
           </div>
         </div>
@@ -48,28 +62,38 @@
 
     <section id="hubPostRestoreNotice" class="hub-post-restore-notice" hidden aria-labelledby="hubPostRestoreTitle"><div><span class="stream-kicker">RESTORE COMPLETE</span><h2 id="hubPostRestoreTitle">TEE is restored on this device</h2><p>Your encrypted Vault is stored locally. Unlock it once to authorize protected information throughout TEE for 30 minutes.</p></div><button id="hubPostRestoreUnlock" type="button" class="hub-primary-action">Unlock Vault</button></section>
 
-    <section class="notice streamline-notice"><strong>Private travel project.</strong> Protected information remains controlled by TEE authorization.</section>
+    <section class="hub-fast-start" aria-labelledby="hubFastStartTitle">
+      <span class="stream-kicker">START HERE</span>
+      <h2 id="hubFastStartTitle">Most-used tools</h2>
+      <p>One tap to the information you are most likely to need.</p>
+      <div class="hub-fast-start-grid">
+        <a href="apps/travel-daily-operations/index.html"><strong>Daily Operations</strong><small>Today, tomorrow, reminders and adaptive checklist.</small></a>
+        <a href="apps/travel-essentials/index.html"><strong>Quick Reference</strong><small>Emergency, contacts, identity and problem solving.</small></a>
+        <a href="apps/travel-itinerary/index.html"><strong>Master Itinerary</strong><small>Full trip schedule and destination sequence.</small></a>
+      </div>
+    </section>
 
-    <section class="hub-philosophy" aria-labelledby="hubPhilosophyTitle"><div class="hub-philosophy-head"><div><span class="label">How TEE is organized</span><h2 id="hubPhilosophyTitle">Use TEE by what you need next</h2></div></div><div class="philosophy-grid"><article><strong>Traveler — Today</strong><span>What you need during the trip, right now.</span></article><article><strong>Preparation — Tomorrow</strong><span>Get ready for what is coming next.</span></article><article><strong>Library — Support</strong><span>Documents and reference material when you need them.</span></article><article><strong>Maintenance 🔒 — System Care</strong><span>Advanced TEE administration for Couple A + ChatGPT.</span></article></div></section>
+    <section class="hub-stream-section" aria-labelledby="travelerTitle"><div class="hub-stream-head"><div><span class="stream-kicker">DURING THE TRIP</span><h2 id="travelerTitle">Trip Use</h2><p>Core travel tools. Less-used tools are tucked below.</p></div></div><div id="travelerGrid" class="stream-card-grid"></div>
+      <details class="streamline-secondary-tools hub-more-tools"><summary>More traveler tools</summary><div class="stream-card-grid compact-grid"><a class="stream-app-card" href="apps/travel-language/index.html"><span class="stream-card-copy"><strong>Language</strong><small>Travel phrases and country language help.</small></span><span class="stream-card-arrow">›</span></a><a class="stream-app-card" href="apps/travel-costs/index.html"><span class="stream-card-copy"><strong>Expenses</strong><small>Record and review trip spending.</small></span><span class="stream-card-arrow">›</span></a><a class="stream-app-card" href="apps/travel-photos/index.html"><span class="stream-card-copy"><strong>Photos</strong><small>Photo reminders and trip archive support.</small></span><span class="stream-card-arrow">›</span></a></div></details>
+    </section>
+    <section class="hub-stream-section" aria-labelledby="preparationTitle"><div class="hub-stream-head"><div><span class="stream-kicker">BEFORE / NEXT</span><h2 id="preparationTitle">Preparation</h2><p>Weather, packing, local knowledge and incoming trip updates.</p></div></div><div id="preparationGrid" class="stream-card-grid"></div></section>
+    <section class="hub-stream-section" aria-labelledby="libraryTitle"><div class="hub-stream-head"><div><span class="stream-kicker">REFERENCE</span><h2 id="libraryTitle">Library</h2><p>Original documents and post-trip reference when needed.</p></div></div><div id="libraryGrid" class="stream-card-grid"></div></section>
 
-    <section class="hub-stream-section" aria-labelledby="travelerTitle"><div class="hub-stream-head"><div><span class="stream-kicker">TODAY</span><h2 id="travelerTitle">Traveler</h2><p>Start here while you are traveling. Items are ordered by likely use and importance.</p></div></div><div id="travelerGrid" class="stream-card-grid"></div></section>
-    <section class="hub-stream-section" aria-labelledby="preparationTitle"><div class="hub-stream-head"><div><span class="stream-kicker">TOMORROW</span><h2 id="preparationTitle">Preparation</h2><p>Prepare documents, clothing, packing and destination knowledge before you need them.</p></div></div><div id="preparationGrid" class="stream-card-grid"></div></section>
-    <section class="hub-stream-section" aria-labelledby="libraryTitle"><div class="hub-stream-head"><div><span class="stream-kicker">SUPPORT</span><h2 id="libraryTitle">Library</h2><p>Supporting originals, processing history and post-trip reference material.</p></div></div><div id="libraryGrid" class="stream-card-grid"></div></section>
+    <section id="maintenanceHubSection" class="hub-stream-section maintenance-hub-section" aria-labelledby="maintenanceHubToggleTitle"><button id="maintenanceHubToggle" type="button" class="maintenance-hub-toggle" aria-expanded="false" aria-controls="maintenanceHubContent"><span><span class="stream-kicker">SYSTEM CARE</span><strong id="maintenanceHubToggleTitle">Maintenance 🔒</strong><small>Backup, repair and advanced administration. Not part of normal trip use.</small></span><span id="maintenanceHubState">Expand</span></button><div id="maintenanceHubContent" class="maintenance-hub-content" hidden><p>Maintenance is intentionally separate from normal traveler use. Opening the Maintenance app requires the existing <strong>Couple A passphrase</strong>.</p><a class="maintenance-open-button" href="apps/tee-maintenance/index.html">Open Maintenance 🔒</a></div></section>
 
-    <section id="maintenanceHubSection" class="hub-stream-section maintenance-hub-section" aria-labelledby="maintenanceHubToggleTitle"><button id="maintenanceHubToggle" type="button" class="maintenance-hub-toggle" aria-expanded="false" aria-controls="maintenanceHubContent"><span><span class="stream-kicker">SYSTEM CARE</span><strong id="maintenanceHubToggleTitle">Maintenance 🔒</strong><small>Advanced TEE administration, backup, repair and technical tools. Intended for Couple A + ChatGPT.</small></span><span id="maintenanceHubState">Expand</span></button><div id="maintenanceHubContent" class="maintenance-hub-content" hidden><p>Maintenance is intentionally separate from normal traveler use. Opening the Maintenance app requires the existing <strong>Couple A passphrase</strong>.</p><a class="maintenance-open-button" href="apps/tee-maintenance/index.html">Open Maintenance 🔒</a></div></section>
-
-    <details class="streamline-secondary-tools"><summary>Hub search / complete app reference</summary><p>This is secondary reference only. The four sections above are the normal TEE workflow.</p><div class="stream-search-row"><input id="hubSearch" type="search" placeholder="Search visible TEE apps…" /></div><div id="searchResults" class="stream-card-grid compact-grid"></div></details>
+    <details class="streamline-secondary-tools"><summary>Find any TEE tool</summary><p>Use this only when the tool you need is not visible above.</p><div class="stream-search-row"><input id="hubSearch" type="search" placeholder="Search TEE tools…" /></div><div id="searchResults" class="stream-card-grid compact-grid"></div></details>
   </main>
 
-  <footer class="streamline-footer"><p><span data-tee-version>TEE v3.4.15</span> · ChatGPT document share handoff + offline OCR/MRZ fallback</p></footer>
+  <footer class="streamline-footer"><p><span data-tee-version>TEE v3.4.84</span> · Simplified normal-use hub</p></footer>
 
   <script defer src="version-banner.js"></script>
   <script defer src="vault-session.js"></script>
   <script defer src="hub-registry.js"></script>
   <script defer src="hub-v369.js"></script>
   <script defer src="hub-vault-records-v3480.js"></script>
+  <script defer src="hub-vault-edit-v3481.js"></script>
 
-  <dialog id="hubVaultRecordsDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">AUTHORIZED SESSION</span><h2>Vault Records</h2><p>Read-only view of the records authorized for the current 30-minute session.</p></div><button id="hubVaultRecordsClose" class="install-close" type="button">× Close</button></div><label style="display:block;margin:8px 0 14px"><strong>Search authorized records</strong><input id="hubVaultRecordsSearch" type="search" placeholder="Emilio, Robert, hotel, flight…" style="display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #a9b9c4;border-radius:10px;font-size:16px"></label><p id="hubVaultRecordsCount" class="install-note"></p><div id="hubVaultRecordsList" class="help-card-grid"></div><div class="install-tee-footer"><button id="hubVaultRecordsDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
+  <dialog id="hubVaultRecordsDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">AUTHORIZED SESSION</span><h2>Vault Records</h2><p>Records available for the current 30-minute session.</p></div><button id="hubVaultRecordsClose" class="install-close" type="button">× Close</button></div><label style="display:block;margin:8px 0 14px"><strong>Search records</strong><input id="hubVaultRecordsSearch" type="search" placeholder="Emilio, Robert, hotel, flight…" style="display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #a9b9c4;border-radius:10px;font-size:16px"></label><p id="hubVaultRecordsCount" class="install-note"></p><div id="hubVaultRecordsList" class="help-card-grid"></div><div class="install-tee-footer"><button id="hubVaultRecordsDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
 
   <dialog id="installTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">SHARE & INSTALL TEE</span><h2>Install TEE</h2><p>Copy these instructions into a text. The recipient taps the link and follows the steps.</p></div><button id="installTeeClose" class="install-close" type="button">× Close</button></div><div id="installTeeStatus" class="install-status" hidden></div><div class="install-share-wrap"><strong>Ready-to-send instructions</strong><textarea id="installShareText" class="install-share-text" readonly></textarea><button id="copyInstallInstructions" class="hub-primary-action" type="button">Copy Instructions</button><p id="copyInstallStatus" class="copy-status"></p></div><div class="install-device-grid"><section class="install-device-card install-primary"><h3>iPhone / iPad</h3><ol><li>Tap the TEE link.</li><li>Open it in <strong>Safari</strong>.</li><li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>.</li><li>Name it <strong>TEE Hub</strong> and tap <strong>Add</strong>.</li></ol><p class="install-note"><strong>New device:</strong> Restore Existing TEE using the authorized encrypted backup. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>Mac</h3><button id="installNativeButton" class="install-native-button" type="button" hidden>Install TEE Now</button><p>Safari: <strong>File → Add to Dock</strong>. Chrome: use the Install icon/menu when available.</p></section></div><div class="install-tee-footer"><button id="installTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
   <dialog id="helpTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">TEE SUPPORT</span><h2>Help</h2></div><button id="helpTeeClose" class="install-close" type="button">× Close</button></div><div class="help-card-grid"><section class="install-device-card"><h3>Refresh / Update TEE</h3><ol><li>Tap <strong>Refresh / Update</strong>.</li><li>TEE refreshes only cached app files and reloads.</li><li>Confirm the newest version appears.</li></ol><p class="install-note">This does not intentionally clear Vault records, passphrases, expenses, notes, localStorage, or IndexedDB.</p></section><section class="install-device-card"><h3>Install on iPhone</h3><p>Tap <strong>Install</strong> → <strong>Copy Instructions</strong>. Send the message. Recipient opens the link in Safari → Share → Add to Home Screen.</p></section><section class="install-device-card"><h3>New or replacement phone</h3><p>Choose <strong>Restore Existing TEE</strong>, select the authorized encrypted backup, then unlock the Vault. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>If an old version remains</h3><p>Use <strong>Refresh / Update</strong> first. Do not clear all Safari Website Data merely to update TEE; that can remove locally stored Vault data.</p></section><section class="install-device-card"><h3>Privacy</h3><p><strong>Private</strong> = owning couple only. <strong>Shared</strong> = both couples after authorization. <strong>Public</strong> = open to everyone.</p></section></div><div class="install-tee-footer"><button id="helpTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
