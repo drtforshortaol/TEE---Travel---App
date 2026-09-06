@@ -10,6 +10,14 @@
   const count=document.getElementById('hubVaultRecordsCount');
   if(!openButton||!dialog||!list)return;
 
+  // Load the lightweight one-tap editor bridge only when this viewer exists.
+  if(!document.querySelector('script[data-tee-vault-edit-bridge]')){
+    const script=document.createElement('script');
+    script.src='hub-vault-edit-v3481.js';
+    script.dataset.teeVaultEditBridge='1';
+    document.head.appendChild(script);
+  }
+
   const LABELS={
     emergencyContact:'Emergency Contact',passport:'Passport',globalEntry:'Global Entry / KTN',flight:'Flight',hotel:'Hotel',rail:'Rail',railPass:'Rail Pass',travelInsurance:'Travel Insurance',medical:'Medical',creditCard:'Credit Card',websiteLogin:'Website Login',rentalCar:'Rental Car',visa:'Visa',tripFolder:'Trip Folder'
   };
@@ -18,19 +26,31 @@
   function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
   function human(key){return String(key||'').replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[_-]+/g,' ').replace(/^./,c=>c.toUpperCase());}
   function titleFor(record){
-    return record.contactName||record.hotelName||record.airline||record.fullName||record.name||record.title||record.label||record.destination||record.type||'Protected record';
+    return record.contactName||record.hotelName||record.airline||record.fullName||record.name||record.title||record.label||record.destination||record.typeLabel||record.type||'Protected record';
   }
   function primitiveRows(record){
     const rows=[];
     for(const [key,value] of Object.entries(record||{})){
-      if(OMIT.has(key)||value==null||value===''||key==='type')continue;
+      if(OMIT.has(key)||value==null||value===''||key==='type'||key==='recordId'||key==='fields')continue;
       if(typeof value==='string'||typeof value==='number'||typeof value==='boolean')rows.push([human(key),String(value)]);
       else if(Array.isArray(value)&&value.length&&value.every(v=>['string','number','boolean'].includes(typeof v)))rows.push([human(key),value.join(', ')]);
+    }
+    if(Array.isArray(record?.fields)){
+      record.fields.forEach(field=>{
+        const value=field?.value;
+        if(value==null||String(value).trim()==='')return;
+        rows.push([field.label||human(field.key),String(value)]);
+      });
     }
     return rows;
   }
   function searchableText(record){
     try{return JSON.stringify(record).toLowerCase();}catch{return String(titleFor(record)).toLowerCase();}
+  }
+  function requestEdit(record){
+    if(!record?.recordId)return;
+    close();
+    window.dispatchEvent(new CustomEvent('tee-vault-edit-record',{detail:{recordId:record.recordId,title:titleFor(record)}}));
   }
   function render(){
     const session=window.TEEVaultSession?.get?.();
@@ -45,7 +65,16 @@
       card.className='install-device-card';
       const rows=primitiveRows(record);
       const table=rows.map(([k,v])=>`<div style="display:grid;grid-template-columns:minmax(110px,35%) 1fr;gap:10px;padding:7px 0;border-top:1px solid #e2e8ec"><span style="color:#5b6b72">${esc(k)}</span><strong style="overflow-wrap:anywhere">${esc(v)}</strong></div>`).join('');
-      card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><small style="font-weight:800;text-transform:uppercase;color:#50676d">${esc(LABELS[record.type]||human(record.type||'Record'))}</small><h3 style="margin:4px 0 8px">${esc(titleFor(record))}</h3></div><small style="font-weight:800">${esc(record.privacy||record.visibility||record.zone||'authorized')}</small></div>${table||'<p>Authorized record available.</p>'}`;
+      card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><small style="font-weight:800;text-transform:uppercase;color:#50676d">${esc(LABELS[record.type]||record.typeLabel||human(record.type||'Record'))}</small><h3 style="margin:4px 0 8px">${esc(titleFor(record))}</h3></div><small style="font-weight:800">${esc(record.accessScope||record.privacy||record.visibility||record.zone||'authorized')}</small></div>${table||'<p>Authorized record available.</p>'}`;
+      if(record.recordId){
+        const edit=document.createElement('button');
+        edit.type='button';
+        edit.className='hub-primary-action';
+        edit.textContent='Edit';
+        edit.style.marginTop='12px';
+        edit.addEventListener('click',()=>requestEdit(record));
+        card.appendChild(edit);
+      }
       list.appendChild(card);
     });
   }
