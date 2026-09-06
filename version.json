@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.87",
+  "version": "3.4.88",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:20:00-07:00",
-  "notes": "Continues the Part 2 audit. Transportation now reflects the latest dated Zurich-to-Istanbul correction as approximately 13:35–17:35 on Oct. 6 while deliberately leaving the flight number unverified rather than guessing. Confirmed rail timing remains surfaced; unresolved Ljubljana→Villach, Visp→Zermatt, Zermatt→Lucerne, and Lucerne→Zurich details remain clearly marked pending. No Vault records were changed.",
-  "name": "TEE v3.4.87 — Part 2 Audit Status"
+  "publishedAt": "2026-09-06T13:35:00-07:00",
+  "notes": "Aligns Daily Operations with the Part 2 audit. Sep. 30 through Oct. 7 now uses the audited Part 2 hotel names, confirmed Villach–Salzburg and Salzburg–Zurich–Visp rail timing, explicit pending labels for unresolved Swiss/local rail legs, the latest approx. Zurich–Istanbul timing, YOTELAIR airside overnight wording, and the corrected IST–SFO return timing. No Vault records were changed.",
+  "name": "TEE v3.4.88 — Daily Operations Part 2 Alignment"
 }
