@@ -9,6 +9,7 @@
 
   const FORMAT='TEE_SHARED_SYNC';
   const FORMAT_VERSION=1;
+  const SYNC_ALWAYS_SHARED_TYPES=new Set(['emergencyContact']);
   let button=document.getElementById('hubSharedSyncOpen');
   if(!button){
     button=document.createElement('button');
@@ -34,7 +35,18 @@
   function sessionSharedRecords(){
     const session=window.TEEVaultSession?.get?.();
     const records=Array.isArray(session?.records)?session.records:[];
-    return records.filter(r=>r&&r.accessScope==='shared'&&r.visibilityClass!=='private'&&r.recordStatus!=='deleted').map(r=>JSON.parse(JSON.stringify(r)));
+    return records.filter(r=>{
+      if(!r||r.recordStatus==='deleted')return false;
+      if(SYNC_ALWAYS_SHARED_TYPES.has(r.type))return true;
+      return r.accessScope==='shared'&&r.visibilityClass!=='private';
+    }).map(r=>{
+      const copy=JSON.parse(JSON.stringify(r));
+      if(SYNC_ALWAYS_SHARED_TYPES.has(copy.type)){
+        copy.accessScope='shared';
+        copy.visibilityClass='shared';
+      }
+      return copy;
+    });
   }
   function setStatus(message,kind='info'){
     if(!status)return;status.textContent=message;
@@ -42,7 +54,13 @@
     status.style.borderColor=kind==='success'?'#6eaa82':kind==='error'?'#c67b7b':'#b9ccd3';
     status.style.color=kind==='error'?'#7b2020':'#24444d';
   }
-  function updateCount(){const n=sessionSharedRecords().length;if(countLabel)countLabel.textContent=`${n} Shared record${n===1?'':'s'} ready to synchronize. Private couple records are excluded.`;}
+  function updateCount(){
+    const session=window.TEEVaultSession?.get?.();
+    const all=Array.isArray(session?.records)?session.records:[];
+    const outgoing=sessionSharedRecords();
+    const emergency=outgoing.filter(r=>r.type==='emergencyContact').length;
+    if(countLabel)countLabel.textContent=`${outgoing.length} record${outgoing.length===1?'':'s'} ready to synchronize${emergency?` including ${emergency} emergency contact${emergency===1?'':'s'}`:''}. Couple-private records other than trip emergency contacts are excluded.`;
+  }
   async function buildPackage(code){
     const records=sessionSharedRecords();
     if(!records.length)throw new Error('There are no Shared records to synchronize.');
@@ -61,7 +79,7 @@
     try{
       if(!window.TEEVaultSession?.isOpen?.())throw new Error('Unlock the Secure Vault once from the Hub first.');
       const code=randomCode(),pkg=await buildPackage(code);lastFile=makeFile(pkg);codeInput.value=code;codeRow.hidden=false;
-      setStatus(`Encrypted Shared file created with ${pkg.recordCount} record${pkg.recordCount===1?'':'s'}. No second Vault passphrase is needed.`,'success');
+      setStatus(`Encrypted Shared file created with ${pkg.recordCount} record${pkg.recordCount===1?'':'s'}, including trip emergency contacts. No second Vault passphrase is needed.`,'success');
       const result=await shareFile(lastFile);
       if(result==='shared')setStatus('Shared file sent. Give the receiving traveler the sync code shown below.','success');
       else if(result==='downloaded')setStatus('Shared file saved/downloaded. Send it to the receiving phone and give them the sync code separately.','success');
@@ -96,10 +114,10 @@
   }
   function ensureDialog(){
     if(dialog)return;
-    dialog=document.createElement('dialog');dialog.id='hubSharedSyncDialogV3495';
+    dialog=document.createElement('dialog');dialog.id='hubSharedSyncDialogV3496';
     dialog.style.cssText='width:min(96vw,760px);max-height:92vh;padding:0;border:0;border-radius:18px;overflow:auto;box-shadow:0 22px 70px rgba(0,0,0,.35);background:#fff;color:#17343b';
     dialog.innerHTML=`<div style="padding:18px;background:#fff"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><h2 style="margin:0 0 4px">Sync Shared Records</h2><p style="margin:0;color:#607178">Glenn's iPhone is the master Shared source.</p></div><button type="button" data-close style="border:0;background:#edf2f3;border-radius:10px;padding:10px 12px;font-weight:800">× Close</button></div>
-    <details open style="margin:16px 0;border:1px solid #ddcfaa;border-radius:14px;padding:13px;background:#fffaf0"><summary style="font-weight:900;font-size:1.05rem">How to sync in the field — SEND / RECEIVE</summary><div style="line-height:1.45"><p><strong>Glenn's master iPhone — SEND</strong></p><ol><li>Unlock the Secure Vault once from the Hub.</li><li>Tap Sync Shared Records.</li><li>Tap Create / Share Shared Records below.</li><li>Choose AirDrop and select the receiving iPhone.</li><li>Give the sync code separately.</li></ol><p><strong>Other traveler iPhone — RECEIVE</strong></p><ol><li>Accept the AirDrop and save the file in Files if asked.</li><li>Open TEE Hub and unlock the Secure Vault once.</li><li>Tap Sync Shared Records.</li><li>Tap Choose Shared Records File below.</li><li>Select the AirDropped file from Files.</li><li>Enter Glenn's sync code.</li><li>Confirm Sync complete, then verify the Shared information.</li></ol><p><strong>Important:</strong> Do not upload the Shared file to GitHub.</p></div></details>
+    <details open style="margin:16px 0;border:1px solid #ddcfaa;border-radius:14px;padding:13px;background:#fffaf0"><summary style="font-weight:900;font-size:1.05rem">How to sync in the field — SEND / RECEIVE</summary><div style="line-height:1.45"><p><strong>Glenn's master iPhone — SEND</strong></p><ol><li>Unlock the Secure Vault once from the Hub.</li><li>Tap Sync Shared Records.</li><li>Tap Create / Share Shared Records below.</li><li>Choose AirDrop and select the receiving iPhone.</li><li>Give the sync code separately.</li></ol><p><strong>Other traveler iPhone — RECEIVE</strong></p><ol><li>Accept the AirDrop and save the file in Files if asked.</li><li>Open TEE Hub and unlock the Secure Vault once.</li><li>Tap Sync Shared Records.</li><li>Tap Choose Shared Records File below.</li><li>Select the AirDropped file from Files.</li><li>Enter Glenn's sync code.</li><li>Confirm Sync complete, then verify the Shared information.</li></ol><p><strong>Trip emergency contacts are included in Shared Sync even if an older device still labels them Private.</strong></p><p><strong>Important:</strong> Do not upload the Shared file to GitHub.</p></div></details>
     <p data-count style="padding:10px 12px;border-radius:10px;background:#f4f8f8"></p>
     <section style="border:1px solid #d9e3e4;border-radius:14px;padding:14px;margin:12px 0"><h3 style="margin:0 0 6px">Glenn's master phone — SEND</h3><button type="button" data-export class="hub-primary-action" style="width:100%;padding:13px">Create / Share Shared Records</button><div data-code-row hidden style="margin-top:12px"><label><strong>Sync code</strong><input data-code readonly style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border:1px solid #b7c7cc;border-radius:10px;font:700 18px ui-monospace,monospace"></label><div style="display:flex;gap:8px;margin-top:8px"><button type="button" data-copy style="flex:1;padding:10px">Copy code</button><button type="button" data-share-again style="flex:1;padding:10px">Share file again</button></div></div></section>
     <section style="border:1px solid #d9e3e4;border-radius:14px;padding:14px;margin:12px 0"><h3 style="margin:0 0 6px">Other traveler phone — RECEIVE</h3><button type="button" data-import class="hub-primary-action" style="width:100%;padding:13px">Choose Shared Records File</button><input data-import-file type="file" hidden></section>
