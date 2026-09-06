@@ -19,6 +19,15 @@
   // The local BUILD value is the offline fallback; version.json becomes authoritative when available.
   fetch('../../version.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{if(v?.version){BUILD=String(v.version);setBuild();}}).catch(()=>{});
 
+  // v3.4.90 — load encrypted Shared Records Sync before any streamlined-view early return.
+  // This keeps sync available in the compact Vault iframe used by the Hub.
+  if(!document.querySelector('script[data-tee-shared-sync]')){
+    const sharedSync=document.createElement('script');
+    sharedSync.src='shared-sync-v3490.js?v=3.4.90';
+    sharedSync.dataset.teeSharedSync='3.4.90';
+    document.head.appendChild(sharedSync);
+  }
+
   // iOS Files can report JSON backups with a generic UTI/MIME type. Restricting
   // the hidden file input with accept=... can therefore gray out a valid TEE
   // vault backup. Leave selection unrestricted here and let TEE's existing
