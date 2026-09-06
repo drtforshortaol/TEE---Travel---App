@@ -38,7 +38,10 @@
           <strong id="hubVaultSessionLabel">Vault Open</strong>
           <span id="hubVaultSessionCountdown">30:00 remaining</span>
           <p>Protected information is authorized throughout TEE for this session. You do not need to return to the Vault to view it in supported apps.</p>
-          <button id="hubVaultLockNow" type="button" class="hub-vault-lock-now">Lock Now</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button id="hubVaultRecordsOpen" type="button" class="hub-primary-action">Open Vault Records</button>
+            <button id="hubVaultLockNow" type="button" class="hub-vault-lock-now">Lock Now</button>
+          </div>
         </div>
         <iframe id="hubVaultFrame" title="TEE Secure Vault" data-src="apps/travel-private-documents/index.html?teeView=vault&amp;teeEnter=1&amp;teeEmbed=1"></iframe>
       </div>
@@ -82,23 +85,17 @@
     </section>
 
     <section class="hub-stream-section" aria-labelledby="travelerTitle">
-      <div class="hub-stream-head">
-        <div><span class="stream-kicker">TODAY</span><h2 id="travelerTitle">Traveler</h2><p>Start here while you are traveling. Items are ordered by likely use and importance.</p></div>
-      </div>
+      <div class="hub-stream-head"><div><span class="stream-kicker">TODAY</span><h2 id="travelerTitle">Traveler</h2><p>Start here while you are traveling. Items are ordered by likely use and importance.</p></div></div>
       <div id="travelerGrid" class="stream-card-grid"></div>
     </section>
 
     <section class="hub-stream-section" aria-labelledby="preparationTitle">
-      <div class="hub-stream-head">
-        <div><span class="stream-kicker">TOMORROW</span><h2 id="preparationTitle">Preparation</h2><p>Prepare documents, clothing, packing and destination knowledge before you need them.</p></div>
-      </div>
+      <div class="hub-stream-head"><div><span class="stream-kicker">TOMORROW</span><h2 id="preparationTitle">Preparation</h2><p>Prepare documents, clothing, packing and destination knowledge before you need them.</p></div></div>
       <div id="preparationGrid" class="stream-card-grid"></div>
     </section>
 
     <section class="hub-stream-section" aria-labelledby="libraryTitle">
-      <div class="hub-stream-head">
-        <div><span class="stream-kicker">SUPPORT</span><h2 id="libraryTitle">Library</h2><p>Supporting originals, processing history and post-trip reference material.</p></div>
-      </div>
+      <div class="hub-stream-head"><div><span class="stream-kicker">SUPPORT</span><h2 id="libraryTitle">Library</h2><p>Supporting originals, processing history and post-trip reference material.</p></div></div>
       <div id="libraryGrid" class="stream-card-grid"></div>
     </section>
 
@@ -116,21 +113,27 @@
     <details class="streamline-secondary-tools">
       <summary>Hub search / complete app reference</summary>
       <p>This is secondary reference only. The four sections above are the normal TEE workflow.</p>
-      <div class="stream-search-row">
-        <input id="hubSearch" type="search" placeholder="Search visible TEE apps…" />
-      </div>
+      <div class="stream-search-row"><input id="hubSearch" type="search" placeholder="Search visible TEE apps…" /></div>
       <div id="searchResults" class="stream-card-grid compact-grid"></div>
     </details>
   </main>
 
-  <footer class="streamline-footer">
-    <p><span data-tee-version>TEE v3.4.15</span> · ChatGPT document share handoff + offline OCR/MRZ fallback</p>
-  </footer>
+  <footer class="streamline-footer"><p><span data-tee-version>TEE v3.4.15</span> · ChatGPT document share handoff + offline OCR/MRZ fallback</p></footer>
 
   <script defer src="version-banner.js"></script>
   <script defer src="vault-session.js"></script>
   <script defer src="hub-registry.js"></script>
   <script defer src="hub-v369.js"></script>
+
+  <dialog id="hubVaultRecordsDialog" class="install-tee-dialog">
+    <div class="install-tee-card">
+      <div class="install-tee-head"><div><span class="stream-kicker">AUTHORIZED SESSION</span><h2>Vault Records</h2><p>Read-only view of the records authorized for the current 30-minute session.</p></div><button id="hubVaultRecordsClose" class="install-close" type="button">× Close</button></div>
+      <label style="display:block;margin:8px 0 14px"><strong>Search authorized records</strong><input id="hubVaultRecordsSearch" type="search" placeholder="Emilio, Robert, hotel, flight…" style="display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #a9b9c4;border-radius:10px;font-size:16px"></label>
+      <p id="hubVaultRecordsCount" class="install-note"></p>
+      <div id="hubVaultRecordsList" class="help-card-grid"></div>
+      <div class="install-tee-footer"><button id="hubVaultRecordsDone" class="hub-primary-action" type="button">Done</button></div>
+    </div>
+  </dialog>
 
   <dialog id="installTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">SHARE & INSTALL TEE</span><h2>Install TEE</h2><p>Copy these instructions into a text. The recipient taps the link and follows the steps.</p></div><button id="installTeeClose" class="install-close" type="button">× Close</button></div><div id="installTeeStatus" class="install-status" hidden></div><div class="install-share-wrap"><strong>Ready-to-send instructions</strong><textarea id="installShareText" class="install-share-text" readonly></textarea><button id="copyInstallInstructions" class="hub-primary-action" type="button">Copy Instructions</button><p id="copyInstallStatus" class="copy-status"></p></div><div class="install-device-grid"><section class="install-device-card install-primary"><h3>iPhone / iPad</h3><ol><li>Tap the TEE link.</li><li>Open it in <strong>Safari</strong>.</li><li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>.</li><li>Name it <strong>TEE Hub</strong> and tap <strong>Add</strong>.</li></ol><p class="install-note"><strong>New device:</strong> Restore Existing TEE using the authorized encrypted backup. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>Mac</h3><button id="installNativeButton" class="install-native-button" type="button" hidden>Install TEE Now</button><p>Safari: <strong>File → Add to Dock</strong>. Chrome: use the Install icon/menu when available.</p></section></div><div class="install-tee-footer"><button id="installTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
   <dialog id="helpTeeDialog" class="install-tee-dialog"><div class="install-tee-card"><div class="install-tee-head"><div><span class="stream-kicker">TEE SUPPORT</span><h2>Help</h2></div><button id="helpTeeClose" class="install-close" type="button">× Close</button></div><div class="help-card-grid"><section class="install-device-card"><h3>Refresh / Update TEE</h3><ol><li>Tap <strong>Refresh / Update</strong>.</li><li>TEE refreshes only cached app files and reloads.</li><li>Confirm the newest version appears.</li></ol><p class="install-note">This does not intentionally clear Vault records, passphrases, expenses, notes, localStorage, or IndexedDB.</p></section><section class="install-device-card"><h3>Install on iPhone</h3><p>Tap <strong>Install</strong> → <strong>Copy Instructions</strong>. Send the message. Recipient opens the link in Safari → Share → Add to Home Screen.</p></section><section class="install-device-card"><h3>New or replacement phone</h3><p>Choose <strong>Restore Existing TEE</strong>, select the authorized encrypted backup, then unlock the Vault. Do not create a replacement vault.</p></section><section class="install-device-card"><h3>If an old version remains</h3><p>Use <strong>Refresh / Update</strong> first. Do not clear all Safari Website Data merely to update TEE; that can remove locally stored Vault data.</p></section><section class="install-device-card"><h3>Privacy</h3><p><strong>Private</strong> = owning couple only. <strong>Shared</strong> = both couples after authorization. <strong>Public</strong> = open to everyone.</p></section></div><div class="install-tee-footer"><button id="helpTeeDone" class="hub-primary-action" type="button">Done</button></div></div></dialog>
