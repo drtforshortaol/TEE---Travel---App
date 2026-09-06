@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.88",
+  "version": "3.4.89",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:35:00-07:00",
-  "notes": "Aligns Daily Operations with the Part 2 audit. Sep. 30 through Oct. 7 now uses the audited Part 2 hotel names, confirmed Villach–Salzburg and Salzburg–Zurich–Visp rail timing, explicit pending labels for unresolved Swiss/local rail legs, the latest approx. Zurich–Istanbul timing, YOTELAIR airside overnight wording, and the corrected IST–SFO return timing. No Vault records were changed.",
-  "name": "TEE v3.4.88 — Daily Operations Part 2 Alignment"
+  "publishedAt": "2026-09-06T13:55:00-07:00",
+  "notes": "Adds Finish TEE, a concise completion tracker separating information still to collect, information to verify, app work still to produce, and final pre-departure checks. The Hub also now surfaces a complete two-list tool directory (Non-Vault Tools and Vault Tools) and includes Finish TEE in Preparation. No Vault records or trip confirmations were changed.",
+  "name": "TEE v3.4.89 — Finish TEE Tracker"
 }
