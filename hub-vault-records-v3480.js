@@ -17,6 +17,13 @@
     script.dataset.teeVaultEditBridge='1';
     document.head.appendChild(script);
   }
+  // v3.4.90 — Shared Records Sync launcher. Injects one normal-use button beside Vault Records.
+  if(!document.querySelector('script[data-tee-shared-sync-hub]')){
+    const script=document.createElement('script');
+    script.src='hub-shared-sync-v3490.js';
+    script.dataset.teeSharedSyncHub='3.4.90';
+    document.head.appendChild(script);
+  }
 
   const LABELS={
     emergencyContact:'Emergency Contact',passport:'Passport',globalEntry:'Global Entry / KTN',flight:'Flight',hotel:'Hotel',rail:'Rail',railPass:'Rail Pass',travelInsurance:'Travel Insurance',medical:'Medical',creditCard:'Credit Card',websiteLogin:'Website Login',rentalCar:'Rental Car',visa:'Visa',tripFolder:'Trip Folder'
@@ -136,11 +143,12 @@
     </section>
     <section style="margin-top:20px">
       <h3 style="margin:0 0 6px">2. Vault Tools 🔒</h3>
-      <p style="margin:0 0 10px;color:#5c6c73">Use these for protected records, editing, backup/restore and advanced secure administration.</p>
+      <p style="margin:0 0 10px;color:#5c6c73">Use these for protected records, editing, synchronization, backup/restore and advanced secure administration.</p>
       <div class="stream-card-grid compact-grid" data-tee-vault-tools>
         <button type="button" class="stream-app-card" data-vault-action="unlock" style="text-align:left"><span class="stream-card-copy"><strong>Secure Vault — Unlock / Lock</strong><small>Authorize protected details throughout TEE for 30 minutes.</small></span><span class="stream-card-arrow">›</span></button>
         <button type="button" class="stream-app-card" data-vault-action="records" style="text-align:left"><span class="stream-card-copy"><strong>Vault Records</strong><small>Search all records authorized for the current session.</small></span><span class="stream-card-arrow">›</span></button>
         <button type="button" class="stream-app-card" data-vault-action="records" style="text-align:left"><span class="stream-card-copy"><strong>Edit Protected Record</strong><small>Find a protected record, tap Edit, change it and save.</small></span><span class="stream-card-arrow">›</span></button>
+        <button type="button" class="stream-app-card" data-vault-action="shared-sync" style="text-align:left"><span class="stream-card-copy"><strong>Sync Shared Records</strong><small>Encrypted merge of Shared records across traveler phones without replacing couple-private records.</small></span><span class="stream-card-arrow">›</span></button>
         <a class="stream-app-card" href="apps/travel-private-documents/index.html?teeView=vault&teeEnter=1" style="margin:0"><span class="stream-card-copy"><strong>Secure Records / Vault Manager</strong><small>Full encrypted-record and Vault management workspace.</small></span><span class="stream-card-arrow">›</span></a>
         <a class="stream-app-card" href="apps/travel-private-documents/index.html?teeAction=restore&teeReturn=hub" style="margin:0"><span class="stream-card-copy"><strong>Encrypted Backup / Restore</strong><small>Restore the encrypted Vault on a new or replacement device.</small></span><span class="stream-card-arrow">›</span></a>
         <a class="stream-app-card" href="apps/tee-maintenance/index.html" style="margin:0"><span class="stream-card-copy"><strong>Maintenance 🔒</strong><small>Advanced backup, repair, diagnostics and system administration.</small></span><span class="stream-card-arrow">›</span></a>
@@ -161,4 +169,8 @@
       document.getElementById('hubVaultToggle')?.click();
     }
   }));
+  wrap.querySelector('[data-vault-action="shared-sync"]')?.addEventListener('click',()=>{
+    if(window.TEEVaultSession?.isOpen?.())document.getElementById('hubSharedSyncOpen')?.click();
+    else{finder.open=false;document.getElementById('hubVaultToggle')?.click();}
+  });
 })();
