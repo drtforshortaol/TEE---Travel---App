@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.86",
+  "version": "3.4.87",
   "channel": "review",
-  "publishedAt": "2026-09-06T13:05:00-07:00",
-  "notes": "Part 2 audit refinement. Hotels now show the actual lodging names and dates while keeping addresses, confirmations, contacts, payment and traveler-specific details in Secure Vault. Transportation now surfaces confirmed Part 2 rail timing for Villach–Salzburg and Salzburg–Zurich–Visp, clearly labels remaining rail gaps, shows corrected outbound/return flight timing, and keeps ticket/seat/booking details protected. No Vault records were changed.",
-  "name": "TEE v3.4.86 — Part 2 Clarity"
+  "publishedAt": "2026-09-06T13:20:00-07:00",
+  "notes": "Continues the Part 2 audit. Transportation now reflects the latest dated Zurich-to-Istanbul correction as approximately 13:35–17:35 on Oct. 6 while deliberately leaving the flight number unverified rather than guessing. Confirmed rail timing remains surfaced; unresolved Ljubljana→Villach, Visp→Zermatt, Zermatt→Lucerne, and Lucerne→Zurich details remain clearly marked pending. No Vault records were changed.",
+  "name": "TEE v3.4.87 — Part 2 Audit Status"
 }
