@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.92",
+  "version": "3.4.93",
   "channel": "review",
-  "publishedAt": "2026-09-06T14:10:00-07:00",
-  "notes": "Adds an offline step-by-step Shared Records Sync field guide inside the sync panel. The guide identifies Glenn's iPhone as the master Shared source, explains SEND and RECEIVE steps using AirDrop and Files, reminds travelers to keep the sync code separate, and warns not to upload the Shared package to GitHub. No Vault records or trip confirmations were changed.",
-  "name": "TEE v3.4.92 — Shared Sync Field Guide"
+  "publishedAt": "2026-09-06T14:18:00-07:00",
+  "notes": "Fixes Shared Sync field-guide visibility on iPhone. The dedicated Shared Sync frame now injects a cache-busted SEND/RECEIVE field guide so the instructions appear even when an older Shared Sync script was retained by the PWA. Glenn's iPhone remains the master Shared source. No Vault records or trip data were changed.",
+  "name": "TEE v3.4.93 — Shared Sync Guide Visibility"
 }
