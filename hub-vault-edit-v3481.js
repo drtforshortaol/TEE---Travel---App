@@ -1,14 +1,12 @@
 "use strict";
 
 (function(){
-  const frame=document.getElementById('hubVaultFrame');
-  if(!frame)return;
-
+  // iPhone/Safari can repeatedly reload an iframe when it is moved between DOM parents.
+  // The editor therefore uses its own dedicated, stationary iframe and never reparents
+  // the Hub's normal Vault iframe.
   let dialog=null;
-  let frameHome=null;
-  let frameNextSibling=null;
+  let editFrame=null;
   let guard=null;
-  let restoring=[];
   let pendingRecordId=null;
   let pendingTitle='Record';
   let editorPrepared=false;
@@ -30,82 +28,112 @@
     return dialog;
   }
 
-  function hide(el){if(!el)return;restoring.push({el,display:el.style.display});el.style.display='none';}
-  function simplifyFrame(doc,form){
-    restoring=[];
-    hide(doc.querySelector('header'));
-    hide(doc.querySelector('footer'));
-    const parent=form?.parentElement;
-    if(parent)[...parent.children].forEach(child=>{if(child!==form)hide(child);});
-    ['secureVaultDashboard','secureQuickActions','secureExpirationDashboard','secureFavorites','secureRecycleBin','secureActivityCenter','secureVaultStatistics','secureVaultHealth','secureTeeImport','secureTripWorkspace','secureEmergencyMode'].forEach(id=>hide(doc.getElementById(id)));
+  function ensureEditFrame(){
+    const dlg=ensureDialog();
+    if(editFrame)return editFrame;
+    const host=dlg.querySelector('#hubVaultEditFrameHost');
+    editFrame=document.createElement('iframe');
+    editFrame.id='hubVaultDedicatedEditFrame';
+    editFrame.title='Secure Vault record editor';
+    editFrame.src='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1&teeEdit=1';
+    editFrame.style.width='100%';
+    editFrame.style.height='70vh';
+    editFrame.style.border='0';
+    editFrame.style.background='#f7f9fa';
+    editFrame.addEventListener('load',()=>{
+      editorPrepared=false;
+      if(dialog?.open)prepareEditor();
+    });
+    host.appendChild(editFrame);
+    return editFrame;
   }
-  function restoreFrame(){
-    restoring.reverse().forEach(item=>{try{item.el.style.display=item.display;}catch{}});
-    restoring=[];
+
+  function frameWindow(){return editFrame?.contentWindow||null;}
+  function frameDocument(){try{return editFrame?.contentDocument||null;}catch{return null;}}
+  function frameReady(){
+    const w=frameWindow();
+    return Boolean(w&&typeof w.openRecordForm==='function'&&typeof w.getVaultState==='function'&&typeof w.getActiveVaultData==='function'&&typeof w.normalizeVaultData==='function');
   }
+  function liveVaultUnlocked(){
+    try{return frameWindow()?.getVaultState?.()==='unlocked';}catch{return false;}
+  }
+  function updateHint(text){const node=dialog?.querySelector('#hubVaultEditHint');if(node)node.textContent=text;}
+
   function activeRecord(recordId){
-    const w=frame.contentWindow;
+    const w=frameWindow();
     if(!w||typeof w.getActiveVaultData!=='function'||typeof w.normalizeVaultData!=='function')return null;
     try{
       const data=w.normalizeVaultData(w.getActiveVaultData()).data;
       return (data?.records||[]).find(record=>record.recordId===recordId)||null;
     }catch{return null;}
   }
-  function frameReady(){
-    const w=frame.contentWindow;
-    return Boolean(w&&typeof w.openRecordForm==='function'&&typeof w.getVaultState==='function');
+
+  function simplifyFrame(doc,form){
+    if(!doc||!form)return;
+    const keep=new Set([form]);
+    const workspace=form.parentElement;
+    if(workspace){
+      [...workspace.children].forEach(child=>{child.style.display=keep.has(child)?'':'none';});
+    }
+    const header=doc.querySelector('header');
+    const footer=doc.querySelector('footer');
+    if(header)header.style.display='none';
+    if(footer)footer.style.display='none';
+    ['secureVaultDashboard','secureQuickActions','secureExpirationDashboard','secureFavorites','secureRecycleBin','secureActivityCenter','secureVaultStatistics','secureVaultHealth','secureTeeImport','secureTripWorkspace','secureEmergencyMode'].forEach(id=>{
+      const el=doc.getElementById(id);if(el)el.style.display='none';
+    });
+    try{doc.documentElement.style.scrollBehavior='auto';doc.body.style.margin='0';}catch{}
   }
-  function liveVaultUnlocked(){
-    try{return frame.contentWindow?.getVaultState?.()==='unlocked';}catch{return false;}
-  }
-  function updateHint(text){const node=dialog?.querySelector('#hubVaultEditHint');if(node)node.textContent=text;}
 
   function prepareEditor(){
-    if(editorPrepared||!pendingRecordId||!frameReady()||!liveVaultUnlocked())return false;
-    const w=frame.contentWindow;
-    const doc=frame.contentDocument;
+    if(editorPrepared||!pendingRecordId||!frameReady())return false;
+    if(!liveVaultUnlocked()){
+      updateHint('Confirm the Couple passphrase once below. TEE will open this record automatically.');
+      return false;
+    }
+    const w=frameWindow();
+    const doc=frameDocument();
     const record=activeRecord(pendingRecordId);
-    if(!record)return false;
+    if(!record){
+      updateHint('Vault is open. Waiting for this record to become available…');
+      return false;
+    }
     try{
       w.clearSecureSearch?.();
       w.expandSecureRecordsWorkspace?.({scroll:false});
       w.openRecordForm(record.type,record);
-      const form=w.secureVaultUi?.recordForm||doc.getElementById('secureRecordForm');
+      const form=w.secureVaultUi?.recordForm||doc?.getElementById('secureRecordForm');
       if(!form)return false;
       simplifyFrame(doc,form);
       editorPrepared=true;
       updateHint('Make the change and tap Save Record.');
-      requestAnimationFrame(()=>form.scrollIntoView({behavior:'auto',block:'start'}));
+      setTimeout(()=>{try{form.scrollIntoView({behavior:'auto',block:'start'});}catch{}},50);
       return true;
-    }catch(error){console.error(error);return false;}
+    }catch(error){
+      console.error(error);
+      updateHint('TEE could not prepare the editor. Close this window and try Edit once more.');
+      return false;
+    }
   }
 
-  function ensureFrameLoaded(){
-    if(!frame.getAttribute('src'))frame.src=frame.dataset.src||'apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1';
-  }
   function startGuard(){
-    if(guard!==null)clearInterval(guard);
+    stopGuard();
     guard=setInterval(()=>{
       if(!dialog?.open)return;
-      frame.hidden=false;
-      if(prepareEditor())return;
-      if(frameReady()&&!liveVaultUnlocked())updateHint('For editing, confirm the Couple passphrase once below. TEE will open this record automatically.');
-      else updateHint('Opening the encrypted editor…');
-    },180);
+      prepareEditor();
+    },500);
   }
-  function stopGuard(){if(guard!==null)clearInterval(guard);guard=null;}
+  function stopGuard(){if(guard!==null){clearInterval(guard);guard=null;}}
 
   function closeEditor(){
     stopGuard();
-    try{restoreFrame();}catch{}
-    if(frameHome){
-      if(frameNextSibling&&frameNextSibling.parentNode===frameHome)frameHome.insertBefore(frame,frameNextSibling);
-      else frameHome.appendChild(frame);
-    }
-    frame.hidden=true;
-    frame.style.width='';frame.style.height='';frame.style.border='';
     if(dialog?.close)dialog.close();else dialog?.removeAttribute('open');
-    frameHome=null;frameNextSibling=null;pendingRecordId=null;pendingTitle='Record';editorPrepared=false;
+    pendingRecordId=null;
+    pendingTitle='Record';
+    editorPrepared=false;
+    // Destroy the dedicated editor frame after use so decrypted Vault state is not
+    // retained longer than needed. A fresh stationary iframe is created next time.
+    if(editFrame){try{editFrame.remove();}catch{}editFrame=null;}
   }
 
   function openEditor(recordId,title='Record'){
@@ -113,25 +141,19 @@
       alert('Unlock the Vault first, then tap Edit again.');
       return;
     }
-    pendingRecordId=recordId;pendingTitle=title;editorPrepared=false;
+    pendingRecordId=recordId;
+    pendingTitle=title;
+    editorPrepared=false;
     const dlg=ensureDialog();
-    const host=dlg.querySelector('#hubVaultEditFrameHost');
     const titleNode=dlg.querySelector('#hubVaultEditTitle');
     if(titleNode)titleNode.textContent=`Edit ${title}`;
     updateHint('Opening the encrypted editor…');
-
-    frameHome=frame.parentElement;
-    frameNextSibling=frame.nextSibling;
-    host.appendChild(frame);
-    ensureFrameLoaded();
-    frame.hidden=false;
-    frame.style.width='100%';frame.style.height='68vh';frame.style.border='0';
+    ensureEditFrame();
     if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
     startGuard();
     prepareEditor();
   }
 
-  frame.addEventListener('load',()=>{if(dialog?.open){editorPrepared=false;prepareEditor();}});
   window.addEventListener('tee-vault-edit-record',event=>{
     const detail=event.detail||{};
     if(detail.recordId)openEditor(detail.recordId,detail.title||'Record');
