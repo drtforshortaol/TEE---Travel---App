@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.82",
+  "version": "3.4.83",
   "channel": "review",
-  "publishedAt": "2026-09-06T12:10:00-07:00",
-  "notes": "Fixes iPhone protected-record editing. Tapping Edit no longer fails when the live encrypted Vault iframe is not already loaded in memory. TEE now opens the encrypted editor automatically; if the encryption key was lost after an iPhone/PWA reload, the same edit panel asks for the Couple passphrase once and then opens the selected record automatically. No Maintenance, Source Documents, second search, or manual close/reopen sequence is required.",
-  "name": "TEE v3.4.82 — Resilient One-Tap Vault Edit"
+  "publishedAt": "2026-09-06T13:15:00-07:00",
+  "notes": "Fixes iPhone editor blinking after passphrase entry. The protected-record editor now uses a dedicated stationary Vault iframe instead of moving the Hub Vault iframe between containers, which can trigger repeated reloads in iOS Safari. Editing remains one path: open authorized records, choose a record, tap Edit, confirm the Couple passphrase only if needed, edit, and save.",
+  "name": "TEE v3.4.83 — iPhone Vault Editor Stability"
 }
