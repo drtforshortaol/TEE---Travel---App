@@ -4,8 +4,11 @@
   const recordsButton=document.getElementById('hubVaultRecordsOpen');
   const sessionSummary=document.getElementById('hubVaultSessionSummary');
   const vaultToggle=document.getElementById('hubVaultToggle');
-  if(!sessionSummary)return;
+  const vaultFrame=document.getElementById('hubVaultFrame');
+  if(!sessionSummary||!vaultFrame)return;
 
+  const FORMAT='TEE_SHARED_SYNC';
+  const FORMAT_VERSION=1;
   let button=document.getElementById('hubSharedSyncOpen');
   if(!button){
     button=document.createElement('button');
@@ -17,63 +20,102 @@
     else sessionSummary.appendChild(button);
   }
 
-  let dialog=null;
-  let frame=null;
-
+  let dialog=null,status=null,countLabel=null,codeRow=null,codeInput=null,importInput=null,lastFile=null;
+  const enc=new TextEncoder();
+  const toB64=bytes=>{let s='';for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(s);};
+  const normalizeCode=code=>String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  function randomBytes(n){const b=new Uint8Array(n);crypto.getRandomValues(b);return b;}
+  function randomCode(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',b=randomBytes(16);let s='';for(const x of b)s+=chars[x%chars.length];return s.match(/.{1,4}/g).join('-');}
+  async function deriveKey(code,salt){
+    const material=await crypto.subtle.importKey('raw',enc.encode(normalizeCode(code)),'PBKDF2',false,['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:310000,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt']);
+  }
+  async function encryptJson(value,key){const iv=randomBytes(12);const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(value)));return {iv:toB64(iv),ciphertext:toB64(new Uint8Array(cipher))};}
+  function sessionSharedRecords(){
+    const session=window.TEEVaultSession?.get?.();
+    const records=Array.isArray(session?.records)?session.records:[];
+    return records.filter(r=>r&&r.accessScope==='shared'&&r.visibilityClass!=='private'&&r.recordStatus!=='deleted').map(r=>JSON.parse(JSON.stringify(r)));
+  }
+  function setStatus(message,kind='info'){
+    if(!status)return;status.textContent=message;
+    status.style.background=kind==='success'?'#eaf7ee':kind==='error'?'#fff0f0':'#eef5f7';
+    status.style.borderColor=kind==='success'?'#6eaa82':kind==='error'?'#c67b7b':'#b9ccd3';
+    status.style.color=kind==='error'?'#7b2020':'#24444d';
+  }
+  function updateCount(){const n=sessionSharedRecords().length;if(countLabel)countLabel.textContent=`${n} Shared record${n===1?'':'s'} ready to synchronize. Private couple records are excluded.`;}
+  async function buildPackage(code){
+    const records=sessionSharedRecords();
+    if(!records.length)throw new Error('There are no Shared records to synchronize.');
+    const payload={format:FORMAT,version:FORMAT_VERSION,createdAt:new Date().toISOString(),records};
+    const salt=randomBytes(16),key=await deriveKey(code,salt),encrypted=await encryptJson(payload,key);
+    return {format:FORMAT,version:FORMAT_VERSION,createdAt:payload.createdAt,recordCount:records.length,salt:toB64(salt),encrypted};
+  }
+  function makeFile(pkg){const day=new Date().toISOString().slice(0,10);return new File([JSON.stringify(pkg,null,2)],`TEE-Shared-Records-${day}.tee-shared.json`,{type:'application/json'});}
+  async function shareFile(file){
+    if(navigator.share&&navigator.canShare?.({files:[file]})){
+      try{await navigator.share({title:'TEE Shared Records',text:'Encrypted TEE Shared Records sync file. Send the sync code separately.',files:[file]});return 'shared';}catch(error){if(error?.name==='AbortError')return 'cancelled';}
+    }
+    const url=URL.createObjectURL(file),a=document.createElement('a');a.href=url;a.download=file.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);return 'downloaded';
+  }
+  async function exportShared(){
+    try{
+      if(!window.TEEVaultSession?.isOpen?.())throw new Error('Unlock the Secure Vault once from the Hub first.');
+      const code=randomCode(),pkg=await buildPackage(code);lastFile=makeFile(pkg);codeInput.value=code;codeRow.hidden=false;
+      setStatus(`Encrypted Shared file created with ${pkg.recordCount} record${pkg.recordCount===1?'':'s'}. No second Vault passphrase is needed.`,'success');
+      const result=await shareFile(lastFile);
+      if(result==='shared')setStatus('Shared file sent. Give the receiving traveler the sync code shown below.','success');
+      else if(result==='downloaded')setStatus('Shared file saved/downloaded. Send it to the receiving phone and give them the sync code separately.','success');
+      else setStatus('Shared file is ready. Tap Share file again when ready.');
+    }catch(error){setStatus(error?.message||'Unable to create Shared Records file.','error');}
+  }
+  function requestVaultImport(parsed,code){
+    return new Promise((resolve,reject)=>{
+      const requestId=`sync-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const timeout=setTimeout(()=>{cleanup();reject(new Error('TEE could not reach the already-unlocked Vault. Close Sync, unlock once from the Hub, and try again.'));},10000);
+      function cleanup(){clearTimeout(timeout);window.removeEventListener('message',onMessage);}
+      function onMessage(event){
+        if(event.origin!==location.origin)return;const msg=event.data||{};
+        if(msg.type!=='TEE_SHARED_SYNC_IMPORT_RESULT'||msg.requestId!==requestId)return;
+        cleanup();if(msg.ok)resolve(msg.result||{});else reject(new Error(msg.error||'Shared Records import failed.'));
+      }
+      window.addEventListener('message',onMessage);
+      try{vaultFrame.contentWindow?.postMessage({type:'TEE_SHARED_SYNC_IMPORT_PACKAGE',requestId,parsed,code},location.origin);}catch(error){cleanup();reject(error);}
+    });
+  }
+  async function receiveFile(file){
+    try{
+      if(!file)return;
+      if(!window.TEEVaultSession?.isOpen?.())throw new Error('Unlock the Secure Vault once from the Hub first.');
+      const code=prompt('Enter the Shared Records sync code from Glenn’s master iPhone.');if(code===null)return;
+      if(normalizeCode(code).length<8)throw new Error('The sync code is incomplete.');
+      const parsed=JSON.parse(await file.text());
+      if(parsed?.format!==FORMAT||Number(parsed?.version)!==FORMAT_VERSION)throw new Error('This is not a valid TEE Shared Records file.');
+      setStatus('Importing into the already-unlocked Vault…');
+      const result=await requestVaultImport(parsed,code);
+      setStatus(`Sync complete: ${result.added||0} added, ${result.updated||0} updated, ${result.unchanged||0} unchanged${result.skipped?`, ${result.skipped} skipped`:''}. Private records were untouched.`,'success');
+      updateCount();
+    }catch(error){setStatus(error instanceof SyntaxError?'The selected file is not a valid TEE Shared Records file.':(error?.message||'Shared Records sync failed.'),'error');}
+    finally{if(importInput)importInput.value='';}
+  }
   function ensureDialog(){
     if(dialog)return;
-    dialog=document.createElement('dialog');
-    dialog.id='hubSharedSyncDialogV3491';
-    dialog.style.cssText='width:min(96vw,900px);height:min(92vh,940px);padding:0;border:0;border-radius:18px;overflow:hidden;box-shadow:0 22px 70px rgba(0,0,0,.35);background:#fff';
-    dialog.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;min-height:0;background:#fff">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid #dbe4e7;background:#f7faf9">
-        <div><strong style="display:block">Sync Shared Records</strong><small style="color:#5a6b72">Glenn's iPhone is the master Shared source.</small></div>
-        <button type="button" data-close style="border:0;background:#e9eff1;border-radius:10px;padding:9px 12px;font-weight:800">× Close</button>
-      </div>
-      <details open data-field-guide style="margin:10px 12px 8px;padding:10px 12px;border:1px solid #d9e3e4;border-radius:12px;background:#fffaf0;max-height:42vh;overflow:auto">
-        <summary style="font-weight:900;cursor:pointer">How to sync in the field — SEND / RECEIVE</summary>
-        <div style="margin-top:10px;line-height:1.45;font-size:15px">
-          <p style="margin:0 0 6px"><strong>Glenn's master iPhone — SEND</strong></p>
-          <ol style="margin:0 0 12px;padding-left:22px"><li>Open TEE Hub and unlock the Secure Vault.</li><li>Tap <strong>Sync Shared Records</strong>.</li><li>Tap <strong>Create / Share Shared Records</strong>.</li><li>Choose <strong>AirDrop</strong> and select the receiving traveler's iPhone.</li><li>Keep the sync code. Give it separately, verbally or by text.</li></ol>
-          <p style="margin:0 0 6px"><strong>Other traveler's iPhone — RECEIVE</strong></p>
-          <ol style="margin:0 0 12px;padding-left:22px"><li>Accept the AirDrop. If asked, save the file in <strong>Files</strong>.</li><li>Open TEE Hub and unlock the Secure Vault.</li><li>Tap <strong>Sync Shared Records</strong>.</li><li>Tap <strong>Choose Shared Records File</strong>.</li><li>Select the AirDropped TEE Shared Records file from <strong>Files</strong>.</li><li>Enter the sync code from Glenn's phone.</li><li>Confirm TEE reports the sync completed.</li><li>Verify the needed Shared information in Vault Records or Quick Reference.</li></ol>
-          <p style="margin:0"><strong>Important:</strong> Do not upload the Shared file to GitHub. AirDrop is preferred when everyone is together.</p>
-        </div>
-      </details>
-      <div style="padding:0 12px 8px;color:#5a6b72;font-size:13px"><strong>Below:</strong> use the secure sync controls to create/send or receive/import the encrypted Shared file.</div>
-      <iframe title="TEE Shared Records Sync" data-sync-frame style="flex:1;min-height:260px;width:100%;border:0;border-top:1px solid #e0e7e9;background:#fff"></iframe>
-    </div>`;
-    document.body.appendChild(dialog);
-    frame=dialog.querySelector('[data-sync-frame]');
-    dialog.querySelector('[data-close]')?.addEventListener('click',close);
-    dialog.addEventListener('click',event=>{if(event.target===dialog)close();});
+    dialog=document.createElement('dialog');dialog.id='hubSharedSyncDialogV3495';
+    dialog.style.cssText='width:min(96vw,760px);max-height:92vh;padding:0;border:0;border-radius:18px;overflow:auto;box-shadow:0 22px 70px rgba(0,0,0,.35);background:#fff;color:#17343b';
+    dialog.innerHTML=`<div style="padding:18px;background:#fff"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><h2 style="margin:0 0 4px">Sync Shared Records</h2><p style="margin:0;color:#607178">Glenn's iPhone is the master Shared source.</p></div><button type="button" data-close style="border:0;background:#edf2f3;border-radius:10px;padding:10px 12px;font-weight:800">× Close</button></div>
+    <details open style="margin:16px 0;border:1px solid #ddcfaa;border-radius:14px;padding:13px;background:#fffaf0"><summary style="font-weight:900;font-size:1.05rem">How to sync in the field — SEND / RECEIVE</summary><div style="line-height:1.45"><p><strong>Glenn's master iPhone — SEND</strong></p><ol><li>Unlock the Secure Vault once from the Hub.</li><li>Tap Sync Shared Records.</li><li>Tap Create / Share Shared Records below.</li><li>Choose AirDrop and select the receiving iPhone.</li><li>Give the sync code separately.</li></ol><p><strong>Other traveler iPhone — RECEIVE</strong></p><ol><li>Accept the AirDrop and save the file in Files if asked.</li><li>Open TEE Hub and unlock the Secure Vault once.</li><li>Tap Sync Shared Records.</li><li>Tap Choose Shared Records File below.</li><li>Select the AirDropped file from Files.</li><li>Enter Glenn's sync code.</li><li>Confirm Sync complete, then verify the Shared information.</li></ol><p><strong>Important:</strong> Do not upload the Shared file to GitHub.</p></div></details>
+    <p data-count style="padding:10px 12px;border-radius:10px;background:#f4f8f8"></p>
+    <section style="border:1px solid #d9e3e4;border-radius:14px;padding:14px;margin:12px 0"><h3 style="margin:0 0 6px">Glenn's master phone — SEND</h3><button type="button" data-export class="hub-primary-action" style="width:100%;padding:13px">Create / Share Shared Records</button><div data-code-row hidden style="margin-top:12px"><label><strong>Sync code</strong><input data-code readonly style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px;border:1px solid #b7c7cc;border-radius:10px;font:700 18px ui-monospace,monospace"></label><div style="display:flex;gap:8px;margin-top:8px"><button type="button" data-copy style="flex:1;padding:10px">Copy code</button><button type="button" data-share-again style="flex:1;padding:10px">Share file again</button></div></div></section>
+    <section style="border:1px solid #d9e3e4;border-radius:14px;padding:14px;margin:12px 0"><h3 style="margin:0 0 6px">Other traveler phone — RECEIVE</h3><button type="button" data-import class="hub-primary-action" style="width:100%;padding:13px">Choose Shared Records File</button><input data-import-file type="file" hidden></section>
+    <p data-status style="padding:11px 12px;border:1px solid #b9ccd3;border-radius:10px;background:#eef5f7" aria-live="polite">Ready. Your existing Vault authorization will be reused.</p></div>`;
+    document.body.appendChild(dialog);status=dialog.querySelector('[data-status]');countLabel=dialog.querySelector('[data-count]');codeRow=dialog.querySelector('[data-code-row]');codeInput=dialog.querySelector('[data-code]');importInput=dialog.querySelector('[data-import-file]');
+    dialog.querySelector('[data-close]')?.addEventListener('click',close);dialog.querySelector('[data-export]')?.addEventListener('click',exportShared);dialog.querySelector('[data-import]')?.addEventListener('click',()=>importInput?.click());importInput?.addEventListener('change',()=>receiveFile(importInput.files?.[0]));
+    dialog.querySelector('[data-copy]')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(codeInput.value);setStatus('Sync code copied. Send it separately from the file.','success');}catch{codeInput.select();setStatus('Select and copy the sync code shown above.');}});
+    dialog.querySelector('[data-share-again]')?.addEventListener('click',async()=>{if(lastFile)await shareFile(lastFile);});dialog.addEventListener('click',event=>{if(event.target===dialog)close();});
   }
-
-  function open(){
-    if(!window.TEEVaultSession?.isOpen?.()){
-      vaultToggle?.click();
-      return;
-    }
-    ensureDialog();
-    if(!frame.getAttribute('src')){
-      frame.src='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1&teeEmbed=1&teeSharedSync=1&teeSyncBuild=3.4.94';
-    }
-    if(dialog.showModal&&!dialog.open)dialog.showModal();
-    else dialog.setAttribute('open','');
-  }
-
-  function close(){
-    if(!dialog)return;
-    if(dialog.close&&dialog.open)dialog.close();else dialog.removeAttribute('open');
-    if(frame){frame.src='about:blank';frame.removeAttribute('src');}
-  }
-
+  function open(){if(!window.TEEVaultSession?.isOpen?.()){vaultToggle?.click();return;}ensureDialog();updateCount();setStatus('Ready. The Vault is already authorized; Sync should not ask for the passphrase again.');if(dialog.showModal&&!dialog.open)dialog.showModal();else dialog.setAttribute('open','');}
+  function close(){if(!dialog)return;if(dialog.close&&dialog.open)dialog.close();else dialog.removeAttribute('open');}
   button.addEventListener('click',open);
-  window.addEventListener(window.TEEVaultSession?.eventName||'tee-vault-session-changed',()=>{
-    const openSession=window.TEEVaultSession?.isOpen?.();
-    button.hidden=!openSession;
-    if(!openSession&&dialog?.open)close();
-  });
+  window.addEventListener(window.TEEVaultSession?.eventName||'tee-vault-session-changed',()=>{const opened=window.TEEVaultSession?.isOpen?.();button.hidden=!opened;if(!opened&&dialog?.open)close();});
   button.hidden=!window.TEEVaultSession?.isOpen?.();
   window.TEEHubSharedSyncV3490=Object.freeze({open,close});
 })();
