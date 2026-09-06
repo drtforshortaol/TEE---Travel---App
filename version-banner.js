@@ -15,16 +15,19 @@
     const p=location.pathname.replace(/\/+$/,'');
     return /\/TEE---Travel---App(?:\/index\.html)?$/.test(p);
   }
-  function loadHubCompletion(){
-    if(!isHub()||document.querySelector('script[data-tee-hub-completion]'))return;
+  function loadHubScript(path,dataKey,value){
+    if(!isHub()||document.querySelector(`script[${dataKey}]`))return;
     const s=document.createElement('script');
     const base=script?.src ? new URL('.',script.src) : new URL('.',location.href);
-    s.src=new URL('hub-completion-v3489.js',base).toString();
-    s.dataset.teeHubCompletion='1';
+    s.src=new URL(path,base).toString();
+    s.setAttribute(dataKey,value||'1');
     document.head.appendChild(s);
   }
+  function loadHubCompletion(){loadHubScript('hub-completion-v3489.js','data-tee-hub-completion','1');}
+  function loadSharedSyncVerifier(){loadHubScript('hub-shared-sync-verifier-v3497.js?v=3.4.97','data-tee-shared-sync-verifier','3.4.97');}
   paint(fallback);
   loadHubCompletion();
+  loadSharedSyncVerifier();
   async function apply(){
     try{
       const base=script?.src ? new URL('.',script.src) : new URL('.',location.href);
