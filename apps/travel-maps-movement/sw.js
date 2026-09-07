@@ -1,6 +1,6 @@
-const CACHE = 'tee-maps-movement-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-maps-movement-v3-5-18-destination-map-library';
 const CACHE_PREFIX = 'tee-maps-movement-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./destination-maps-v3518.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
