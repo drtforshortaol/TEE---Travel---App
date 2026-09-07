@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.98",
+  "version": "3.4.99",
   "channel": "review",
-  "publishedAt": "2026-09-06T16:08:00-07:00",
-  "notes": "Restores Hub responsiveness after the temporary Shared-contact verifier caused a repeated render loop that could make Vault Records and Sync Shared Records buttons stop responding. The verifier is no longer loaded. Shared Sync remains on the v3.4.96 emergency-contact inclusion logic. No Vault records or trip data were changed.",
-  "name": "TEE v3.4.98 — Hub Responsiveness Fix"
+  "publishedAt": "2026-09-06T17:24:00-07:00",
+  "notes": "Fixes Shared Sync emergency contacts that arrived on receiving phones as generic Emergency Contact shells. Glenn's iPhone remains the designated master for trip emergency contacts. When the same emergency-contact recordId already exists on a receiving phone, Shared Sync now replaces the receiver's generic/older shell with Glenn's complete Shared contact record regardless of receiver timestamp or legacy Private labeling. Other record types keep the existing newer-record merge rules. No source records on Glenn's phone are changed by this fix.",
+  "name": "TEE v3.4.99 — Emergency Contact Sync Authority"
 }
