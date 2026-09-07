@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.18",
+  "version": "3.5.19",
   "channel": "review",
-  "publishedAt": "2026-09-07T10:34:00-07:00",
-  "notes": "Adds a scalable destination-map library to Maps & Routes. Zermatt now has three built-in schematic traveler maps: Essential Route, Dinner, and Free E-Bus. Other trip destinations have reserved dropdowns ready for future map sets. Daily Operations adds an Open Today’s Zermatt Maps button for Oct. 2–4 and a preview button on Oct. 1, while the Zermatt map group includes a direct Back to Today link. No protected booking values are exposed.",
-  "name": "TEE v3.5.18 — Destination Map Library"
+  "publishedAt": "2026-09-07T11:35:00-07:00",
+  "notes": "Adds verified Part 2 hotel operating guidance for Salzburg, Lucerne and Zurich. H+ Salzburg is identified as directly beside Salzburg Hbf with exact check-in timing left to booking/front-desk confirmation; AMERON Luzern Hotel Flora now shows the official under-5-minute walk from Luzern station, 3 PM room availability and noon checkout; Fred guidance now flags the current distinction between the staffed/mobile-check-in Hauptbahnhof hotel and the separate Guest House | Self Check-in, requiring the protected booking confirmation to identify the exact property. Daily Operations surfaces these arrival notes on Sep. 30, Oct. 4 and Oct. 5. No protected confirmation values or exact addresses are exposed.",
+  "name": "TEE v3.5.19 — Part 2 Hotel Operating Details"
 }
