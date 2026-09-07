@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.09",
+  "version": "3.5.10",
   "channel": "review",
-  "publishedAt": "2026-09-06T21:55:00-07:00",
-  "notes": "Refreshes the Finish TEE page into a current status report plus prioritized to-do list. It marks the full Part 2 rail plan and Eurail Quick Reference as established, keeps the exact Oct. 6 Zurich-to-Istanbul flight number as the main information gap, and preserves the remaining verification, testing, and pre-departure tasks.",
-  "name": "TEE v3.5.09 — Updated Status Report"
+  "publishedAt": "2026-09-06T22:20:00-07:00",
+  "notes": "Confirms the Turkish Airlines flight numbers from Manage Reservation screenshots: TK 80 SFO→IST, TK 1208 ZRH→IST on Oct. 6, and TK 79 IST→SFO on Oct. 7. The Oct. 6 reservation shows two passengers. Transportation, Daily Operations, and Finish TEE are updated while PNRs, ticket numbers, dates of birth, payment details, and other traveler-specific data remain protected.",
+  "name": "TEE v3.5.10 — Turkish Flights Confirmed"
 }
