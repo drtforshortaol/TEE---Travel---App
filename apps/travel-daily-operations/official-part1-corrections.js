@@ -72,14 +72,14 @@
     hotel:'Fred Hotel Hauptbahnhof / Self Check-in',
     transport:['Luzern 09:09 → Zürich HB 09:51, TRN 2616'],
     activities:['Zurich arrival','Old Town / lake / cafes as time allows'],
-    reminders:['Show the live Eurail ticket in Rail Planner during inspection','Confirm Fred Hotel self check-in instructions in Secure Vault','Review tomorrow Zürich HB 10:02 → Zürich Flughafen 10:11','Prepare for Zurich→Istanbul flight']
+    reminders:['Show the live Eurail ticket in Rail Planner during inspection','Confirm Fred Hotel self check-in instructions in Secure Vault','Review tomorrow Zürich HB 10:02 → Zürich Flughafen 10:11','Prepare for Turkish Airlines TK 1208 to Istanbul']
   });
 
   replace('Oct 6, 2026',{
     type:'Flight positioning day',
     city:'Istanbul Airport',
     hotel:'YOTELAIR Istanbul Airport Airside',
-    transport:['Zürich HB 10:02 → Zürich Flughafen 10:11, IC 513','Zurich → Istanbul flight approximately 13:35 → 17:35; exact flight number still needs latest-confirmation verification'],
+    transport:['Zürich HB 10:02 → Zürich Flughafen 10:11, IC 513','Turkish Airlines TK 1208: ZRH 13:35 → IST 17:35'],
     activities:['Airport positioning','Airside overnight at Istanbul Airport'],
     reminders:['Eurail shows seat reservations optional for the airport train','Use the live Eurail ticket in Rail Planner; screenshots are not valid travel tickets','At Zurich check-in ask whether bags can be tagged through to SFO','Verify the baggage tag destination yourself','Keep overnight essentials in carry-on','Confirm YOTELAIR airside access requirements before leaving Zurich']
   });
@@ -88,7 +88,7 @@
     type:'Return flight day',
     city:'Istanbul → San Francisco',
     hotel:'In transit',
-    transport:['Turkish Airlines return: IST 13:15 → SFO 16:40'],
+    transport:['Turkish Airlines TK 79: IST 13:15 → SFO 16:40'],
     activities:['Return home'],
     reminders:['Confirm boarding gate and checked-baggage status','Keep passport, medications and chargers in carry-on','Do a final room/airport-seat check before departure','Save final trip notes after arrival']
   });
