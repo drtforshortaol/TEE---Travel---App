@@ -1,6 +1,6 @@
-const CACHE = 'tee-essentials-v3-5-28-entry-requirements';
+const CACHE = 'tee-essentials-v3-5-29-set-game';
 const CACHE_PREFIX = 'tee-essentials-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./eurail-pass-help.html','./entry-requirements-2026.html','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./eurail-pass-help.html','./entry-requirements-2026.html','./set-card-game.html','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
