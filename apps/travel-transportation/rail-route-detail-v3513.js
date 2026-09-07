@@ -21,7 +21,7 @@
         {station:"Zürich HB", arrive:"13:28", depart:"14:02", minutes:34, nextTrain:"IC 820", toward:"Visp", map:"https://www.sbb.ch/en/travel-information/stations/find-station/zuerich-hb-station.html"},
         {station:"Visp", arrive:"16:04", depart:"16:37", minutes:33, nextTrain:"RE 351", toward:"Zermatt", map:"https://www.sbb.ch/en/travel-information/stations/find-station/visp-station.html"}
       ],
-      note:"Eurail shows seat reservations recommended on Salzburg → Zürich and optional on Zürich → Visp."
+      note:"IMPORTANT — Salzburg Hbf → Zürich HB has 4 original Eurail PAPER seat-reservation tickets. Carry all four originals on Oct. 2 together with the active Rail Planner Eurail Pass/day ticket. The confirmation email itself is not enough. Zürich → Visp uses an e-ticket reservation; reservation identifiers remain protected."
     },
     {
       id:"rail-oct4", date:"Oct 4", title:"Zermatt → Lucerne",
