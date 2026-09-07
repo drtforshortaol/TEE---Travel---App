@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.22",
+  "version": "3.5.23",
   "channel": "review",
-  "publishedAt": "2026-09-07T13:05:00-07:00",
-  "notes": "Fixes an iPhone/PWA Daily Operations scrolling problem where a large spontaneous upward jump could interrupt a user who was actively scrolling downward. A scroll-stability guard now rejects only those large unintended upward jumps during a downward finger gesture while preserving normal upward scrolling and deliberate Today/Tomorrow/Full Itinerary navigation. The Daily Operations offline cache was bumped so the fix is fetched cleanly. No Vault or checklist data is changed.",
-  "name": "TEE v3.5.22 — Daily Operations Scroll Stability"
+  "publishedAt": "2026-09-07T13:34:00-07:00",
+  "notes": "Fixes the actual Daily Operations iPhone scroll-jump cause: protected-context.js was installing a page-wide MutationObserver that repeatedly removed and rebuilt large protected-detail panels whenever other Daily Operations helpers added content. Those temporary height collapses caused iOS to clamp the scroll position upward. Daily Operations now suppresses only that protected-context mutation observer while retaining Vault session-change, pageshow and visibility updates, plus the secondary scroll guard. No Vault records, checklist items or protected values are changed.",
+  "name": "TEE v3.5.23 — Daily Operations Protected-Context Stability"
 }
