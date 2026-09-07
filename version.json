@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.17",
+  "version": "3.5.18",
   "channel": "review",
-  "publishedAt": "2026-09-07T10:18:00-07:00",
-  "notes": "Adds Zermatt arrival and luggage guidance for Oct. 2. Daily Operations now gives a Bahnhof-to-Haus Juliana arrival plan, identifies the official green E-Bus connection toward the Matterhorn glacier paradise stop, reminds travelers to confirm booking-specific entry codes in Secure Vault before leaving Salzburg, and notes the building elevator. Hotels now carries the same safe operational summary while exact address, code and host details remain protected.",
-  "name": "TEE v3.5.17 — Zermatt Arrival & Luggage"
+  "publishedAt": "2026-09-07T10:34:00-07:00",
+  "notes": "Adds a scalable destination-map library to Maps & Routes. Zermatt now has three built-in schematic traveler maps: Essential Route, Dinner, and Free E-Bus. Other trip destinations have reserved dropdowns ready for future map sets. Daily Operations adds an Open Today’s Zermatt Maps button for Oct. 2–4 and a preview button on Oct. 1, while the Zermatt map group includes a direct Back to Today link. No protected booking values are exposed.",
+  "name": "TEE v3.5.18 — Destination Map Library"
 }
