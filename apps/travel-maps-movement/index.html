@@ -13,9 +13,11 @@
     <a class="back" href="../../index.html">← Return to Hub</a>
     <p class="eyebrow">Private Travel Operations Hub</p>
     <h1>Maps &amp; Routes</h1>
-    <p class="lead">A visual route overview for the Turkey - Eastern Europe trip: overall movement, Turkey segment, Croatia/Slovenia movement, and Central Europe/Swiss extension.</p>
+    <p class="lead">Destination maps for quick orientation, plus the trip-wide movement overview and transfer context.</p>
   </header>
   <main>
+    <section id="destinationMapLibrary" class="tee-destination-map-library" aria-label="Destination map library"></section>
+
     <section class="toolbar">
       <input id="searchInput" type="search" placeholder="Search: Istanbul, Cappadocia, Zagreb, Plitvice, Rovinj, Ljubljana, Salzburg, Zermatt, Zurich..." />
       <select id="segmentFilter"><option value="all">All segments</option></select>
@@ -23,7 +25,7 @@
       <button id="resetBtn">Reset</button>
     </section>
 
-    <section class="notice"><strong>Private note:</strong> this app is a trip-movement guide, not a live navigation map. Use official map apps, hotel addresses, tickets, and local transport apps for live routing.</section>
+    <section class="notice"><strong>Traveler note:</strong> schematic TEE maps are for quick orientation. Use official local/live map apps for turn-by-turn navigation, current closures, and live transit.</section>
 
     <section class="movement-control" aria-label="Maps & Routes mission control">
       <div class="control-head">
@@ -64,6 +66,7 @@
     <section id="mapMount" class="cards"></section>
   </main>
   <script src="app.js"></script>
+  <script src="destination-maps-v3518.js"></script>
   <script src="../../protected-context.js"></script>
   <script src="../../traveler-help.js"></script>
 </body>
