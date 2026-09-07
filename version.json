@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.03",
+  "version": "3.5.04",
   "channel": "review",
-  "publishedAt": "2026-09-06T20:45:00-07:00",
-  "notes": "Fixes the receiver cleanup reporting that no empty Emergency Contact shells were found even though generic shells were visible. Earlier detection was too strict because legacy shell records can contain generic metadata in non-name fields. The cleanup now identifies only emergencyContact records with no contactName whose visible title is blank or exactly Emergency Contact. Any emergency contact with a contact name is preserved.",
-  "name": "TEE v3.5.03 — Generic Emergency Shell Detection Fix"
+  "publishedAt": "2026-09-06T20:52:00-07:00",
+  "notes": "Uses the exact generic reference Emergency Contact record IDs visible in the authorized Hub session to remove the five legacy shell records from the receiving phone. The repair targets only emergencyContact records marked Reference whose visible title is Emergency Contact and whose authorized-session contactName is empty, then removes those exact record IDs from the unlocked Vault. Named emergency contacts are not targeted.",
+  "name": "TEE v3.5.04 — Reference Emergency Shell ID Cleanup"
 }
