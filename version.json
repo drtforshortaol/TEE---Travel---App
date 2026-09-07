@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.13",
+  "version": "3.5.14",
   "channel": "review",
-  "publishedAt": "2026-09-07T07:33:00-07:00",
-  "notes": "Adds Part 2 rail At-a-Glance routes to Daily Operations and full rail details in Transportation. Intermediate stops are shown in parentheses while start, transfer and destination stations are emphasized. Transfer blocks show next train, destination, departure time, layover and urgency. Transportation adds schematic route maps plus official transfer-station map links, with one-tap return to Today Quick Glance. New rail assets are cached for offline use.",
-  "name": "TEE v3.5.13 — Rail Route Glance & Maps"
+  "publishedAt": "2026-09-07T09:06:00-07:00",
+  "notes": "Fixes the Part 2 rail At-a-Glance visibility in Daily Operations. On rail travel days, Today now shows a prominent rail quick-glance immediately below the Today/Tomorrow summary, with transfer time, next train and a View Full Route & Maps button. The widget remounts reliably after date/test changes. Transportation return links now point directly back to the visible Today rail glance.",
+  "name": "TEE v3.5.14 — Rail Glance Visibility Fix"
 }
