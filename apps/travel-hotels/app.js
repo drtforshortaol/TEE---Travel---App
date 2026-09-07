@@ -9,7 +9,7 @@ const PUBLIC_CONTEXT=[
   {title:"H+ Hotel Salzburg",dates:"Sep 30–Oct 2",city:"Salzburg",summary:"Part 2 lodging near Salzburg Hbf. Exact address, confirmation, payment and traveler-specific details remain in Secure Vault."},
   {title:"Haus Juliana Airbnb",dates:"Oct 2–4",city:"Zermatt",summary:"Part 2 Zermatt lodging for two nights. Exact address, host/check-in instructions and booking details remain in Secure Vault."},
   {title:"AMERON Luzern Hotel Flora",dates:"Oct 4–5",city:"Lucerne",summary:"Part 2 Lucerne lodging for one night. Exact confirmation and payment details remain in Secure Vault."},
-  {title:"Fred Hotel Hauptbahnhof / Self Check-in",dates:"Oct 5–6",city:"Zurich",summary:"Part 2 Zurich lodging near Zürich HB. Exact self-check-in, confirmation and payment details remain in Secure Vault."},
+  {title:"Fred Hotel Hauptbahnhof | Self Check-in",dates:"Oct 5–6",city:"Zurich",summary:"Confirmed from the saved hotel booking record as Fred Hotel Hauptbahnhof | Self Check-in. Part 2 Zurich lodging near Zürich HB. Exact address, self-check-in instructions, confirmation and payment details remain in Secure Vault."},
   {title:"YOTELAIR Istanbul Airport Airside",dates:"Oct 6–7",city:"Istanbul Airport",summary:"Airside overnight before the Oct. 7 return flight. Exact reservation and access details remain in Secure Vault."}
 ];
 function renderProtectedContext(){
