@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.28",
+  "version": "3.5.29",
   "channel": "review",
-  "publishedAt": "2026-09-07T15:05:00-07:00",
-  "notes": "Adds a final Entry Requirements quick reference for the Sep/Oct 2026 trip. Current official guidance confirms U.S. ordinary-passport holders do not need tourist visas for Türkiye or the Schengen countries on this itinerary; Schengen passports must be valid at least 3 months beyond the Oct. 6 Schengen departure and issued within the previous 10 years. TEE uses a conservative Apr. 2, 2027 passport-expiry target because U.S. guidance recommends 6 months and current Switzerland guidance is stricter. EES is fully operational but requires no advance application; ETIAS is not yet in operation and is not required for this trip. The page is available under Quick Reference and is cached offline. No protected passport values are exposed.",
-  "name": "TEE v3.5.28 — Final Entry Requirements"
+  "publishedAt": "2026-09-07T15:55:00-07:00",
+  "notes": "Adds a lightweight offline SET card-game reference under Quick Reference > Games / SET. The guide is based on the supplied instruction booklet and includes the four features, the all-same-or-all-different rule, play sequence, easy-start variation, scoring/penalty guidance, solitaire variation, and three schematic visual SET examples plus a non-SET quick check. The guide is included in the Quick Reference offline cache and does not reproduce the original instruction artwork.",
+  "name": "TEE v3.5.29 — SET Offline Game Guide"
 }
