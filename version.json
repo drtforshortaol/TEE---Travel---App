@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.16",
+  "version": "3.5.17",
   "channel": "review",
-  "publishedAt": "2026-09-07T09:45:00-07:00",
-  "notes": "Adds a prominent Oct. 6 Zurich baggage-through-check and YOTELAIR Airside decision box to Daily Operations, plus a shorter Oct. 5 Tomorrow reminder. The day-of flow tells travelers to ask whether checked bags are tagged through to SFO, verify the printed bag tag themselves, use the airside plan only when baggage does not need collection in Istanbul, remain in the international transit zone, avoid passport control, and have passport plus onward international boarding pass ready. Based on current official YOTEL/YOTELAIR guidance; airline baggage handling remains a day-of Turkish Airlines confirmation.",
-  "name": "TEE v3.5.16 — Oct 6 Airside Baggage Decision"
+  "publishedAt": "2026-09-07T10:18:00-07:00",
+  "notes": "Adds Zermatt arrival and luggage guidance for Oct. 2. Daily Operations now gives a Bahnhof-to-Haus Juliana arrival plan, identifies the official green E-Bus connection toward the Matterhorn glacier paradise stop, reminds travelers to confirm booking-specific entry codes in Secure Vault before leaving Salzburg, and notes the building elevator. Hotels now carries the same safe operational summary while exact address, code and host details remain protected.",
+  "name": "TEE v3.5.17 — Zermatt Arrival & Luggage"
 }
