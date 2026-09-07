@@ -26,10 +26,12 @@
   function loadHubCompletion(){loadHubScript('hub-completion-v3489.js','data-tee-hub-completion','1');}
   function loadEmergencySyncFix(){loadHubScript('hub-shared-sync-emergency-fix-v3499.js?v=3.4.99','data-tee-shared-sync-emergency-fix','3.4.99');}
   function loadShellCleaner(){loadHubScript('hub-shared-sync-shell-cleaner-v3501.js?v=3.5.05','data-tee-shared-sync-shell-cleaner','3.5.05');}
+  function loadVaultIntake(){loadHubScript('hub-vault-intake-v3511.js?v=3.5.11','data-tee-vault-intake','3.5.11');}
   paint(fallback);
   loadHubCompletion();
   loadEmergencySyncFix();
   loadShellCleaner();
+  loadVaultIntake();
   async function apply(){
     try{
       const base=script?.src ? new URL('.',script.src) : new URL('.',location.href);
