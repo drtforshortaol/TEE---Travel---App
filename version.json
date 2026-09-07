@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.05",
+  "version": "3.5.06",
   "channel": "review",
-  "publishedAt": "2026-09-06T21:08:00-07:00",
-  "notes": "Receiver cleanup now identifies every authorized emergencyContact record that displays only a generic Emergency Contact title and no contact name, regardless of whether its recordStatus is reference or active. It removes only those exact record IDs from the receiving Vault and preserves any named emergency contact.",
-  "name": "TEE v3.5.05 — All Generic Emergency Shell Cleanup"
+  "publishedAt": "2026-09-06T21:30:00-07:00",
+  "notes": "Confirms the Sep. 30 Ljubljana to Villach segment from the active Eurail trip: Ljubljana 07:42 to Villach Hbf 09:22 on INT 318, connecting to Villach Hbf 10:32 to Salzburg Hbf 12:53 on IC 796. Daily Operations and the Finish TEE tracker are updated, and Shared Records Sync is marked verified on Vicki's phone.",
+  "name": "TEE v3.5.06 — Sep 30 Rail Confirmation"
 }
