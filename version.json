@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.4.99",
+  "version": "3.5.00",
   "channel": "review",
-  "publishedAt": "2026-09-06T17:24:00-07:00",
-  "notes": "Fixes Shared Sync emergency contacts that arrived on receiving phones as generic Emergency Contact shells. Glenn's iPhone remains the designated master for trip emergency contacts. When the same emergency-contact recordId already exists on a receiving phone, Shared Sync now replaces the receiver's generic/older shell with Glenn's complete Shared contact record regardless of receiver timestamp or legacy Private labeling. Other record types keep the existing newer-record merge rules. No source records on Glenn's phone are changed by this fix.",
-  "name": "TEE v3.4.99 — Emergency Contact Sync Authority"
+  "publishedAt": "2026-09-06T17:38:00-07:00",
+  "notes": "Fixes the root cause of Shared Sync records arriving as generic shells. The Hub authorization session contains a flattened display copy of protected records, which is appropriate for viewing but not for rebuilding the receiving Vault. Shared Sync now uses that authorized session only as an allow-list, then retrieves the matching complete records from the already-unlocked local Vault before encryption. The sender refuses to create a package if any authorized Shared record is missing from the complete Vault set. Glenn's iPhone remains the master Shared source, and the v3.4.99 emergency-contact replacement rule remains in effect on receivers.",
+  "name": "TEE v3.5.00 — Complete-Record Shared Sync"
 }
