@@ -21,8 +21,6 @@
     reminders:['Keep daytime flexible','Review tomorrow move to Zagreb','Pack most luggage before the evening ceremony','Confirm airport transfer timing in Secure Vault']
   });
 
-  // Part 2 audit overlay. Keep public-safe operational facts in Daily Operations
-  // and leave exact booking references, seat numbers, addresses, contacts and payment details in Secure Vault.
   replace('Sep 30, 2026',{
     type:'Move day / Rail extension begins',
     city:'Salzburg',
@@ -45,9 +43,9 @@
     type:'Long rail move',
     city:'Zermatt',
     hotel:'Haus Juliana Airbnb',
-    transport:['Salzburg Hbf 06:56 → Zürich HB 13:28, 1st class','Zürich HB 14:02 → Visp 16:04, train 820, 1st class','Visp → Zermatt: final exact timetable still pending documentation'],
+    transport:['Salzburg Hbf 06:56 → Zürich HB 13:28, RJ 13478','Zürich HB 14:02 → Visp 16:04, IC 820','Visp 16:37 → Zermatt 17:50, RE 351'],
     activities:['Long rail transfer','Arrival in car-free Zermatt'],
-    reminders:['Leave H+ Hotel early enough for the 06:56 train','Keep paper Salzburg→Zürich ticket/reservation accessible','Use the confirmed Zürich HB 14:02 connection to Visp','Verify the final Visp→Zermatt train before travel','Check mountain visibility for tomorrow']
+    reminders:['Leave H+ Hotel early enough for the 06:56 train','Eurail shows seat reservations recommended on Salzburg→Zürich','Eurail shows seat reservations optional on Zürich→Visp','Keep the paper Salzburg→Zürich ticket/reservation accessible','Allow 33 minutes at Visp for the 16:37 Zermatt connection','Show the live Eurail ticket in Rail Planner during inspection','Check mountain visibility for tomorrow']
   });
 
   replace('Oct 3, 2026',{
@@ -63,27 +61,27 @@
     type:'Move day',
     city:'Lucerne',
     hotel:'AMERON Luzern Hotel Flora',
-    transport:['Zermatt → Lucerne rail transfer; exact train numbers and connection times still pending final confirmation'],
-    activities:['Arrive Lucerne','Old Town / lake walk if time allows'],
-    reminders:['Verify exact Zermatt→Lucerne itinerary before travel','Keep rail pass/tickets accessible','Confirm Lucerne hotel check-in','Review tomorrow Lucerne→Zurich move']
+    transport:['Zermatt 08:37 → Visp 09:47, RE 226','Visp 10:54 → Bern 11:53, IC 817','Bern 12:36 → Luzern 14:03, RE 4371'],
+    activities:['Rail transfer','Arrive Lucerne','Old Town / lake walk if time allows'],
+    reminders:['Allow 67 minutes at Visp and 43 minutes at Bern','Eurail shows seat reservations optional on Visp→Bern','Show the live Eurail ticket in Rail Planner during inspection','Confirm Lucerne hotel check-in','Review tomorrow 09:09 Lucerne→Zurich move']
   });
 
   replace('Oct 5, 2026',{
     type:'Short move day',
     city:'Zurich',
     hotel:'Fred Hotel Hauptbahnhof / Self Check-in',
-    transport:['Lucerne → Zürich HB rail transfer; exact departure/arrival time still pending final confirmation'],
+    transport:['Luzern 09:09 → Zürich HB 09:51, TRN 2616'],
     activities:['Zurich arrival','Old Town / lake / cafes as time allows'],
-    reminders:['Verify exact Lucerne→Zurich train before travel','Confirm Fred Hotel self check-in instructions in Secure Vault','Review Zürich HB → Zürich Flughafen plan for tomorrow','Prepare for Zurich→Istanbul flight']
+    reminders:['Show the live Eurail ticket in Rail Planner during inspection','Confirm Fred Hotel self check-in instructions in Secure Vault','Review tomorrow Zürich HB 10:02 → Zürich Flughafen 10:11','Prepare for Zurich→Istanbul flight']
   });
 
   replace('Oct 6, 2026',{
     type:'Flight positioning day',
     city:'Istanbul Airport',
     hotel:'YOTELAIR Istanbul Airport Airside',
-    transport:['Zürich HB → Zürich Flughafen by frequent direct train','Zurich → Istanbul flight approximately 13:35 → 17:35; exact flight number still needs latest-confirmation verification'],
+    transport:['Zürich HB 10:02 → Zürich Flughafen 10:11, IC 513','Zurich → Istanbul flight approximately 13:35 → 17:35; exact flight number still needs latest-confirmation verification'],
     activities:['Airport positioning','Airside overnight at Istanbul Airport'],
-    reminders:['Leave Zurich with ample airport/check-in margin','At Zurich check-in ask whether bags can be tagged through to SFO','Verify the baggage tag destination yourself','Keep overnight essentials in carry-on','Confirm YOTELAIR airside access requirements before leaving Zurich']
+    reminders:['Eurail shows seat reservations optional for the airport train','Use the live Eurail ticket in Rail Planner; screenshots are not valid travel tickets','At Zurich check-in ask whether bags can be tagged through to SFO','Verify the baggage tag destination yourself','Keep overnight essentials in carry-on','Confirm YOTELAIR airside access requirements before leaving Zurich']
   });
 
   replace('Oct 7, 2026',{
