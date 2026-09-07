@@ -21,15 +21,15 @@
     reminders:['Keep daytime flexible','Review tomorrow move to Zagreb','Pack most luggage before the evening ceremony','Confirm airport transfer timing in Secure Vault']
   });
 
-  // v3.4.88 — Part 2 audit overlay. Keep public-safe operational facts in Daily Operations
+  // Part 2 audit overlay. Keep public-safe operational facts in Daily Operations
   // and leave exact booking references, seat numbers, addresses, contacts and payment details in Secure Vault.
   replace('Sep 30, 2026',{
     type:'Move day / Rail extension begins',
     city:'Salzburg',
     hotel:'H+ Hotel Salzburg',
-    transport:['Ljubljana → Villach: exact timetable still pending confirmation','Villach Hbf 10:32 → Salzburg Hbf 12:53, IC796, 1st class'],
+    transport:['Ljubljana 07:42 → Villach Hbf 09:22, INT 318','Villach Hbf 10:32 → Salzburg Hbf 12:53, IC 796, 1st class'],
     activities:['Rail extension begins','Arrive Salzburg'],
-    reminders:['Do not rely on older proposed Ljubljana→Villach times','Allow margin for the Villach connection','Printed A4 reservation is required for the confirmed Villach→Salzburg segment','Confirm hotel check-in and next-day Salzburg plan']
+    reminders:['Active Eurail trip shows seat reservations optional for both listed journeys','Allow margin for the 70-minute Villach connection','Keep the separately issued Villach→Salzburg rail document accessible','Show the live Eurail ticket in the Rail Planner app during inspection; a screenshot is not a valid travel ticket','Confirm hotel check-in and next-day Salzburg plan']
   });
 
   replace('Oct 1, 2026',{
@@ -181,7 +181,6 @@
     document.head.appendChild(script);
   }
 
-  // v3.4.58 — checklist instructions clarify cumulative trip behavior and deletion.
   if(!document.querySelector('script[data-tee-checklist-quick-access]')){
     const script=document.createElement('script');
     script.src='checklist-quick-access-v3454.js?v=3.4.58';
