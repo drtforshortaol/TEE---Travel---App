@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.24",
+  "version": "3.5.26",
   "channel": "review",
-  "publishedAt": "2026-09-07T13:39:00-07:00",
-  "notes": "Corrects the remaining iPhone Daily Operations scroll jitter. The prior v3.5.23 release identified the page-wide protected-context MutationObserver as the cause, but the observer was still being installed in Daily Operations. v3.5.24 now actually suppresses that observer only while protected-context initializes on the Daily Operations page, then immediately restores the browser's native MutationObserver for the rest of the app. Vault session-change/pageshow/visibility refreshes remain available, and no Vault records, checklist items, or protected values are modified. Daily and root offline caches were bumped.",
-  "name": "TEE v3.5.24 — Daily Operations Scroll Stability Correction"
+  "publishedAt": "2026-09-07T14:47:00-07:00",
+  "notes": "Transportation now supports a date-driven At-a-Glance workflow. Choosing a movement date automatically gathers every registered transportation item for that day, resets search/type filters, and displays the day's complete movement summary near the top of Transportation. Oct. 6 correctly shows both the Zurich HB→Airport train and the Zurich→Istanbul flight together. Existing detailed rail routes, station guides, Vault-protected details and filters remain available. Transportation offline cache was refreshed.",
+  "name": "TEE v3.5.26 — Transportation Date At-a-Glance"
 }
