@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.10",
+  "version": "3.5.11",
   "channel": "review",
-  "publishedAt": "2026-09-06T22:20:00-07:00",
-  "notes": "Confirms the Turkish Airlines flight numbers from Manage Reservation screenshots: TK 80 SFO→IST, TK 1208 ZRH→IST on Oct. 6, and TK 79 IST→SFO on Oct. 7. The Oct. 6 reservation shows two passengers. Transportation, Daily Operations, and Finish TEE are updated while PNRs, ticket numbers, dates of birth, payment details, and other traveler-specific data remain protected.",
-  "name": "TEE v3.5.10 — Turkish Flights Confirmed"
+  "publishedAt": "2026-09-06T22:35:00-07:00",
+  "notes": "Adds a narrow Vault Intake Import workflow beside Vault Records. It accepts only local tee-vault-intake-v1 JSON files, previews public-safe record summaries while hiding protected identifiers, detects likely existing records, requires final confirmation, and then adds or updates records in the already-unlocked encrypted Vault. Intake values are never embedded in public source.",
+  "name": "TEE v3.5.11 — Narrow Vault Intake Import"
 }
