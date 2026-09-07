@@ -35,169 +35,55 @@ async function ensureVaultInfrastructure(){
   }
 }
 
-function stopVaultOverlayWatch(){
-  if(teeVaultOverlayTimer !== null){
-    clearInterval(teeVaultOverlayTimer);
-    teeVaultOverlayTimer = null;
-  }
-}
-
-function closeVaultOverlay(){
-  stopVaultOverlayWatch();
-  teeVaultOverlay?.remove();
-  teeVaultOverlay = null;
-}
-
-function startVaultOverlayWatch(){
-  stopVaultOverlayWatch();
-  teeVaultOverlayTimer = setInterval(()=>{
-    if(!teeVaultOverlay){ stopVaultOverlayWatch(); return; }
-    if(window.TEEVaultSession?.isOpen?.()) closeVaultOverlay();
-  },200);
-}
+function stopVaultOverlayWatch(){if(teeVaultOverlayTimer!==null){clearInterval(teeVaultOverlayTimer);teeVaultOverlayTimer=null;}}
+function closeVaultOverlay(){stopVaultOverlayWatch();teeVaultOverlay?.remove();teeVaultOverlay=null;}
+function startVaultOverlayWatch(){stopVaultOverlayWatch();teeVaultOverlayTimer=setInterval(()=>{if(!teeVaultOverlay){stopVaultOverlayWatch();return;}if(window.TEEVaultSession?.isOpen?.())closeVaultOverlay();},200);}
 
 function cleanVaultFrame(frame){
   try{
-    const doc = frame.contentDocument;
-    if(!doc) return false;
-    doc.documentElement.style.background = "#fff";
-    doc.body.style.margin = "0";
-    doc.body.style.background = "#fff";
-
-    doc.querySelector("header.hero")?.setAttribute("hidden","");
-    doc.querySelector("footer")?.setAttribute("hidden","");
-    doc.querySelectorAll("main > section").forEach(section=>{
-      if(section.id !== "secureVaultPanel") section.setAttribute("hidden","");
-    });
-
-    const panel = doc.getElementById("secureVaultPanel");
-    if(panel){
-      panel.hidden = false;
-      panel.style.margin = "0";
-      panel.style.border = "0";
-      panel.style.boxShadow = "none";
-      panel.style.borderRadius = "0";
-      panel.querySelectorAll('a[href*="../../index.html"],a[href*="teeReturn"],.top-actions,.secure-backup-tools').forEach(el=>el.setAttribute("hidden",""));
-    }
-
+    const doc=frame.contentDocument;if(!doc)return false;
+    doc.documentElement.style.background="#fff";doc.body.style.margin="0";doc.body.style.background="#fff";
+    doc.querySelector("header.hero")?.setAttribute("hidden","");doc.querySelector("footer")?.setAttribute("hidden","");
+    doc.querySelectorAll("main > section").forEach(section=>{if(section.id!=="secureVaultPanel")section.setAttribute("hidden","");});
+    const panel=doc.getElementById("secureVaultPanel");
+    if(panel){panel.hidden=false;panel.style.margin="0";panel.style.border="0";panel.style.boxShadow="none";panel.style.borderRadius="0";panel.querySelectorAll('a[href*="../../index.html"],a[href*="teeReturn"],.top-actions,.secure-backup-tools').forEach(el=>el.setAttribute("hidden",""));}
     doc.querySelectorAll(".source-app-section-master").forEach(button=>button.setAttribute("hidden",""));
-    const unlock = doc.getElementById("secureUnlockFields");
-    if(unlock) unlock.hidden = false;
-    doc.getElementById("secureUnlockPassphrase")?.focus();
-    return Boolean(panel);
+    const unlock=doc.getElementById("secureUnlockFields");if(unlock)unlock.hidden=false;doc.getElementById("secureUnlockPassphrase")?.focus();return Boolean(panel);
   }catch{return false;}
 }
 
 function openVaultOverlay(vaultHref){
-  if(teeVaultOverlay) return;
-  const overlay = document.createElement("div");
-  overlay.id = "teeVaultOverlay";
-  overlay.setAttribute("role", "dialog");
-  overlay.setAttribute("aria-modal", "true");
-  overlay.setAttribute("aria-label", "Unlock Secure Vault");
-  Object.assign(overlay.style,{position:"fixed",inset:"0",zIndex:"5000",background:"rgba(0,0,0,.55)",padding:"12px",display:"flex",alignItems:"center",justifyContent:"center"});
-
-  const shell = document.createElement("div");
-  Object.assign(shell.style,{width:"min(620px,100%)",maxHeight:"min(690px,92vh)",background:"#fff",borderRadius:"16px",overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:"0 18px 50px rgba(0,0,0,.35)"});
-  const bar = document.createElement("div");
-  Object.assign(bar.style,{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"10px",padding:"12px 14px",background:"#123f46",color:"white",font:"700 17px system-ui"});
-  bar.innerHTML = '<span>Unlock Secure Vault</span><button type="button" data-close-vault style="border:0;border-radius:9px;padding:8px 12px;font-weight:800;cursor:pointer">Cancel</button>';
-
-  const loading = document.createElement("div");
-  loading.textContent = "Loading secure sign-in…";
-  Object.assign(loading.style,{padding:"28px",textAlign:"center",font:"600 16px system-ui",color:"#36565b"});
-
-  const frame = document.createElement("iframe");
-  const url = new URL(vaultHref || "../travel-private-documents/index.html?teeView=vault&teeEnter=1", location.href);
-  url.searchParams.set("teeView", "vault");
-  url.searchParams.set("teeEnter", "1");
-  url.searchParams.set("teeEmbed", "1");
-  url.searchParams.delete("teeReturnTo");
-  url.searchParams.delete("teeVaultSection");
-  frame.src = url.href;
-  frame.title = "TEE Secure Vault sign-in";
-  Object.assign(frame.style,{border:"0",width:"100%",height:"460px",background:"white",display:"none"});
-  frame.addEventListener("load",()=>{
-    cleanVaultFrame(frame);
-    setTimeout(()=>cleanVaultFrame(frame),60);
-    setTimeout(()=>cleanVaultFrame(frame),180);
-    loading.remove();
-    frame.style.display = "block";
-  });
-
-  shell.append(bar,loading,frame);
-  overlay.appendChild(shell);
-  document.body.appendChild(overlay);
-  teeVaultOverlay = overlay;
-  bar.querySelector("[data-close-vault]")?.addEventListener("click",closeVaultOverlay);
-  startVaultOverlayWatch();
+  if(teeVaultOverlay)return;
+  const overlay=document.createElement("div");overlay.id="teeVaultOverlay";overlay.setAttribute("role","dialog");overlay.setAttribute("aria-modal","true");overlay.setAttribute("aria-label","Unlock Secure Vault");Object.assign(overlay.style,{position:"fixed",inset:"0",zIndex:"5000",background:"rgba(0,0,0,.55)",padding:"12px",display:"flex",alignItems:"center",justifyContent:"center"});
+  const shell=document.createElement("div");Object.assign(shell.style,{width:"min(620px,100%)",maxHeight:"min(690px,92vh)",background:"#fff",borderRadius:"16px",overflow:"hidden",display:"flex",flexDirection:"column",boxShadow:"0 18px 50px rgba(0,0,0,.35)"});
+  const bar=document.createElement("div");Object.assign(bar.style,{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"10px",padding:"12px 14px",background:"#123f46",color:"white",font:"700 17px system-ui"});bar.innerHTML='<span>Unlock Secure Vault</span><button type="button" data-close-vault style="border:0;border-radius:9px;padding:8px 12px;font-weight:800;cursor:pointer">Cancel</button>';
+  const loading=document.createElement("div");loading.textContent="Loading secure sign-in…";Object.assign(loading.style,{padding:"28px",textAlign:"center",font:"600 16px system-ui",color:"#36565b"});
+  const frame=document.createElement("iframe");const url=new URL(vaultHref||"../travel-private-documents/index.html?teeView=vault&teeEnter=1",location.href);url.searchParams.set("teeView","vault");url.searchParams.set("teeEnter","1");url.searchParams.set("teeEmbed","1");url.searchParams.delete("teeReturnTo");url.searchParams.delete("teeVaultSection");frame.src=url.href;frame.title="TEE Secure Vault sign-in";Object.assign(frame.style,{border:"0",width:"100%",height:"460px",background:"white",display:"none"});frame.addEventListener("load",()=>{cleanVaultFrame(frame);setTimeout(()=>cleanVaultFrame(frame),60);setTimeout(()=>cleanVaultFrame(frame),180);loading.remove();frame.style.display="block";});
+  shell.append(bar,loading,frame);overlay.appendChild(shell);document.body.appendChild(overlay);teeVaultOverlay=overlay;bar.querySelector("[data-close-vault]")?.addEventListener("click",closeVaultOverlay);startVaultOverlayWatch();
 }
 
-function handleVaultLink(event){
-  const link = event.target.closest?.('a[href*="travel-private-documents/index.html"]');
-  if(!link) return;
-  if(window.TEEVaultSession?.isOpen?.()) return;
-  event.preventDefault();
-  openVaultOverlay(link.href);
-}
+function handleVaultLink(event){const link=event.target.closest?.('a[href*="travel-private-documents/index.html"]');if(!link)return;if(window.TEEVaultSession?.isOpen?.())return;event.preventDefault();openVaultOverlay(link.href);}
+function removeLegacyContactControls(){document.querySelectorAll("[data-tee-contact-vault],.tee-contact-vault-actions,.tee-vault-tab-note").forEach(el=>el.remove());document.querySelectorAll(".emergency-contact-group .privacy-note").forEach(note=>{note.textContent="(protected Shared details in Vault)";});}
 
-function removeLegacyContactControls(){
-  document.querySelectorAll("[data-tee-contact-vault],.tee-contact-vault-actions,.tee-vault-tab-note").forEach(el=>el.remove());
-  document.querySelectorAll(".emergency-contact-group .privacy-note").forEach(note=>{
-    note.textContent = "(protected Shared details in Vault)";
-  });
+function addEntryRequirements(){
+  const host=document.querySelector('.quick-reference-dropdowns');
+  if(!host||document.getElementById('entry-requirements'))return;
+  const details=document.createElement('details');details.id='entry-requirements';details.className='quick-reference-dropdown';details.innerHTML=`
+    <summary><strong>Entry Requirements</strong><span>Passport validity, Türkiye visa status, Schengen rules, EES and ETIAS for this trip.</span></summary>
+    <div class="quick-reference-dropdown-body"><section class="quick-reference-action-card"><h3>Final Entry Requirements — Sep/Oct 2026</h3><p>Current traveler-facing checklist for U.S. ordinary-passport holders on this itinerary.</p><a class="quick-reference-action-button" href="entry-requirements-2026.html">Open Entry Requirements</a></section></div>`;
+  const identity=document.getElementById('identity-travelers');
+  if(identity)host.insertBefore(details,identity);else host.prepend(details);
 }
 
 function addEurailPassHelp(){
-  const host=document.querySelector('.quick-reference-dropdowns');
-  if(!host||document.getElementById('eurail-pass-help'))return;
-  const details=document.createElement('details');
-  details.id='eurail-pass-help';
-  details.className='quick-reference-dropdown';
-  details.innerHTML=`
-    <summary>
-      <strong>Rail / Eurail</strong>
-      <span>Eurail pass rules, travel-day steps, seat reservations and what to do if plans change.</span>
-    </summary>
-    <div class="quick-reference-dropdown-body">
-      <section class="quick-reference-action-card">
-        <h3>Eurail Pass Rules &amp; What To Do</h3>
-        <p>One-page practical summary for using the mobile Global Flex Pass during the trip.</p>
-        <a class="quick-reference-action-button" href="eurail-pass-help.html">Open Eurail Pass Help</a>
-      </section>
-    </div>`;
-  const problem=document.getElementById('problem-solver');
-  if(problem)host.insertBefore(details,problem); else host.appendChild(details);
+  const host=document.querySelector('.quick-reference-dropdowns');if(!host||document.getElementById('eurail-pass-help'))return;
+  const details=document.createElement('details');details.id='eurail-pass-help';details.className='quick-reference-dropdown';details.innerHTML=`<summary><strong>Rail / Eurail</strong><span>Eurail pass rules, travel-day steps, seat reservations and what to do if plans change.</span></summary><div class="quick-reference-dropdown-body"><section class="quick-reference-action-card"><h3>Eurail Pass Rules &amp; What To Do</h3><p>One-page practical summary for using the mobile Global Flex Pass during the trip.</p><a class="quick-reference-action-button" href="eurail-pass-help.html">Open Eurail Pass Help</a></section></div>`;
+  const problem=document.getElementById('problem-solver');if(problem)host.insertBefore(details,problem);else host.appendChild(details);
 }
 
-addEurailPassHelp();
-document.querySelectorAll("[data-open-quick-reference]").forEach(link=>{
-  link.addEventListener("click",event=>{
-    const id = link.dataset.openQuickReference;
-    if(!id) return;
-    event.preventDefault();
-    history.replaceState(null,"",`#${encodeURIComponent(id)}`);
-    openQuickReferenceSection(id,true);
-  });
-});
-
-document.addEventListener("click",handleVaultLink);
-removeLegacyContactControls();
-if(location.hash) openQuickReferenceSection(decodeURIComponent(location.hash.slice(1)),false);
-
-ensureVaultInfrastructure().then(()=>{
-  window.addEventListener("tee-vault-session-changed",event=>{
-    if(event.detail?.session) closeVaultOverlay();
-    removeLegacyContactControls();
-  });
-}).catch(console.error);
-
-window.addEventListener("pageshow",()=>{
-  addEurailPassHelp();
-  if(location.hash) openQuickReferenceSection(decodeURIComponent(location.hash.slice(1)),false);
-  removeLegacyContactControls();
-});
-
-if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));
-}
+addEntryRequirements();addEurailPassHelp();
+document.querySelectorAll("[data-open-quick-reference]").forEach(link=>{link.addEventListener("click",event=>{const id=link.dataset.openQuickReference;if(!id)return;event.preventDefault();history.replaceState(null,"",`#${encodeURIComponent(id)}`);openQuickReferenceSection(id,true);});});
+document.addEventListener("click",handleVaultLink);removeLegacyContactControls();if(location.hash)openQuickReferenceSection(decodeURIComponent(location.hash.slice(1)),false);
+ensureVaultInfrastructure().then(()=>{window.addEventListener("tee-vault-session-changed",event=>{if(event.detail?.session)closeVaultOverlay();removeLegacyContactControls();});}).catch(console.error);
+window.addEventListener("pageshow",()=>{addEntryRequirements();addEurailPassHelp();if(location.hash)openQuickReferenceSection(decodeURIComponent(location.hash.slice(1)),false);removeLegacyContactControls();});
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));}
