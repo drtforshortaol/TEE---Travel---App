@@ -24,6 +24,7 @@
   const human=s=>String(s||'record').replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[_-]+/g,' ').replace(/^./,c=>c.toUpperCase());
   const copy=v=>JSON.parse(JSON.stringify(v));
   const nowIso=()=>new Date().toISOString();
+  const norm=v=>String(v??'').trim().toLowerCase().replace(/\s+/g,' ');
 
   function activeVault(){
     const w=vaultFrame.contentWindow;
@@ -53,20 +54,24 @@
     return value;
   }
 
+  function flightMatch(candidate,record){
+    if(candidate.type!=='flight'||record.type!=='flight')return false;
+    const a=candidate.fields||{},b=record.fields||{};
+    const core=['travelerName','flightNumber','departureDate','departureAirport','arrivalAirport'];
+    return core.every(key=>norm(a[key])&&norm(a[key])===norm(b[key]));
+  }
+
   function fallbackMatch(candidate,record){
     if(!candidate||!record||candidate.type!==record.type)return false;
+    if(candidate.type==='flight')return flightMatch(candidate,record);
     const a=candidate.fields||{},b=record.fields||{};
-    const norm=v=>String(v??'').trim().toLowerCase().replace(/\s+/g,' ');
     const identifiers=['confirmationCode','ticketNumber','confirmationNumber','bookingReference','passNumber'];
     for(const key of identifiers){if(norm(a[key])&&norm(b[key])&&norm(a[key])===norm(b[key]))return true;}
-    if(candidate.type==='flight'){
-      const keys=['travelerName','flightNumber','departureDate','departureAirport','arrivalAirport'];
-      return keys.every(k=>norm(a[k])&&norm(a[k])===norm(b[k]));
-    }
     return false;
   }
 
   function matchRecord(w,candidate,record){
+    if(candidate?.type==='flight')return flightMatch(candidate,record);
     try{if(typeof w.teeCandidateMatchesRecord==='function')return w.teeCandidateMatchesRecord(candidate,record);}catch{}
     return fallbackMatch(candidate,record);
   }
