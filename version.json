@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.00",
+  "version": "3.5.01",
   "channel": "review",
-  "publishedAt": "2026-09-06T17:38:00-07:00",
-  "notes": "Fixes the root cause of Shared Sync records arriving as generic shells. The Hub authorization session contains a flattened display copy of protected records, which is appropriate for viewing but not for rebuilding the receiving Vault. Shared Sync now uses that authorized session only as an allow-list, then retrieves the matching complete records from the already-unlocked local Vault before encryption. The sender refuses to create a package if any authorized Shared record is missing from the complete Vault set. Glenn's iPhone remains the master Shared source, and the v3.4.99 emergency-contact replacement rule remains in effect on receivers.",
-  "name": "TEE v3.5.00 — Complete-Record Shared Sync"
+  "publishedAt": "2026-09-06T18:27:00-07:00",
+  "notes": "Adds a receiver-side repair control for the five generic Emergency Contact shells created by the earlier incomplete Shared Sync. The repair removes only emergencyContact records that have no contact name, relationship, phone, email, address, language, or notes and whose title is blank or exactly Emergency Contact. Named or populated emergency contacts are not removed. After cleanup, import a fresh v3.5.00+ complete-record Shared Sync package from Glenn's master iPhone.",
+  "name": "TEE v3.5.01 — Empty Emergency Shell Cleanup"
 }
