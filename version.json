@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.20",
+  "version": "3.5.21",
   "channel": "review",
-  "publishedAt": "2026-09-07T11:48:00-07:00",
-  "notes": "Resolves the exact Zurich Fred Hauptbahnhof property from the protected booking screenshot. The booked property matches today's Fred Hotel Hauptbahnhof, not the separate Fred Guest House Hauptbahnhof | Self Check-in. Hotels and Oct. 5 Daily Operations now use current Fred mobile-check-in / Local Host guidance while keeping exact address, confirmation and traveler-specific values protected. Finish TEE advances the Salzburg-to-Zurich paper rail document as the next priority.",
-  "name": "TEE v3.5.20 — Fred Hauptbahnhof Resolved"
+  "publishedAt": "2026-09-07T12:02:00-07:00",
+  "notes": "Clarifies the Oct. 2 Salzburg-to-Zurich Eurail document requirement from the July 18 reservation confirmation. Eurail issued 4x PaperTicket seat reservations for Salzburg Hbf to Zurich HB; the confirmation email states paper reservation tickets are mailed and that showing the email is not enough. Daily Operations now gives an Oct. 1 night-before warning and a prominent Oct. 2 carry-the-originals instruction, while Transportation distinguishes the paper Salzburg-to-Zurich reservations from the electronic Zurich-to-Visp reservation. Root and nested offline caches were refreshed, and the prior Fred Hauptbahnhof resolution is retained. Protected reservation identifiers are not exposed.",
+  "name": "TEE v3.5.21 — Oct 2 Paper Reservation Safeguard"
 }
