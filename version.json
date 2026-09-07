@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.19",
+  "version": "3.5.20",
   "channel": "review",
-  "publishedAt": "2026-09-07T11:35:00-07:00",
-  "notes": "Adds verified Part 2 hotel operating guidance for Salzburg, Lucerne and Zurich. H+ Salzburg is identified as directly beside Salzburg Hbf with exact check-in timing left to booking/front-desk confirmation; AMERON Luzern Hotel Flora now shows the official under-5-minute walk from Luzern station, 3 PM room availability and noon checkout; Fred guidance now flags the current distinction between the staffed/mobile-check-in Hauptbahnhof hotel and the separate Guest House | Self Check-in, requiring the protected booking confirmation to identify the exact property. Daily Operations surfaces these arrival notes on Sep. 30, Oct. 4 and Oct. 5. No protected confirmation values or exact addresses are exposed.",
-  "name": "TEE v3.5.19 — Part 2 Hotel Operating Details"
+  "publishedAt": "2026-09-07T11:48:00-07:00",
+  "notes": "Resolves the exact Zurich Fred Hauptbahnhof property from the protected booking screenshot. The booked property matches today's Fred Hotel Hauptbahnhof, not the separate Fred Guest House Hauptbahnhof | Self Check-in. Hotels and Oct. 5 Daily Operations now use current Fred mobile-check-in / Local Host guidance while keeping exact address, confirmation and traveler-specific values protected. Finish TEE advances the Salzburg-to-Zurich paper rail document as the next priority.",
+  "name": "TEE v3.5.20 — Fred Hauptbahnhof Resolved"
 }
