@@ -1,5 +1,5 @@
-const VERSION = '3.5.21';
-const CACHE = 'tee-v3-5-21-paper-reservation';
+const VERSION = '3.5.24';
+const CACHE = 'tee-v3-5-24-daily-scroll-stability';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./protected-context.js','./app.js','./version-banner.js','./vault-session.js','./vault-frame-bridge.js','./hub-v369.js','./hub-vault-records-v3480.js','./hub-vault-edit-v3481.js','./hub-shared-sync-v3490.js','./hub-shared-sync-emergency-fix-v3499.js','./hub-shared-sync-shell-cleaner-v3501.js','./hub-vault-intake-v3511.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
