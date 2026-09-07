@@ -28,8 +28,6 @@
     creditCard: ["cardholderName","issuer","cardName"]
   };
 
-  /* Small/specific containers come first so protected values land beside the
-     sentence/card that promises them, not in a generic block farther down. */
   const CARD_SELECTORS = [
     ".emergency-contact-group",
     ".identity-vault-entry",
@@ -106,8 +104,6 @@
     return [...document.querySelectorAll(selector)].find(predicate) || null;
   }
 
-  /* Explicit semantic placement for pages that literally say the protected
-     value is in the Vault. This is checked before generic scoring. */
   function explicitTarget(record){
     const id = appId();
     const fields = fieldMap(record);
@@ -120,14 +116,10 @@
         }
         return firstMatching(".quick-reference-action-card", el => /emergency contacts?/.test(headingText(el)));
       }
-      if(record.type === "passport")
-        return firstMatching(".quick-reference-action-card", el => /passport|identity/.test(headingText(el)));
-      if(record.type === "globalEntry")
-        return firstMatching(".quick-reference-action-card", el => /trusted traveler|global entry/.test(headingText(el)));
-      if(record.type === "visa")
-        return firstMatching(".quick-reference-action-card", el => /passport|identity|visa/.test(headingText(el)));
-      if(record.type === "medical")
-        return firstMatching(".quick-reference-action-card", el => /medical|policy/.test(headingText(el)));
+      if(record.type === "passport") return firstMatching(".quick-reference-action-card", el => /passport|identity/.test(headingText(el)));
+      if(record.type === "globalEntry") return firstMatching(".quick-reference-action-card", el => /trusted traveler|global entry/.test(headingText(el)));
+      if(record.type === "visa") return firstMatching(".quick-reference-action-card", el => /passport|identity|visa/.test(headingText(el)));
+      if(record.type === "medical") return firstMatching(".quick-reference-action-card", el => /medical|policy/.test(headingText(el)));
       if(record.type === "travelInsurance"){
         const provider = normalize(fields.provider || fields.policyName || record.title);
         const providerCard = provider && firstMatching(".quick-reference-action-card", el => normalize(el.textContent).includes(provider));
@@ -190,10 +182,10 @@
     const s = document.createElement("style");
     s.id = "teeProtectedContextStyle";
     s.textContent = `
-      .tee-vault-state{position:sticky;top:0;z-index:1000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;margin:0;background:#f4f7f7;border-bottom:1px solid #b8c9cc;font:600 15px/1.35 system-ui,-apple-system,Segoe UI,sans-serif}
+      .tee-vault-state{position:sticky;top:0;z-index:1000;display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;margin:0;background:#f4f7f7;border-bottom:1px solid #b8c9cc;font:600 15px/1.35 system-ui,-apple-system,Segoe UI,sans-serif;overflow-anchor:none}
       .tee-vault-state.open{background:#e8f4ee;border-bottom-color:#8fb9a3}.tee-vault-state.locked{background:#fff6df;border-bottom-color:#e4c675}
       .tee-vault-state .tee-vault-actions{display:flex;gap:8px;flex-wrap:wrap}.tee-vault-state a,.tee-vault-state button{border:0;border-radius:9px;padding:8px 12px;font-weight:800;cursor:pointer;background:#123f46;color:white;text-decoration:none}
-      .tee-protected-panel{margin:12px 0;padding:13px;border:2px solid #2e6870;border-radius:14px;background:#f5fbfa;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+      .tee-protected-panel{margin:12px 0;padding:13px;border:2px solid #2e6870;border-radius:14px;background:#f5fbfa;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-anchor:none}
       .tee-protected-panel>h3{margin:0 0 6px}.tee-protected-panel>.tee-protected-note{margin:0 0 10px;color:#36565b}
       .tee-protected-record{margin:9px 0;padding:11px;border:1px solid #b8d0d3;border-radius:12px;background:white}.tee-protected-record h4{margin:6px 0 9px}
       .tee-protected-record-head{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:#46656a}.tee-protected-record-head span{font-weight:700}
@@ -232,6 +224,8 @@
 
   function render(){
     if(rendering) return;
+    const preserveScroll = appId() === "travel-daily-operations";
+    const savedY = preserveScroll ? window.scrollY : null;
     rendering = true;
     try{
       clearInjected(); style();
@@ -263,7 +257,17 @@
         panel.innerHTML = `<h3>🔓 Other protected details for this section</h3><p class="tee-protected-note">These authorized records belong to this app but could not be matched safely to a single visible card.</p><div class="tee-protected-records">${remaining.map(renderRecord).join("")}</div>`;
         host.appendChild(panel);
       }
-    } finally { rendering = false; }
+    } finally {
+      rendering = false;
+      if(savedY !== null){
+        const restore = () => {
+          if(Math.abs(window.scrollY - savedY) > 2) window.scrollTo({top:savedY,left:0,behavior:"auto"});
+        };
+        restore();
+        requestAnimationFrame(restore);
+        setTimeout(restore, 40);
+      }
+    }
   }
   function ensureSessionApi(){
     if(window.TEEVaultSession){ render(); return; }
