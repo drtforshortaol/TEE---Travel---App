@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.15",
+  "version": "3.5.16",
   "channel": "review",
-  "publishedAt": "2026-09-07T09:20:00-07:00",
-  "notes": "Fixes an event-loop regression introduced by the rail At-a-Glance visibility update. The rail panel no longer continuously observes and rewrites Daily Operations. Today section dropdowns remain tappable, and View Full Route & Maps can navigate normally to Transportation. Rail glance still refreshes after date/test changes without blocking the page.",
-  "name": "TEE v3.5.15 — Daily Operations Interaction Fix"
+  "publishedAt": "2026-09-07T09:45:00-07:00",
+  "notes": "Adds a prominent Oct. 6 Zurich baggage-through-check and YOTELAIR Airside decision box to Daily Operations, plus a shorter Oct. 5 Tomorrow reminder. The day-of flow tells travelers to ask whether checked bags are tagged through to SFO, verify the printed bag tag themselves, use the airside plan only when baggage does not need collection in Istanbul, remain in the international transit zone, avoid passport control, and have passport plus onward international boarding pass ready. Based on current official YOTEL/YOTELAIR guidance; airline baggage handling remains a day-of Turkish Airlines confirmation.",
+  "name": "TEE v3.5.16 — Oct 6 Airside Baggage Decision"
 }
