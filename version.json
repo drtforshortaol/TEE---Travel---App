@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.01",
+  "version": "3.5.02",
   "channel": "review",
-  "publishedAt": "2026-09-06T18:27:00-07:00",
-  "notes": "Adds a receiver-side repair control for the five generic Emergency Contact shells created by the earlier incomplete Shared Sync. The repair removes only emergencyContact records that have no contact name, relationship, phone, email, address, language, or notes and whose title is blank or exactly Emergency Contact. Named or populated emergency contacts are not removed. After cleanup, import a fresh v3.5.00+ complete-record Shared Sync package from Glenn's master iPhone.",
-  "name": "TEE v3.5.01 — Empty Emergency Shell Cleanup"
+  "publishedAt": "2026-09-06T20:38:00-07:00",
+  "notes": "Fixes the Empty Emergency Shell Cleanup control not appearing. The cleanup script previously loaded before the dynamically injected Shared Sync button existed and exited too early. It now waits for the Shared Sync dialog and attaches the repair control reliably. The repair remains limited to generic emergencyContact shells with no name, relationship, phone, email, address, language, or notes.",
+  "name": "TEE v3.5.02 — Shell Cleanup Button Fix"
 }
