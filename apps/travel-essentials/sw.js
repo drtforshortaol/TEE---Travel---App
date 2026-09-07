@@ -1,6 +1,6 @@
-const CACHE = 'tee-essentials-v3-4-79-simple-vault-unlock';
+const CACHE = 'tee-essentials-v3-5-25-eurail-offline';
 const CACHE_PREFIX = 'tee-essentials-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./eurail-pass-help.html','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
