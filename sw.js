@@ -1,5 +1,5 @@
-const VERSION = '3.5.09';
-const CACHE = 'tee-v3-5-09-updated-status-report';
+const VERSION = '3.5.10';
+const CACHE = 'tee-v3-5-10-turkish-flights-confirmed';
 const ASSETS = [
   './','./index.html','./styles.css','./traveler-help.css','./traveler-help.js','./protected-context.js','./app.js','./version-banner.js','./vault-session.js','./vault-frame-bridge.js','./hub-v369.js','./hub-vault-records-v3480.js','./hub-vault-edit-v3481.js','./hub-shared-sync-v3490.js','./hub-shared-sync-emergency-fix-v3499.js','./hub-shared-sync-shell-cleaner-v3501.js','./hub-registry.js','./manifest.json','./version.json','./assets/icon.svg','./config.js','./encryption.js','./auth.js','./storage.js','./vault.js','./shared-expense-beacon.json',
   './apps/travel-itinerary/index.html','./apps/travel-itinerary/styles.css','./apps/travel-itinerary/app.js','./apps/travel-itinerary/manifest.json',
