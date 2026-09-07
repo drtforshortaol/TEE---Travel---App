@@ -1,6 +1,6 @@
-const CACHE = 'tee-daily-operations-v3-5-19-hotel-operating';
+const CACHE = 'tee-daily-operations-v3-5-21-paper-reservation';
 const CACHE_PREFIX = 'tee-daily-operations-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./rail-quick-glance-v3515.js','./zermatt-arrival-v3517.js','./destination-map-links-v3518.js','./hotel-operating-v3519.js','./oct6-airside-baggage-v3516.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./rail-quick-glance-v3515.js','./oct2-paper-reservation-v3521.js','./zermatt-arrival-v3517.js','./destination-map-links-v3518.js','./hotel-operating-v3519.js','./oct6-airside-baggage-v3516.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
