@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.23",
+  "version": "3.5.24",
   "channel": "review",
-  "publishedAt": "2026-09-07T13:34:00-07:00",
-  "notes": "Fixes the actual Daily Operations iPhone scroll-jump cause: protected-context.js was installing a page-wide MutationObserver that repeatedly removed and rebuilt large protected-detail panels whenever other Daily Operations helpers added content. Those temporary height collapses caused iOS to clamp the scroll position upward. Daily Operations now suppresses only that protected-context mutation observer while retaining Vault session-change, pageshow and visibility updates, plus the secondary scroll guard. No Vault records, checklist items or protected values are changed.",
-  "name": "TEE v3.5.23 — Daily Operations Protected-Context Stability"
+  "publishedAt": "2026-09-07T13:39:00-07:00",
+  "notes": "Corrects the remaining iPhone Daily Operations scroll jitter. The prior v3.5.23 release identified the page-wide protected-context MutationObserver as the cause, but the observer was still being installed in Daily Operations. v3.5.24 now actually suppresses that observer only while protected-context initializes on the Daily Operations page, then immediately restores the browser's native MutationObserver for the rest of the app. Vault session-change/pageshow/visibility refreshes remain available, and no Vault records, checklist items, or protected values are modified. Daily and root offline caches were bumped.",
+  "name": "TEE v3.5.24 — Daily Operations Scroll Stability Correction"
 }
