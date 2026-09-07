@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.08",
+  "version": "3.5.09",
   "channel": "review",
-  "publishedAt": "2026-09-06T21:50:00-07:00",
-  "notes": "Adds a one-page Eurail Pass Rules & What To Do guide under Quick Reference → Rail / Eurail and links Transportation to the same guide. The guide covers live Rail Planner tickets, travel-day activation, reservation handling, paper/e-ticket reminders, and plan-change recovery without exposing traveler pass or identity details.",
-  "name": "TEE v3.5.08 — Eurail Quick Reference"
+  "publishedAt": "2026-09-06T21:55:00-07:00",
+  "notes": "Refreshes the Finish TEE page into a current status report plus prioritized to-do list. It marks the full Part 2 rail plan and Eurail Quick Reference as established, keeps the exact Oct. 6 Zurich-to-Istanbul flight number as the main information gap, and preserves the remaining verification, testing, and pre-departure tasks.",
+  "name": "TEE v3.5.09 — Updated Status Report"
 }
