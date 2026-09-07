@@ -1,6 +1,6 @@
 "use strict";
 const PUBLIC_CONTEXT=[
-  {title:"Outbound international travel",dates:"Sep 15–16",city:"San Francisco → Istanbul",summary:"Current corrected outbound: Turkish Airlines TK0080 departs SFO Sep. 15 at 18:45 and arrives IST Sep. 16 at 17:40. Traveler PNRs, seats and ticket data remain protected in Secure Vault."},
+  {title:"Outbound international travel",dates:"Sep 15–16",city:"San Francisco → Istanbul",summary:"Confirmed in Turkish Airlines Manage Reservation: TK 80 departs SFO Sep. 15 at 18:45 and arrives IST Sep. 16 at 17:40. Traveler PNRs, ticket numbers and identity details remain protected in Secure Vault."},
   {title:"Istanbul arrival transfer",dates:"Sep 16",city:"Istanbul Airport → Istanbul",summary:"Private airport-to-hotel transfer is included in Part 1. Exact pickup instructions and contacts remain protected."},
   {title:"Istanbul → Cappadocia",dates:"Sep 18",city:"Istanbul → Kayseri / Cappadocia",summary:"Private hotel-to-airport transfer, domestic flight to Kayseri, then private onward transfer with an en-route Underground City visit."},
   {title:"Cappadocia → Zagreb",dates:"Sep 21",city:"Cappadocia → Kayseri → Istanbul → Zagreb",summary:"Private transfer to Kayseri airport, connecting flights via Istanbul, then private Zagreb airport transfer."},
@@ -12,8 +12,8 @@ const PUBLIC_CONTEXT=[
   {title:"Zermatt → Lucerne",dates:"Oct 4",city:"Zermatt → Visp → Bern → Lucerne",summary:"Confirmed in the active Eurail trip: Zermatt 08:37 → Visp 09:47, RE 226; Visp 10:54 → Bern 11:53, IC 817; Bern 12:36 → Luzern 14:03, RE 4371. Eurail shows seat reservations optional on the Visp→Bern segment."},
   {title:"Lucerne → Zurich",dates:"Oct 5",city:"Lucerne → Zurich",summary:"Confirmed in the active Eurail trip: Luzern 09:09 → Zürich HB 09:51, TRN 2616."},
   {title:"Zurich HB → Zurich Airport",dates:"Oct 6",city:"Zürich HB → Zürich Flughafen",summary:"Confirmed in the active Eurail trip: Zürich HB 10:02 → Zürich Flughafen 10:11, IC 513. Eurail shows seat reservations optional."},
-  {title:"Zurich → Istanbul Airport",dates:"Oct 6",city:"Zurich → Istanbul",summary:"Latest dated correction in the travel source says Oct. 6, approximately 13:35 → 17:35. The exact flight number is not yet verified in the source set, so TEE will not guess it. At Zurich check-in, ask whether checked baggage can be tagged through to San Francisco and verify the bag tag."},
-  {title:"Istanbul → San Francisco",dates:"Oct 7",city:"Istanbul → San Francisco",summary:"Current corrected return departs IST at 13:15 and arrives SFO at 16:40. Exact traveler booking records remain protected in Secure Vault."}
+  {title:"Zurich → Istanbul Airport",dates:"Oct 6",city:"Zurich → Istanbul",summary:"Confirmed in Turkish Airlines Manage Reservation: TK 1208, ZRH 13:35 → IST 17:35 on Oct. 6, operated by Turkish Airlines. The booking shows two passengers on this reservation. Traveler PNRs, ticket numbers and identity details remain protected. At Zurich check-in, ask whether checked baggage can be tagged through to San Francisco and verify the printed bag tag."},
+  {title:"Istanbul → San Francisco",dates:"Oct 7",city:"Istanbul → San Francisco",summary:"Confirmed in Turkish Airlines flight information: TK 79 departs IST at 13:15 and arrives SFO at 16:40 on Oct. 7. Traveler booking and ticket records remain protected in Secure Vault."}
 ];
 function renderProtectedContext(){
   const host=document.getElementById('transportMount')||document.querySelector('[id$="Mount"]'); if(!host)return; host.innerHTML='';
