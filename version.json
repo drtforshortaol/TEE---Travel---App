@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.06",
+  "version": "3.5.07",
   "channel": "review",
-  "publishedAt": "2026-09-06T21:30:00-07:00",
-  "notes": "Confirms the Sep. 30 Ljubljana to Villach segment from the active Eurail trip: Ljubljana 07:42 to Villach Hbf 09:22 on INT 318, connecting to Villach Hbf 10:32 to Salzburg Hbf 12:53 on IC 796. Daily Operations and the Finish TEE tracker are updated, and Shared Records Sync is marked verified on Vicki's phone.",
-  "name": "TEE v3.5.06 — Sep 30 Rail Confirmation"
+  "publishedAt": "2026-09-06T21:45:00-07:00",
+  "notes": "Confirms the remaining Part 2 Eurail journeys from the active Rail Planner trips: Oct. 2 Salzburg to Zurich to Visp to Zermatt, Oct. 4 Zermatt to Visp to Bern to Lucerne, Oct. 5 Lucerne to Zurich, and Oct. 6 Zurich HB to Zurich Airport. Transportation, Daily Operations, and Finish TEE are aligned. Traveler pass references and identity details remain outside public source.",
+  "name": "TEE v3.5.07 — Part 2 Rail Plan Confirmed"
 }
