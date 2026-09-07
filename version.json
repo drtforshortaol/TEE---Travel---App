@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.02",
+  "version": "3.5.03",
   "channel": "review",
-  "publishedAt": "2026-09-06T20:38:00-07:00",
-  "notes": "Fixes the Empty Emergency Shell Cleanup control not appearing. The cleanup script previously loaded before the dynamically injected Shared Sync button existed and exited too early. It now waits for the Shared Sync dialog and attaches the repair control reliably. The repair remains limited to generic emergencyContact shells with no name, relationship, phone, email, address, language, or notes.",
-  "name": "TEE v3.5.02 — Shell Cleanup Button Fix"
+  "publishedAt": "2026-09-06T20:45:00-07:00",
+  "notes": "Fixes the receiver cleanup reporting that no empty Emergency Contact shells were found even though generic shells were visible. Earlier detection was too strict because legacy shell records can contain generic metadata in non-name fields. The cleanup now identifies only emergencyContact records with no contactName whose visible title is blank or exactly Emergency Contact. Any emergency contact with a contact name is preserved.",
+  "name": "TEE v3.5.03 — Generic Emergency Shell Detection Fix"
 }
