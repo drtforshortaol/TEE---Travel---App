@@ -10,12 +10,41 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
 
-// iPhone/PWA scroll-stability guard. During a downward finger gesture, reject only large
-// spontaneous upward jumps; normal upward scrolling and deliberate navigation still work.
+// Daily Operations root-cause stability fix.
+// protected-context.js normally installs a page-wide MutationObserver that repeatedly removes
+// and rebuilds protected panels whenever other Daily Operations helpers add DOM nodes. On iOS,
+// those temporary height collapses clamp the scroll position and cause the page to jump upward.
+// Intercept only the protected-context observer during initial script loading; session-change,
+// pageshow and visibility handlers in protected-context.js remain active, so Vault state still updates.
+(() => {
+  if(window.__teeDailyProtectedObserverGuard || !window.MutationObserver) return;
+  window.__teeDailyProtectedObserverGuard = true;
+  const NativeMutationObserver = window.MutationObserver;
+  let intercepted = false;
+  function QuietObserver(){
+    this.observe = () => {};
+    this.disconnect = () => {};
+    this.takeRecords = () => [];
+  }
+  window.MutationObserver = function(callback){
+    const stack = String(new Error().stack || '');
+    const isProtectedContext = stack.includes('protected-context');
+    if(!intercepted && (isProtectedContext || document.readyState === 'loading')){
+      intercepted = true;
+      return new QuietObserver(callback);
+    }
+    return new NativeMutationObserver(callback);
+  };
+  window.MutationObserver.prototype = NativeMutationObserver.prototype;
+  setTimeout(() => { window.MutationObserver = NativeMutationObserver; }, 0);
+})();
+
+// Secondary iPhone/PWA scroll-stability guard. During a downward finger gesture, reject only
+// large spontaneous upward jumps; normal upward scrolling and deliberate navigation still work.
 (() => {
   let lastY=window.scrollY||0, floorY=lastY, fingerY=null, downUntil=0, restoring=false;
   const clock=()=>performance.now();
-  const markDown=()=>{downUntil=clock()+1000;};
+  const markDown=()=>{downUntil=clock()+1200;};
   addEventListener('touchstart',e=>{fingerY=e.touches?.[0]?.clientY??null;floorY=Math.max(floorY,window.scrollY||0);},{passive:true});
   addEventListener('touchmove',e=>{const y=e.touches?.[0]?.clientY??null;if(fingerY!=null&&y!=null){if(y<fingerY-2)markDown();else if(y>fingerY+6)downUntil=0;fingerY=y;}},{passive:true});
   addEventListener('touchend',()=>{fingerY=null;},{passive:true});
