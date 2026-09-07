@@ -17,6 +17,10 @@ const PUBLIC_CONTEXT=[
 ];
 function renderProtectedContext(){
   const host=document.getElementById('transportMount')||document.querySelector('[id$="Mount"]'); if(!host)return; host.innerHTML='';
+  const help=document.createElement('article');
+  help.className='transport-card';
+  help.innerHTML='<h2>Eurail rules / pass help</h2><p>Travel-day activation, live mobile tickets, seat reservations, paper/e-ticket handling and what to do when plans change.</p><p><a href="../travel-essentials/eurail-pass-help.html" style="font-weight:800">Open Eurail Pass Rules &amp; What To Do →</a></p>';
+  host.appendChild(help);
   PUBLIC_CONTEXT.forEach(c=>{const a=document.createElement('article');a.className='transport-card';a.innerHTML=`<h2>${c.title}</h2><div class="meta"><span class="pill">${c.dates||''}</span><span class="pill">${c.city||''}</span></div><p>${c.summary}</p><p class="protected-location-note"><strong>Need seats, ticket/booking references or traveler-specific details?</strong> Unlock Secure Vault once, then use Vault Records.</p>`;host.appendChild(a);});
 }
 renderProtectedContext();
