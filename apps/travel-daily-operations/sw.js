@@ -1,6 +1,6 @@
-const CACHE = 'tee-v3-3-81-official-part1-daily-ops';
+const CACHE = 'tee-daily-operations-v3-5-18-destination-map-links';
 const CACHE_PREFIX = 'tee-daily-operations-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./rail-quick-glance-v3515.js','./zermatt-arrival-v3517.js','./destination-map-links-v3518.js','./oct6-airside-baggage-v3516.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
