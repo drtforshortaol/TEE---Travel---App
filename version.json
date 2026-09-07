@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.21",
+  "version": "3.5.22",
   "channel": "review",
-  "publishedAt": "2026-09-07T12:02:00-07:00",
-  "notes": "Clarifies the Oct. 2 Salzburg-to-Zurich Eurail document requirement from the July 18 reservation confirmation. Eurail issued 4x PaperTicket seat reservations for Salzburg Hbf to Zurich HB; the confirmation email states paper reservation tickets are mailed and that showing the email is not enough. Daily Operations now gives an Oct. 1 night-before warning and a prominent Oct. 2 carry-the-originals instruction, while Transportation distinguishes the paper Salzburg-to-Zurich reservations from the electronic Zurich-to-Visp reservation. Root and nested offline caches were refreshed, and the prior Fred Hauptbahnhof resolution is retained. Protected reservation identifiers are not exposed.",
-  "name": "TEE v3.5.21 — Oct 2 Paper Reservation Safeguard"
+  "publishedAt": "2026-09-07T13:05:00-07:00",
+  "notes": "Fixes an iPhone/PWA Daily Operations scrolling problem where a large spontaneous upward jump could interrupt a user who was actively scrolling downward. A scroll-stability guard now rejects only those large unintended upward jumps during a downward finger gesture while preserving normal upward scrolling and deliberate Today/Tomorrow/Full Itinerary navigation. The Daily Operations offline cache was bumped so the fix is fetched cleanly. No Vault or checklist data is changed.",
+  "name": "TEE v3.5.22 — Daily Operations Scroll Stability"
 }
