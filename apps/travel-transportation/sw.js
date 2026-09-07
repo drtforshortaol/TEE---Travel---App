@@ -1,6 +1,6 @@
-const CACHE = 'tee-transportation-v3-5-21-paper-reservation';
+const CACHE = 'tee-transportation-v3-5-25-offline-guides';
 const CACHE_PREFIX = 'tee-transportation-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./rail-route-detail-v3513.js','./manifest.json','../../assets/icon.svg'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./rail-route-detail-v3513.js','./offline-station-guides-v3525.js','./manifest.json','../travel-essentials/eurail-pass-help.html','../../assets/icon.svg'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
