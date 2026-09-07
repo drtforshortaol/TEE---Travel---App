@@ -9,3 +9,28 @@
   function start(){mount();document.getElementById('previewDateSelect')?.addEventListener('change',()=>setTimeout(mount,20));document.getElementById('useActualDateBtn')?.addEventListener('click',()=>setTimeout(mount,20));setTimeout(mount,300);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
+
+// iPhone/PWA scroll-stability guard. During a downward finger gesture, reject only large
+// spontaneous upward jumps; normal upward scrolling and deliberate navigation still work.
+(() => {
+  let lastY=window.scrollY||0, floorY=lastY, fingerY=null, downUntil=0, restoring=false;
+  const clock=()=>performance.now();
+  const markDown=()=>{downUntil=clock()+1000;};
+  addEventListener('touchstart',e=>{fingerY=e.touches?.[0]?.clientY??null;floorY=Math.max(floorY,window.scrollY||0);},{passive:true});
+  addEventListener('touchmove',e=>{const y=e.touches?.[0]?.clientY??null;if(fingerY!=null&&y!=null){if(y<fingerY-2)markDown();else if(y>fingerY+6)downUntil=0;fingerY=y;}},{passive:true});
+  addEventListener('touchend',()=>{fingerY=null;},{passive:true});
+  addEventListener('wheel',e=>{if(e.deltaY>0)markDown();else if(e.deltaY<0)downUntil=0;},{passive:true});
+  addEventListener('scroll',()=>{
+    if(restoring)return;
+    const y=window.scrollY||0;
+    if(y>=lastY)floorY=Math.max(floorY,y);
+    if(clock()<downUntil&&floorY>500&&y<floorY-140){
+      restoring=true;
+      requestAnimationFrame(()=>{window.scrollTo(0,floorY);lastY=floorY;restoring=false;});
+      return;
+    }
+    if(clock()>=downUntil&&y<lastY-20)floorY=y;
+    lastY=y;
+  },{passive:true});
+  addEventListener('pageshow',()=>{lastY=window.scrollY||0;floorY=lastY;downUntil=0;});
+})();
