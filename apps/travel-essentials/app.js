@@ -148,6 +148,29 @@ function removeLegacyContactControls(){
   });
 }
 
+function addEurailPassHelp(){
+  const host=document.querySelector('.quick-reference-dropdowns');
+  if(!host||document.getElementById('eurail-pass-help'))return;
+  const details=document.createElement('details');
+  details.id='eurail-pass-help';
+  details.className='quick-reference-dropdown';
+  details.innerHTML=`
+    <summary>
+      <strong>Rail / Eurail</strong>
+      <span>Eurail pass rules, travel-day steps, seat reservations and what to do if plans change.</span>
+    </summary>
+    <div class="quick-reference-dropdown-body">
+      <section class="quick-reference-action-card">
+        <h3>Eurail Pass Rules &amp; What To Do</h3>
+        <p>One-page practical summary for using the mobile Global Flex Pass during the trip.</p>
+        <a class="quick-reference-action-button" href="eurail-pass-help.html">Open Eurail Pass Help</a>
+      </section>
+    </div>`;
+  const problem=document.getElementById('problem-solver');
+  if(problem)host.insertBefore(details,problem); else host.appendChild(details);
+}
+
+addEurailPassHelp();
 document.querySelectorAll("[data-open-quick-reference]").forEach(link=>{
   link.addEventListener("click",event=>{
     const id = link.dataset.openQuickReference;
@@ -170,6 +193,7 @@ ensureVaultInfrastructure().then(()=>{
 }).catch(console.error);
 
 window.addEventListener("pageshow",()=>{
+  addEurailPassHelp();
   if(location.hash) openQuickReferenceSection(decodeURIComponent(location.hash.slice(1)),false);
   removeLegacyContactControls();
 });
