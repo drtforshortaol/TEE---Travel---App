@@ -1,6 +1,6 @@
-const CACHE = 'tee-daily-operations-v3-5-18-destination-map-links';
+const CACHE = 'tee-daily-operations-v3-5-19-hotel-operating';
 const CACHE_PREFIX = 'tee-daily-operations-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./rail-quick-glance-v3515.js','./zermatt-arrival-v3517.js','./destination-map-links-v3518.js','./oct6-airside-baggage-v3516.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./official-part1-corrections.js','./rail-quick-glance-v3515.js','./zermatt-arrival-v3517.js','./destination-map-links-v3518.js','./hotel-operating-v3519.js','./oct6-airside-baggage-v3516.js','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../vault-session.js'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
@@ -13,26 +13,6 @@ async function refreshCache() {
   }
 }
 
-self.addEventListener('install', event => {
-  event.waitUntil((async()=>{ await refreshCache(); await self.skipWaiting(); })());
-});
-self.addEventListener('activate', event => {
-  event.waitUntil((async()=>{
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k.startsWith(CACHE_PREFIX) && k !== CACHE).map(k => caches.delete(k)));
-    await self.clients.claim();
-  })());
-});
-self.addEventListener('fetch', event => {
-  const req=event.request;
-  if(req.method!=='GET')return;
-  event.respondWith((async()=>{
-    try {
-      const fresh=await fetch(req,{cache:'no-store'});
-      if(fresh && fresh.ok){const cache=await caches.open(CACHE);await cache.put(req,fresh.clone());}
-      return fresh;
-    } catch {
-      return (await caches.match(req)) || Response.error();
-    }
-  })());
-});
+self.addEventListener('install', event => {event.waitUntil((async()=>{ await refreshCache(); await self.skipWaiting(); })());});
+self.addEventListener('activate', event => {event.waitUntil((async()=>{const keys = await caches.keys();await Promise.all(keys.filter(k => k.startsWith(CACHE_PREFIX) && k !== CACHE).map(k => caches.delete(k)));await self.clients.claim();})());});
+self.addEventListener('fetch', event => {const req=event.request;if(req.method!=='GET')return;event.respondWith((async()=>{try{const fresh=await fetch(req,{cache:'no-store'});if(fresh && fresh.ok){const cache=await caches.open(CACHE);await cache.put(req,fresh.clone());}return fresh;} catch {return (await caches.match(req)) || Response.error();}})());});
