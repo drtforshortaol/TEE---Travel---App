@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.27",
+  "version": "3.5.28",
   "channel": "review",
-  "publishedAt": "2026-09-07T14:58:00-07:00",
-  "notes": "Transportation is now optimized as a date-first traveler screen. After a travel date is selected, all registered transportation for that date is grouped immediately near the selector, while receipts, protocols, filters, the full trip register and unrelated rail days move out of the way. The traveler can open only the selected day's full rail route/maps or detailed/secure records when needed, and can return to the full Transportation app through Other transportation tools. Oct. 6 still groups both the Zurich HB-to-airport train and Zurich-to-Istanbul flight. Transportation nested offline cache was refreshed.",
-  "name": "TEE v3.5.27 — Compact Transportation Date Focus"
+  "publishedAt": "2026-09-07T15:05:00-07:00",
+  "notes": "Adds a final Entry Requirements quick reference for the Sep/Oct 2026 trip. Current official guidance confirms U.S. ordinary-passport holders do not need tourist visas for Türkiye or the Schengen countries on this itinerary; Schengen passports must be valid at least 3 months beyond the Oct. 6 Schengen departure and issued within the previous 10 years. TEE uses a conservative Apr. 2, 2027 passport-expiry target because U.S. guidance recommends 6 months and current Switzerland guidance is stricter. EES is fully operational but requires no advance application; ETIAS is not yet in operation and is not required for this trip. The page is available under Quick Reference and is cached offline. No protected passport values are exposed.",
+  "name": "TEE v3.5.28 — Final Entry Requirements"
 }
