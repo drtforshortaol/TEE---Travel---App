@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.14",
+  "version": "3.5.15",
   "channel": "review",
-  "publishedAt": "2026-09-07T09:06:00-07:00",
-  "notes": "Fixes the Part 2 rail At-a-Glance visibility in Daily Operations. On rail travel days, Today now shows a prominent rail quick-glance immediately below the Today/Tomorrow summary, with transfer time, next train and a View Full Route & Maps button. The widget remounts reliably after date/test changes. Transportation return links now point directly back to the visible Today rail glance.",
-  "name": "TEE v3.5.14 — Rail Glance Visibility Fix"
+  "publishedAt": "2026-09-07T09:20:00-07:00",
+  "notes": "Fixes an event-loop regression introduced by the rail At-a-Glance visibility update. The rail panel no longer continuously observes and rewrites Daily Operations. Today section dropdowns remain tappable, and View Full Route & Maps can navigate normally to Transportation. Rail glance still refreshes after date/test changes without blocking the page.",
+  "name": "TEE v3.5.15 — Daily Operations Interaction Fix"
 }
