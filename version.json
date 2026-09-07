@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.07",
+  "version": "3.5.08",
   "channel": "review",
-  "publishedAt": "2026-09-06T21:45:00-07:00",
-  "notes": "Confirms the remaining Part 2 Eurail journeys from the active Rail Planner trips: Oct. 2 Salzburg to Zurich to Visp to Zermatt, Oct. 4 Zermatt to Visp to Bern to Lucerne, Oct. 5 Lucerne to Zurich, and Oct. 6 Zurich HB to Zurich Airport. Transportation, Daily Operations, and Finish TEE are aligned. Traveler pass references and identity details remain outside public source.",
-  "name": "TEE v3.5.07 — Part 2 Rail Plan Confirmed"
+  "publishedAt": "2026-09-06T21:50:00-07:00",
+  "notes": "Adds a one-page Eurail Pass Rules & What To Do guide under Quick Reference → Rail / Eurail and links Transportation to the same guide. The guide covers live Rail Planner tickets, travel-day activation, reservation handling, paper/e-ticket reminders, and plan-change recovery without exposing traveler pass or identity details.",
+  "name": "TEE v3.5.08 — Eurail Quick Reference"
 }
