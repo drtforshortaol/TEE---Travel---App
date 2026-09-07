@@ -1,4 +1,4 @@
-const CACHE = 'tee-hotels-v3-3-52-simple-traveler-setup';
+const CACHE = 'tee-hotels-v3-5-20-fred-resolved';
 const CACHE_PREFIX = 'tee-hotels-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./manifest.json','../../traveler-help.css','../../traveler-help.js'];
 
