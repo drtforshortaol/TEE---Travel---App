@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.29",
+  "version": "3.5.30",
   "channel": "review",
-  "publishedAt": "2026-09-07T15:55:00-07:00",
-  "notes": "Adds a lightweight offline SET card-game reference under Quick Reference > Games / SET. The guide is based on the supplied instruction booklet and includes the four features, the all-same-or-all-different rule, play sequence, easy-start variation, scoring/penalty guidance, solitaire variation, and three schematic visual SET examples plus a non-SET quick check. The guide is included in the Quick Reference offline cache and does not reproduce the original instruction artwork.",
-  "name": "TEE v3.5.29 — SET Offline Game Guide"
+  "publishedAt": "2026-09-09T00:22:00-07:00",
+  "notes": "Finish TEE now marks the four-traveler physical identity-document audit complete. Required blank space, validity window, document age, and traveler identity consistency have been checked. Protected document values are not added to public source.",
+  "name": "TEE v3.5.30 — Traveler Document Audit Complete"
 }
