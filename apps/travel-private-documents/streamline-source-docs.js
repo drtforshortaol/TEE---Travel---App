@@ -1,6 +1,6 @@
 "use strict";
 (function(){
-  let BUILD='3.4.59';
+  let BUILD='3.5.34';
   const params=new URLSearchParams(location.search);
   const maintenanceRequested=params.get('teeMode')==='maintenance';
   const maintUntil=Number(sessionStorage.getItem('teeMaintenanceAuthorizedUntilV1')||0);
@@ -26,6 +26,17 @@
     sharedSync.src='shared-sync-v3490.js?v=3.4.90';
     sharedSync.dataset.teeSharedSync='3.4.90';
     document.head.appendChild(sharedSync);
+  }
+
+  // v3.5.34 — load the confirmed Shared flight repair before the compact Vault
+  // view returns early. v3.5.33 cached the repair file but did not actually
+  // execute it in teeView=vault, which left the three confirmed flight records
+  // unavailable to the authorized Hub session.
+  if(!document.querySelector('script[data-tee-shared-flight-repair]')){
+    const flightRepair=document.createElement('script');
+    flightRepair.src='shared-flight-repair-v3533.js?v=3.5.34';
+    flightRepair.dataset.teeSharedFlightRepair='3.5.34';
+    document.head.appendChild(flightRepair);
   }
 
   // iOS Files can report JSON backups with a generic UTI/MIME type. Restricting
