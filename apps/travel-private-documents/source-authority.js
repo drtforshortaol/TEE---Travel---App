@@ -113,4 +113,14 @@
     LEVELS, LABELS, normalizeAuthority, compareAuthority,
     shouldSupersede, preserveBaseline
   });
+
+  // v3.5.33 — load the idempotent Shared-flight recovery helper. It waits
+  // until the encrypted Vault is unlocked, then restores only missing fields
+  // for the Sep 18 / Sep 21 confirmed flights and persists them back to Shared.
+  if(!document.querySelector('script[data-tee-shared-flight-repair]')){
+    const repair=document.createElement('script');
+    repair.src='shared-flight-repair-v3533.js?v=3.5.33';
+    repair.dataset.teeSharedFlightRepair='3.5.33';
+    document.head.appendChild(repair);
+  }
 })();
