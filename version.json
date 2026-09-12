@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.30",
+  "version": "3.5.31",
   "channel": "review",
-  "publishedAt": "2026-09-09T00:22:00-07:00",
-  "notes": "Finish TEE now marks the four-traveler physical identity-document audit complete. Required blank space, validity window, document age, and traveler identity consistency have been checked. Protected document values are not added to public source.",
-  "name": "TEE v3.5.30 — Traveler Document Audit Complete"
+  "publishedAt": "2026-09-12T13:31:00-07:00",
+  "notes": "Adds Enchanting Travels source-reference content to TEE: Turkey/Croatia/Slovenia Essential Information, a separately labeled Enchanting Travels Universal Packing List, and a separately labeled Enchanting Travels General Travel Checklist. These source suggestions are intentionally kept distinct from Glenn's master lists and ChatGPT-developed TEE guidance. New reference pages are included in offline caching.",
+  "name": "TEE v3.5.31 — Enchanting Travels Source References"
 }
