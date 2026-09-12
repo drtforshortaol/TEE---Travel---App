@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.34",
+  "version": "3.5.35",
   "channel": "review",
-  "publishedAt": "2026-09-12T15:05:00-07:00",
-  "notes": "Fixes v3.5.33 by actually loading the Shared flight recovery script inside the compact Secure Vault view used by the Hub. The recovery remains limited to the three confirmed Sep 18/Sep 21 Turkish Airlines flight records, preserves existing nonblank values, and leaves couple-private records untouched.",
-  "name": "TEE v3.5.34 — Shared Flight Loader Fix"
+  "publishedAt": "2026-09-12T15:18:00-07:00",
+  "notes": "Organizes authorized Vault Records coherently: operational Flight records are grouped first and sorted by date and flight number, followed by related transportation/transfers, supporting protected source documents, and other matches. This is a presentation-only change and does not rewrite encrypted Vault data.",
+  "name": "TEE v3.5.35 — Coherent Vault Flight Grouping"
 }
