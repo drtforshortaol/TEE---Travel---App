@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.32",
+  "version": "3.5.33",
   "channel": "review",
-  "publishedAt": "2026-09-12T13:46:00-07:00",
-  "notes": "Refreshes nested Essentials and Packing caches so the previously added Enchanting Travels source-reference links and pages are actually visible. The Enchanting Travels Universal Packing List remains clearly separate from Glenn's master packing list and ChatGPT-developed TEE guidance. The Enchanting Travels country-information reference remains separate from TEE guidance.",
-  "name": "TEE v3.5.32 — Enchanting Travels Reference Visibility Fix"
+  "publishedAt": "2026-09-12T14:28:00-07:00",
+  "notes": "Repairs the Shared flight records for Sep 18 and Sep 21 after the v3.5.32 update. The recovery runs only after the encrypted Vault is unlocked, restores only missing expected flight fields or missing target records, preserves existing nonblank values and couple-private records, and republishes the authorized session for Daily Operations.",
+  "name": "TEE v3.5.33 — Shared Flight Recovery"
 }
