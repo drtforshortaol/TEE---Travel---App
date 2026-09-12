@@ -10,14 +10,12 @@
   const count=document.getElementById('hubVaultRecordsCount');
   if(!openButton||!dialog||!list)return;
 
-  // Load the lightweight one-tap editor bridge only when this viewer exists.
   if(!document.querySelector('script[data-tee-vault-edit-bridge]')){
     const script=document.createElement('script');
     script.src='hub-vault-edit-v3481.js';
     script.dataset.teeVaultEditBridge='1';
     document.head.appendChild(script);
   }
-  // v3.4.90 — Shared Records Sync launcher. Injects one normal-use button beside Vault Records.
   if(!document.querySelector('script[data-tee-shared-sync-hub]')){
     const script=document.createElement('script');
     script.src='hub-shared-sync-v3490.js';
@@ -26,7 +24,7 @@
   }
 
   const LABELS={
-    emergencyContact:'Emergency Contact',passport:'Passport',globalEntry:'Global Entry / KTN',flight:'Flight',hotel:'Hotel',rail:'Rail',railPass:'Rail Pass',travelInsurance:'Travel Insurance',medical:'Medical',creditCard:'Credit Card',websiteLogin:'Website Login',rentalCar:'Rental Car',visa:'Visa',tripFolder:'Trip Folder'
+    emergencyContact:'Emergency Contact',passport:'Passport',globalEntry:'Global Entry / KTN',flight:'Flight',hotel:'Hotel',rail:'Rail',railPass:'Rail Pass',travelInsurance:'Travel Insurance',medical:'Medical',creditCard:'Credit Card',websiteLogin:'Website Login',rentalCar:'Rental Car',visa:'Visa',tripFolder:'Trip Folder',transportation:'Transportation / Transfer',structuredDocument:'Protected Source Document'
   };
   const OMIT=new Set(['id','history','deletedAt','archivedAt','createdAt','updatedAt','access','privacy','visibility','zone','ownerProfileId','ownerProfile','favorite','tags','relationships']);
 
@@ -51,6 +49,11 @@
     }
     return rows;
   }
+  function fieldValue(record,key){
+    if(record?.fields && !Array.isArray(record.fields))return String(record.fields[key]??'');
+    if(Array.isArray(record?.fields))return String(record.fields.find(f=>f?.key===key)?.value??'');
+    return '';
+  }
   function searchableText(record){
     try{return JSON.stringify(record).toLowerCase();}catch{return String(titleFor(record)).toLowerCase();}
   }
@@ -59,20 +62,54 @@
     close();
     window.dispatchEvent(new CustomEvent('tee-vault-edit-record',{detail:{recordId:record.recordId,title:titleFor(record)}}));
   }
+  function dateFor(record){
+    return fieldValue(record,'departureDate')||fieldValue(record,'date')||fieldValue(record,'startDate')||'';
+  }
+  function flightNumberFor(record){return fieldValue(record,'flightNumber').toUpperCase();}
+  function groupInfo(record){
+    if(record?.type==='flight')return {rank:0,label:'Operational flight records'};
+    if(record?.type==='transportation')return {rank:1,label:'Related transportation / transfers'};
+    if(record?.type==='structuredDocument')return {rank:2,label:'Supporting source documents'};
+    return {rank:3,label:'Other matching Vault records'};
+  }
+  function sortRecords(records){
+    return [...records].sort((a,b)=>{
+      const ga=groupInfo(a),gb=groupInfo(b);
+      if(ga.rank!==gb.rank)return ga.rank-gb.rank;
+      const da=dateFor(a),db=dateFor(b);
+      if(da!==db)return da.localeCompare(db);
+      const fa=flightNumberFor(a),fb=flightNumberFor(b);
+      if(fa!==fb)return fa.localeCompare(fb);
+      return titleFor(a).localeCompare(titleFor(b));
+    });
+  }
+  function addGroupHeading(label){
+    const h=document.createElement('div');
+    h.style.cssText='margin:18px 0 8px;padding:10px 12px;border-radius:10px;background:#eef5f7;color:#24444d;font-weight:900;text-transform:uppercase;letter-spacing:.04em';
+    h.textContent=label;
+    list.appendChild(h);
+  }
   function render(){
     const session=window.TEEVaultSession?.get?.();
     const records=session?.records||[];
     const q=(search?.value||'').trim().toLowerCase();
-    const shown=q?records.filter(r=>searchableText(r).includes(q)):records;
+    const matched=q?records.filter(r=>searchableText(r).includes(q)):records;
+    const shown=sortRecords(matched);
     list.innerHTML='';
-    if(count)count.textContent=`Showing ${shown.length} of ${records.length} authorized record${records.length===1?'':'s'}.`;
+    if(count)count.textContent=`Showing ${shown.length} of ${records.length} authorized record${records.length===1?'':'s'}. Operational records are grouped before supporting sources.`;
     if(!shown.length){list.innerHTML='<section class="install-device-card"><strong>No matching authorized records.</strong></section>';return;}
+    let lastGroup='';
     shown.forEach(record=>{
+      const group=groupInfo(record).label;
+      if(group!==lastGroup){addGroupHeading(group);lastGroup=group;}
       const card=document.createElement('section');
       card.className='install-device-card';
       const rows=primitiveRows(record);
       const table=rows.map(([k,v])=>`<div style="display:grid;grid-template-columns:minmax(110px,35%) 1fr;gap:10px;padding:7px 0;border-top:1px solid #e2e8ec"><span style="color:#5b6b72">${esc(k)}</span><strong style="overflow-wrap:anywhere">${esc(v)}</strong></div>`).join('');
-      card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><small style="font-weight:800;text-transform:uppercase;color:#50676d">${esc(LABELS[record.type]||record.typeLabel||human(record.type||'Record'))}</small><h3 style="margin:4px 0 8px">${esc(titleFor(record))}</h3></div><small style="font-weight:800">${esc(record.accessScope||record.privacy||record.visibility||record.zone||'authorized')}</small></div>${table||'<p>Authorized record available.</p>'}`;
+      const flightNo=flightNumberFor(record);
+      const flightDate=dateFor(record);
+      const operationalBadge=record.type==='flight'&&flightNo?`<div style="font-weight:900;font-size:1.05rem;margin:2px 0 8px">${esc(flightDate?`${flightDate} · `:'')}${esc(flightNo)}</div>`:'';
+      card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><small style="font-weight:800;text-transform:uppercase;color:#50676d">${esc(LABELS[record.type]||record.typeLabel||human(record.type||'Record'))}</small><h3 style="margin:4px 0 8px">${esc(titleFor(record))}</h3>${operationalBadge}</div><small style="font-weight:800">${esc(record.accessScope||record.privacy||record.visibility||record.zone||'authorized')}</small></div>${table||'<p>Authorized record available.</p>'}`;
       if(record.recordId){
         const edit=document.createElement('button');
         edit.type='button';
