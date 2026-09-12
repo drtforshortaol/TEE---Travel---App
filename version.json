@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.31",
+  "version": "3.5.32",
   "channel": "review",
-  "publishedAt": "2026-09-12T13:31:00-07:00",
-  "notes": "Adds Enchanting Travels source-reference content to TEE: Turkey/Croatia/Slovenia Essential Information, a separately labeled Enchanting Travels Universal Packing List, and a separately labeled Enchanting Travels General Travel Checklist. These source suggestions are intentionally kept distinct from Glenn's master lists and ChatGPT-developed TEE guidance. New reference pages are included in offline caching.",
-  "name": "TEE v3.5.31 — Enchanting Travels Source References"
+  "publishedAt": "2026-09-12T13:46:00-07:00",
+  "notes": "Refreshes nested Essentials and Packing caches so the previously added Enchanting Travels source-reference links and pages are actually visible. The Enchanting Travels Universal Packing List remains clearly separate from Glenn's master packing list and ChatGPT-developed TEE guidance. The Enchanting Travels country-information reference remains separate from TEE guidance.",
+  "name": "TEE v3.5.32 — Enchanting Travels Reference Visibility Fix"
 }
