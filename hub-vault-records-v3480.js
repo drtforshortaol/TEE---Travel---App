@@ -211,3 +211,31 @@
     else{finder.open=false;document.getElementById('hubVaultToggle')?.click();}
   });
 })();
+
+// v3.5.35 hotfix — expose full record manager from the normal Vault workflow.
+(function(){
+  const managerUrl='apps/travel-private-documents/index.html?teeView=vault&teeEnter=1';
+  const sessionSummary=document.getElementById('hubVaultSessionSummary');
+  const sessionActions=sessionSummary?.querySelector('div[style*="display:flex"]');
+  if(sessionActions && !sessionActions.querySelector('[data-tee-manage-records]')){
+    const link=document.createElement('a');
+    link.href=managerUrl;
+    link.className='hub-primary-action';
+    link.dataset.teeManageRecords='1';
+    link.textContent='Add / Manage Records';
+    link.style.textDecoration='none';
+    sessionActions.insertBefore(link,document.getElementById('hubVaultLockNow'));
+  }
+
+  const dialog=document.getElementById('hubVaultRecordsDialog');
+  const footer=dialog?.querySelector('.install-tee-footer');
+  if(footer && !footer.querySelector('[data-tee-manage-records]')){
+    const link=document.createElement('a');
+    link.href=managerUrl;
+    link.className='hub-primary-action';
+    link.dataset.teeManageRecords='1';
+    link.textContent='Add / Manage Records';
+    link.style.textDecoration='none';
+    footer.insertBefore(link,footer.firstChild);
+  }
+})();
