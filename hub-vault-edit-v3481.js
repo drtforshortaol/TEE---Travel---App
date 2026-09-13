@@ -19,11 +19,15 @@
     dialog.innerHTML=`<div class="install-tee-card" style="width:min(980px,96vw);max-height:94vh;overflow:hidden;display:flex;flex-direction:column;padding:0">
       <div class="install-tee-head" style="padding:14px 16px"><div><span class="stream-kicker">VAULT RECORD</span><h2 id="hubVaultEditTitle" style="margin:2px 0">Edit Record</h2><p id="hubVaultEditHint" style="margin:4px 0 0">Opening the encrypted editor…</p></div><button id="hubVaultEditClose" class="install-close" type="button">× Close</button></div>
       <div id="hubVaultEditFrameHost" style="min-height:65vh;overflow:hidden;background:#f7f9fa"></div>
-      <div class="install-tee-footer" style="padding:12px 16px"><button id="hubVaultEditDone" class="hub-primary-action" type="button">Done</button></div>
+      <div class="install-tee-footer" style="padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between">
+        <button id="hubVaultEditDelete" type="button" style="border:1px solid #a63b32;background:#fff;color:#8b2f27;border-radius:10px;padding:11px 14px;font-weight:800">Move to Recycle Bin</button>
+        <button id="hubVaultEditDone" class="hub-primary-action" type="button">Done</button>
+      </div>
     </div>`;
     document.body.appendChild(dialog);
     dialog.querySelector('#hubVaultEditClose')?.addEventListener('click',closeEditor);
     dialog.querySelector('#hubVaultEditDone')?.addEventListener('click',closeEditor);
+    dialog.querySelector('#hubVaultEditDelete')?.addEventListener('click',deleteCurrentRecord);
     dialog.addEventListener('click',event=>{if(event.target===dialog)closeEditor();});
     return dialog;
   }
@@ -106,13 +110,39 @@
       if(!form)return false;
       simplifyFrame(doc,form);
       editorPrepared=true;
-      updateHint('Make the change and tap Save Record.');
+      updateHint('Make the change and tap Save Record. Use Move to Recycle Bin only for a confirmed duplicate or obsolete record.');
       setTimeout(()=>{try{form.scrollIntoView({behavior:'auto',block:'start'});}catch{}},50);
       return true;
     }catch(error){
       console.error(error);
       updateHint('TEE could not prepare the editor. Close this window and try Edit once more.');
       return false;
+    }
+  }
+
+  async function deleteCurrentRecord(){
+    if(!pendingRecordId)return;
+    const w=frameWindow();
+    if(!w||typeof w.moveRecordToRecycleBin!=='function'){
+      alert('TEE could not open the Recycle Bin action. Close this editor and try again.');
+      return;
+    }
+    const before=activeRecord(pendingRecordId);
+    if(!before){
+      alert('This record is no longer active.');
+      closeEditor();
+      return;
+    }
+    try{
+      await w.moveRecordToRecycleBin(pendingRecordId);
+      const stillActive=activeRecord(pendingRecordId);
+      if(stillActive)return; // User may have cancelled the built-in confirmation.
+      window.dispatchEvent(new CustomEvent('tee-vault-record-deleted',{detail:{recordId:pendingRecordId,title:pendingTitle}}));
+      closeEditor();
+      setTimeout(()=>document.getElementById('hubVaultRecordsOpen')?.click(),120);
+    }catch(error){
+      console.error(error);
+      alert(error?.message||'Unable to move this record to the Recycle Bin.');
     }
   }
 
