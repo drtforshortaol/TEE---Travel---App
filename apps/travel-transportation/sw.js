@@ -1,6 +1,6 @@
-const CACHE = 'tee-transportation-v3-5-37-coordinator-update';
+const CACHE = 'tee-transportation-v3-5-38-oct4-sbb-seats';
 const CACHE_PREFIX = 'tee-transportation-';
-const ASSETS = ['./','./index.html','./styles.css','./app.js','./coordinator-call-v3537.js','./rail-route-detail-v3513.js','./offline-station-guides-v3525.js','./manifest.json','../travel-essentials/eurail-pass-help.html','../../assets/icon.svg'];
+const ASSETS = ['./','./index.html','./styles.css','./app.js','./coordinator-call-v3537.js','./rail-route-detail-v3513.js','./oct4-sbb-seats-v3538.js','./offline-station-guides-v3525.js','./manifest.json','../travel-essentials/eurail-pass-help.html','../../assets/icon.svg'];
 
 async function refreshCache() {
   const cache = await caches.open(CACHE);
