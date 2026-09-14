@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.35",
+  "version": "3.5.37",
   "channel": "review",
-  "publishedAt": "2026-09-12T15:18:00-07:00",
-  "notes": "Organizes authorized Vault Records coherently: operational Flight records are grouped first and sorted by date and flight number, followed by related transportation/transfers, supporting protected source documents, and other matches. This is a presentation-only change and does not rewrite encrypted Vault data.",
-  "name": "TEE v3.5.35 — Coherent Vault Flight Grouping"
+  "publishedAt": "2026-09-14T08:55:00-07:00",
+  "notes": "Updates Daily Operations and Transportation from the Sept. 14 pre-trip coordinator call: Istanbul Exit Gate 14, confirmed tour and transfer pickup times, balloon/passport guidance, Sep. 21 aircraft change and through-checked baggage guidance, and the Sep. 30 07:10 hotel-to-station pickup before the rail extension.",
+  "name": "TEE v3.5.37 — Coordinator Operational Update"
 }
