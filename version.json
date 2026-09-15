@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.41",
+  "version": "3.5.42",
   "channel": "review",
-  "publishedAt": "2026-09-14T21:45:00-07:00",
-  "notes": "Expands Quick Reference emergency support with verified U.S. Department of State emergency numbers, U.S. mission contacts for Türkiye, Croatia, Slovenia, Austria and Switzerland, Enchanting Travels support, and lost-passport / medical / trip-disruption guidance. Private family, coordinator and policy details remain in the Secure Vault.",
-  "name": "TEE v3.5.41 — Emergency Support Contacts"
+  "publishedAt": "2026-09-14T22:00:00-07:00",
+  "notes": "Adds Puneet Bhatia's direct Enchanting Travels WhatsApp/phone and email to Quick Reference Emergency support, with Puneet prioritized for urgent trip logistics and the general Enchanting Travels number retained as fallback.",
+  "name": "TEE v3.5.42 — Puneet Emergency Contact"
 }
