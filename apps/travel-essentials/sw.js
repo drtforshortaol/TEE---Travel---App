@@ -1,4 +1,4 @@
-const CACHE = 'tee-essentials-v3-5-32-enchanting-travels';
+const CACHE = 'tee-essentials-v3-5-41-emergency-support';
 const CACHE_PREFIX = 'tee-essentials-';
 const ASSETS = ['./','./index.html','./styles.css','./app.js','./eurail-pass-help.html','./entry-requirements-2026.html','./set-card-game.html','./enchanting-travels-country-info.html','./manifest.json','../../traveler-help.css','../../traveler-help.js','../../protected-context.js','../../vault-session.js'];
 
