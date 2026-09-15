@@ -11,6 +11,34 @@
   const vaultBridgeUrl = new URL("./apps/travel-private-documents/vault-session-bridge.js", scriptUrl).href;
   let expiryTimer = null;
 
+  function normalizeOperationalCorrections(session){
+    if(!session || !Array.isArray(session.records)) return session;
+    let changed=false;
+    for(const record of session.records){
+      if(record?.type!=="flight") continue;
+      const fields=record.fields&&typeof record.fields==="object"?record.fields:null;
+      if(!fields) continue;
+      const flightNumber=String(fields.flightNumber||"").replace(/\s+/g,"").toUpperCase();
+      const departureDate=String(fields.departureDate||"").trim();
+      if(flightNumber!=="TK1208" || departureDate!=="2026-10-06") continue;
+      if(String(fields.departureTime||"").trim()!=="15:00"){
+        fields.departureTime="15:00";
+        changed=true;
+      }
+      const original=String(fields.notes||"");
+      let notes=original
+        .replace(/Arrives Istanbul at 17:35 local time\.?/gi,"Arrives Istanbul at 18:55 local time.")
+        .replace(/Arrival 17:35\.?/gi,"Arrival 18:55.")
+        .replace(/13:35\s*(?:→|->)\s*17:35/gi,"15:00 → 18:55");
+      if(!/18:55/.test(notes)){
+        notes=`${notes}${notes?"\n":""}Current operational schedule: ZRH 15:00 → IST 18:55 on Oct 6, 2026. Earlier 13:35 → 17:35 timing is superseded.`;
+      }
+      if(notes!==original){fields.notes=notes;changed=true;}
+    }
+    if(changed) session.operationalCorrection="TK1208-2026-10-06-v1";
+    return session;
+  }
+
   function parse(candidate){
     try{
       const value = typeof candidate === "string" ? JSON.parse(candidate || "null") : candidate;
@@ -18,7 +46,7 @@
       if(Number(value.version) !== REQUIRED_VERSION) return null;
       if(!Number.isFinite(Number(value.expiresAt)) || Number(value.expiresAt) <= Date.now()) return null;
       if(!Array.isArray(value.records)) return null;
-      return value;
+      return normalizeOperationalCorrections(value);
     }catch{return null;}
   }
 
@@ -27,6 +55,9 @@
       const raw = sessionStorage.getItem(KEY);
       const session = parse(raw);
       if(!session && raw) sessionStorage.removeItem(KEY);
+      if(session && session.operationalCorrection && raw!==JSON.stringify(session)){
+        try{sessionStorage.setItem(KEY,JSON.stringify(session));}catch{}
+      }
       return session;
     }catch{return null;}
   }
