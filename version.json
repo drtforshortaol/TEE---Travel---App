@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.38",
+  "version": "3.5.39",
   "channel": "review",
-  "publishedAt": "2026-09-14T20:36:00-07:00",
-  "notes": "Corrects Oct. 6 TK1208 authorized Vault session display to the current ZRH 15:00 → IST 18:55 schedule while preserving each traveler's PNR, ticket number, seat and other booking details.",
-  "name": "TEE v3.5.38 — TK1208 Schedule Correction"
+  "publishedAt": "2026-09-14T20:45:00-07:00",
+  "notes": "Repairs Oct. 6 TK1208 directly after the encrypted Vault unlocks, correcting all matching traveler records from ZRH 13:35 → IST 17:35 to ZRH 15:00 → IST 18:55 while preserving PNRs, ticket numbers, seats, and traveler-specific booking details.",
+  "name": "TEE v3.5.39 — TK1208 Vault Unlock Repair"
 }
