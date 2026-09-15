@@ -57,6 +57,7 @@
     }
   ];
 
+  const TK1208_CURRENT={flightNumber:"TK1208",departureDate:"2026-10-06",departureTime:"15:00",arrivalTime:"18:55"};
   let running=false;
   const text=v=>String(v??"").trim();
   const uuid=()=>{try{return crypto.randomUUID();}catch{return `tee-flight-${Date.now()}-${Math.random().toString(16).slice(2)}`;}};
@@ -81,6 +82,32 @@
     return `${c}\n${e}`;
   }
 
+  function patchTk1208(records,now){
+    let patched=0;
+    for(const record of records){
+      if(record?.type!=="flight")continue;
+      const fields=record.fields&&typeof record.fields==="object"?record.fields:(record.fields={});
+      if(text(fields.flightNumber).toUpperCase()!==TK1208_CURRENT.flightNumber)continue;
+      if(text(fields.departureDate)!==TK1208_CURRENT.departureDate)continue;
+      let changed=false;
+      if(text(fields.departureTime)!==TK1208_CURRENT.departureTime){fields.departureTime=TK1208_CURRENT.departureTime;changed=true;}
+      const originalNotes=text(fields.notes);
+      let notes=originalNotes;
+      notes=notes.replace(/Arrives Istanbul at 17:35 local time\.?/gi,`Arrives Istanbul at ${TK1208_CURRENT.arrivalTime} local time.`);
+      notes=notes.replace(/Arrival 17:35\.?/gi,`Arrival ${TK1208_CURRENT.arrivalTime}.`);
+      if(!/18:55/.test(notes))notes=`${notes}${notes?"\n":""}Current operational schedule: ZRH 15:00 → IST 18:55 on Oct 6, 2026. This supersedes the earlier 13:35 → 17:35 schedule.`;
+      if(notes!==originalNotes){fields.notes=notes;changed=true;}
+      if(changed){
+        record.lastModifiedAt=now;
+        record.recordVersion=(Number(record.recordVersion)||1)+1;
+        record.history=Array.isArray(record.history)?record.history:[];
+        if(typeof createHistoryEntry==="function")record.history.push(createHistoryEntry("Schedule corrected","TK1208 current schedule corrected to ZRH 15:00 → IST 18:55; PNR, ticket and seat details preserved.",now));
+        patched++;
+      }
+    }
+    return patched;
+  }
+
   async function repair(){
     if(running)return;
     if(typeof getVaultState!=="function"||getVaultState()!=="unlocked")return;
@@ -91,6 +118,9 @@
       if(!data||!Array.isArray(data.records))return;
       let changed=0,added=0,patched=0;
       const now=new Date().toISOString();
+      const tk1208Patched=patchTk1208(data.records,now);
+      changed+=tk1208Patched;
+      patched+=tk1208Patched;
       for(const target of TARGETS){
         let record=findRecord(data.records,target);
         if(!record){
