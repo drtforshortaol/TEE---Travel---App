@@ -50,9 +50,10 @@ function addEmergencySupportDetails(){
     <h3>U.S. Citizen &amp; Trip Support — Verified Sep. 14, 2026</h3>
     <p><strong>Immediate danger:</strong> call <a href="tel:112"><strong>112</strong></a> first. Then contact the nearest U.S. embassy/consulate or trip support if needed.</p>
     <div class="insurance-contact-list">
+      <p><strong>TRIP COORDINATOR — Puneet Bhatia, Enchanting Travels:</strong> WhatsApp / phone <a href="tel:+919686679577"><strong>+91 96866 79577</strong></a> · <a href="mailto:puneet.b@enchantingtravels.com"><strong>puneet.b@enchantingtravels.com</strong></a>. <strong>Use Puneet first for urgent trip logistics.</strong></p>
       <p><strong>U.S. Department of State — from abroad:</strong> <a href="tel:+12025014444">+1-202-501-4444</a> (24/7 emergency help; also lost/stolen passport)</p>
       <p><strong>U.S./Canada State Dept:</strong> <a href="tel:18884074747">1-888-407-4747</a></p>
-      <p><strong>Enchanting Travels — U.S./Canada:</strong> <a href="tel:+18882632574">+1-888-263-2574</a> · company states travelers have 24/7 trip-coordinator emergency support. Use your dedicated coordinator number first if supplied in final trip documents.</p>
+      <p><strong>Enchanting Travels — U.S./Canada fallback:</strong> <a href="tel:+18882632574">+1-888-263-2574</a>.</p>
     </div>
     <h4>Nearest U.S. mission by trip country</h4>
     <div class="insurance-contact-list">
@@ -65,8 +66,8 @@ function addEmergencySupportDetails(){
     </div>
     <p><strong>Lost passport:</strong> contact the nearest U.S. embassy/consulate or State Department emergency line. Keep the physical passport separate from backup copies; protected identity details remain in the Secure Vault.</p>
     <p><strong>Medical emergency:</strong> call 112, go to the nearest hospital, then use the insurance contacts already listed below. Save itemized bills, receipts, medical documentation and proof of payment.</p>
-    <p><strong>Trip disruption:</strong> contact your Enchanting Travels trip coordinator for local logistics; use Turkish Airlines / rail staff for carrier-specific disruptions.</p>
-    <p class="emergency-source-note">Public emergency contacts verified from U.S. Department of State and Enchanting Travels official sources on Sep. 14, 2026. Private coordinator, policy and family phone numbers remain in the Secure Vault.</p>`;
+    <p><strong>Trip disruption:</strong> contact Puneet first for local logistics; use Turkish Airlines / rail staff for carrier-specific disruptions.</p>
+    <p class="emergency-source-note">Public emergency contacts verified from U.S. Department of State and Enchanting Travels official sources on Sep. 14, 2026. Puneet Bhatia contact information is included here at the traveler's request for direct offline access.</p>`;
   const grid=host.querySelector('.emergency-country-grid');
   if(grid)grid.insertAdjacentElement('afterend',section);else host.prepend(section);
 }
