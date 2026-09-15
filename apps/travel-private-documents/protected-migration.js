@@ -98,4 +98,59 @@
   },750);
   setTimeout(()=>{if(!tk1208RepairComplete)repairTk1208();},5000);
   scheduleTk1208Repair();
+
+  // Operational repair: finalize the existing Oct 6-7 YOTEL Istanbul Airport record as AIRSIDE.
+  // Matching uses only hotel name and dates; reservation/payment identifiers are preserved untouched.
+  let yotelRepairRunning=false;
+  let yotelRepairComplete=false;
+  const YOTEL_OPERATIONAL_NOTES = `AIRSIDE OVERNIGHT PLAN — OCT 6-7, 2026\n\nAt Zürich Turkish Airlines check-in before TK1208:\n“We are flying TK1208 to Istanbul today and continuing tomorrow on TK79 to San Francisco. We are staying overnight airside at YOTELAIR. Please confirm that all of our checked bags are tagged through to SFO and that we do not need to collect them in Istanbul. We also need valid boarding passes for tomorrow’s TK79 flight for the airside hotel. Can you issue those here? If not, please confirm where we obtain them in the international transit area without going through passport control or baggage claim.”\n\nBEFORE LEAVING THE ZÜRICH COUNTER:\n• Physically check every baggage tag/receipt: final destination must say SFO.\n• Obtain the TK79 IST→SFO boarding passes if possible.\n• If Zürich cannot issue them, confirm they can be obtained at Turkish Airlines Transit Check-in airside at IST without passport control or baggage claim.\n• Do not leave the counter until the baggage routing and onward boarding-pass procedure are both resolved.\n\nISTANBUL ARRIVAL AFTER TK1208 (scheduled arrival 18:55):\nIf bags are through-tagged to SFO, follow International Transfer / Transit and remain airside. Do not go to baggage claim or passport control. If needed, obtain the TK79 boarding pass at the Turkish Airlines Transit Check-in counter, then proceed to YOTEL Istanbul Airport Airside.\n\nOCT 7:\nTK79 departs IST at 13:15 for SFO. Verify the live gate and boarding time that morning.\n\nCONTINGENCY:\nIf Turkish Airlines requires any checked bag to be collected in Istanbul, the airside plan no longer applies. Follow Turkish Airlines instructions, go landside as required, collect/re-check baggage, and use the landside contingency process.`;
+  async function repairYotelAirside(){
+    if(yotelRepairRunning||yotelRepairComplete)return;
+    if(typeof getVaultState!=='function'||getVaultState()!=='unlocked')return;
+    if(typeof getActiveVaultData!=='function'||typeof persistActiveVaultData!=='function')return;
+    yotelRepairRunning=true;
+    try{
+      const raw=getActiveVaultData();
+      const data=typeof normalizeVaultData==='function'?normalizeVaultData(raw).data:raw;
+      if(!data||!Array.isArray(data.records))return;
+      let matched=0, changed=0;
+      const now=new Date().toISOString();
+      for(const record of data.records){
+        if(record?.type!=='hotel')continue;
+        const fields=record.fields&&typeof record.fields==='object'?record.fields:(record.fields={});
+        const hotelName=clean(fields.hotelName).toLowerCase();
+        if(!hotelName.includes('yotel')||!hotelName.includes('istanbul'))continue;
+        if(clean(fields.checkInDate)!=='2026-10-06'||clean(fields.checkOutDate)!=='2026-10-07')continue;
+        matched++;
+        if(clean(fields.notes)===YOTEL_OPERATIONAL_NOTES)continue;
+        fields.notes=YOTEL_OPERATIONAL_NOTES;
+        record.lastModifiedAt=now;
+        record.recordVersion=(Number(record.recordVersion)||1)+1;
+        record.history=Array.isArray(record.history)?record.history:[];
+        if(typeof createHistoryEntry==='function')record.history.push(createHistoryEntry('Operational plan finalized','Oct 6-7 YOTEL Istanbul Airport stay confirmed as airside; Zürich baggage-through-check and TK79 boarding-pass procedure added.',now));
+        changed++;
+      }
+      if(changed){
+        await persistActiveVaultData();
+        try{if(typeof publishAuthorizedSession==='function')publishAuthorizedSession({preserveExpiry:true});}catch{}
+        try{if(typeof renderRecords==='function')renderRecords();}catch{}
+        try{if(typeof renderDocuments==='function')renderDocuments();}catch{}
+        try{if(typeof setSecureMessage==='function')setSecureMessage('YOTEL Oct 6-7 airside overnight plan updated in the Vault.', 'success');}catch{}
+      }
+      if(matched>0)yotelRepairComplete=true;
+    }catch(error){
+      console.error('TEE YOTEL airside operational repair failed',error);
+    }finally{yotelRepairRunning=false;}
+  }
+  function scheduleYotelRepair(){setTimeout(repairYotelAirside,200);setTimeout(repairYotelAirside,900);setTimeout(repairYotelAirside,2200);}
+  window.addEventListener('tee-vault-session-changed',scheduleYotelRepair);
+  window.addEventListener('pageshow',scheduleYotelRepair);
+  document.addEventListener('tee-runtime-ready',scheduleYotelRepair);
+  document.addEventListener('DOMContentLoaded',scheduleYotelRepair);
+  const yotelUnlockWatcher=setInterval(()=>{
+    if(yotelRepairComplete){clearInterval(yotelUnlockWatcher);return;}
+    repairYotelAirside();
+  },750);
+  setTimeout(()=>{if(!yotelRepairComplete)repairYotelAirside();},5000);
+  scheduleYotelRepair();
 })();
