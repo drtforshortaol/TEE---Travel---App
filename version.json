@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.37",
+  "version": "3.5.38",
   "channel": "review",
-  "publishedAt": "2026-09-14T08:55:00-07:00",
-  "notes": "Updates Daily Operations and Transportation from the Sept. 14 pre-trip coordinator call: Istanbul Exit Gate 14, confirmed tour and transfer pickup times, balloon/passport guidance, Sep. 21 aircraft change and through-checked baggage guidance, and the Sep. 30 07:10 hotel-to-station pickup before the rail extension.",
-  "name": "TEE v3.5.37 — Coordinator Operational Update"
+  "publishedAt": "2026-09-14T20:36:00-07:00",
+  "notes": "Corrects Oct. 6 TK1208 authorized Vault session display to the current ZRH 15:00 → IST 18:55 schedule while preserving each traveler's PNR, ticket number, seat and other booking details.",
+  "name": "TEE v3.5.38 — TK1208 Schedule Correction"
 }
