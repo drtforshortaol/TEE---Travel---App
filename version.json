@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.39",
+  "version": "3.5.40",
   "channel": "review",
-  "publishedAt": "2026-09-14T20:45:00-07:00",
-  "notes": "Repairs Oct. 6 TK1208 directly after the encrypted Vault unlocks, correcting all matching traveler records from ZRH 13:35 → IST 17:35 to ZRH 15:00 → IST 18:55 while preserving PNRs, ticket numbers, seats, and traveler-specific booking details.",
-  "name": "TEE v3.5.39 — TK1208 Vault Unlock Repair"
+  "publishedAt": "2026-09-14T21:10:00-07:00",
+  "notes": "Finalizes the Oct. 6-7 Istanbul Airport YOTEL stay as an airside overnight plan. Adds the Zürich Turkish Airlines counter script, requires baggage tags to show SFO as final destination, documents TK79 boarding-pass handling, and adds the landside contingency if baggage must be collected in Istanbul.",
+  "name": "TEE v3.5.40 — YOTEL Airside Overnight Plan"
 }
