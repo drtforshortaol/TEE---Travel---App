@@ -1,8 +1,8 @@
 {
   "app": "TEE",
-  "version": "3.5.40",
+  "version": "3.5.41",
   "channel": "review",
-  "publishedAt": "2026-09-14T21:10:00-07:00",
-  "notes": "Finalizes the Oct. 6-7 Istanbul Airport YOTEL stay as an airside overnight plan. Adds the Zürich Turkish Airlines counter script, requires baggage tags to show SFO as final destination, documents TK79 boarding-pass handling, and adds the landside contingency if baggage must be collected in Istanbul.",
-  "name": "TEE v3.5.40 — YOTEL Airside Overnight Plan"
+  "publishedAt": "2026-09-14T21:45:00-07:00",
+  "notes": "Expands Quick Reference emergency support with verified U.S. Department of State emergency numbers, U.S. mission contacts for Türkiye, Croatia, Slovenia, Austria and Switzerland, Enchanting Travels support, and lost-passport / medical / trip-disruption guidance. Private family, coordinator and policy details remain in the Secure Vault.",
+  "name": "TEE v3.5.41 — Emergency Support Contacts"
 }
